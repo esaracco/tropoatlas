@@ -17,6 +17,7 @@ const InfoBar = () => {
   const [noResult, setNoResult] = useState(false)
   const sort = useCollectionStore((s) => s.sort)
   const styles = useCollectionStore((s) => s.categories)
+  const creators = useCollectionStore((s) => s.creators)
   const selected = useCollectionStore((s) => s.selected)
   const [_] = useTranslation()
 
@@ -62,13 +63,20 @@ const InfoBar = () => {
         )
       }
 
+      const effectiveCategories = selected.categories.filter((c) =>
+        styles.includes(c),
+      )
+      const effectiveCreators = selected.creators.filter((c) =>
+        creators.includes(c),
+      )
+
       setInfo(
         <>
           <b>{displayCount}</b> {_(displayCount > 1 ? "albums" : "album")}{" "}
-          <b>{selected.categories.join(", ")}</b>{" "}
-          {selected.creators.length ? (
+          <b>{effectiveCategories.join(", ")}</b>{" "}
+          {effectiveCreators.length ? (
             <>
-              {_("of")} <b>{selected.creators.join(", ")}</b>
+              {_("of")} <b>{effectiveCreators.join(", ")}</b>
             </>
           ) : (
             ""
@@ -89,7 +97,8 @@ const InfoBar = () => {
     selected.creators,
     selected.categories,
     sort,
-    styles.length,
+    styles,
+    creators,
     _,
   ])
 

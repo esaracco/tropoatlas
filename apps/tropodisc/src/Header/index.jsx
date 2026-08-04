@@ -30,6 +30,16 @@ const Header = () => {
   const [_] = useTranslation()
   const [expanded, setExpanded] = useState(false)
 
+  const allCategories = Array.from(
+    new Set([...categories, ...selected.categories]),
+  ).sort()
+  const allCreators = Array.from(
+    new Set([...creators, ...selected.creators]),
+  ).sort()
+  const allFormats = Array.from(
+    new Set([...formats, ...selected.formats]),
+  ).sort()
+
   const showFormats =
     !Settings.formats ||
     Settings.formats === "all" ||
@@ -120,7 +130,7 @@ const Header = () => {
                     type="checkbox"
                     stype="categories"
                     selected={selected}
-                    content={categories}
+                    content={allCategories}
                     labels={labels}
                     onReset={(type) => setFilter(type, [])}
                     onChangeSelection={getOnChangeSelection("categories")}
@@ -131,7 +141,7 @@ const Header = () => {
                     type="checkbox"
                     stype="creators"
                     selected={selected}
-                    content={creators}
+                    content={allCreators}
                     labels={labels}
                     onReset={(type) => setFilter(type, [])}
                     onChangeSelection={getOnChangeSelection("creators")}
@@ -143,7 +153,7 @@ const Header = () => {
                       type="checkbox"
                       stype="formats"
                       selected={selected}
-                      content={formats}
+                      content={allFormats}
                       labels={labels}
                       onReset={(type) => setFilter(type, [])}
                       onChangeSelection={getOnChangeSelection("formats")}
