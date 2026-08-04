@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react"
+import React, { useEffect } from "react"
 import { useTranslation } from "react-i18next"
 import i18n from "i18next"
 import { ToastContainer, toast } from "react-toastify"
@@ -11,6 +11,7 @@ import About from "./About"
 import Result from "./Result"
 import { ScrollButton, PwaReloadPrompt } from "@tropo/react"
 import {
+  useAppStore,
   useCollectionStore,
   getLargeItem,
   setLargeItem,
@@ -27,13 +28,9 @@ import "@tropo/react/src/global.css"
 // COMPONENT App
 const App = () => {
   const [_] = useTranslation()
-  const [isOnline, setIsOnline] = useState(navigator.onLine)
-  const [loading, setLoading] = useState(false)
-  const [searchStr, setSearchStr] = useState("")
-  const [fromRuler, setFromRuler] = useState(false)
-  const [progress, setProgress] = useState(0)
-  const [displayCount, setDisplayCount] = useState(0)
-  const [showAbout, setShowAbout] = useState(false)
+  const setIsOnline = useAppStore((s) => s.setIsOnline)
+  const setLoading = useAppStore((s) => s.setLoading)
+  const setProgress = useAppStore((s) => s.setProgress)
 
   // EFFECT 1
   useEffect(() => {
@@ -62,8 +59,8 @@ const App = () => {
     window.addEventListener("offline", _onlineEvent)
 
     return () => {
-      window.removeEventListener("online", _onlineEvent)
       window.removeEventListener("offline", _onlineEvent)
+      window.removeEventListener("online", _onlineEvent)
       if (_unloadEvent) {
         window.removeEventListener("pagehide", _unloadEvent)
       }
@@ -189,28 +186,9 @@ const App = () => {
   return (
     <>
       <ToastContainer position="bottom-right" />
-      <Header
-        setFromRuler={setFromRuler}
-        searchStr={searchStr}
-        setSearchStr={setSearchStr}
-        loading={loading}
-        displayCount={displayCount}
-        isOnline={isOnline}
-        setShowAbout={setShowAbout}
-      />
-      <About
-        isOnline={isOnline}
-        showAbout={showAbout}
-        setShowAbout={setShowAbout}
-      />
-      <Result
-        fromRuler={fromRuler}
-        setFromRuler={setFromRuler}
-        searchStr={searchStr}
-        loading={loading}
-        progress={progress}
-        setDisplayCount={setDisplayCount}
-      />
+      <Header />
+      <About />
+      <Result />
       <ScrollButton />
       <PwaReloadPrompt
         onClearCaches={clearAllCaches}

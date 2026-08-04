@@ -7,8 +7,12 @@ import { faChevronDown, faChevronUp } from "@fortawesome/free-solid-svg-icons"
 
 import "./styles/InfoBar.css"
 
+import { useAppStore } from "@tropo/core"
+
 // COMPONENT InfoBar
-const InfoBar = ({ loading, displayCount }) => {
+const InfoBar = () => {
+  const loading = useAppStore((s) => s.loading)
+  const displayCount = useAppStore((s) => s.displayCount)
   const [info, setInfo] = useState("")
   const [noResult, setNoResult] = useState(false)
   const sort = useCollectionStore((s) => s.sort)

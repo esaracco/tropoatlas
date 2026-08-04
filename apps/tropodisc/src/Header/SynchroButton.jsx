@@ -11,8 +11,12 @@ import { clearAllCaches } from "@tropo/core"
 
 import "./styles/SynchroButton.css"
 
+import { useAppStore } from "@tropo/core"
+
 // COMPONENT SynchroButton
-const SynchroButton = ({ loading, isOnline }) => {
+const SynchroButton = () => {
+  const loading = useAppStore((s) => s.loading)
+  const isOnline = useAppStore((s) => s.isOnline)
   const [showModal, setShowModal] = useState(false)
   const [_] = useTranslation()
 

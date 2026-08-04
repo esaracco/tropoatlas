@@ -5,8 +5,12 @@ import { useCollectionStore } from "@tropo/core"
 
 import * as Leds from "../utils/leds"
 
+import { useAppStore } from "@tropo/core"
+
 // COMPONENT LedsButton
-const LedsButton = ({ setFromRuler, isOnline }) => {
+const LedsButton = () => {
+  const setFromRuler = useAppStore((s) => s.setFromRuler)
+  const isOnline = useAppStore((s) => s.isOnline)
   const [modalShow, setModalShow] = useState(false)
   const [rulerShown, setRulerShown] = useState(false)
 

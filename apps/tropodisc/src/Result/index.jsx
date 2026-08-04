@@ -10,6 +10,7 @@ import Album from "./Album"
 import AlbumModal from "./Album/AlbumModal"
 import { normalize } from "@tropo/core"
 import { useScrollbarWidth, useWindowWidth } from "@tropo/react"
+import { useAppStore } from "@tropo/core"
 
 import "./Result.css"
 
@@ -25,14 +26,13 @@ const GridList = React.forwardRef(({ style, ...props }, ref) => (
 GridList.displayName = "GridList"
 
 // COMPONENT Result
-const Result = ({
-  fromRuler,
-  setFromRuler,
-  searchStr,
-  loading,
-  progress,
-  setDisplayCount,
-}) => {
+const Result = () => {
+  const fromRuler = useAppStore((s) => s.fromRuler)
+  const setFromRuler = useAppStore((s) => s.setFromRuler)
+  const searchStr = useAppStore((s) => s.searchStr)
+  const loading = useAppStore((s) => s.loading)
+  const progress = useAppStore((s) => s.progress)
+  const setDisplayCount = useAppStore((s) => s.setDisplayCount)
   const scrollbarWidth = useScrollbarWidth()
 
   const setCategories = useCollectionStore((s) => s.setCategories)

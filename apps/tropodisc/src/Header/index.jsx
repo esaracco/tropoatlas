@@ -12,10 +12,14 @@ import SynchroButton from "./SynchroButton"
 import LedsButton from "./LedsButton"
 import InfoBar from "./InfoBar"
 
+import { useAppStore } from "@tropo/core"
 import "./styles/Header.css"
 
 // COMPONENT Header
-const Header = (props) => {
+const Header = () => {
+  const setShowAbout = useAppStore((s) => s.setShowAbout)
+  const searchStr = useAppStore((s) => s.searchStr)
+  const setSearchStr = useAppStore((s) => s.setSearchStr)
   const categories = useCollectionStore((s) => s.categories)
   const creators = useCollectionStore((s) => s.creators)
   const formats = useCollectionStore((s) => s.formats)
@@ -79,7 +83,7 @@ const Header = (props) => {
           <Navbar.Brand
             className={`d-none d-${expandBreakpoint}-block me-2 p-0 m-0`}
             style={{ cursor: "pointer" }}
-            onClick={() => props.setShowAbout(true)}
+            onClick={() => setShowAbout(true)}
           >
             <img src="/icon-180.png" height="36" width="36" alt="TropoDisc" />
           </Navbar.Brand>
@@ -161,8 +165,8 @@ const Header = (props) => {
                     onSortChange={setSort}
                     labels={labels}
                   />
-                  <SynchroButton {...props} />
-                  {Settings.setLeds === "yes" && <LedsButton {...props} />}
+                  <SynchroButton />
+                  {Settings.setLeds === "yes" && <LedsButton />}
                   <ThemeSelector
                     storageKey="tropodisc-theme"
                     title={_("Theme")}
@@ -172,10 +176,14 @@ const Header = (props) => {
               </Offcanvas.Body>
             </Navbar.Offcanvas>
           </div>
-          <Search {...props} placeholder={_("artist, album...")} />
+          <Search
+            searchStr={searchStr}
+            setSearchStr={setSearchStr}
+            placeholder={_("artist, album...")}
+          />
         </Container>
       </Navbar>
-      <InfoBar {...props} />
+      <InfoBar />
     </>
   )
 }

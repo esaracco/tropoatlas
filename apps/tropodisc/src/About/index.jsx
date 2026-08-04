@@ -6,11 +6,15 @@ import { faInfoCircle, faUserEdit } from "@fortawesome/free-solid-svg-icons"
 import { faGithub } from "@fortawesome/free-brands-svg-icons"
 
 import { InfoModal } from "@tropo/react"
+import { useAppStore } from "@tropo/core"
 
 import "./About.css"
 
 // COMPONENT About
-const About = ({ isOnline, showAbout, setShowAbout }) => {
+const About = () => {
+  const isOnline = useAppStore((s) => s.isOnline)
+  const showAbout = useAppStore((s) => s.showAbout)
+  const setShowAbout = useAppStore((s) => s.setShowAbout)
   const [_] = useTranslation()
 
   const desc = (

@@ -2,6 +2,25 @@ import { create } from "zustand"
 import { persist } from "zustand/middleware"
 import { buildCacheKey } from "./storage"
 
+// Generic App UI Store
+export const useAppStore = create((set) => ({
+  isOnline: typeof navigator !== "undefined" ? navigator.onLine : true,
+  loading: false,
+  searchStr: "",
+  fromRuler: false,
+  progress: 0,
+  displayCount: 0,
+  showAbout: false,
+
+  setIsOnline: (isOnline) => set({ isOnline }),
+  setLoading: (loading) => set({ loading }),
+  setSearchStr: (searchStr) => set({ searchStr }),
+  setFromRuler: (fromRuler) => set({ fromRuler }),
+  setProgress: (progress) => set({ progress }),
+  setDisplayCount: (displayCount) => set({ displayCount }),
+  setShowAbout: (showAbout) => set({ showAbout }),
+}))
+
 // Generic Collection Store
 export const useCollectionStore = create(
   persist(
