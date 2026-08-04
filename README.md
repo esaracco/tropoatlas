@@ -26,6 +26,13 @@ With TropoDisc you can:
 - 💡 Instantly locate an album using ESP32-controlled LED strips *(optional)*
 - ❤️ Keep complete ownership of your collection data through Discogs
 
+## Screenshots
+
+<img width="500" src="https://github.com/user-attachments/assets/660d7ff5-454f-48d1-b5ce-342d2008d32f" />
+<img width="500" src="https://github.com/user-attachments/assets/e7c477f1-9a09-4b28-9994-6611644c71d7" />
+<img width="500" src="https://github.com/user-attachments/assets/02ce5f31-08c5-45d7-b990-453773741618" />
+<img width="500" src="https://github.com/user-attachments/assets/26f95234-f21a-4cf9-a612-057e1182345c" />
+
 ## Requirements
 
 - A Discogs account
