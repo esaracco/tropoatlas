@@ -1,0 +1,11 @@
+{
+  "name": "@tropo/discogs",
+  "version": "1.0.0",
+  "description": "Discogs plugin for TropoDisc (the TropoAtlas music collection manager)",
+  "main": "src/index.js",
+  "type": "module",
+  "dependencies": {
+    "sleep-promise": "^9.1.0",
+    "@tropo/core": "*"
+  }
+}

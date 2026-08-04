@@ -1,0 +1,106 @@
+.AlbumModal a {
+  color: var(--tropo-link);
+}
+
+.AlbumModal .artist {
+  font-size: 1.2em;
+  line-height: 1.2em;
+  color: var(--tropo-text);
+}
+
+.AlbumModal .rating .r {
+  color: var(--tropo-star);
+}
+
+.AlbumModal .rating .s {
+  color: var(--tropo-text-faint);
+}
+
+.AlbumModal .modal-title {
+  width: 100%;
+  font-size: 16px;
+  font-weight: bold;
+  padding-right: 5px;
+  color: var(--tropo-text);
+}
+
+.AlbumModal .modal-title span {
+  font-weight: normal;
+  font-style: italic;
+  color: var(--tropo-text-muted);
+}
+
+.AlbumModal .modal-icon {
+  width: 150px;
+  height: 150px;
+  text-align: center;
+}
+
+.AlbumModal ul {
+  list-style-type: none;
+  padding-left: 10px;
+}
+
+.AlbumModal .album-tracks ul .heading {
+  margin: 10px;
+}
+
+.AlbumModal .modal-body {
+  font-size: 0.8rem;
+  background: var(--tropo-surface);
+}
+
+.AlbumModal .modal-body .master,
+.AlbumModal .modal-body .release {
+  background: var(--tropo-surface-2);
+  border: 1px solid var(--tropo-border);
+  border-radius: 6px;
+  padding: 10px;
+  margin-left: 10px;
+}
+
+.AlbumModal .modal-body .release {
+  margin-bottom: 10px;
+}
+
+.AlbumModal .tab-pane {
+  padding: 10px;
+}
+
+.AlbumModal th,
+.AlbumModal td {
+  vertical-align: middle;
+}
+
+.AlbumModal .place {
+  font-weight: bold;
+}
+
+.AlbumModal .price {
+  display: inline-block;
+  width: 50px;
+}
+
+.AlbumModal .reset {
+  cursor: pointer;
+  float: right;
+  margin-top: 3px;
+  color: var(--tropo-text-muted);
+}
+
+/* Image gallery dark override */
+.AlbumModal .image-gallery-slide img {
+  border-radius: 4px;
+}
+
+/* Discogs logo styling for dark themes */
+.AlbumModal .discogs-logo {
+  filter: brightness(0) invert(var(--tropo-invert, 1)) opacity(0.5);
+  transition:
+    opacity 0.2s,
+    filter 0.2s;
+}
+
+.AlbumModal .discogs-logo:hover {
+  filter: brightness(0) invert(var(--tropo-invert, 1)) opacity(0.8);
+}

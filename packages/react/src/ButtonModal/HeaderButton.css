@@ -1,0 +1,50 @@
+/* ── HeaderButton ─────────────────────────────────────────── */
+.HeaderButton {
+  position: relative;
+  margin-right: 4px;
+  background: var(--tropo-accent-subtle) !important;
+  border: 1px solid var(--tropo-border) !important;
+  color: var(--tropo-text-muted) !important;
+  font-size: 0.8rem;
+  padding: 4px 10px;
+  border-radius: 6px;
+  transition:
+    background 0.18s,
+    border-color 0.18s,
+    color 0.18s;
+  white-space: nowrap;
+}
+
+.HeaderButton:hover,
+.HeaderButton:focus-visible {
+  background: var(--tropo-accent-subtle) !important;
+  border-color: var(--tropo-accent) !important;
+  color: var(--tropo-text) !important;
+}
+
+.HeaderButton:active {
+  filter: brightness(1.2);
+}
+
+/* Active-filter dot on individual buttons */
+.HeaderButton .selected-mark {
+  position: absolute;
+  right: 5px;
+  top: 5px;
+  background: var(--tropo-dot);
+  height: 6px;
+  width: 6px;
+  border-radius: 50%;
+  border: 1px solid var(--tropo-surface);
+  animation: pulse-dot 2s ease-in-out infinite;
+}
+
+@keyframes pulse-dot {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.3);
+  }
+}

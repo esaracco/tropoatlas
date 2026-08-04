@@ -1,0 +1,56 @@
+.Search {
+  position: sticky;
+  top: 10px;
+}
+
+.Search .input-group .form-control {
+  background: var(--tropo-accent-subtle) !important;
+  border: 1px solid var(--tropo-border) !important;
+  color: var(--tropo-text) !important;
+  border-radius: 6px !important;
+  text-align: center;
+  padding: 4px 28px 4px 32px; /* right padding for clear, left padding for search icon */
+  transition:
+    border-color 0.18s,
+    background 0.18s;
+}
+
+.Search .input-group .form-control:focus {
+  border-color: var(--tropo-accent) !important;
+  background: var(--tropo-surface-2) !important;
+  box-shadow: none;
+}
+
+.Search .search-icon {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+  color: var(--tropo-text-faint);
+  pointer-events: none;
+}
+
+.Search .search-clear {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+  cursor: pointer;
+  color: var(--tropo-text-faint);
+  visibility: hidden;
+  opacity: 0;
+  transition:
+    opacity 0.15s,
+    color 0.15s;
+}
+
+.Search .search-clear.visible {
+  visibility: visible;
+  opacity: 1;
+}
+
+.Search .search-clear:hover {
+  color: var(--tropo-text-muted);
+}

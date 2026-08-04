@@ -1,0 +1,58 @@
+.SortControl {
+  padding: 10px;
+}
+
+.radio-setting {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 1rem;
+}
+
+.radio-settings-label {
+  font-weight: bold;
+  color: var(--tropo-text);
+}
+
+.radio-sort-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.radio-select {
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid var(--tropo-border);
+  flex-grow: 1;
+  background-color: var(--tropo-surface-2);
+  color: var(--tropo-text);
+  transition: border-color 0.15s;
+}
+
+.radio-select:focus {
+  outline: none;
+  border-color: var(--tropo-accent);
+}
+
+.radio-sort-dir {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  background: var(--tropo-surface-2);
+  color: var(--tropo-text-muted);
+  border: 1px solid var(--tropo-border);
+  border-radius: 6px;
+  cursor: pointer;
+  transition:
+    background 0.15s,
+    color 0.15s,
+    border-color 0.15s;
+}
+
+.radio-sort-dir:hover {
+  background: var(--tropo-accent-subtle);
+  border-color: var(--tropo-accent);
+  color: var(--tropo-text);
+}

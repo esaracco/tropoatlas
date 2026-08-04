@@ -1,0 +1,25 @@
+.About {
+  z-index: 11;
+  position: fixed;
+  bottom: 10px;
+  left: 10px;
+  cursor: pointer;
+  color: var(--tropo-accent-hover);
+  font-size: 1.5rem;
+  padding: 5px 10px;
+  transition: color 0.3s;
+}
+
+.About .fa-circle-info {
+  filter: drop-shadow(0 0 5px rgba(0, 0, 0, 0.6));
+}
+
+.About .offline {
+  font-size: 0.8rem;
+  color: var(--tropo-danger-text);
+  font-weight: bold;
+  background: var(--tropo-danger-bg);
+  border: 1px solid var(--tropo-danger-border);
+  border-radius: 5px;
+  padding: 2px 5px;
+}

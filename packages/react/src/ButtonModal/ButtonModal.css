@@ -1,0 +1,40 @@
+.ButtonModal .cancel-box {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  bottom: 2px;
+  gap: 2px;
+  max-width: 90%;
+  overflow-x: auto;
+}
+
+.ButtonModal .cancel-box button {
+  font-size: 0.8rem;
+  padding: 2px 8px;
+  background: var(--tropo-surface) !important;
+  border: 1px solid var(--tropo-border) !important;
+  color: var(--tropo-text) !important;
+  border-radius: 5px;
+  transition:
+    background 0.15s,
+    border-color 0.15s;
+}
+
+.ButtonModal .cancel-box button:hover {
+  background: var(--tropo-surface-2) !important;
+  border-color: var(--tropo-accent) !important;
+}
+
+.ButtonModal .cancel-box button span {
+  margin-left: 4px;
+  font-size: 14px;
+  opacity: 0.7;
+}
+
+.ButtonModal .modal-body {
+  padding-top: 0;
+  padding-bottom: 0;
+  background: var(--tropo-surface);
+  overscroll-behavior: contain;
+}

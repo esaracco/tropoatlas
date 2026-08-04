@@ -1,0 +1,10 @@
+.AlbumButton {
+  font-size: 0.8rem;
+  margin-top: 5px;
+}
+
+@media (max-width: 400px) {
+  .AlbumButton span {
+    display: none;
+  }
+}

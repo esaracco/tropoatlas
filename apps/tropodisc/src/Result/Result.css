@@ -1,0 +1,11 @@
+.Result .progress {
+  height: 6px;
+  background-color: transparent;
+  border-radius: 0;
+  transition: opacity 1s ease-in-out;
+}
+
+.Result .progress-bar {
+  background-color: var(--tropo-progress) !important;
+  transition: background-color 0.3s;
+}

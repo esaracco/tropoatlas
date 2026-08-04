@@ -1,0 +1,7 @@
+{
+  "name": "@tropo/leds",
+  "version": "1.0.0",
+  "description": "API client for TropoAtlas ESP32 LED Server",
+  "main": "src/index.js",
+  "type": "module"
+}

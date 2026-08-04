@@ -1,0 +1,208 @@
+html,
+#root {
+  background: var(--tropo-bg);
+  color: var(--tropo-text);
+  transition:
+    background 0.3s,
+    color 0.3s;
+}
+
+body {
+  overflow-x: hidden;
+}
+
+::placeholder,
+input.form-control::placeholder {
+  font-size: 0.85em;
+  color: var(--tropo-text-muted);
+}
+
+:focus {
+  box-shadow: none !important;
+}
+
+input.form-control-xs {
+  height: calc(1em + 0.375rem + 2px);
+  padding: 0.125rem 0.25rem;
+  font-size: 0.75rem;
+  line-height: 1.5;
+  border-radius: 0.3rem;
+}
+
+.text-justify {
+  text-align: justify;
+  -webkit-hyphens: auto;
+  -moz-hyphens: auto;
+  -ms-hyphens: auto;
+  -o-hyphens: auto;
+  hyphens: auto;
+}
+
+/* ── Modals ───────────────────────────────────────────────── */
+.modal-content {
+  background: var(--tropo-surface) !important;
+  border: 1px solid var(--tropo-border) !important;
+  color: var(--tropo-text) !important;
+}
+
+.modal .modal-header {
+  background: var(--tropo-surface-2);
+  border-bottom: 1px solid var(--tropo-border);
+  box-shadow: none;
+}
+
+.modal .modal-footer {
+  background: var(--tropo-surface-2);
+  border-top: 1px solid var(--tropo-border);
+}
+
+@media (min-width: 576px) {
+  .modal .modal-dialog {
+    max-width: 500px;
+  }
+}
+
+.modal .btn-close,
+.offcanvas .btn-close {
+  filter: invert(var(--tropo-invert, 1)) opacity(0.6);
+}
+
+.modal .btn-close:hover,
+.offcanvas .btn-close:hover {
+  filter: invert(var(--tropo-invert, 1)) opacity(1);
+}
+
+/* ── Tables ───────────────────────────────────────────────── */
+.table {
+  color: var(--tropo-text) !important;
+  border-color: var(--tropo-border) !important;
+}
+
+.table th {
+  color: var(--tropo-text) !important;
+  font-weight: 500;
+  background: var(--tropo-surface-2) !important;
+  border-color: var(--tropo-border) !important;
+}
+
+.table td {
+  border-color: var(--tropo-border) !important;
+  background-color: transparent !important;
+  color: var(--tropo-text) !important;
+}
+
+.table-striped > tbody > tr:nth-of-type(odd) > * {
+  color: var(--tropo-text) !important;
+  background-color: var(--tropo-surface-2) !important;
+}
+
+.table-bordered > :not(caption) > * > * {
+  border-color: var(--tropo-border) !important;
+}
+
+/* ── Buttons ──────────────────────────────────────────────── */
+.btn-primary {
+  background-color: var(--tropo-accent) !important;
+  border-color: var(--tropo-accent) !important;
+  color: var(--tropo-bg) !important;
+}
+
+.btn-primary:hover,
+.btn-primary:focus,
+.btn-primary:active {
+  background-color: var(--tropo-accent-hover) !important;
+  border-color: var(--tropo-accent-hover) !important;
+  color: var(--tropo-bg) !important;
+}
+
+/* ── Tabs ─────────────────────────────────────────────────── */
+.nav-tabs {
+  border-bottom-color: var(--tropo-border) !important;
+}
+
+.nav-tabs .nav-link {
+  color: var(--tropo-text-muted);
+  border-color: transparent;
+}
+
+.nav-tabs .nav-link:hover {
+  color: var(--tropo-text);
+  border-color: var(--tropo-border);
+  background: var(--tropo-accent-subtle);
+}
+
+.nav-tabs .nav-link.active {
+  background: var(--tropo-surface-2) !important;
+  color: var(--tropo-text) !important;
+  border-color: var(--tropo-border) var(--tropo-border) transparent !important;
+}
+
+.tab-content {
+  background: var(--tropo-surface);
+  border: 1px solid var(--tropo-border);
+  border-top: none;
+  border-radius: 0 0 6px 6px;
+}
+
+/* ── Forms ────────────────────────────────────────────────── */
+.form-control {
+  background: var(--tropo-surface-2) !important;
+  border-color: var(--tropo-border) !important;
+  color: var(--tropo-text) !important;
+}
+
+.form-control:focus {
+  background: var(--tropo-surface-3) !important;
+  border-color: var(--tropo-accent) !important;
+  box-shadow: none !important;
+}
+
+/* ── Toasts ───────────────────────────────────────────────── */
+:root {
+  --toastify-color-light: var(--tropo-surface);
+  --toastify-color-dark: var(--tropo-surface);
+  --toastify-text-color-light: var(--tropo-text);
+  --toastify-text-color-dark: var(--tropo-text);
+}
+
+.Toastify__toast-container {
+  width: auto !important;
+  max-width: 320px !important;
+  margin: auto auto 20px 20px !important;
+  padding: 0 !important;
+}
+
+.Toastify__toast {
+  background: var(--tropo-surface) !important;
+  color: var(--tropo-text) !important;
+  border: 1px solid var(--tropo-border) !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+  border-radius: 8px !important;
+  font-size: 0.95rem !important;
+  padding: 16px 20px !important;
+  min-height: auto !important;
+  margin-bottom: 12px !important;
+}
+
+.Toastify__toast-body {
+  padding: 0 !important;
+  margin: 0 !important;
+  display: flex !important;
+  align-items: flex-start !important;
+}
+
+.Toastify__toast-icon {
+  margin-right: 12px !important;
+  margin-top: 2px !important;
+}
+
+.Toastify__close-button {
+  color: var(--tropo-text) !important;
+  opacity: 0.5 !important;
+  align-self: flex-start !important;
+  margin-left: 12px !important;
+}
+
+.Toastify__close-button:hover {
+  opacity: 1 !important;
+}

@@ -1,0 +1,11 @@
+{
+  "name": "@tropo/core",
+  "version": "1.0.0",
+  "description": "Core business logic and state management for TropoAtlas collections",
+  "main": "src/index.js",
+  "type": "module",
+  "dependencies": {
+    "localforage": "^1.10.0",
+    "zustand": "^4.5.2"
+  }
+}

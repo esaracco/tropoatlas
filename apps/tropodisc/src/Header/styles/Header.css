@@ -1,0 +1,106 @@
+/* ── Offcanvas ────────────────────────────────────────────── */
+@media (max-width: 767.98px) {
+  .header-offcanvas.show,
+  .header-offcanvas.offcanvas-toggling {
+    width: 160px !important;
+  }
+
+  .header-offcanvas.offcanvas-end {
+    background-color: var(--tropo-surface) !important;
+    border-left: 1px solid var(--tropo-border) !important;
+  }
+
+  .header-offcanvas.show .offcanvas-body,
+  .header-offcanvas.offcanvas-toggling .offcanvas-body {
+    padding-top: 8px !important;
+  }
+
+  .header-offcanvas.show .ThemeSelector,
+  .header-offcanvas.offcanvas-toggling .ThemeSelector {
+    justify-content: center;
+    padding: 6px 0;
+  }
+
+  .header-offcanvas.show .ThemeSelector-dot,
+  .header-offcanvas.offcanvas-toggling .ThemeSelector-dot {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+@media (min-width: 576px) {
+  .header-offcanvas-sm.offcanvas-toggling {
+    display: none !important;
+  }
+}
+
+@media (min-width: 768px) {
+  .header-offcanvas-md.offcanvas-toggling {
+    display: none !important;
+  }
+}
+
+/* ── Navbar ───────────────────────────────────────────────── */
+.navbar.bg-dark {
+  background-color: var(--tropo-surface) !important;
+  border-bottom: 1px solid var(--tropo-border) !important;
+  backdrop-filter: blur(8px) !important;
+  min-height: 52px;
+  transition: background-color 0.3s;
+}
+
+@media (max-width: 1000px) {
+  .navbar.bg-dark .HeaderButton,
+  .header-offcanvas .HeaderButton {
+    font-size: 1rem !important;
+    padding: 10px 14px !important;
+    width: 100%;
+    text-align: center;
+    margin-bottom: 4px;
+  }
+}
+
+/* ── Hamburger toggle ─────────────────────────────────────── */
+.navbar-toggler {
+  margin-right: 6px !important;
+  border: 1px solid var(--tropo-border) !important;
+  border-radius: 8px !important;
+  padding: 10px 14px !important;
+  transition: background 0.2s;
+  position: relative;
+}
+
+.navbar-toggler:hover {
+  background: var(--tropo-accent-subtle) !important;
+}
+
+.navbar-toggler-icon {
+  filter: invert(calc(1 - var(--tropo-invert, 1)));
+}
+
+/* Active-filter dot on hamburger */
+.Header .badge {
+  padding: 0 !important;
+}
+
+.Header .badge .selected-mark {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  background: var(--tropo-dot);
+  height: 6px;
+  width: 6px;
+  border-radius: 50%;
+  border: 1px solid var(--tropo-surface);
+  animation: pulse-dot 2s ease-in-out infinite;
+}
+
+@keyframes pulse-dot {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.3);
+  }
+}

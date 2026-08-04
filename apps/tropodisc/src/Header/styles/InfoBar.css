@@ -1,0 +1,32 @@
+.InfoBar {
+  transform: rotate(-90deg) translate(-100%, 0);
+  transform-origin: 0 0;
+  position: fixed;
+  top: 62px;
+  z-index: 1020;
+  font-size: 0.72rem;
+  line-height: 1;
+  letter-spacing: 0.02em;
+  background: var(--tropo-surface-2);
+  border: 1px solid var(--tropo-border);
+  padding: 5px 10px;
+  color: var(--tropo-text-muted);
+  border-radius: 0 0 6px 6px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(8px);
+  transition:
+    color 0.3s,
+    background 0.3s;
+}
+
+.InfoBar b {
+  color: var(--tropo-text);
+  font-weight: 600;
+}
+
+.InfoBar.noresult {
+  background: var(--tropo-danger-bg);
+  color: var(--tropo-danger-text);
+  border-color: var(--tropo-danger-border);
+  font-weight: 600;
+}

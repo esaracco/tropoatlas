@@ -1,0 +1,36 @@
+/* ── ThemeSelector ────────────────────────────────────────── */
+/* Requires --tropo-accent, --tropo-accent-hover, --tropo-surface
+   to be defined in the consuming app's theme CSS. */
+
+.ThemeSelector {
+  cursor: pointer;
+  margin-right: 4px;
+  padding: 4px 8px;
+  border-radius: 4px;
+  transition: transform 0.2s;
+  user-select: none;
+  display: flex;
+  align-items: center;
+  align-self: center;
+}
+
+.ThemeSelector-dot {
+  display: block;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--tropo-accent);
+  box-shadow:
+    0 0 0 2px var(--tropo-surface),
+    0 0 0 3px var(--tropo-accent);
+  transition:
+    box-shadow 0.2s,
+    transform 0.2s;
+}
+
+.ThemeSelector:hover .ThemeSelector-dot {
+  transform: scale(1.2);
+  box-shadow:
+    0 0 0 2px var(--tropo-surface),
+    0 0 0 4px var(--tropo-accent-hover);
+}

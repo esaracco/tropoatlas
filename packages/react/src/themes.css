@@ -1,0 +1,186 @@
+/* ═══════════════════════════════════════════════════════════
+   TropoDisc – Design Tokens & Themes
+   To change theme: data-theme="<name>" attribute on <html>
+   Available themes: dark (default) | blue | purple | green | light | orange
+═══════════════════════════════════════════════════════════ */
+
+/* ── Dark Theme (default, neutral blue-grey) ───────────── */
+:root,
+[data-theme="dark"] {
+  --tropo-bg: #0d0f14;
+  --tropo-surface: #111827;
+  --tropo-surface-2: #1e293b;
+  --tropo-surface-3: #273548;
+  --tropo-border: rgba(255, 255, 255, 0.08);
+  --tropo-border-light: rgba(255, 255, 255, 0.04);
+  --tropo-text: #e2e8f0;
+  --tropo-text-muted: #94a3b8;
+  --tropo-text-faint: #475569;
+  --tropo-accent: #64748b;
+  --tropo-accent-hover: #94a3b8;
+  --tropo-accent-subtle: rgba(100, 116, 139, 0.15);
+  --tropo-danger-bg: rgba(127, 29, 29, 0.85);
+  --tropo-danger-text: #fca5a5;
+  --tropo-danger-border: rgba(248, 113, 113, 0.25);
+  --tropo-star: #fbbf24;
+  --tropo-tag-bg: #334155;
+  --tropo-tag-text: #cbd5e1;
+  --tropo-tag-hover: #475569;
+  --tropo-dot: #f87171;
+  --tropo-progress: #64748b;
+  --tropo-scroll-btn: #64748b;
+  --tropo-item-card: #141c28;
+  --tropo-item-footer: #1a2232;
+  --tropo-link: #94a3b8;
+  --tropo-invert: 1;
+}
+
+/* ── Blue Theme (deep night, cyan accent) ──────────────── */
+[data-theme="blue"] {
+  --tropo-bg: #060e1a;
+  --tropo-surface: #0d1f35;
+  --tropo-surface-2: #132840;
+  --tropo-surface-3: #1a334f;
+  --tropo-border: rgba(14, 165, 233, 0.12);
+  --tropo-border-light: rgba(14, 165, 233, 0.05);
+  --tropo-text: #e0f2fe;
+  --tropo-text-muted: #7dd3fc;
+  --tropo-text-faint: #0369a1;
+  --tropo-accent: #0ea5e9;
+  --tropo-accent-hover: #38bdf8;
+  --tropo-accent-subtle: rgba(14, 165, 233, 0.15);
+  --tropo-danger-bg: rgba(8, 51, 85, 0.9);
+  --tropo-danger-text: #7dd3fc;
+  --tropo-danger-border: rgba(14, 165, 233, 0.3);
+  --tropo-star: #fbbf24;
+  --tropo-tag-bg: #0c4a6e;
+  --tropo-tag-text: #bae6fd;
+  --tropo-tag-hover: #075985;
+  --tropo-dot: #38bdf8;
+  --tropo-progress: #0ea5e9;
+  --tropo-scroll-btn: #0ea5e9;
+  --tropo-item-card: #091729;
+  --tropo-item-footer: #0d1f35;
+  --tropo-link: #7dd3fc;
+  --tropo-invert: 1;
+}
+
+/* ── Purple Theme (dark, amethyst accent) ─────────────────── */
+[data-theme="purple"] {
+  --tropo-bg: #0a0810;
+  --tropo-surface: #160f24;
+  --tropo-surface-2: #1e1532;
+  --tropo-surface-3: #271c3e;
+  --tropo-border: rgba(168, 85, 247, 0.12);
+  --tropo-border-light: rgba(168, 85, 247, 0.05);
+  --tropo-text: #f3e8ff;
+  --tropo-text-muted: #c084fc;
+  --tropo-text-faint: #7e22ce;
+  --tropo-accent: #a855f7;
+  --tropo-accent-hover: #c084fc;
+  --tropo-accent-subtle: rgba(168, 85, 247, 0.15);
+  --tropo-danger-bg: rgba(76, 5, 25, 0.9);
+  --tropo-danger-text: #f9a8d4;
+  --tropo-danger-border: rgba(244, 114, 182, 0.3);
+  --tropo-star: #fbbf24;
+  --tropo-tag-bg: #3b0764;
+  --tropo-tag-text: #e9d5ff;
+  --tropo-tag-hover: #581c87;
+  --tropo-dot: #e879f9;
+  --tropo-progress: #a855f7;
+  --tropo-scroll-btn: #a855f7;
+  --tropo-item-card: #100b1a;
+  --tropo-item-footer: #160f24;
+  --tropo-link: #c084fc;
+  --tropo-invert: 1;
+}
+
+/* ── Green Theme (dark, sage accent) ───────────────────── */
+[data-theme="green"] {
+  --tropo-bg: #060d08;
+  --tropo-surface: #0d1a10;
+  --tropo-surface-2: #132218;
+  --tropo-surface-3: #192c1e;
+  --tropo-border: rgba(34, 197, 94, 0.12);
+  --tropo-border-light: rgba(34, 197, 94, 0.05);
+  --tropo-text: #dcfce7;
+  --tropo-text-muted: #86efac;
+  --tropo-text-faint: #15803d;
+  --tropo-accent: #22c55e;
+  --tropo-accent-hover: #4ade80;
+  --tropo-accent-subtle: rgba(34, 197, 94, 0.15);
+  --tropo-danger-bg: rgba(5, 46, 22, 0.9);
+  --tropo-danger-text: #86efac;
+  --tropo-danger-border: rgba(74, 222, 128, 0.3);
+  --tropo-star: #fbbf24;
+  --tropo-tag-bg: #14532d;
+  --tropo-tag-text: #bbf7d0;
+  --tropo-tag-hover: #166534;
+  --tropo-dot: #4ade80;
+  --tropo-progress: #22c55e;
+  --tropo-scroll-btn: #22c55e;
+  --tropo-item-card: #08110a;
+  --tropo-item-footer: #0d1a10;
+  --tropo-link: #86efac;
+  --tropo-invert: 1;
+}
+
+/* ── Light Theme (bright, airy, slate accent) ───────────── */
+[data-theme="light"] {
+  --tropo-bg: #f8fafc;
+  --tropo-surface: #ffffff;
+  --tropo-surface-2: #f1f5f9;
+  --tropo-surface-3: #e2e8f0;
+  --tropo-border: rgba(0, 0, 0, 0.1);
+  --tropo-border-light: rgba(0, 0, 0, 0.05);
+  --tropo-text: #1e293b;
+  --tropo-text-muted: #64748b;
+  --tropo-text-faint: #94a3b8;
+  --tropo-accent: #3b82f6;
+  --tropo-accent-hover: #2563eb;
+  --tropo-accent-subtle: rgba(59, 130, 246, 0.15);
+  --tropo-danger-bg: rgba(254, 226, 226, 0.9);
+  --tropo-danger-text: #b91c1c;
+  --tropo-danger-border: rgba(239, 68, 68, 0.3);
+  --tropo-star: #f59e0b;
+  --tropo-tag-bg: #e2e8f0;
+  --tropo-tag-text: #334155;
+  --tropo-tag-hover: #cbd5e1;
+  --tropo-dot: #ef4444;
+  --tropo-progress: #3b82f6;
+  --tropo-scroll-btn: #3b82f6;
+  --tropo-item-card: #ffffff;
+  --tropo-item-footer: #f8fafc;
+  --tropo-link: #2563eb;
+  --tropo-invert: 0;
+}
+
+/* ── Orange Theme (Vinyl black with golden/tangerine accent) */
+[data-theme="orange"] {
+  --tropo-bg: #080808;
+  --tropo-surface: #121212;
+  --tropo-surface-2: #1c1c1c;
+  --tropo-surface-3: #262626;
+  --tropo-border: rgba(255, 140, 0, 0.15);
+  --tropo-border-light: rgba(255, 140, 0, 0.05);
+  --tropo-text: #f5f5f5;
+  --tropo-text-muted: #a3a3a3;
+  --tropo-text-faint: #525252;
+  --tropo-accent: #ff8c00;
+  --tropo-accent-hover: #ff9d00;
+  --tropo-accent-subtle: rgba(255, 140, 0, 0.15);
+  --tropo-danger-bg: rgba(67, 20, 7, 0.9);
+  --tropo-danger-text: #fdba74;
+  --tropo-danger-border: rgba(249, 115, 22, 0.3);
+  --tropo-star: #ff9d00;
+  --tropo-tag-bg: #7c2d12;
+  --tropo-tag-text: #fed7aa;
+  --tropo-tag-hover: #9a3412;
+  --tropo-dot: #ff9d00;
+  --tropo-progress: #ff8c00;
+  --tropo-scroll-btn: #ff8c00;
+  --tropo-item-card: #0a0a0a;
+  --tropo-item-footer: #121212;
+  --tropo-link: #ff9d00;
+  --tropo-invert: 1;
+}

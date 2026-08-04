@@ -1,0 +1,91 @@
+import React, { useState } from "react"
+import { Button, Container, Modal } from "react-bootstrap"
+import { useTranslation } from "react-i18next"
+import { useCollectionStore } from "@tropo/core"
+
+import * as Leds from "../utils/leds"
+
+// COMPONENT LedsButton
+const LedsButton = ({ setFromRuler, isOnline }) => {
+  const [modalShow, setModalShow] = useState(false)
+  const [rulerShown, setRulerShown] = useState(false)
+
+  const clearFilters = useCollectionStore((s) => s.clearFilters)
+
+  const selected = useCollectionStore((s) => s.selected)
+  const [_] = useTranslation()
+
+  const setRulerState = (state) => {
+    if (state === rulerShown) return
+    if (
+      !rulerShown &&
+      (selected.categories.length || selected.creators.length)
+    ) {
+      setFromRuler(true)
+      clearFilters()
+    }
+    Leds.setRuler({ show: state })
+    setRulerShown(state)
+  }
+
+  const handleReset = () => {
+    if (
+      !rulerShown &&
+      (selected.categories.length || selected.creators.length)
+    ) {
+      clearFilters()
+    } else {
+      Leds.setRuler({ show: false })
+      setRulerShown(false)
+    }
+  }
+
+  // RENDER
+  return (
+    isOnline && (
+      <>
+        <Button
+          variant="primary"
+          className="HeaderButton"
+          onClick={() => setModalShow(true)}
+        >
+          {_("Leds")}
+        </Button>
+
+        <Modal
+          show={modalShow}
+          onHide={() => setModalShow(false)}
+          onExited={() => setRulerState(false)}
+          scrollable
+          size="lg"
+        >
+          <Modal.Header closeButton>
+            <Modal.Title>{_("Leds control")}</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <Container className="d-flex justify-content-center">
+              <div className="d-grid gap-2">
+                <Button
+                  variant="primary"
+                  onClick={() => setRulerState(!rulerShown)}
+                >
+                  {rulerShown
+                    ? _("Turn off the ruler")
+                    : _("Turn on the ruler")}
+                </Button>
+                <Button variant="primary" onClick={handleReset}>
+                  {_("Reset")}
+                </Button>
+              </div>
+            </Container>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button onClick={() => setModalShow(false)}>{_("Close")}</Button>
+          </Modal.Footer>
+        </Modal>
+      </>
+    )
+  )
+}
+
+export default LedsButton

@@ -1,0 +1,39 @@
+server {
+    listen 3000;
+    server_name localhost;
+
+    root /usr/share/nginx/html;
+    index index.html;
+
+    # React Single Page Application Fallback
+    location / {
+        try_files $uri $uri/ /index.html;
+    }
+
+    # Do not cache service-worker.js to ensure updates are detected
+    location = /service-worker.js {
+        expires off;
+        add_header Cache-Control "no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0";
+        access_log off;
+    }
+
+    # Do not cache index.html to ensure the latest assets are loaded
+    location = /index.html {
+        expires off;
+        add_header Cache-Control "no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0";
+    }
+
+    # API Discogs Secure Proxy
+    location /api/discogs/ {
+        # IMPORTANT: Envsubst will replace ${DISCOGS_TOKEN} with your env var
+        proxy_set_header Authorization "Discogs token=${DISCOGS_TOKEN}";
+        proxy_set_header User-Agent "Tropodisc";
+        
+        # Configuration SSL strict for Discogs (Cloudflare)
+        proxy_set_header Host api.discogs.com;
+        proxy_ssl_server_name on;
+        proxy_ssl_protocols TLSv1.2 TLSv1.3;
+
+        proxy_pass https://api.discogs.com/;
+    }
+}

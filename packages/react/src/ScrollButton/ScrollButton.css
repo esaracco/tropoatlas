@@ -1,0 +1,22 @@
+.ScrollButton {
+  position: fixed;
+  z-index: 11;
+  left: 50%;
+  bottom: 55px;
+  height: 20px;
+  font-size: 3rem;
+  margin-left: -2rem;
+  cursor: pointer;
+  color: var(--tropo-scroll-btn);
+  transition:
+    opacity 0.3s,
+    color 0.3s;
+}
+
+.ScrollButton .fa-circle-arrow-up {
+  filter: drop-shadow(0 0 5px rgba(0, 0, 0, 0.6));
+}
+
+.ScrollButton:hover {
+  color: var(--tropo-accent-hover);
+}

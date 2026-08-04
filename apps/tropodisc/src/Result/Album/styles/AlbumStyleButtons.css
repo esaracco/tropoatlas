@@ -1,0 +1,37 @@
+.AlbumStyleButtons {
+  --tag-bg: var(--tropo-tag-bg);
+  --tag-text: var(--tropo-tag-text);
+  --tag-hover: var(--tropo-tag-hover);
+  --tag-remove-bg: var(--tropo-tag-hover);
+  --tag-remove-btn-bg--hover: var(--tropo-accent);
+  --tags-focus-border-color: var(--tropo-accent);
+  --tag-pad: 0.3em 0.5em;
+}
+
+.AlbumStyleButtons .tagify__tag:only-of-type .tagify__tag__removeBtn {
+  display: none;
+}
+
+.AlbumStyleButtons .tagify__tag,
+.AlbumStyleButtons .tagify__input {
+  margin: 1px 0 1px 1px;
+}
+
+.AlbumStyleButtons .tagify__tag__removeBtn {
+  margin-left: -6px;
+  margin-right: 0;
+}
+
+.tagify__tag > div > * {
+  white-space: nowrap;
+  color: var(--tropo-tag-text) !important;
+}
+
+.tagify__tag > div {
+  background: var(--tropo-tag-bg) !important;
+}
+
+.tagify {
+  border-color: var(--tropo-border) !important;
+  background: var(--tropo-surface-2) !important;
+}

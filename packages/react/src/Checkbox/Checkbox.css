@@ -1,0 +1,18 @@
+.Checkbox {
+  padding: 10px;
+}
+
+.Checkbox div {
+  font-size: 1.1rem;
+  color: var(--tropo-text);
+}
+
+.Checkbox label:hover {
+  cursor: pointer;
+  color: var(--tropo-accent-hover);
+}
+
+.Checkbox input {
+  margin-right: 10px;
+  accent-color: var(--tropo-accent);
+}

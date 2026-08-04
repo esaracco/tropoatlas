@@ -1,0 +1,86 @@
+/* ── PwaReloadPrompt ────────────────────────────────────────── */
+.PwaReloadPrompt-container {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.PwaReloadPrompt-toast {
+  background-color: var(--tropo-surface);
+  color: var(--tropo-text);
+  border: 1px solid var(--tropo-border);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  border-radius: 8px;
+  padding: 16px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: 320px;
+  animation: slide-up 0.3s ease-out;
+}
+
+.PwaReloadPrompt-message {
+  font-size: 0.95rem;
+  line-height: 1.4;
+}
+
+.PwaReloadPrompt-buttons {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
+.PwaReloadPrompt-btn {
+  background: var(--tropo-surface-2);
+  color: var(--tropo-text);
+  border: 1px solid var(--tropo-border);
+  border-radius: 6px;
+  padding: 6px 14px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.PwaReloadPrompt-btn:hover {
+  background: var(--tropo-surface-3);
+  border-color: var(--tropo-accent);
+}
+
+.PwaReloadPrompt-btn.primary {
+  background: var(--tropo-accent);
+  color: var(--tropo-bg);
+  border-color: var(--tropo-accent);
+}
+
+.PwaReloadPrompt-btn.primary:hover {
+  background: var(--tropo-accent-hover);
+  border-color: var(--tropo-accent-hover);
+}
+
+@keyframes slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 576px) {
+  .PwaReloadPrompt-container {
+    bottom: 16px;
+    right: 16px;
+    left: 16px;
+  }
+
+  .PwaReloadPrompt-toast {
+    max-width: 100%;
+  }
+}
