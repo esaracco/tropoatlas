@@ -17,7 +17,8 @@
     "lint-fix": "./node_modules/.bin/eslint --fix apps/ packages/ plugins/",
     "format": "./node_modules/.bin/prettier --write apps/ packages/ plugins/",
     "i18n:check": "npm run i18n:check -w apps/tropodisc",
-    "pre-commit": "npm run lint && npm run format && npm run test && npm run i18n:check"
+    "pre-commit": "npm run lint && npm run format && npm run test && npm run i18n:check",
+    "prepare": "husky"
   },
   "devDependencies": {
     "@eslint/js": "^9.20.0",
@@ -28,6 +29,7 @@
     "concurrently": "^9.2.1",
     "eslint": "^9.20.0",
     "eslint-plugin-react": "^7.37.5",
+    "husky": "^9.1.7",
     "jsdom": "^24.1.3",
     "vitest": "^3.2.6"
   },
