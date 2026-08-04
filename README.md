@@ -2,7 +2,7 @@
 
 # TropoDisc
 
-<div align="center">![TropoDisc logo](apps/tropodisc/public/icon-180.png)</div>
+<div align="center"><img src="apps/tropodisc/public/icon-180.png" alt="TropoDisc logo" /></div>
 
 _Organize your collection, enrich it with your own metadata, and optionally locate albums instantly using LED strips._
 
