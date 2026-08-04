@@ -52,7 +52,7 @@ const About = ({ isOnline, showAbout, setShowAbout }) => {
           <p>{desc}</p>
           <p className="text-center">
             <a
-              href="https://github.com/esaracco/tropoatlas/apps/tropodisc"
+              href="https://github.com/esaracco/tropoatlas"
               rel="noopener noreferrer"
               target="_blank"
               className="btn btn-secondary btn-sm"
