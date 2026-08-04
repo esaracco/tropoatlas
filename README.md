@@ -1,12 +1,10 @@
+_TropoAtlas is the successor to TropoDisc. The [TropoDisc repository](https://github.com/esaracco/tropodisc) has been archived and remains available for historical reference._
+
 [![GPL License](https://img.shields.io/badge/license-GPLv3-blue.svg)](LICENSE) [![Discogs API](https://img.shields.io/badge/Powered%20by-Discogs-orange.svg)](https://www.discogs.com/developers/) [![Made with React](https://img.shields.io/badge/React-18-61DAFB.svg)](https://reactjs.org/) [![Vite](https://img.shields.io/badge/Vite-B73BFE.svg)](https://vitejs.dev/)
 
 # TropoDisc
 
 <div align="center"><img src="apps/tropodisc/public/icon-180.png" alt="TropoDisc logo" /></div>
-
-_Organize your collection, enrich it with your own metadata, and optionally locate albums instantly using LED strips._
-
-**TropoDisc** is an open-source [Discogs](https://www.discogs.com) collection manager.
 
 ## Architecture
 
