@@ -10,6 +10,7 @@
   "author": "Emmanuel Saracco",
   "license": "GPL-3.0-or-later",
   "scripts": {
+    "audit": "npm audit --omit=dev --audit-level=high",
     "dev": "npm run dev -w apps/tropodisc",
     "build": "npm run build --workspaces --if-present",
     "test": "vitest run",
