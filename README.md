@@ -10,21 +10,22 @@ _TropoAtlas is the successor to TropoDisc. The [TropoDisc repository](https://gi
 
 TropoAtlas is built on a modern **NPM Monorepo** architecture using **Vite**, **Vitest**, and **Zustand**, and composed of several distinct workspaces:
 
-- `apps/tropodisc`: The main React application.
+- `apps/tropodisc`: The main React application. It is a generic and agnostic collection manager.
 - `packages/react`: A library of reusable, generic UI components (`@tropo/react`).
-- `packages/leds`: The Node.js server that handles physical LED strips and audio library integration (`@tropo/leds`).
-- `plugins/discogs`: An agnostic Discogs API wrapper (`@tropo/discogs`).
+- `packages/core`: Core utilities and state management (`@tropo/core`).
+- `packages/leds`: The HTTP client that handles physical LED strips integration (`@tropo/leds`).
+- `plugins/*`: Data providers that plug into TropoDisc. Currently includes `@tropo/discogs`.
 
 ## Why TropoDisc?
 
-Discogs already provides an excellent way to catalog music collections, but browsing a large physical library can still be frustrating. TropoDisc aims to bridge the gap between your online Discogs collection and your shelves.
+Discogs already provides an excellent way to catalog music collections, but browsing a large physical library can still be frustrating. TropoDisc aims to bridge the gap between your online collection (via Discogs or other future providers) and your shelves.
 
 With TropoDisc you can:
 - 🔎 Browse and search your collection quickly
-- 🏷️ Add your own metadata through Discogs custom fields
+- 🏷️ Add your own metadata through custom fields
 - 📍 Store the exact physical location of every album
 - 💡 Instantly locate an album using ESP32-controlled LED strips *(optional)*
-- ❤️ Keep complete ownership of your collection data through Discogs
+- ❤️ Keep complete ownership of your collection data through your Data Provider
 
 ## Screenshots
 
@@ -55,8 +56,11 @@ Copy the `.env` sample to the React app directory:
 cp apps/tropodisc/.env.sample apps/tropodisc/.env
 ```
 
-The `apps/tropodisc/.env` file contains several configuration options. For security, **TropoDisc keeps your Discogs token server-side** so it's never leaked to the browser.
-Required variables:
+The `apps/tropodisc/.env` file configures the application and its active plugins. 
+By default, the active provider is Discogs:
+- `VITE_DATA_PROVIDER="discogs"`
+
+For the Discogs plugin, required variables are:
 - `VITE_DISCOGS_USER` — your Discogs username
 - `DISCOGS_TOKEN` — your personal Discogs API token (Notice the absence of the `VITE_` prefix to prevent browser exposure).
 
@@ -114,9 +118,9 @@ npm run build
 </VirtualHost>
 ```
 
-## Using Discogs Custom Fields
+## Using Custom Fields (Discogs Plugin)
 
-TropoDisc can take advantage of three optional custom fields in your Discogs collection:
+When using the Discogs plugin, TropoDisc can map to three optional custom fields in your Discogs collection:
 
 ### `place`
 *Textarea (1 line)* - Stores the physical location of an album in your collection.

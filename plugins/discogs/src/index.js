@@ -2,22 +2,64 @@ import sleep from "sleep-promise"
 import { normalize } from "@tropo/core"
 import vinylImg192 from "./assets/vinyl-300.png"
 import vinylImg300 from "./assets/vinyl-300.png"
+import logo from "./assets/logo.png"
 
 export class DiscogsPlugin {
   constructor(config = {}) {
-    this.token = config.token
-    this.user = config.user
-    this.itemsPerRequest = config.itemsPerRequest || 250
-    this.requestDelay = config.requestDelay || 2
-    this.formats = config.formats || "all"
-    this.placeField = config.placeField
-    this.priceField = config.priceField
-    this.stylesField = config.stylesField
-    this.fieldsRequired = config.fieldsRequired || "no"
+    const env = config.env || {}
+    this.token = env.VITE_DISCOGS_TOKEN || config.token
+    this.user = env.VITE_DISCOGS_USER || config.user
+    this.itemsPerRequest =
+      Number(
+        env.VITE_DISCOGS_API_ITEMS_PER_REQUEST || config.itemsPerRequest,
+      ) || 250
+    this.requestDelay =
+      Number(env.VITE_DISCOGS_API_REQUEST_DELAY || config.requestDelay) || 2
+    this.formats = env.VITE_DISCOGS_FORMATS || config.formats || "all"
+    this.placeField = env.VITE_DISCOGS_FIELD_PLACE || config.placeField
+    this.priceField = env.VITE_DISCOGS_FIELD_PRICE || config.priceField
+    this.stylesField = env.VITE_DISCOGS_FIELD_STYLES || config.stylesField
+    this.fieldsRequired =
+      env.VITE_DISCOGS_FIELDS_REQUIRED || config.fieldsRequired || "no"
     this.devMode = config.devMode || false
 
     this.fieldsId = {}
     this.apiBase = config.apiBase || "https://api.discogs.com"
+  }
+
+  getProviderInfo() {
+    return {
+      name: "Discogs",
+      url: "https://www.discogs.com",
+      logo,
+      multipleFormats:
+        !this.formats ||
+        this.formats === "all" ||
+        this.formats.indexOf(",") > -1,
+    }
+  }
+
+  validateSettings(onConfigError) {
+    if (!this.user && onConfigError) {
+      onConfigError("The {{field}} environment variable is required!", {
+        field: "VITE_DISCOGS_USER",
+      })
+    }
+    if (
+      this.fieldsRequired === "yes" &&
+      !(this.placeField || this.priceField || this.stylesField) &&
+      onConfigError
+    ) {
+      onConfigError(
+        'With the {{required}} environment variable set to "yes" you must at least set one of the following variables: {{place}}, {{price}} or {{styles}}!',
+        {
+          required: "VITE_DISCOGS_FIELDS_REQUIRED",
+          place: "VITE_DISCOGS_FIELD_PLACE",
+          price: "VITE_DISCOGS_FIELD_PRICE",
+          styles: "VITE_DISCOGS_FIELD_STYLES",
+        },
+      )
+    }
   }
 
   async #request(method, service, args) {
@@ -60,6 +102,15 @@ export class DiscogsPlugin {
       }
     }
     return this.fieldsId
+  }
+
+  async getCustomFieldsInfo() {
+    await this.getFieldsId()
+    return {
+      supportsPlace: !!this.fieldsId.placeId,
+      supportsPrice: !!this.fieldsId.priceId,
+      supportsCategories: !!this.fieldsId.stylesId,
+    }
   }
 
   #getFieldsValue(data) {
@@ -160,6 +211,99 @@ export class DiscogsPlugin {
     return releases
   }
 
+  #extractYear(notes) {
+    if (notes) {
+      const m = notes.match(/Ⓟ\s*(1\d\d\d)|[^\d](1\d\d\d)[^\d]/s)
+      if (m) {
+        return Number(m[1] || m[2])
+      }
+    }
+    return null
+  }
+
+  #formatNotesToMarkdown(notes) {
+    if (!notes) return ""
+    let formatted = notes.replace(
+      /\[(a|l|m|r)=?([^\]]+)\]/g,
+      (match, p1, p2) => {
+        const type =
+          p1 === "a"
+            ? "artist"
+            : p1 === "l"
+              ? "label"
+              : p1 === "m"
+                ? "master"
+                : "release"
+        return `[${p2}](https://www.discogs.com/${type}/${p2})`
+      },
+    )
+    formatted = formatted.replace(
+      /\[url=([^\]]+)]([^\]]+)\[\/url]/g,
+      "[$2]($1)",
+    )
+    return formatted
+  }
+
+  async getItemDetails(item) {
+    const master = item.masterid
+      ? await this.getMaster({ id: item.masterid })
+      : null
+    const release = await this.getRelease({
+      id: item.releaseid,
+    })
+
+    let year = item.year
+    if (!year) {
+      year = this.#extractYear(release.notes)
+      if (!year && master) year = this.#extractYear(master.notes)
+      if (!year && master && master.year) year = master.year
+    }
+
+    if (master && master.tracklist) {
+      master.tracklist.forEach((t) => delete t.extraartists)
+    }
+    const tracklist = release.tracklist || []
+    if (tracklist) {
+      tracklist.forEach((t) => delete t.extraartists)
+    }
+
+    const rNotes = release.notes
+      ? this.#formatNotesToMarkdown(release.notes.trim())
+      : null
+    const mNotes =
+      master && master.notes
+        ? this.#formatNotesToMarkdown(master.notes.trim())
+        : null
+
+    const finalTracklist = tracklist.length
+      ? tracklist
+      : master && master.tracklist && master.tracklist.length
+        ? master.tracklist
+        : []
+
+    return {
+      ...item,
+      year,
+      country: release.country,
+      notes: rNotes,
+      globalNotes: mNotes,
+      tracklist: finalTracklist,
+      externalUrl: `https://www.discogs.com/release/${item.releaseid}`,
+    }
+  }
+
+  async refreshItemImage(item) {
+    if (!item.releaseid) return null
+    const r = await this.getRelease({ id: item.releaseid })
+    if (r && r.images && r.images.length > 0) {
+      return {
+        cover: r.images[0].uri,
+        thumb: r.images[0].uri150,
+      }
+    }
+    return null
+  }
+
   getMaster({ id }) {
     return this.#request("GET", `masters/${id}`)
   }
@@ -168,9 +312,10 @@ export class DiscogsPlugin {
     return this.#request("GET", `releases/${id}`)
   }
 
-  async updateUserData({ folderid, releaseid, instanceid }, changes) {
-    const { rating, place, price, styles } = changes
-    const base = `users/${this.user}/collection/folders/${folderid}/releases/${releaseid}/instances/${instanceid}`
+  async updateUserData({ folderid, releaseid, id, instanceid }, changes) {
+    const { rating, place, price, categories } = changes
+    const actualInstanceId = id || instanceid
+    const base = `users/${this.user}/collection/folders/${folderid}/releases/${releaseid}/instances/${actualInstanceId}`
 
     await this.getFieldsId()
     const { placeId, priceId, stylesId } = this.fieldsId
@@ -194,10 +339,10 @@ export class DiscogsPlugin {
         }),
       )
     }
-    if (styles !== undefined && stylesId) {
+    if (categories !== undefined && stylesId) {
       requests.push(
         this.#request("POST", `${base}/fields/${stylesId}`, {
-          value: styles.join(","),
+          value: categories.join(","),
         }),
       )
     }
@@ -205,10 +350,10 @@ export class DiscogsPlugin {
     await Promise.all(requests)
   }
 
-  extractStyles(releases) {
+  extractCategories(releases) {
     const styles = new Set()
     Object.values(releases).forEach((r) => {
-      const cats = r.categories || r.styles || []
+      const cats = r.categories || []
       cats.forEach((s) => styles.add(s))
     })
     return Array.from(styles).sort()

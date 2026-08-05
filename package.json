@@ -1,6 +1,6 @@
 {
   "name": "tropoatlas",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "TropoAtlas Ecosystem Workspace",
   "workspaces": [
     "apps/*",

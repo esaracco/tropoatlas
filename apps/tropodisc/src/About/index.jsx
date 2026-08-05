@@ -7,6 +7,7 @@ import { faGithub } from "@fortawesome/free-brands-svg-icons"
 
 import { InfoModal } from "@tropo/react"
 import { useAppStore } from "@tropo/core"
+import { getProviderInfo } from "../provider"
 
 import "./About.css"
 
@@ -20,10 +21,11 @@ const About = () => {
   const desc = (
     <Trans
       i18nKey="keyAboutMessage"
+      values={{ provider: getProviderInfo().name }}
       components={{
-        DiscogsLink: (
+        ProviderLink: (
           <a
-            href="https://www.discogs.com"
+            href={getProviderInfo().url}
             rel="noopener noreferrer"
             target="_blank"
           />

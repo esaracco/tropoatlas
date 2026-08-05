@@ -20,7 +20,7 @@ import {
   clearAllCaches,
   buildCacheKey,
 } from "@tropo/core"
-import { plugin } from "./utils/discogs"
+import { plugin, getProviderInfo, validateProviderSettings } from "./provider"
 
 import "react-toastify/dist/ReactToastify.css"
 import "@tropo/react/src/global.css"
@@ -79,7 +79,7 @@ const App = () => {
             "Organize your collection, enrich it with your own metadata, and optionally locate albums instantly using LED strips",
           ),
         )
-      document.title = `TropoDisc – ${_("A Discogs collection manager")}`
+      document.title = `TropoDisc – ${_("A universal music collection manager")}`
     }
   }, [_])
 
@@ -87,6 +87,7 @@ const App = () => {
   useEffect(() => {
     toast.dismiss()
     Settings.validateSettings()
+    validateProviderSettings()
 
     setLoading(true)
 
@@ -131,39 +132,32 @@ const App = () => {
           setCategories(stylesArr)
           setLoading(false)
         } else {
-          // Fetch from Discogs
+          // Fetch from provider
           plugin
             .getCollection((prog) => setProgress(prog))
             .then((items) => {
               setItems(items)
 
               const categories = new Set()
-              const legacyReleases = {}
-              const legacyStyles = new Set()
 
               Object.values(items).forEach((item) => {
                 item.categories.forEach((c) => categories.add(c))
-                legacyReleases[item.id] = {
-                  ...item,
-                  artist: item.creator,
-                  styles: item.categories,
-                  instanceid: item.id,
-                }
-                item.categories.forEach((s) => legacyStyles.add(s))
               })
 
               const stylesArray = Array.from(categories).sort()
               setCategories(stylesArray)
 
               // Save to cache
-              setLargeItem("releases", legacyReleases)
+              setLargeItem("releases", items)
               setItem("styles", stylesArray)
             })
             .catch((e) => {
               console.error(e.message)
               toast.error(
                 _(e.message) ||
-                  _("An error occurred while using the Discogs API!"),
+                  _("An error occurred while using the {{provider}} API!", {
+                    provider: getProviderInfo().name,
+                  }),
                 {
                   autoClose: false,
                 },

@@ -1,5 +1,10 @@
 # @tropo/discogs
 
-Discogs plugin for TropoDisc (the TropoAtlas music collection manager).
+The official Discogs Data Provider plugin for TropoAtlas.
 
-For full project details, architecture, and deployment instructions, please see the [main TropoAtlas README](../../README.md).
+It implements the generic `CollectionProvider` interface expected by TropoDisc, handling:
+
+- Discogs API authentication and proxying
+- Data fetching with pagination
+- Mapping Discogs releases to the generic TropoAtlas items format
+- Updating custom fields on Discogs

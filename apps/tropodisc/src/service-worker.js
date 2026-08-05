@@ -69,7 +69,7 @@ registerRoute(
   }),
 )
 
-// Cache Discogs albums covers and other collection items
+// Cache albums covers and other collection items
 registerRoute(
   ({ url }) => url.pathname.endsWith(".jpeg"),
   new CacheFirst({
@@ -81,15 +81,14 @@ registerRoute(
   }),
 )
 
-// Background Sync for offline Discogs updates
-const bgSyncPlugin = new BackgroundSyncPlugin("discogs-queue", {
+// Background Sync for offline provider updates
+const bgSyncPlugin = new BackgroundSyncPlugin("provider-queue", {
   maxRetentionTime: 24 * 60, // Retry for max of 24 Hours
 })
 
 registerRoute(
   ({ url }) =>
-    url.origin === "https://api.discogs.com" ||
-    url.pathname.startsWith("/api/discogs"),
+    url.pathname.startsWith("/api/") && !url.pathname.startsWith("/api/leds"),
   new NetworkOnly({
     plugins: [bgSyncPlugin],
   }),

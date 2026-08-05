@@ -1,7 +1,7 @@
 {
   "name": "@tropo/discogs",
   "version": "1.0.0",
-  "description": "Discogs plugin for TropoDisc (the TropoAtlas music collection manager)",
+  "description": "Discogs plugin for TropoDisc (a universal music collection manager)",
   "main": "src/index.js",
   "type": "module",
   "dependencies": {

@@ -1,5 +1,3 @@
 # @tropo/react
 
-TropoAtlas generic React UI components.
-
-For full project details, architecture, and deployment instructions, please see the [main TropoAtlas README](../../README.md).
+A collection of generic, reusable React components (buttons, modals, layout elements) used across the TropoAtlas ecosystem.

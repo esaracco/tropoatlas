@@ -15,6 +15,8 @@ import InfoBar from "./InfoBar"
 import { useAppStore } from "@tropo/core"
 import "./styles/Header.css"
 
+import { getProviderInfo } from "../provider"
+
 // COMPONENT Header
 const Header = () => {
   const setShowAbout = useAppStore((s) => s.setShowAbout)
@@ -40,10 +42,7 @@ const Header = () => {
     new Set([...formats, ...selected.formats]),
   ).sort()
 
-  const showFormats =
-    !Settings.formats ||
-    Settings.formats === "all" ||
-    Settings.formats.indexOf(",") > -1
+  const showFormats = getProviderInfo().multipleFormats
   const expandBreakpoint = showFormats ? "md" : "sm"
 
   useEffect(() => {

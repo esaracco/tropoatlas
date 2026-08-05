@@ -8,7 +8,11 @@ import { useTranslation } from "react-i18next"
 import processString from "react-process-string"
 import { LazyLoadImage } from "react-lazy-load-image-component"
 
-import { getMaster, getRelease } from "../../utils/discogs"
+import {
+  getItemDetails,
+  refreshItemImage,
+  getProviderInfo,
+} from "../../provider"
 import { setLargeItem } from "@tropo/core"
 
 import * as Settings from "../../utils/settings"
@@ -39,7 +43,7 @@ const backgroundQueue = {
       } catch (e) {
         console.error("Background fetch error:", e.message)
       }
-      // Wait 1.5 seconds between requests to avoid Discogs API limits
+      // Wait 1.5 seconds between requests to avoid provider API limits
       await new Promise((resolve) => setTimeout(resolve, 2000))
     }
 
@@ -92,68 +96,13 @@ const Album = ({
       e && e.currentTarget ? e.currentTarget.dataset.instanceid : e
     let album = useCollectionStore.getState().items[instanceId]
 
-    // Method _extractYear()
-    const _extractYear = (notes) => {
-      if (notes) {
-        const m = notes.match(/Ⓟ\s*(1\d\d\d)|[^\d](1\d\d\d)[^\d]/s)
-        if (m) {
-          return Number(m[1] || m[2])
-        }
-      }
-    }
-
     // Get remote data if not yet in cache
-    if (album.master === undefined) {
+    if (album.tracklist === undefined) {
       setLoader(true)
 
       try {
-        const master = album.masterid
-          ? await getMaster({ id: album.masterid })
-          : null
-        const { country, notes, tracklist } = await getRelease({
-          id: album.releaseid,
-        })
-        let year = album.year
+        album = await getItemDetails(album)
 
-        // Guess the year if not in the main release info
-        // 1 - Try from the release notes
-        if (!year) {
-          year = _extractYear(notes)
-
-          // 2 - Try from the master notes
-          if (!year && master) {
-            year = _extractYear(master.notes)
-
-            // 3 - Finally use the year of the master
-            if (!year && master.year) {
-              year = master.year
-            }
-          }
-        }
-
-        // Remove unused extra data from master
-        if (master && master.tracklist) {
-          master.tracklist.forEach((t) => delete t.extraartists)
-        }
-
-        // Remove unused extra data from release
-        if (tracklist) {
-          tracklist.forEach((t) => delete t.extraartists)
-        }
-
-        album = {
-          ...album,
-          year,
-          master: master
-            ? {
-                notes: master.notes,
-                tracklist: master.tracklist,
-              }
-            : null,
-          country,
-          notes,
-          tracklist,
-        }
         const items = useCollectionStore.getState().items
         const newItems = { ...items, [instanceId]: album }
         setItems(newItems)
@@ -163,7 +112,6 @@ const Album = ({
       }
     }
 
-    // Return consolidated album data (master + release)
     return album
   }
 
@@ -214,37 +162,12 @@ const Album = ({
   const onClick = (e) => {
     getReleaseData(e)
       .then((r) => {
-        const master = r.master
         const config = [
           {
-            regex: /\[(a|l|m|r)=?([^\]]+)\]/g,
+            regex: /\[([^\]]+)\]\(([^)]+)\)/g,
             fn: (k, r) => (
-              <a
-                key={k}
-                href={
-                  "https://www.discogs.com/" +
-                  (r[1] === "a"
-                    ? "artist"
-                    : r[1] === "l"
-                      ? "label"
-                      : r[1] === "m"
-                        ? "master"
-                        : "release") +
-                  "/" +
-                  r[2]
-                }
-                rel="noopener noreferrer"
-                target="_blank"
-              >
-                {r[2]}
-              </a>
-            ),
-          },
-          {
-            regex: /\[url=([^\]]+)]([^\]]+)\[\/url]/g,
-            fn: (k, r) => (
-              <a key={k} href={r[1]} rel="noopener noreferrer" target="_blank">
-                {r[2]}
+              <a key={k} href={r[2]} rel="noopener noreferrer" target="_blank">
+                {r[1]}
               </a>
             ),
           },
@@ -258,41 +181,29 @@ const Album = ({
           },
         ]
 
-        // build notes
-        const rNotes = r.notes ? r.notes.trim() : null
-        const mNotes = master && master.notes ? master.notes.trim() : null
         let notes = null
 
-        if (rNotes && mNotes) {
-          if (rNotes) {
-            notes = (
-              <>
-                {notes}
-                <div>
-                  {_("This copy")} ({r.country}
-                  {r.year ? " " + r.year : ""}) :
-                </div>
-                <div className="release" style={{ whiteSpace: "pre-wrap" }}>
-                  {processString(config)(rNotes)}
-                </div>
-              </>
-            )
-          }
-          if (mNotes) {
-            notes = (
-              <>
-                {notes}
-                <div>{_("General informations")} :</div>
-                <div className="master" style={{ whiteSpace: "pre-wrap" }}>
-                  {processString(config)(mNotes)}
-                </div>
-              </>
-            )
-          }
-        } else if (rNotes || mNotes) {
+        if (r.notes && r.globalNotes) {
+          notes = (
+            <>
+              <div>
+                {_("This copy")} ({r.country}
+                {r.year ? " " + r.year : ""}) :
+              </div>
+              <div className="release" style={{ whiteSpace: "pre-wrap" }}>
+                {processString(config)(r.notes)}
+              </div>
+              <br />
+              <div>{_("General informations")} :</div>
+              <div className="master" style={{ whiteSpace: "pre-wrap" }}>
+                {processString(config)(r.globalNotes)}
+              </div>
+            </>
+          )
+        } else if (r.notes || r.globalNotes) {
           notes = (
             <div style={{ whiteSpace: "pre-wrap" }}>
-              {processString(config)(rNotes ? rNotes : mNotes ? mNotes : "")}
+              {processString(config)(r.notes ? r.notes : r.globalNotes)}
             </div>
           )
         }
@@ -300,17 +211,11 @@ const Album = ({
         // Update modal values and show modal
         setModalData({
           show: true,
-          releaseid: r.releaseid,
           instanceid: r.id,
           folderid: r.folderid,
           rating: r.rating,
-          tracklist: getTracks(
-            r.tracklist.length
-              ? r.tracklist
-              : master && master.tracklist.length
-                ? master.tracklist
-                : [],
-          ),
+          tracklist: getTracks(r.tracklist),
+          externalUrl: r.externalUrl,
           maintitle: (
             <>
               <div className="artist">
@@ -352,7 +257,10 @@ const Album = ({
         } else {
           console.error(e.message)
           toast.error(
-            _(e.message) || _("An error occurred while using the Discogs API!"),
+            _(e.message) ||
+              _("An error occurred while using the {{provider}} API!", {
+                provider: getProviderInfo().name,
+              }),
           )
         }
       })
@@ -364,11 +272,11 @@ const Album = ({
     try {
       const items = useCollectionStore.getState().items
       const album = items[instanceid]
-      if (album && album.releaseid) {
-        const r = await getRelease({ id: album.releaseid })
-        if (r && r.images && r.images.length > 0) {
-          const cover = r.images[0].uri
-          const thumb = r.images[0].uri150
+      if (album) {
+        const images = await refreshItemImage(album)
+        if (images) {
+          const cover = images.cover
+          const thumb = images.thumb
 
           const releasesClone = { ...items }
           releasesClone[instanceid] = {
@@ -380,7 +288,7 @@ const Album = ({
           setLargeItem("releases", releasesClone)
           toast.success(_("Image recovered successfully!"))
         } else {
-          toast.warning(_("Still no image available on Discogs."))
+          toast.warning(_("Still no image available."))
         }
       }
     } catch (err) {
@@ -395,7 +303,7 @@ const Album = ({
         <b>{_("Image loading error")}</b>
         <br />
         {_(
-          "Either there is a network problem, Discogs is overloaded or the image URLs have changed.",
+          "Either there is a network problem, the provider is overloaded or the image URLs have changed.",
         )}
         <br />
         <i>{_("If the problem persists, please re-sync your collection.")}</i>
@@ -432,10 +340,9 @@ const Album = ({
           <FontAwesomeIcon icon={faSync} spin />
         </div>
       )}
-      {(!Settings.formats ||
-        Settings.formats === "all" ||
-        Settings.formats.indexOf(",") > -1) &&
-        format && <div className="format-badge">{format}</div>}
+      {getProviderInfo().multipleFormats && format && (
+        <div className="format-badge">{format}</div>
+      )}
       <div className="artist text-truncate" style={{ width: thumbWidth }}>
         {artist}
         <br />

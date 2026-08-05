@@ -87,9 +87,14 @@ fileContents.forEach((content) => {
 const unusedKeys = []
 const missingKeys = []
 
+const DYNAMIC_KEYS = new Set([
+  "The {{field}} environment variable is required!",
+  'With the {{required}} environment variable set to "yes" you must at least set one of the following variables: {{place}}, {{price}} or {{styles}}!',
+])
+
 // 1. Find unused keys (in fr.json but not in code)
 for (const key of keys) {
-  if (!keysUsedInCode.has(key)) {
+  if (!keysUsedInCode.has(key) && !DYNAMIC_KEYS.has(key)) {
     unusedKeys.push(key)
   }
 }

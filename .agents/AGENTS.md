@@ -21,3 +21,9 @@ This file defines the rules and conventions that the AI agent must follow when w
 ## Code Quality
 - Ensure that the project builds correctly after changes (`npm run build`).
 - Before finalizing a task that involves significant changes, run the `pre-commit` script (`npm run pre-commit`) to ensure everything is compliant.
+
+## Architecture & Data Providers
+- **Decoupling**: TropoAtlas uses a generic, plugin-based architecture. The main application (`apps/tropodisc`) MUST remain completely agnostic and MUST NOT contain code specific to a data provider (like Discogs).
+- **Plugins**: Data fetching and API logic MUST be encapsulated in a plugin inside the `plugins/` directory (e.g., `plugins/discogs`).
+- **Configuration**: The application selects the active provider via the `VITE_DATA_PROVIDER` environment variable. Plugin-specific variables (like `VITE_DISCOGS_USER`) must only be parsed and validated by their respective plugin.
+- **Terminology**: Use generic terms in the main application state and logic (e.g., `creator`, `categories`) rather than provider-specific terms (e.g., `artist`, `styles`).

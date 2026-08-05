@@ -15,7 +15,7 @@ const AlbumStyleButtons = ({ items, closeModal }) => {
   const styles = useCollectionStore((s) => s.categories)
   const [_] = useTranslation()
   const tags = useRef(null)
-  const discogsFields = getItem("discogsFields") || {}
+  const customFields = getItem("customFieldsInfo") || {}
 
   // EFFECT
   useEffect(() => {
@@ -38,7 +38,7 @@ const AlbumStyleButtons = ({ items, closeModal }) => {
     <>
       <input
         className="AlbumStyleButtons"
-        readOnly={discogsFields.stylesId === undefined}
+        readOnly={!customFields.supportsCategories}
         placeholder={_("New style...")}
         defaultValue={JSON.stringify(items.map((item) => ({ value: item })))}
       />

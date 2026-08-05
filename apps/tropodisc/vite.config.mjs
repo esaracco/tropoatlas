@@ -47,7 +47,7 @@ export default defineConfig(({ mode }) => {
         filename: "service-worker.js",
         manifest: {
           short_name: "TropoDisc",
-          name: "TropoDisc – A Discogs collection manager",
+          name: "TropoDisc – A universal music collection manager",
           description:
             "Organize your collection, enrich it with your own metadata, and optionally locate albums instantly using LED strips",
           icons: [

@@ -1,3 +1,3 @@
 {
-  "keyAboutMessage": "TropoDisc is an open-source music collection manager built on top of the <DiscogsLink>Discogs</DiscogsLink> API."
+  "keyAboutMessage": "TropoDisc is a universal music collection manager. Your data is currently synchronized via the <ProviderLink>{{provider}}</ProviderLink> provider."
 }

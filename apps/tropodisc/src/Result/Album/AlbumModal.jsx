@@ -4,21 +4,20 @@ import { useTranslation } from "react-i18next"
 import { Modal, Button, Table, Tab, Tabs, Form } from "react-bootstrap"
 import { toast } from "react-toastify"
 
-// FIXME Discogs API oddness | import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-// FIXME Discogs API oddness | import {faTimes} from '@fortawesome/free-solid-svg-icons';
-
 import ImageGallery from "react-image-gallery"
 import "react-image-gallery/styles/image-gallery.css"
 import { Rating } from "react-simple-star-rating"
-
-import discogsLogo from "@tropo/discogs/src/assets/logo.png"
 
 import { ConfirmModal } from "@tropo/react"
 import AlbumStyleButtons from "./AlbumStyleButtons"
 import AlbumButton from "./AlbumButton"
 
 import { getItem, setLargeItem, setItem } from "@tropo/core"
-import { updateUserData, extractStyles } from "../../utils/discogs"
+import {
+  updateUserData,
+  extractCategories,
+  getProviderInfo,
+} from "../../provider"
 import * as Leds from "../../utils/leds"
 import * as Settings from "../../utils/settings"
 
@@ -47,21 +46,21 @@ const AlbumModal = ({ modalData, setModalData }) => {
     country,
     price,
     styles,
-    releaseid,
+    externalUrl,
     instanceid,
     notes,
     tracklist,
   } = modalData
   const [_] = useTranslation()
   const refIG = useRef(null)
-  const fieldsId = getItem("discogsFields") || {}
-  let discogsFieldsCount = 0
+  const customFields = getItem("customFieldsInfo") || {}
+  let customFieldsCount = 0
 
-  if (fieldsId.placeId) {
-    ++discogsFieldsCount
+  if (customFields.supportsPlace) {
+    ++customFieldsCount
   }
-  if (fieldsId.priceId) {
-    ++discogsFieldsCount
+  if (customFields.supportsPrice) {
+    ++customFieldsCount
   }
 
   // METHOD handleIGClick()
@@ -94,11 +93,10 @@ const AlbumModal = ({ modalData, setModalData }) => {
       changes.price = price
     }
     if (
-      fieldsId.stylesId &&
+      customFields.supportsCategories &&
       modalData.categories.join(",") !== release.categories.join(",")
     ) {
       changes.categories = modalData.categories
-      changes.styles = modalData.categories
     }
 
     return { releasesClone, release, changes }
@@ -120,7 +118,7 @@ const AlbumModal = ({ modalData, setModalData }) => {
 
     if (changes.categories) {
       // Rebuild global styles list
-      const allStyles = extractStyles(releasesClone)
+      const allStyles = extractCategories(releasesClone)
       setCategories(allStyles)
       setItem("styles", allStyles)
       // Remove non-existent styles if previously selected
@@ -131,7 +129,7 @@ const AlbumModal = ({ modalData, setModalData }) => {
     }
 
     try {
-      await updateUserData(modalData, changes)
+      await updateUserData(release, changes)
     } catch (e) {
       if (!navigator.onLine) {
         toast.info(
@@ -143,7 +141,10 @@ const AlbumModal = ({ modalData, setModalData }) => {
       } else {
         console.error(e.message)
         toast.error(
-          _(e.message) || _("An error occurred while using the Discogs API!"),
+          _(e.message) ||
+            _("An error occurred while using the {{provider}} API!", {
+              provider: getProviderInfo().name,
+            }),
           { autoClose: false },
         )
       }
@@ -200,9 +201,6 @@ const AlbumModal = ({ modalData, setModalData }) => {
     setModalData({ ...modalData, [el.dataset.field]: el.value })
   }
 
-  // METHOD onReset()
-  // FIXME Discogs API oddness | const onReset = () => setModalData({...modalData, rating: 0});
-
   // RENDER
   return (
     <>
@@ -223,21 +221,7 @@ const AlbumModal = ({ modalData, setModalData }) => {
           <Table striped bordered size="sm">
             <tbody>
               <tr>
-                <th>
-                  {_("Note")}{" "}
-                  {/* FIXME Discogs API oddness
-                  {rating ? (
-                  <FontAwesomeIcon
-                    icon={faTimes}
-                    size="lg"
-                    className="reset"
-                    onClick={onReset}
-                  />
-                ) : (
-                  ''
-                )
-                */}
-                </th>
+                <th>{_("Note")} </th>
                 <td className="rating">
                   <Rating
                     size="20"
@@ -245,7 +229,7 @@ const AlbumModal = ({ modalData, setModalData }) => {
                     initialValue={rating}
                   />{" "}
                 </td>
-                <td rowSpan={4 + discogsFieldsCount} className="modal-icon">
+                <td rowSpan={4 + customFieldsCount} className="modal-icon">
                   <ImageGallery
                     ref={refIG}
                     onClick={handleIGClick}
@@ -256,7 +240,7 @@ const AlbumModal = ({ modalData, setModalData }) => {
                   <AlbumButton closeModal={onHide} artist={artist} />
                 </td>
               </tr>
-              {fieldsId.placeId && (
+              {customFields.supportsPlace && (
                 <tr>
                   <th>{_("Location")}</th>
                   <td className="place">
@@ -271,7 +255,7 @@ const AlbumModal = ({ modalData, setModalData }) => {
                   </td>
                 </tr>
               )}
-              {fieldsId.priceId && (
+              {customFields.supportsPrice && (
                 <tr>
                   <th>{_("Purchasing price")}</th>
                   <td>
@@ -304,17 +288,18 @@ const AlbumModal = ({ modalData, setModalData }) => {
               </tr>
               <tr>
                 <td colSpan="3" align="center">
-                  <a
-                    href={`https://www.discogs.com/release/${releaseid}`}
-                    rel="noopener noreferrer"
+                  <Button
+                    variant="light"
+                    size="sm"
+                    href={externalUrl}
                     target="_blank"
                   >
                     <img
-                      alt="Discogs"
-                      className="discogs-logo"
-                      src={discogsLogo}
+                      alt={getProviderInfo().name}
+                      className="provider-logo"
+                      src={getProviderInfo().logo}
                     />
-                  </a>
+                  </Button>
                 </td>
               </tr>
             </tbody>

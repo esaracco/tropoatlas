@@ -1,5 +1,5 @@
 # @tropo/core
 
-Core business logic and state management for TropoAtlas collections.
+Core utilities, configuration constants, and global state management (Zustand) for the TropoAtlas project.
 
-For full project details, architecture, and deployment instructions, please see the [main TropoAtlas README](../../README.md).
+This package contains domain-agnostic logic shared across the React application and plugins.

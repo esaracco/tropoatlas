@@ -40,7 +40,7 @@ const SynchroButton = () => {
           setShow={setShowModal}
         >
           {_(
-            "The full synchronization of your Discogs collection can take several minutes.",
+            "The full synchronization of your collection can take several minutes.",
           )}
         </ConfirmModal>
         <Button
