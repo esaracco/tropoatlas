@@ -10,7 +10,7 @@ _TropoAtlas is the successor to TropoDisc. The [TropoDisc repository](https://gi
 
 TropoAtlas is built on a modern **NPM Monorepo** architecture using **Vite**, **Vitest**, and **Zustand**, and composed of several distinct workspaces:
 
-- `apps/tropodisc`: The main React application. It is a generic and agnostic collection manager.
+- `apps/tropodisc`: The main React application. It is a generic and agnostic music collection manager.
 - `packages/react`: A library of reusable, generic UI components (`@tropo/react`).
 - `packages/core`: Core utilities and state management (`@tropo/core`).
 - `packages/leds`: The HTTP client that handles physical LED strips integration (`@tropo/leds`).
@@ -25,7 +25,6 @@ With TropoDisc you can:
 - 🏷️ Add your own metadata through custom fields
 - 📍 Store the exact physical location of every album
 - 💡 Instantly locate an album using ESP32-controlled LED strips *(optional)*
-- ❤️ Keep complete ownership of your collection data through your Data Provider
 
 ## Screenshots
 
