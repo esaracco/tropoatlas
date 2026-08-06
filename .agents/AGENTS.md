@@ -7,6 +7,7 @@ This file defines the rules and conventions that the AI agent must follow when w
 - **Comments Language**: All code comments and documentation within the codebase MUST be written in **English**.
 - **Commit Messages**: All git commit messages MUST be written in **English** (using Conventional Commits format).
 - **Package Manager**: Use `npm`. Do not use `yarn`, `pnpm`, or `bun`.
+- **No npm scripts**: DO NOT run `npm run` scripts (such as `npm run lint`, `npm run format`, `npm run pre-commit`, `npm run i18n:check`, etc.). The agent must not execute these commands.
 - **Workspaces**: This is an npm workspace monorepo.
   - `apps/*`: Main applications (e.g., `tropodisc`).
   - `packages/*`: Shared libraries and components (e.g., `core`, `react`, `leds`).
