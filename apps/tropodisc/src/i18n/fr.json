@@ -49,7 +49,7 @@
   "Synchronization failed!": "Échec de la synchronisation!",
   "Synchronization in progress...": "Synchronisation en cours...",
   "The {{field}} environment variable is required!": "La variable d'environnement {{field}} est obligatoire!",
-  "The synchronization of your collection can take several minutes.": "La synchronisation de votre collection peut quelques minutes.",
+  "The synchronization of your collection can take several minutes.": "La synchronisation de votre collection peut prendre quelques minutes.",
   "Theme": "Thème",
   "Change theme": "Changer de thème",
   "This copy": "Cet exemplaire",
