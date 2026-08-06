@@ -22,3 +22,8 @@ This file defines the rules and conventions that the AI agent must follow when w
 - **Bilingual Parity**: Any content or structure updates to the presentation site MUST be applied to both language versions (`index.html` and `index-fr.html`) to maintain 1-to-1 parity.
 - **Styles**: All CSS styles MUST be placed in `apps/tropodisc/docs/index.css`. Do NOT use inline `style="..."` attributes.
 - **Zero External Dependencies**: Pages MUST be 100% self-contained and MUST NOT make external network requests (use native system font stacks instead of third-party font services).
+
+## LEDs Behavior
+- **Filters**: LEDs are only controlled by the **Categories (Styles)** and **Creators (Artists)** filters.
+- **Formats**: The **Formats** filter does NOT interact with or modify LEDs in any way.
+- **Multiple Filters**: When multiple filters are active (e.g., both Styles and Artists), their corresponding LEDs should light up independently. Multiple calls to the IoT server must be made sequentially using the `noreset` parameter to preserve the LEDs of the previous filter.
