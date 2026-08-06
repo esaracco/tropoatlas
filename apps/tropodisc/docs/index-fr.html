@@ -1,0 +1,513 @@
+<!doctype html>
+<html lang="fr" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Primary SEO Meta Tags -->
+    <title>
+      TropoDisc — Gestionnaire Universel de Collection Musicale & Repérage LED
+    </title>
+    <meta
+      name="title"
+      content="TropoDisc — Gestionnaire Universel de Collection Musicale & Repérage LED"
+    />
+    <meta
+      name="description"
+      content="TropoDisc est un gestionnaire universel de collection musicale connecté à vos bibliothèques (Discogs). Renseignez vos emplacements physiques et localisez instantanément vos vinyles et CDs grâce a des bandes LED couplées à une carte ESP32."
+    />
+    <meta
+      name="keywords"
+      content="TropoDisc, TropoAtlas, gestionnaire vinyle, Discogs, collection musicale, localisation LED, ESP32, bande LED étagère, vinyles, CDs, classement musique, monorepo React"
+    />
+    <meta name="author" content="Emmanuel Saracco" />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://tropodisc.esaracco.fr/index-fr.html" />
+    <link
+      rel="alternate"
+      hreflang="fr"
+      href="https://tropodisc.esaracco.fr/index-fr.html"
+    />
+    <link
+      rel="alternate"
+      hreflang="en"
+      href="https://tropodisc.esaracco.fr/index.html"
+    />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta
+      property="og:url"
+      content="https://tropodisc.esaracco.fr/index.html"
+    />
+    <meta
+      property="og:title"
+      content="TropoDisc — Gestionnaire Universel de Collection Musicale & Repérage LED"
+    />
+    <meta
+      property="og:description"
+      content="Connectez votre collection Discogs à vos étagères physiques. Recherchez, enrichissez vos métadonnées et allumez l'emplacement exact de vos albums avec des LED ESP32."
+    />
+    <meta property="og:image" content="./icon-512.png" />
+    <meta property="og:site_name" content="TropoDisc" />
+
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta
+      name="twitter:url"
+      content="https://tropodisc.esaracco.fr/index.html"
+    />
+    <meta
+      name="twitter:title"
+      content="TropoDisc — Gestionnaire Universel de Collection Musicale & Repérage LED"
+    />
+    <meta
+      name="twitter:description"
+      content="Le pont idéal entre votre collection musicale numérique (Discogs) et vos étagères physiques grâce à la localisation par bandes LED."
+    />
+    <meta name="twitter:image" content="./icon-512.png" />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="./favicon.ico" />
+    <link rel="icon" type="image/png" sizes="180x180" href="./icon-180.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="./icon-180.png" />
+
+    <!-- Structured Data (Schema.org) for SEO -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "TropoDisc",
+        "applicationCategory": "MultimediaApplication",
+        "operatingSystem": "Web, Docker, Linux, macOS, Windows",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "EUR"
+        },
+        "description": "Gestionnaire universel de collection musicale déconnecté des fournisseurs, avec intégration optionnelle de rubans LED ESP32 pour localiser physiquement les albums dans sa bibliothèque.",
+        "license": "https://www.gnu.org/licenses/gpl-3.0.html",
+        "image": "https://tropodisc.esaracco.fr/icon-512.png"
+      }
+    </script>
+
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="./index.css" />
+  </head>
+  <body>
+    <!-- Navigation Bar -->
+    <nav class="navbar" aria-label="Navigation principale">
+      <div class="container navbar-container">
+        <a href="#top" class="brand" id="nav-brand">
+          <img
+            src="./icon-180.png"
+            alt="TropoDisc Logo"
+            class="brand-logo"
+            width="42"
+            height="42"
+          />
+          <span>Tropo<span class="brand-text-disc">Disc</span></span>
+        </a>
+
+        <ul class="nav-links">
+          <li>
+            <a href="#features" class="nav-link" id="nav-features"
+              >Fonctionnalités</a
+            >
+          </li>
+          <li>
+            <a href="#architecture" class="nav-link" id="nav-architecture"
+              >Architecture</a
+            >
+          </li>
+          <li>
+            <a href="#quickstart" class="nav-link" id="nav-quickstart"
+              >Démarrage rapide</a
+            >
+          </li>
+        </ul>
+
+        <div class="nav-actions">
+          <a
+            href="./index.html"
+            class="btn btn-secondary"
+            id="lang-switch-en"
+            title="English version"
+          >
+            EN
+          </a>
+          <a
+            href="https://github.com/esaracco/tropoatlas"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="btn btn-secondary"
+            id="btn-github-nav"
+          >
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+              <path
+                d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"
+              />
+            </svg>
+            GitHub
+          </a>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Header / Hero Section -->
+    <header class="hero" id="top">
+      <div class="container">
+        <h1 class="hero-title">
+          Le pont idéal entre votre collection
+          <span class="brand-text-disc">numérique et physique</span>
+        </h1>
+
+        <p class="hero-subtitle">
+          Tropo<span class="brand-text-disc">Disc</span> est un gestionnaire de
+          collection musicale universel sous licence libre. Synchronisez vos
+          albums (Discogs), personnalisez vos métadonnées et localisez
+          instantanément vos disques sur votre étagère grâce à des rubans LED
+          connectés.
+        </p>
+
+        <div class="hero-cta">
+          <a href="#quickstart" class="btn btn-primary" id="btn-hero-start"
+            >Déployer TropoDisc</a
+          >
+          <a href="#leds" class="btn btn-secondary" id="btn-hero-leds"
+            >Découvrir la localisation LED 💡</a
+          >
+        </div>
+
+        <!-- Hero Showcase Box -->
+        <div class="hero-showcase">
+          <div class="showcase-header">
+            <div class="dot dot-red"></div>
+            <div class="dot dot-yellow"></div>
+            <div class="dot dot-green"></div>
+            <span class="showcase-title"
+              >tropodisc.local — collection view</span
+            >
+          </div>
+          <div class="showcase-body">
+            <div class="showcase-info">
+              <h3>Gestion universelle & découplée</h3>
+              <p>
+                Tropo<span class="brand-text-disc">Disc</span> est 100%
+                indépendant de tout fournisseur unique. Grâce à son architecture
+                par plugins, connectez Discogs ou votre propre source de données
+                en toute sécurité.
+              </p>
+              <div class="showcase-tags">
+                <span class="arch-tag">⚡ Vite + React 18</span>
+                <span class="arch-tag">🐻 Zustand State</span>
+                <span class="arch-tag">🔒 Client API Sécurisé</span>
+              </div>
+            </div>
+            <div class="showcase-media">
+              <img
+                src="./icon-512.png"
+                alt="Aperçu application TropoDisc"
+                class="showcase-img"
+                width="220"
+                height="220"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+      <!-- Section Features -->
+      <section class="section" id="features">
+        <div class="container">
+          <div class="section-header">
+            <span class="section-tag"
+              >Pourquoi Tropo<span class="brand-text-disc">Disc</span> ?</span
+            >
+            <h2 class="section-title">
+              Une expérience repensée pour les
+              <span class="brand-text-disc">passionnés de musique</span>
+            </h2>
+            <p class="section-description">
+              Ne perdez plus de temps à chercher un vinyle ou un CD au milieu de
+              centaines de références.
+            </p>
+          </div>
+
+          <div class="features-grid">
+            <article class="feature-card" id="card-search">
+              <div class="feature-icon">🔎</div>
+              <h3 class="feature-title">Recherche & Tri Instantané</h3>
+              <p class="feature-desc">
+                Filtrez et triez votre collection en temps réel par artiste,
+                année, date d'ajout, note ou emplacement physique sur votre
+                étagère.
+              </p>
+            </article>
+
+            <article class="feature-card" id="card-metadata">
+              <div class="feature-icon">🏷️</div>
+              <h3 class="feature-title">Métadonnées Personnalisées</h3>
+              <p class="feature-desc">
+                Enrichissez vos fiches d'albums avec des champs sur-mesure :
+                emplacement, prix d'achat, et vos propres styles taggués.
+              </p>
+            </article>
+
+            <article class="feature-card" id="card-led">
+              <div class="feature-icon">💡</div>
+              <h3 class="feature-title">Repérage Physique par LED</h3>
+              <p class="feature-desc">
+                Reliez Tropo<span class="brand-text-disc">Disc</span> à des
+                bandeaux LED pilotés par ESP32. Sélectionnez un album à l'écran
+                : son emplacement exact s'illumine sur votre étagère !
+              </p>
+            </article>
+
+            <article class="feature-card" id="card-security">
+              <div class="feature-icon">🔒</div>
+              <h3 class="feature-title">Sécurité & Proxy d'API</h3>
+              <p class="feature-desc">
+                Architecture sécurisée par proxy (Apache/Nginx Docker). Vos
+                jetons secrets d'API ne sont jamais exposés côté navigateur.
+              </p>
+            </article>
+
+            <article class="feature-card" id="card-monorepo">
+              <div class="feature-icon">📦</div>
+              <h3 class="feature-title">Architecture Monorepo</h3>
+              <p class="feature-desc">Découpé en packages réutilisables.</p>
+            </article>
+
+            <article class="feature-card" id="card-responsive">
+              <div class="feature-icon">📱</div>
+              <h3 class="feature-title">Interface Fluide & Responsive</h3>
+              <p class="feature-desc">
+                Grille virtuelle dynamique optimisée pour les grandes
+                collections comprenant des milliers de disques.
+              </p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- LED Spotlight Section -->
+      <section class="section" id="leds">
+        <div class="container">
+          <div class="led-section">
+            <div>
+              <span class="section-tag section-tag-led"
+                >Technologie IoT & ESP32</span
+              >
+              <h2 class="section-title">
+                Trouvez vos disques en un clin d'œil
+              </h2>
+              <p class="led-description">
+                En configurant vos numéros d'emplacements dans votre collection,
+                Tropo<span class="brand-text-disc">Disc</span> envoie des
+                requêtes légères vers votre serveur de bandes LED.
+              </p>
+              <ul class="led-list">
+                <li class="led-list-item">
+                  ✨ <b>Indication visuelle immédiate</b> lors de la recherche
+                </li>
+                <!-- <li class="led-list-item">🎨 <b>Couleurs personnalisables</b> selon le style musical ou l'artiste</li>-->
+                <li class="led-list-item">
+                  🔌 <b>Intégration HTTP simple</b> avec ESP32
+                </li>
+              </ul>
+            </div>
+
+            <!-- Interactive LED simulation -->
+            <div class="shelf-demo">
+              <div class="shelf-header">
+                <span class="shelf-led-active">LED n°310 et 314 actives</span>
+              </div>
+              <div class="shelf-row">
+                <div class="shelf-col">
+                  <div class="album-spine">
+                    <span class="spine-artist">Iron Maiden</span>
+                    <span class="spine-title">Powerslave</span>
+                  </div>
+                  <div class="led-bulb"></div>
+                </div>
+
+                <div class="shelf-col">
+                  <div class="album-spine highlighted">
+                    <span class="spine-artist">Metallica</span>
+                    <span class="spine-title">Master Of Puppets</span>
+                  </div>
+                  <div class="led-bulb active"></div>
+                </div>
+
+                <div class="shelf-col">
+                  <div class="album-spine">
+                    <span class="spine-artist">Emilie Simon</span>
+                    <span class="spine-title">Mue</span>
+                  </div>
+                  <div class="led-bulb"></div>
+                </div>
+
+                <div class="shelf-col">
+                  <div class="album-spine">
+                    <span class="spine-artist">Léo Ferré</span>
+                    <span class="spine-title">Et... Basta!</span>
+                  </div>
+                  <div class="led-bulb"></div>
+                </div>
+
+                <div class="shelf-col">
+                  <div class="album-spine">
+                    <span class="spine-artist">Ratt</span>
+                    <span class="spine-title">Out Of The Cellar</span>
+                  </div>
+                  <div class="led-bulb"></div>
+                </div>
+
+                <div class="shelf-col">
+                  <div class="album-spine highlighted">
+                    <span class="spine-artist">Agar Agar</span>
+                    <span class="spine-title">Cardan</span>
+                  </div>
+                  <div class="led-bulb active"></div>
+                </div>
+
+                <div class="shelf-col">
+                  <div class="album-spine">
+                    <span class="spine-artist">Magma</span>
+                    <span class="spine-title">Köhntarkösz</span>
+                  </div>
+                  <div class="led-bulb"></div>
+                </div>
+              </div>
+              <p class="shelf-caption">
+                Simulateur d'allumage des LED à l'emplacement sélectionné
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Architecture Section -->
+      <section class="section" id="architecture">
+        <div class="container">
+          <div class="section-header">
+            <span class="section-tag">Structure Monorepo</span>
+            <h2 class="section-title">
+              Une architecture modulaire & découplée
+            </h2>
+            <p class="section-description">
+              Construit avec les standards du Web moderne (NPM Workspaces, Vite,
+              Vitest).
+            </p>
+          </div>
+
+          <div class="arch-cards">
+            <div class="arch-card">
+              <span class="arch-tag">apps/tropodisc</span>
+              <h4>Application React</h4>
+              <p>
+                Application principale: gestionnnaire de collection musicale.
+              </p>
+            </div>
+            <div class="arch-card">
+              <span class="arch-tag">packages/core</span>
+              <h4>@tropo/core</h4>
+              <p>
+                Gestion d'état globale Zustand, normalisation et utilitaires.
+              </p>
+            </div>
+            <div class="arch-card">
+              <span class="arch-tag">packages/react</span>
+              <h4>@tropo/react</h4>
+              <p>Composants d'interface génériques et réutilisables.</p>
+            </div>
+            <div class="arch-card">
+              <span class="arch-tag">packages/leds</span>
+              <h4>@tropo/leds</h4>
+              <p>
+                Client HTTP autonome pour l'interaction avec les rubans LED.
+              </p>
+            </div>
+            <div class="arch-card">
+              <span class="arch-tag">plugins/discogs</span>
+              <h4>@tropo/discogs</h4>
+              <p>
+                Plugin d'intégration de l'API Discogs et de ses champs
+                personnalisés.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Quick Start & Deployment Section -->
+      <section class="section" id="quickstart">
+        <div class="container">
+          <div class="section-header">
+            <span class="section-tag">Déploiement</span>
+            <h2 class="section-title">
+              Prêt à être installé en quelques minutes
+            </h2>
+            <p class="section-description">
+              Installez Tropo<span class="brand-text-disc">Disc</span>
+              localement ou déployez-le sur votre serveur via Docker ou Apache.
+            </p>
+          </div>
+
+          <div class="code-box">
+            <div class="code-header">
+              <span>Démarrage rapide en développement</span>
+              <span>Bash</span>
+            </div>
+            <div class="code-content">
+              <span class="code-comment"
+                ># 1. Cloner le dépôt et installer les dépendances du
+                monorepo</span
+              ><br />
+              git clone https://github.com/esaracco/tropoatlas.git<br />
+              cd tropoatlas<br />
+              npm install<br /><br />
+              <span class="code-comment"
+                ># 2. Configurer les variables d'environnement</span
+              ><br />
+              cp apps/tropodisc/.env.sample apps/tropodisc/.env<br /><br />
+              <span class="code-comment"
+                ># 3. Lancer le serveur de développement</span
+              ><br />
+              npm run dev
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="container">
+        <div class="footer-bottom">
+          <span class="copyleft" aria-label="Copyleft">&copy;</span> 2026
+          <a
+            href="https://www-fr.esaracco.fr"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="link"
+          >
+            Emmanuel Saracco</a
+          >
+          — Licence
+          <a
+            href="https://www.gnu.org/licenses/gpl-3.0.html"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="link"
+            >GNU GPL v3</a
+          >
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>
