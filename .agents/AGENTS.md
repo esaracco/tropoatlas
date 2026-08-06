@@ -3,6 +3,7 @@
 This file defines the rules and conventions that the AI agent must follow when working on the `tropoatlas` project.
 
 ## General Rules
+- **Discussion Mode**: If the user's prompt includes the `#discuss` keyword, you MUST NOT use any code editing or execution tools. Only analyze and discuss the topic.
 - **Comments Language**: All code comments and documentation within the codebase MUST be written in **English**.
 - **Commit Messages**: All git commit messages MUST be written in **English** (using Conventional Commits format).
 - **Package Manager**: Use `npm`. Do not use `yarn`, `pnpm`, or `bun`.
