@@ -80,6 +80,8 @@ const Result = () => {
   const {
     result,
     places,
+    placesStyles,
+    placesArtists,
     availableCategories,
     availableArtists,
     availableFormats,
@@ -96,6 +98,8 @@ const Result = () => {
     const fCategories = new Set()
     const fCreators = new Set()
     const fFormats = new Set()
+    const placesStyles = new Set()
+    const placesArtists = new Set()
 
     // sort
     const [sortField, sortDir] = sort.split("_")
@@ -151,6 +155,8 @@ const Result = () => {
       const matchFormat =
         sFormatsLen === 0 || selected.formats.includes(r.format)
 
+      const hasPlace = _setLeds && r.place && r.place.match(/^\d+$/)
+
       // Collect available options (an option is available if the release matches ALL OTHER filters)
       if (matchArtist && matchFormat) {
         r.categories.forEach((c) => fCategories.add(c))
@@ -165,16 +171,30 @@ const Result = () => {
       }
 
       if (matchStyle && matchArtist && matchFormat) {
-        if (_setLeds && r.place && r.place.match(/^\d+$/)) {
+        if (hasPlace) {
           places.push(r.place)
         }
         res.push(r)
+      }
+
+      if (hasPlace) {
+        if (
+          sStylesLen > 0 &&
+          selected.categories.some((item) => r.categories.includes(item))
+        ) {
+          placesStyles.add(r.place)
+        }
+        if (sArtistsLen > 0 && selected.creators.includes(r.creator)) {
+          placesArtists.add(r.place)
+        }
       }
     }
 
     return {
       result: res,
       places,
+      placesStyles: Array.from(placesStyles),
+      placesArtists: Array.from(placesArtists),
       availableCategories: Array.from(fCategories).sort(),
       availableArtists: Array.from(fCreators).sort(),
       availableFormats: Array.from(fFormats).sort(),
@@ -182,6 +202,8 @@ const Result = () => {
   }, [searchStr, releases, selected, sort])
 
   const placesStr = places.join(",")
+  const placesStylesStr = placesStyles.join(",")
+  const placesArtistsStr = placesArtists.join(",")
 
   // EFFECT: Update store state
   useEffect(() => {
@@ -207,21 +229,31 @@ const Result = () => {
     if (_setLeds) {
       const sStylesLen = selected.categories.length
       const sArtistsLen = selected.creators.length
-      const sFormatsLen = selected.formats.length
 
       // Debounce LED API calls to prevent flooding the IoT server
-      ledsTimeout = setTimeout(() => {
+      ledsTimeout = setTimeout(async () => {
         // Let there be light!
-        if (sStylesLen || sArtistsLen || sFormatsLen) {
+        if (sStylesLen || sArtistsLen) {
           turnOffLeds.current = true
-          Leds.setLeds({
-            place: places,
-            color: sStylesLen
-              ? Settings.ledsStylesColor
-              : sArtistsLen
-                ? Settings.ledsArtistsColor
-                : null,
-          })
+          let hasLit = false
+
+          if (sStylesLen) {
+            await Leds.setLeds({
+              place: placesStyles,
+              color: Settings.ledsStylesColor,
+              noreset: hasLit,
+            })
+            hasLit = true
+          }
+
+          if (sArtistsLen) {
+            await Leds.setLeds({
+              place: placesArtists,
+              color: Settings.ledsArtistsColor,
+              noreset: hasLit,
+            })
+            hasLit = true
+          }
           // Turn off the light...
         } else if (turnOffLeds.current) {
           turnOffLeds.current = false
@@ -239,7 +271,14 @@ const Result = () => {
         clearTimeout(ledsTimeout)
       }
     }
-  }, [placesStr, selected, fromRuler, setFromRuler])
+  }, [
+    placesStr,
+    placesStylesStr,
+    placesArtistsStr,
+    selected,
+    fromRuler,
+    setFromRuler,
+  ])
 
   const thumbWidth = calculateThumbWidth()
   const img = thumbWidth <= 150 ? "thumb" : "cover"
