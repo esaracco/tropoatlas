@@ -2,7 +2,11 @@ import React from "react"
 import { Trans, useTranslation } from "react-i18next"
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faInfoCircle, faUserEdit } from "@fortawesome/free-solid-svg-icons"
+import {
+  faGlobe,
+  faInfoCircle,
+  faUserEdit,
+} from "@fortawesome/free-solid-svg-icons"
 import { faGithub } from "@fortawesome/free-brands-svg-icons"
 
 import { InfoModal } from "@tropo/react"
@@ -56,7 +60,16 @@ const About = () => {
             alt="Logo"
           />
           <p>{desc}</p>
-          <p className="text-center">
+          <div className="d-flex flex-wrap justify-content-center gap-2">
+            <a
+              href="https://tropodisc.esaracco.fr"
+              rel="noopener noreferrer"
+              target="_blank"
+              className="btn btn-secondary btn-sm"
+            >
+              <FontAwesomeIcon icon={faGlobe} fixedWidth />
+              {" " + _("Website")}
+            </a>
             <a
               href="https://github.com/esaracco/tropoatlas"
               rel="noopener noreferrer"
@@ -65,7 +78,7 @@ const About = () => {
             >
               <FontAwesomeIcon icon={faGithub} fixedWidth />
               {" GitHub"}
-            </a>{" "}
+            </a>
             <a
               href="https://www.esaracco.fr"
               rel="noopener noreferrer"
@@ -75,7 +88,7 @@ const About = () => {
               <FontAwesomeIcon icon={faUserEdit} fixedWidth size="xs" />
               {" " + _("Author")}
             </a>
-          </p>
+          </div>
         </>
       </InfoModal>
       <div className="About" onClick={() => setShowAbout(true)}>
