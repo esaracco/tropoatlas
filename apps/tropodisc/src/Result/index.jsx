@@ -11,6 +11,9 @@ import AlbumModal from "./Album/AlbumModal"
 import { normalize } from "@tropo/core"
 import { useScrollbarWidth, useWindowWidth } from "@tropo/react"
 import { useAppStore } from "@tropo/core"
+import { useTranslation } from "react-i18next"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faSync } from "@fortawesome/free-solid-svg-icons"
 
 import "./Result.css"
 
@@ -27,6 +30,7 @@ GridList.displayName = "GridList"
 
 // COMPONENT Result
 const Result = () => {
+  const [_] = useTranslation()
   const fromRuler = useAppStore((s) => s.fromRuler)
   const setFromRuler = useAppStore((s) => s.setFromRuler)
   const searchStr = useAppStore((s) => s.searchStr)
@@ -247,12 +251,32 @@ const Result = () => {
         <AlbumModal modalData={modalData} setModalData={setModalData} />
       )}
       <div className="Result">
-        <ProgressBar
-          animated
-          variant="danger"
-          now={progress}
-          style={{ opacity: loading && !result.length ? 1 : 0 }}
-        />
+        {loading && !result.length && (
+          <div className="sync-overlay">
+            <div className="sync-card">
+              <div className="sync-icon-wrapper">
+                <FontAwesomeIcon
+                  icon={faSync}
+                  spin
+                  size="2x"
+                  className="sync-icon"
+                />
+              </div>
+              <h3 className="sync-title">
+                {_("Synchronization in progress...")}
+              </h3>
+              <div className="sync-progress-wrapper">
+                <ProgressBar animated variant="danger" now={progress} />
+                <span className="sync-percentage">{Math.round(progress)}%</span>
+              </div>
+              <p className="sync-subtitle">
+                {_(
+                  "The synchronization of your collection can take several minutes.",
+                )}
+              </p>
+            </div>
+          </div>
+        )}
         <VirtuosoGrid
           useWindowScroll
           totalCount={result.length}

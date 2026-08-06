@@ -1,11 +1,113 @@
-.Result .progress {
-  height: 6px;
-  background-color: transparent;
-  border-radius: 0;
-  transition: opacity 1s ease-in-out;
+.Result {
+  position: relative;
 }
 
-.Result .progress-bar {
-  background-color: var(--tropo-progress) !important;
-  transition: background-color 0.3s;
+.Result .top-progress {
+  height: 4px;
+  background-color: transparent;
+  border-radius: 0;
+}
+
+.Result .top-progress .progress-bar {
+  background-color: var(--tropo-progress, #dc3545) !important;
+  transition: width 0.3s ease;
+}
+
+/* Glassmorphism Overlay */
+.sync-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  background: rgba(0, 0, 0, 0.55);
+  -webkit-backdrop-filter: blur(10px);
+  animation: syncFadeIn 0.3s ease-out;
+}
+
+@keyframes syncFadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.sync-card {
+  max-width: 440px;
+  width: 100%;
+  padding: 2.5rem 2rem;
+  background: rgba(30, 30, 35, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 16px;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+  text-align: center;
+  color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+.sync-icon-wrapper {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: rgba(220, 53, 69, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--tropo-progress, #dc3545);
+}
+
+.sync-title {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+}
+
+.sync-progress-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.sync-progress-wrapper .progress {
+  height: 22px;
+  border-radius: 11px;
+  background-color: rgba(255, 255, 255, 0.12);
+  overflow: hidden;
+}
+
+.sync-progress-wrapper .progress-bar {
+  background-color: var(--tropo-progress, #dc3545) !important;
+  transition: width 0.2s ease-in-out;
+}
+
+.sync-percentage {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #ffffff;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.7);
+  pointer-events: none;
+  z-index: 2;
+}
+
+.sync-subtitle {
+  margin: 0;
+  font-size: 0.875rem;
+  color: rgba(255, 255, 255, 0.65);
+  line-height: 1.4;
 }

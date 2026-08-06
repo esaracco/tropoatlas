@@ -15,7 +15,6 @@ import { useAppStore } from "@tropo/core"
 
 // COMPONENT SynchroButton
 const SynchroButton = () => {
-  const loading = useAppStore((s) => s.loading)
   const isOnline = useAppStore((s) => s.isOnline)
   const [showModal, setShowModal] = useState(false)
   const [_] = useTranslation()
@@ -40,16 +39,15 @@ const SynchroButton = () => {
           setShow={setShowModal}
         >
           {_(
-            "The full synchronization of your collection can take several minutes.",
+            "The synchronization of your collection can take several minutes.",
           )}
         </ConfirmModal>
         <Button
           className="HeaderButton"
           variant="secondary"
           onClick={() => setShowModal(true)}
-          disabled={loading}
         >
-          <FontAwesomeIcon icon={faSync} size="lg" spin={loading} />
+          <FontAwesomeIcon icon={faSync} size="lg" />
         </Button>
       </>
     )
