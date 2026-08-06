@@ -689,7 +689,8 @@ a {
 
 /* Responsive */
 @media (max-width: 768px) {
-  .nav-links {
+  .nav-links,
+  .brand img {
     display: none;
   }
 
