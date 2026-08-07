@@ -1,11 +1,12 @@
 import sleep from "sleep-promise"
-import { normalize } from "@tropo/core"
+import { normalize, BasePlugin } from "@tropo/core"
 import vinylImg192 from "./assets/vinyl-300.png"
 import vinylImg300 from "./assets/vinyl-300.png"
 import logo from "./assets/logo.png"
 
-export class DiscogsPlugin {
+export class DiscogsPlugin extends BasePlugin {
   constructor(config = {}) {
+    super()
     const env = config.env || {}
     this.token = env.VITE_DISCOGS_TOKEN || config.token
     this.user = env.VITE_DISCOGS_USER || config.user
@@ -292,7 +293,7 @@ export class DiscogsPlugin {
     }
   }
 
-  async refreshItemImage(item) {
+  async getItemImages(item) {
     if (!item.releaseid) return null
     const r = await this.getRelease({ id: item.releaseid })
     if (r && r.images && r.images.length > 0) {
@@ -312,7 +313,7 @@ export class DiscogsPlugin {
     return this.#request("GET", `releases/${id}`)
   }
 
-  async updateUserData({ folderid, releaseid, id, instanceid }, changes) {
+  async updateItem({ folderid, releaseid, id, instanceid }, changes) {
     const { rating, place, price, categories } = changes
     const actualInstanceId = id || instanceid
     const base = `users/${this.user}/collection/folders/${folderid}/releases/${releaseid}/instances/${actualInstanceId}`
@@ -350,7 +351,7 @@ export class DiscogsPlugin {
     await Promise.all(requests)
   }
 
-  extractCategories(releases) {
+  getCategories(releases) {
     const styles = new Set()
     Object.values(releases).forEach((r) => {
       const cats = r.categories || []

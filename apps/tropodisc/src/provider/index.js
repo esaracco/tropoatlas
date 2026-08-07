@@ -20,7 +20,7 @@ export const plugin = new PluginClass({
 })
 
 // i18n static analyzer hints for dynamically translated plugin messages
-// Added to IGNORE_KEYS in scripts/check_i18n.js
+// Added to DYNAMIC_KEYS in scripts/check_i18n.js
 export const validateProviderSettings = () => {
   plugin.validateSettings((msg, params) => {
     toast.error(i18n.t(msg, params), { autoClose: false })
@@ -38,18 +38,18 @@ plugin
 export const getMaster = plugin.getMaster.bind(plugin)
 export const getItemDetails = plugin.getItemDetails.bind(plugin)
 export const getCustomFieldsInfo = plugin.getCustomFieldsInfo.bind(plugin)
-export const refreshItemImage = plugin.refreshItemImage.bind(plugin)
-export const updateUserData = plugin.updateUserData.bind(plugin)
-export const extractCategories = plugin.extractCategories.bind(plugin)
+export const getItemImages = plugin.getItemImages.bind(plugin)
+export const updateItem = plugin.updateItem.bind(plugin)
+export const getCategories = plugin.getCategories.bind(plugin)
 export const getProviderInfo = plugin.getProviderInfo.bind(plugin)
 
 const provider = {
   plugin,
   getItemDetails,
   getCustomFieldsInfo,
-  refreshItemImage,
-  updateUserData,
-  extractCategories,
+  getItemImages,
+  updateItem,
+  getCategories,
   getProviderInfo,
 }
 

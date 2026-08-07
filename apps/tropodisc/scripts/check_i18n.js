@@ -87,6 +87,7 @@ fileContents.forEach((content) => {
 const unusedKeys = []
 const missingKeys = []
 
+//FIXME
 const DYNAMIC_KEYS = new Set([
   "The {{field}} environment variable is required!",
   'With the {{required}} environment variable set to "yes" you must at least set one of the following variables: {{place}}, {{price}} or {{styles}}!',

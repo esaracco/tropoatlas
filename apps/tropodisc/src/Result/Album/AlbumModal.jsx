@@ -13,11 +13,7 @@ import AlbumStyleButtons from "./AlbumStyleButtons"
 import AlbumButton from "./AlbumButton"
 
 import { getItem, setLargeItem, setItem } from "@tropo/core"
-import {
-  updateUserData,
-  extractCategories,
-  getProviderInfo,
-} from "../../provider"
+import { updateItem, getCategories, getProviderInfo } from "../../provider"
 import * as Leds from "../../utils/leds"
 import * as Settings from "../../utils/settings"
 
@@ -118,7 +114,7 @@ const AlbumModal = ({ modalData, setModalData }) => {
 
     if (changes.categories) {
       // Rebuild global styles list
-      const allStyles = extractCategories(releasesClone)
+      const allStyles = getCategories(releasesClone)
       setCategories(allStyles)
       setItem("styles", allStyles)
       // Remove non-existent styles if previously selected
@@ -129,7 +125,7 @@ const AlbumModal = ({ modalData, setModalData }) => {
     }
 
     try {
-      await updateUserData(release, changes)
+      await updateItem(release, changes)
     } catch (e) {
       if (!navigator.onLine) {
         toast.info(

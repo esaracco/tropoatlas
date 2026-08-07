@@ -67,6 +67,7 @@ export const useCollectionStore = create(
 
 export * from "./storage.js"
 export * from "./utils.js"
+export * from "./plugin.js"
 
 export const getPluginTerminology = (pluginName) => {
   const terminologies = {

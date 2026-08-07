@@ -8,11 +8,7 @@ import { useTranslation } from "react-i18next"
 import processString from "react-process-string"
 import { LazyLoadImage } from "react-lazy-load-image-component"
 
-import {
-  getItemDetails,
-  refreshItemImage,
-  getProviderInfo,
-} from "../../provider"
+import { getItemDetails, getItemImages, getProviderInfo } from "../../provider"
 import { setLargeItem } from "@tropo/core"
 
 import * as Settings from "../../utils/settings"
@@ -273,7 +269,7 @@ const Album = ({
       const items = useCollectionStore.getState().items
       const album = items[instanceid]
       if (album) {
-        const images = await refreshItemImage(album)
+        const images = await getItemImages(album)
         if (images) {
           const cover = images.cover
           const thumb = images.thumb
