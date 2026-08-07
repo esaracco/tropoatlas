@@ -176,7 +176,9 @@ const Header = () => {
                       artist: _("Artist"),
                       rating: _("Note"),
                       year: _("Year"),
-                      ...(customFields.supportsPlace && { place: _("Location") }),
+                      ...(customFields.supportsPlace && {
+                        place: _("Location"),
+                      }),
                     }}
                     sort={sort}
                     onSortChange={setSort}

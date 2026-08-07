@@ -229,11 +229,12 @@ const Result = () => {
     if (_setLeds) {
       const sStylesLen = selected.categories.length
       const sArtistsLen = selected.creators.length
+      const sSearchLen = searchStr.length
 
       // Debounce LED API calls to prevent flooding the IoT server
       ledsTimeout = setTimeout(async () => {
         // Let there be light!
-        if (sStylesLen || sArtistsLen) {
+        if (sStylesLen || sArtistsLen || sSearchLen >= 3) {
           turnOffLeds.current = true
           let hasLit = false
 
@@ -250,6 +251,15 @@ const Result = () => {
             await Leds.setLeds({
               place: placesArtists,
               color: Settings.ledsArtistsColor,
+              noreset: hasLit,
+            })
+            hasLit = true
+          }
+
+          if (sSearchLen >= 3) {
+            await Leds.setLeds({
+              place: places,
+              color: Settings.ledsSearchColor,
               noreset: hasLit,
             })
             hasLit = true
@@ -276,6 +286,7 @@ const Result = () => {
     placesStylesStr,
     placesArtistsStr,
     selected,
+    searchStr,
     fromRuler,
     setFromRuler,
   ])

@@ -1,5 +1,5 @@
 import React, { useState, useRef } from "react"
-import { useCollectionStore } from "@tropo/core"
+import { useCollectionStore, useAppStore } from "@tropo/core"
 import { useTranslation } from "react-i18next"
 import { Modal, Button, Table, Tab, Tabs, Form } from "react-bootstrap"
 import { toast } from "react-toastify"
@@ -159,16 +159,20 @@ const AlbumModal = ({ modalData, setModalData }) => {
     if (Settings.setLeds === "yes") {
       const sStylesLen = selectedStyles.length
       const sArtistsLen = selectedArtists.length
+      const searchStr = useAppStore.getState().searchStr
+      const sSearchLen = searchStr.length
 
       // Turn off the lights
       Leds.setLeds({
         place,
-        noreset: !!(sStylesLen || sArtistsLen),
+        noreset: !!(sStylesLen || sArtistsLen || sSearchLen >= 3),
         color: sStylesLen
           ? Settings.ledsStylesColor
           : sArtistsLen
             ? Settings.ledsArtistsColor
-            : "0,0,0",
+            : sSearchLen >= 3
+              ? Settings.ledsSearchColor
+              : "0,0,0",
       })
     }
   }

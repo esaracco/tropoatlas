@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react"
-import { useCollectionStore } from "@tropo/core"
+import { useCollectionStore, useAppStore } from "@tropo/core"
 import { toast } from "react-toastify"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faSync } from "@fortawesome/free-solid-svg-icons"
@@ -240,10 +240,15 @@ const Album = ({
 
         // Let there be light!
         if (Settings.setLeds === "yes") {
+          const searchStr = useAppStore.getState().searchStr
           Leds.setLeds({
             place: r.place,
             color: Settings.ledsAlbumColor,
-            noreset: !!(selectedStyles.length || selectedArtists.length),
+            noreset: !!(
+              selectedStyles.length ||
+              selectedArtists.length ||
+              searchStr.length >= 3
+            ),
           })
         }
       })
