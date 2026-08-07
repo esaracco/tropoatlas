@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react"
 import { useCollectionStore } from "@tropo/core"
 import { useTranslation } from "react-i18next"
 import { HeaderButton, Search, ThemeSelector } from "@tropo/react"
-import { normalize } from "@tropo/core"
+import { normalize, getItem } from "@tropo/core"
 
 import { Container, Nav, Navbar, Offcanvas } from "react-bootstrap"
 import * as Settings from "../utils/settings"
@@ -32,6 +32,8 @@ const Header = () => {
   const [_] = useTranslation()
   const [expanded, setExpanded] = useState(false)
 
+  const customFields = getItem("customFieldsInfo") || {}
+
   const allCategories = Array.from(
     new Set([...categories, ...selected.categories]),
   ).sort()
@@ -55,6 +57,12 @@ const Header = () => {
     window.addEventListener("resize", handleResize)
     return () => window.removeEventListener("resize", handleResize)
   }, [expanded, expandBreakpoint])
+
+  useEffect(() => {
+    if (sort.startsWith("place_") && !customFields.supportsPlace) {
+      setSort("added_desc")
+    }
+  }, [sort, customFields.supportsPlace, setSort])
 
   const labels = {
     formats: _("Formats"),
@@ -168,7 +176,7 @@ const Header = () => {
                       artist: _("Artist"),
                       rating: _("Note"),
                       year: _("Year"),
-                      place: _("Location"),
+                      ...(customFields.supportsPlace && { place: _("Location") }),
                     }}
                     sort={sort}
                     onSortChange={setSort}
