@@ -62,5 +62,6 @@
   "With the {{required}} environment variable set to \"yes\" you must at least set one of the following variables: {{place}}, {{price}} or {{styles}}!": "Avec la variable d'environnement {{required}} à \"yes\" vous devez au moins renseigner l'une des variables suivantes: {{place}}, {{price}} or {{styles}}!",
   "Year": "Année",
   "You are offline!": "Vous êtes hors ligne!",
-  "You are offline. Your changes have been saved locally and will be synchronized when the connection is restored.": "Vous êtes hors ligne. Vos modifications ont été enregistrées localement et seront synchronisées dès que la connexion sera rétablie."
+  "You are offline. Your changes have been saved locally and will be synchronized when the connection is restored.": "Vous êtes hors ligne. Vos modifications ont été enregistrées localement et seront synchronisées dès que la connexion sera rétablie.",
+  "LEDs are enabled but your data provider is not configured to support the physical location field (place).": "Les LEDs sont activées mais votre fournisseur de données n'est pas configuré pour supporter le champ d'emplacement physique (place)."
 }

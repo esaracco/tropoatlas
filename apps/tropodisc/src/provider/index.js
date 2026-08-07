@@ -32,6 +32,15 @@ plugin
   .getCustomFieldsInfo()
   .then((info) => {
     setItem("customFieldsInfo", info)
+
+    if (Settings.setLeds === "yes" && !info.supportsPlace) {
+      toast.error(
+        i18n.t(
+          "LEDs are enabled but your data provider is not configured to support the physical location field (place).",
+        ),
+        { autoClose: false },
+      )
+    }
   })
   .catch((e) => toast.error(i18n.t(e.message), { autoClose: false }))
 
