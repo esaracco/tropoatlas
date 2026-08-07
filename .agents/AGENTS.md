@@ -5,6 +5,7 @@ This file defines the rules and conventions that the AI agent must follow when w
 ## General Rules
 - **Discussion Mode**: If the user's prompt includes the `#discuss` keyword, you MUST NOT use any code editing or execution tools. Only analyze and discuss the topic.
 - **Comments Language**: All code comments and documentation within the codebase MUST be written in **English**.
+- **Comment Placement**: Do NOT place comments at the end of a line of code (inline comments). Always place comments on the line(s) directly ABOVE the code they describe.
 - **Commit Messages**: All git commit messages MUST be written in **English** (using Conventional Commits format).
 - **Package Manager**: Use `npm`. Do not use `yarn`, `pnpm`, or `bun`.
 - **No npm scripts**: DO NOT run `npm run` scripts (such as `npm run lint`, `npm run format`, `npm run pre-commit`, `npm run i18n:check`, etc.). The agent must not execute these commands.
