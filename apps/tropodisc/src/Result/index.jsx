@@ -17,6 +17,11 @@ import { faSync } from "@fortawesome/free-solid-svg-icons"
 
 import "./Result.css"
 
+// Define the semantic draw priority (from lowest priority to highest).
+// Layers drawn later will physically overwrite the LEDs of earlier layers.
+// This allows easy modification of the priority rule later.
+const DISPLAY_PRIORITY = ["search", "categories", "creators", "modal"]
+
 const _setLeds = Settings.setLeds === "yes"
 
 const GridList = React.forwardRef(({ style, ...props }, ref) => (
@@ -80,6 +85,7 @@ const Result = () => {
   const {
     result,
     places,
+    placesSearch,
     placesStyles,
     placesArtists,
     availableCategories,
@@ -98,6 +104,7 @@ const Result = () => {
     const fCategories = new Set()
     const fCreators = new Set()
     const fFormats = new Set()
+    const placesSearch = new Set()
     const placesStyles = new Set()
     const placesArtists = new Set()
 
@@ -178,6 +185,9 @@ const Result = () => {
       }
 
       if (hasPlace) {
+        if (search.length >= 3) {
+          placesSearch.add(r.place)
+        }
         if (
           sStylesLen > 0 &&
           selected.categories.some((item) => r.categories.includes(item))
@@ -193,6 +203,7 @@ const Result = () => {
     return {
       result: res,
       places,
+      placesSearch: Array.from(placesSearch),
       placesStyles: Array.from(placesStyles),
       placesArtists: Array.from(placesArtists),
       availableCategories: Array.from(fCategories).sort(),
@@ -202,6 +213,7 @@ const Result = () => {
   }, [searchStr, releases, selected, sort])
 
   const placesStr = places.join(",")
+  const placesSearchStr = placesSearch.join(",")
   const placesStylesStr = placesStyles.join(",")
   const placesArtistsStr = placesArtists.join(",")
 
@@ -227,44 +239,68 @@ const Result = () => {
     let ledsTimeout
 
     if (_setLeds) {
-      const sStylesLen = selected.categories.length
-      const sArtistsLen = selected.creators.length
-      const sSearchLen = searchStr.length
-
       // Debounce LED API calls to prevent flooding the IoT server
       ledsTimeout = setTimeout(async () => {
-        // Let there be light!
-        if (sStylesLen || sArtistsLen || sSearchLen >= 3) {
+        // Collect active layers dynamically for chronological tracking
+        const storeLayers = useCollectionStore.getState().activeLayers
+        const activeLayers = [...storeLayers]
+
+        if (modalData.show && modalData.place) {
+          activeLayers.push("modal")
+        }
+
+        if (activeLayers.length > 0) {
           turnOffLeds.current = true
           let hasLit = false
 
-          if (sStylesLen) {
-            await Leds.setLeds({
-              place: placesStyles,
-              color: Settings.ledsStylesColor,
-              noreset: hasLit,
-            })
-            hasLit = true
-          }
+          // Iterate layers by display priority
+          for (const layerType of DISPLAY_PRIORITY) {
+            const chronoIndex = activeLayers.indexOf(layerType)
+            if (chronoIndex === -1) continue // Skip if layer is not active
 
-          if (sArtistsLen) {
-            await Leds.setLeds({
-              place: placesArtists,
-              color: Settings.ledsArtistsColor,
-              noreset: hasLit,
-            })
-            hasLit = true
-          }
+            // Calculate exponentially decreasing intensity based on chronological distance from the top
+            const distance = activeLayers.length - 1 - chronoIndex
+            // Base decay factor. Top layer = 1.0, 1 level down = 0.4, 2 levels down = 0.2
+            // We use a gentler curve [1.0, 0.4, 0.2, 0.1] so older layers remain visible
+            const intensityValues = [1.0, 0.4, 0.2, 0.1]
+            const intensity =
+              intensityValues[Math.min(distance, intensityValues.length - 1)]
 
-          if (sSearchLen >= 3) {
-            await Leds.setLeds({
-              place: places,
-              color: Settings.ledsSearchColor,
-              noreset: hasLit,
-            })
-            hasLit = true
+            if (layerType === "search" && placesSearch.length > 0) {
+              await Leds.setLeds({
+                place: placesSearch,
+                color: Settings.ledsSearchColor,
+                intensity: intensity < 1.0 ? intensity : undefined,
+                blink: 1,
+                noreset: hasLit,
+              })
+              hasLit = true
+            } else if (layerType === "categories" && placesStyles.length > 0) {
+              await Leds.setLeds({
+                place: placesStyles,
+                color: Settings.ledsStylesColor,
+                intensity: intensity < 1.0 ? intensity : undefined,
+                noreset: hasLit,
+              })
+              hasLit = true
+            } else if (layerType === "creators" && placesArtists.length > 0) {
+              await Leds.setLeds({
+                place: placesArtists,
+                color: Settings.ledsArtistsColor,
+                intensity: intensity < 1.0 ? intensity : undefined,
+                noreset: hasLit,
+              })
+              hasLit = true
+            } else if (layerType === "modal") {
+              await Leds.setLeds({
+                place: modalData.place,
+                color: Settings.ledsAlbumColor,
+                intensity: undefined, // Always 100%
+                noreset: hasLit,
+              })
+              hasLit = true
+            }
           }
-          // Turn off the light...
         } else if (turnOffLeds.current) {
           turnOffLeds.current = false
           if (!fromRuler) {
@@ -283,12 +319,15 @@ const Result = () => {
     }
   }, [
     placesStr,
+    placesSearchStr,
     placesStylesStr,
     placesArtistsStr,
     selected,
     searchStr,
     fromRuler,
     setFromRuler,
+    modalData.show,
+    modalData.place,
   ])
 
   const thumbWidth = calculateThumbWidth()

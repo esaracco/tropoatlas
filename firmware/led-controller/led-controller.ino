@@ -21,6 +21,14 @@
 /* ===================== LEDS ===================== */
 
 CRGB leds[NUM_STRIPS][NUM_LEDS];
+CRGB targetLeds[NUM_STRIPS][NUM_LEDS];
+bool blinkMask[NUM_STRIPS][NUM_LEDS];
+
+void clearAllLeds(bool show = false) {
+  memset(blinkMask, 0, sizeof(blinkMask));
+  memset((void*)targetLeds, 0, sizeof(targetLeds));
+  FastLED.clear(show);
+}
 
 /* ===================== LED WATCHDOG ===================== */
 
@@ -38,7 +46,7 @@ void ledWatchdogCheck() {
   if (!ledWatchdogLastKick) return;
 
   if ((uint32_t)(millis() - ledWatchdogLastKick) >= LED_WATCHDOG_TIMEOUT_MS) {
-    FastLED.clear(true);
+    clearAllLeds(true);
     ledWatchdogClear();
   }
 }
@@ -74,7 +82,7 @@ void runAnimation() {
       }
     }
   }
-  FastLED.clear(true);
+  clearAllLeds(true);
   ledWatchdogClear();
 }
 
@@ -85,8 +93,16 @@ void onServerEventLeds() {
 
   ledWatchdogClear();
   if (!server.hasArg("leds") || server.arg("color") == "0,0,0" || !parseColor(server.arg("color"), r, g, b)) {
-    FastLED.clear(true);
+    clearAllLeds(true);
   } else {
+    if (server.hasArg("intensity")) {
+      float intensity = server.arg("intensity").toFloat();
+      intensity = constrain(intensity, 0.0f, 1.0f);
+      r = (uint8_t)(r * intensity);
+      g = (uint8_t)(g * intensity);
+      b = (uint8_t)(b * intensity);
+    }
+
     const String& s = server.arg("leds");
     char buf[s.length() + 1];
     s.toCharArray(buf, sizeof(buf));
@@ -94,14 +110,24 @@ void onServerEventLeds() {
     char* save;
     char* tok = strtok_r(buf, ",", &save);
 
-    if (!(server.arg("noreset") && server.arg("noreset") == "1")) {
-      FastLED.clear();
+    if (!(server.hasArg("noreset") && server.arg("noreset") == "1")) {
+      clearAllLeds(false);
     }
+
+    bool hasBlinkArg = server.hasArg("blink");
+    bool doBlink = (hasBlinkArg && server.arg("blink") == "1");
+
     while (tok) {
       int pos = atoi(tok);
       if (pos >= 1 && pos <= NUM_STRIPS * NUM_LEDS) {
         pos--;
-        leds[pos / NUM_LEDS][pos % NUM_LEDS].setRGB(r, g, b);
+        int stripIdx = pos / NUM_LEDS;
+        int ledIdx = pos % NUM_LEDS;
+        targetLeds[stripIdx][ledIdx].setRGB(r, g, b);
+        if (hasBlinkArg) {
+          blinkMask[stripIdx][ledIdx] = doBlink;
+        }
+        leds[stripIdx][ledIdx].setRGB(r, g, b);
       }
       tok = strtok_r(NULL, ",", &save);
     }
@@ -115,9 +141,9 @@ void onServerEventLeds() {
 void onServerEventRuler() {
   ledWatchdogClear();
   if (server.hasArg("reset") && server.arg("reset") == "1") {
-    FastLED.clear(true);
+    clearAllLeds(true);
   } else {
-    FastLED.clear();
+    clearAllLeds(false);
     for (uint8_t strip = 0; strip < NUM_STRIPS; strip++) {
       for (int i = 1; i <= NUM_LEDS; i++) {
         if (i % 10 == 0)
@@ -141,7 +167,8 @@ void setup() {
 
   FastLED.addLeds<LED_TYPE, LED_PIN1, COLOR_ORDER>(leds[0], NUM_LEDS);
   FastLED.addLeds<LED_TYPE, LED_PIN2, COLOR_ORDER>(leds[1], NUM_LEDS);
-  FastLED.setBrightness(10);
+
+  FastLED.setBrightness(50);
 
   server.on("/leds", HTTP_GET, onServerEventLeds);
   server.on("/ruler", HTTP_GET, onServerEventRuler);
@@ -153,4 +180,27 @@ void setup() {
 void loop() {
   server.handleClient();
   ledWatchdogCheck();
+
+  static uint32_t lastBlinkTime = 0;
+  static bool blinkIsOn = true;
+
+  if (millis() - lastBlinkTime > 500) {
+    lastBlinkTime = millis();
+    blinkIsOn = !blinkIsOn;
+
+    bool needsUpdate = false;
+    for (int s = 0; s < NUM_STRIPS; s++) {
+      for (int i = 0; i < NUM_LEDS; i++) {
+        if (blinkMask[s][i]) {
+          needsUpdate = true;
+          if (blinkIsOn) {
+            leds[s][i] = targetLeds[s][i];
+          } else {
+            leds[s][i] = CRGB::Black;
+          }
+        }
+      }
+    }
+    if (needsUpdate) FastLED.show();
+  }
 }

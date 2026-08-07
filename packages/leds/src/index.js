@@ -41,7 +41,14 @@ export class LedsClient {
   }
 
   setLeds(props = {}) {
-    const { place, color, noreset = false, keepalive = false } = props
+    const {
+      place,
+      color,
+      intensity,
+      blink,
+      noreset = false,
+      keepalive = false,
+    } = props
     const params = new URLSearchParams()
 
     // Modular and safe URL construction (automatic URL encoding, e.g. # -> %23)
@@ -50,6 +57,12 @@ export class LedsClient {
     }
     if (color !== undefined) {
       params.append("color", color)
+    }
+    if (intensity !== undefined) {
+      params.append("intensity", intensity)
+    }
+    if (blink !== undefined) {
+      params.append("blink", blink)
     }
 
     // Add noreset only if there are specific actions to perform

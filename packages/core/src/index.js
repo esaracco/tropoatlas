@@ -37,7 +37,10 @@ export const useCollectionStore = create(
         categories: [],
         formats: [],
       },
-      sort: "added_desc", // 'creator', 'title', 'added_desc', etc.
+      // 'creator', 'title', 'added_desc', etc.
+      sort: "added_desc",
+      // Tracks filter activation chronology: e.g. ['search', 'categories', 'creators']
+      activeLayers: [],
 
       // Actions
       setItems: (items) => set({ items }),
@@ -45,12 +48,38 @@ export const useCollectionStore = create(
       setCategories: (categories) => set({ categories }),
       setFormats: (formats) => set({ formats }),
 
+      toggleLayer: (layerId, isActive) =>
+        set((state) => {
+          const current = state.activeLayers
+          const exists = current.includes(layerId)
+          if (isActive && !exists) {
+            return { activeLayers: [...current, layerId] }
+          } else if (!isActive && exists) {
+            return { activeLayers: current.filter((id) => id !== layerId) }
+          }
+          return state
+        }),
+
       setFilter: (type, values) =>
-        set((state) => ({
-          selected: { ...state.selected, [type]: values },
-        })),
+        set((state) => {
+          const newSelected = { ...state.selected, [type]: values }
+          let newLayers = [...state.activeLayers]
+          const hasValues = values && values.length > 0
+          const exists = newLayers.includes(type)
+
+          if (hasValues && !exists) newLayers.push(type)
+          if (!hasValues && exists)
+            newLayers = newLayers.filter((l) => l !== type)
+
+          return { selected: newSelected, activeLayers: newLayers }
+        }),
       clearFilters: () =>
-        set({ selected: { creators: [], categories: [], formats: [] } }),
+        set((state) => ({
+          selected: { creators: [], categories: [], formats: [] },
+          activeLayers: state.activeLayers.filter(
+            (l) => l !== "creators" && l !== "categories" && l !== "formats",
+          ),
+        })),
 
       setSort: (sort) => set({ sort }),
     }),

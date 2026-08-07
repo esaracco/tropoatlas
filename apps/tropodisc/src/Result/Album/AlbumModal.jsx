@@ -1,5 +1,5 @@
 import React, { useState, useRef } from "react"
-import { useCollectionStore, useAppStore } from "@tropo/core"
+import { useCollectionStore } from "@tropo/core"
 import { useTranslation } from "react-i18next"
 import { Modal, Button, Table, Tab, Tabs, Form } from "react-bootstrap"
 import { toast } from "react-toastify"
@@ -14,7 +14,6 @@ import AlbumButton from "./AlbumButton"
 
 import { getItem, setLargeItem, setItem } from "@tropo/core"
 import { updateItem, getCategories, getProviderInfo } from "../../provider"
-import * as Leds from "../../utils/leds"
 import * as Settings from "../../utils/settings"
 
 import vinylImg300 from "../../assets/vinyl-300.png"
@@ -29,7 +28,6 @@ const AlbumModal = ({ modalData, setModalData }) => {
 
   const [showConfirm, setShowConfirm] = useState(false)
   const selectedStyles = useCollectionStore((s) => s.selected.categories)
-  const selectedArtists = useCollectionStore((s) => s.selected.creators)
   const releases = useCollectionStore((s) => s.items)
   const {
     show,
@@ -149,32 +147,8 @@ const AlbumModal = ({ modalData, setModalData }) => {
 
   // METHOD onHideConfirm()
   const onHideConfirm = () => {
-    turnOffLed()
     setShowConfirm(false)
     setModalData({ ...modalData, show: false })
-  }
-
-  // METHOD turnOffLed()
-  const turnOffLed = () => {
-    if (Settings.setLeds === "yes") {
-      const sStylesLen = selectedStyles.length
-      const sArtistsLen = selectedArtists.length
-      const searchStr = useAppStore.getState().searchStr
-      const sSearchLen = searchStr.length
-
-      // Turn off the lights
-      Leds.setLeds({
-        place,
-        noreset: !!(sStylesLen || sArtistsLen || sSearchLen >= 3),
-        color: sStylesLen
-          ? Settings.ledsStylesColor
-          : sArtistsLen
-            ? Settings.ledsArtistsColor
-            : sSearchLen >= 3
-              ? Settings.ledsSearchColor
-              : "0,0,0",
-      })
-    }
   }
 
   // METHOD onHide()
@@ -183,7 +157,6 @@ const AlbumModal = ({ modalData, setModalData }) => {
 
     // If no changes, just close modal
     if (!Object.keys(changes).length) {
-      turnOffLed()
       setModalData({ ...modalData, show: false })
       return
     }

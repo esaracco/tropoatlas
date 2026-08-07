@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react"
-import { useCollectionStore, useAppStore } from "@tropo/core"
+import { useCollectionStore } from "@tropo/core"
 import { toast } from "react-toastify"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faSync } from "@fortawesome/free-solid-svg-icons"
@@ -10,9 +10,6 @@ import { LazyLoadImage } from "react-lazy-load-image-component"
 
 import { getItemDetails, getItemImages, getProviderInfo } from "../../provider"
 import { setLargeItem } from "@tropo/core"
-
-import * as Settings from "../../utils/settings"
-import * as Leds from "../../utils/leds"
 
 import vinylImg300 from "../../assets/vinyl-300.png"
 
@@ -62,8 +59,6 @@ const Album = ({
 
   const [_] = useTranslation()
   const [loader, setLoader] = useState(false)
-  const selectedStyles = useCollectionStore((s) => s.selected.categories)
-  const selectedArtists = useCollectionStore((s) => s.selected.creators)
 
   // EFFECT: Queue fetching missing year in background
   useEffect(() => {
@@ -237,20 +232,6 @@ const Album = ({
           price: r.price,
           styles: r.categories,
         })
-
-        // Let there be light!
-        if (Settings.setLeds === "yes") {
-          const searchStr = useAppStore.getState().searchStr
-          Leds.setLeds({
-            place: r.place,
-            color: Settings.ledsAlbumColor,
-            noreset: !!(
-              selectedStyles.length ||
-              selectedArtists.length ||
-              searchStr.length >= 3
-            ),
-          })
-        }
       })
       .catch((e) => {
         if (!navigator.onLine) {
