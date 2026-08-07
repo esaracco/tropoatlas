@@ -65,11 +65,11 @@ GET /leds
 
 ### Parameters
 
-| Parameter | Required | Description |
-|-----------|----------|-------------|
-| `leds` | ✅ | Comma-separated list of LED indices. |
-| `color` | ✅ | RGB color as `R,G,B` (0–255). |
-| `noreset` | No | `1` to preserve the current LEDs before applying the new ones. |
+| Parameter | Required | Description                                                    |
+| --------- | -------- | -------------------------------------------------------------- |
+| `leds`    | ✅       | Comma-separated list of LED indices.                           |
+| `color`   | ✅       | RGB color as `R,G,B` (0–255).                                  |
+| `noreset` | No       | `1` to preserve the current LEDs before applying the new ones. |
 
 ### Example
 
@@ -89,9 +89,9 @@ GET /ruler
 
 ### Parameters
 
-| Parameter | Required | Description |
-|-----------|----------|-------------|
-| `reset` | No | If set, turns all LEDs off. |
+| Parameter | Required | Description                 |
+| --------- | -------- | --------------------------- |
+| `reset`   | No       | If set, turns all LEDs off. |
 
 ### Example
 
@@ -122,4 +122,3 @@ Highlighted album location
 ## License
 
 This firmware is part of the **TropoAtlas** project and is distributed under the GNU GPL v3 License.
-
