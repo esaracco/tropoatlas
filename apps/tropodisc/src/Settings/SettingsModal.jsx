@@ -22,12 +22,6 @@ const SettingsModal = ({ show, onHide }) => {
     : {}
   const showGeneral = !!draftCaps.supportsPrice
 
-  const defaultTab = showGeneral
-    ? "general"
-    : showLeds
-      ? "hardware"
-      : "datasource"
-
   const setPluginConfig = useSettingsStore((s) => s.setPluginConfig)
   const initialProviderConfig = React.useRef({ ...activeProviderConfig })
   const [needsResync, setNeedsResync] = React.useState(false)
@@ -171,7 +165,7 @@ const SettingsModal = ({ show, onHide }) => {
         <Modal.Title>{_("Settings")}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <Tabs defaultActiveKey={defaultTab}>
+        <Tabs defaultActiveKey="datasource">
           {showGeneral && (
             <Tab eventKey="general" title={_("General")}>
               <Form className="p-3">
