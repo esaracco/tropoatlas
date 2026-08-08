@@ -243,7 +243,7 @@ const Result = () => {
             ledCommands.push({
               place: placesStyles,
               color: Settings.ledsStylesColor,
-              intensity: .1,
+              intensity: 0.1,
               noreset: hasLit,
             })
             hasLit = true
@@ -254,7 +254,7 @@ const Result = () => {
             ledCommands.push({
               place: placesArtists,
               color: Settings.ledsArtistsColor,
-              intensity: .8,
+              intensity: 0.8,
               noreset: hasLit,
             })
             hasLit = true

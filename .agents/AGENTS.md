@@ -29,9 +29,11 @@ This file defines the rules and conventions that the AI agent must follow when w
 
 ## LEDs Behavior
 - **Centralized Logic**: All LED orchestration MUST be handled centrally by a single watcher (currently in `Result/index.jsx`). Individual components (like `Album` or Modals) MUST NOT call the `Leds` API directly.
-- **Filters**: LEDs are only controlled by the **Categories (Styles)** and **Creators (Artists)** filters, **text searches** (when 3 or more characters are typed), and the **Album Modal** (focus mode). The **Formats** filter does NOT interact with or modify LEDs.
-- **Decoupled Intensity and Draw Priority**: When multiple layers are active, two independent rules apply:
-  - **Intensity (Chronology)**: The brightness of a layer is determined by its chronological age. Older filters are dimmed to push them into the background, while the newest filter is displayed at 100% brightness.
-  - **Draw Order (Semantic Priority)**: The order in which layers are sent to the ESP32 (which dictates which color overwrites the other) is strictly defined by a fixed semantic array (`DISPLAY_PRIORITY`: styles -> artists -> search -> modal). This ensures that specific layers always overwrite broader ones regardless of the order they were clicked.
-- **Blink Effect**: The search layer uses a blink effect (`blink: 1`). The ESP32 firmware is designed to preserve this blink state even if a higher-priority layer (like Artist) overwrites the LED color. Do not send `blink: 0` from higher-priority layers, simply omit the parameter.
+- **Filters**: LEDs are only controlled by the **Categories (Styles)** and **Creators (Artists)** filters, and the **Album Modal** (focus mode). Text searches and the **Formats** filter do NOT interact with or modify LEDs.
+- **Intensity and Draw Priority**: When multiple layers are active, both intensity and draw order follow a fixed semantic priority:
+  - 1. **Categories**: Lowest priority, drawn first, background intensity.
+  - 2. **Creators**: Medium priority, drawn second, medium intensity.
+  - 3. **Modal**: Highest priority, drawn last, high intensity.
+  This fixed order ensures that specific layers (like the modal) always overwrite broader ones (like categories) in the ESP32 buffer, and their brightness reflects their semantic importance.
+- **Blink Effect**: The modal layer uses a blink effect (`blink: true`). The ESP32 firmware is designed to preserve this blink state even if another layer overwrites the LED color. Do not send `blink: false` from other layers, simply omit the parameter.
 - **Color Scale Configuration**: All LED color configurations MUST use full 8-bit scale RGB values (0-255). Do not use low values to manually reduce brightness, as the system dynamically calculates and applies the `intensity` multiplier (0.0 - 1.0) before sending to the hardware.
