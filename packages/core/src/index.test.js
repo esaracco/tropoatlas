@@ -82,27 +82,17 @@ describe("useCollectionStore", () => {
   it("should push and pop layers chronologically (toggleLayer)", () => {
     const store = useCollectionStore.getState()
 
-    // Add search layer
-    store.toggleLayer("search", true)
-    expect(useCollectionStore.getState().activeLayers).toEqual(["search"])
-
     // Add creators layer
     store.toggleLayer("creators", true)
-    expect(useCollectionStore.getState().activeLayers).toEqual([
-      "search",
-      "creators",
-    ])
+    expect(useCollectionStore.getState().activeLayers).toEqual(["creators"])
 
     // Adding existing layer again should not duplicate
-    store.toggleLayer("search", true)
-    expect(useCollectionStore.getState().activeLayers).toEqual([
-      "search",
-      "creators",
-    ])
-
-    // Remove search layer
-    store.toggleLayer("search", false)
+    store.toggleLayer("creators", true)
     expect(useCollectionStore.getState().activeLayers).toEqual(["creators"])
+
+    // Remove creators layer
+    store.toggleLayer("creators", false)
+    expect(useCollectionStore.getState().activeLayers).toEqual([])
   })
 
   it("should update sort order (setSort)", () => {

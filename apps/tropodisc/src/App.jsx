@@ -31,7 +31,6 @@ const App = () => {
   const setIsOnline = useAppStore((s) => s.setIsOnline)
   const setLoading = useAppStore((s) => s.setLoading)
   const setProgress = useAppStore((s) => s.setProgress)
-  const searchStr = useAppStore((s) => s.searchStr)
 
   // EFFECT 1
   useEffect(() => {
@@ -83,12 +82,6 @@ const App = () => {
       document.title = `TropoDisc – ${_("A universal music collection manager")}`
     }
   }, [_])
-
-  // EFFECT Search tracking
-  useEffect(() => {
-    const toggleLayer = useCollectionStore.getState().toggleLayer
-    toggleLayer("search", searchStr.length >= 3)
-  }, [searchStr])
 
   // EFFECT 3
   useEffect(() => {

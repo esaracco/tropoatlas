@@ -20,7 +20,7 @@ import "./Result.css"
 // Define the semantic draw priority (from lowest priority to highest).
 // Layers drawn later will physically overwrite the LEDs of earlier layers.
 // This allows easy modification of the priority rule later.
-const DISPLAY_PRIORITY = ["search", "categories", "creators", "modal"]
+const DISPLAY_PRIORITY = ["categories", "creators", "modal"]
 
 const _setLeds = Settings.setLeds === "yes"
 
@@ -85,7 +85,6 @@ const Result = () => {
   const {
     result,
     places,
-    placesSearch,
     placesStyles,
     placesArtists,
     availableCategories,
@@ -104,7 +103,6 @@ const Result = () => {
     const fCategories = new Set()
     const fCreators = new Set()
     const fFormats = new Set()
-    const placesSearch = new Set()
     const placesStyles = new Set()
     const placesArtists = new Set()
 
@@ -185,9 +183,6 @@ const Result = () => {
       }
 
       if (hasPlace) {
-        if (search.length >= 3) {
-          placesSearch.add(r.place)
-        }
         if (
           sStylesLen > 0 &&
           selected.categories.some((item) => r.categories.includes(item))
@@ -203,7 +198,6 @@ const Result = () => {
     return {
       result: res,
       places,
-      placesSearch: Array.from(placesSearch),
       placesStyles: Array.from(placesStyles),
       placesArtists: Array.from(placesArtists),
       availableCategories: Array.from(fCategories).sort(),
@@ -213,7 +207,6 @@ const Result = () => {
   }, [searchStr, releases, selected, sort])
 
   const placesStr = places.join(",")
-  const placesSearchStr = placesSearch.join(",")
   const placesStylesStr = placesStyles.join(",")
   const placesArtistsStr = placesArtists.join(",")
 
@@ -267,16 +260,7 @@ const Result = () => {
             const intensity =
               intensityValues[Math.min(distance, intensityValues.length - 1)]
 
-            if (layerType === "search" && placesSearch.length > 0) {
-              ledCommands.push({
-                place: placesSearch,
-                color: Settings.ledsSearchColor,
-                intensity: intensity < 1.0 ? intensity : undefined,
-                blink: 1,
-                noreset: hasLit,
-              })
-              hasLit = true
-            } else if (layerType === "categories" && placesStyles.length > 0) {
+            if (layerType === "categories" && placesStyles.length > 0) {
               ledCommands.push({
                 place: placesStyles,
                 color: Settings.ledsStylesColor,
@@ -323,7 +307,6 @@ const Result = () => {
     }
   }, [
     placesStr,
-    placesSearchStr,
     placesStylesStr,
     placesArtistsStr,
     selected,
