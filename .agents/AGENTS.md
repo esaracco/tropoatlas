@@ -37,3 +37,16 @@ This file defines the rules and conventions that the AI agent must follow when w
   This fixed order ensures that specific layers (like the modal) always overwrite broader ones (like categories) in the ESP32 buffer, and their brightness reflects their semantic importance.
 - **Blink Effect**: The modal layer uses a blink effect (`blink: true`). The ESP32 firmware is designed to preserve this blink state even if another layer overwrites the LED color. Do not send `blink: false` from other layers, simply omit the parameter.
 - **Color Scale Configuration**: All LED color configurations MUST use full 8-bit scale RGB values (0-255). Do not use low values to manually reduce brightness, as the system dynamically calculates and applies the `intensity` multiplier (0.0 - 1.0) before sending to the hardware.
+
+## Settings & State Management
+- **Centralized Settings Store**: Dynamic user settings are managed via `useSettingsStore` (Zustand) in `@tropo/core` and persisted to `localStorage`. Components must consume these settings reactively through the store (or through exposed getters in `utils/settings.js`) rather than directly from `import.meta.env` at runtime.
+- **Cache Preservation**: The settings store cache key (`settings-v1` / `SETTINGS_STORE_KEY`) MUST be preserved when clearing caches (e.g., in `clearAllCaches()` in `packages/core/src/storage.js`).
+- **Decoupled Settings UI**: The main application's settings modal (`SettingsModal.jsx`) dynamically renders plugin-specific settings forms based on a declarative JSON schema. Plugins must implement `getSettingsSchema()` returning a vanilla JS array of field definitions, and MUST NOT export React components. Plugins are responsible for updating their own isolated section of the store (`pluginsConfig`).
+- **Build-Time Variables**: Environment variables that affect the Vite proxy or server build (such as `VITE_SET_LEDS`, `VITE_LEDS_API_PORT`, `VITE_AUDIOLIBRARY_URL`) must remain in `.env` as they are required at build/serve time. They serve as default fallback values for the settings store on initial hydration.
+
+## UI & i18n Considerations
+- **i18n in Plugins**: Since plugins are UI-agnostic and do not import `react-i18next`, strings that require translation (like schema labels) should be wrapped in a dummy marker function (`const _ = (s) => s`) within the plugin. This allows the static analyzer (`npm run i18n:check`) to detect the keys, while the main application applies the actual translation (`t(field.label)`) at render time.
+- **Offcanvas and Modals (Mobile UI)**: Stacking Bootstrap Modals over an open Offcanvas menu can cause backdrop conflicts when the modal is closed. 
+  - If a button opens a global root-level Modal (e.g., `SettingsModal`), the Offcanvas MUST be explicitly closed before opening the modal.
+  - If a button opens an inline Modal (e.g., `ConfirmModal` inside `SynchroButton`), the Offcanvas MUST NOT be closed, otherwise the modal will be instantly unmounted.
+  - Interactive dropdowns (Styles, Artists) MUST NOT close the Offcanvas, allowing users to select multiple options without reopening the menu.
