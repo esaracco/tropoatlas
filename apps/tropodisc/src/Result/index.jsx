@@ -17,11 +17,6 @@ import { faSync } from "@fortawesome/free-solid-svg-icons"
 
 import "./Result.css"
 
-// Define the semantic draw priority (from lowest priority to highest).
-// Layers drawn later will physically overwrite the LEDs of earlier layers.
-// This allows easy modification of the priority rule later.
-const DISPLAY_PRIORITY = ["categories", "creators", "modal"]
-
 const _setLeds = Settings.setLeds === "yes"
 
 const GridList = React.forwardRef(({ style, ...props }, ref) => (
@@ -234,59 +229,49 @@ const Result = () => {
     if (_setLeds) {
       // Debounce LED API calls to prevent flooding the IoT server
       ledsTimeout = setTimeout(async () => {
-        // Collect active layers dynamically for chronological tracking
-        const storeLayers = useCollectionStore.getState().activeLayers
-        const activeLayers = [...storeLayers]
+        const hasCategories = placesStyles.length > 0
+        const hasCreators = placesArtists.length > 0
+        const hasModal = modalData.show && modalData.place
 
-        if (modalData.show && modalData.place) {
-          activeLayers.push("modal")
-        }
-
-        if (activeLayers.length > 0) {
+        if (hasCategories || hasCreators || hasModal) {
           turnOffLeds.current = true
           let hasLit = false
-
-          // Iterate layers by display priority
           const ledCommands = []
-          for (const layerType of DISPLAY_PRIORITY) {
-            const chronoIndex = activeLayers.indexOf(layerType)
-            if (chronoIndex === -1) continue // Skip if layer is not active
 
-            // Calculate exponentially decreasing intensity based on chronological distance from the top
-            const distance = activeLayers.length - 1 - chronoIndex
-            // Base decay factor. Top layer = 1.0, 1 level down = 0.4, 2 levels down = 0.2
-            // We use a gentler curve [1.0, 0.4, 0.2, 0.1] so older layers remain visible
-            const intensityValues = [1.0, 0.4, 0.2, 0.1]
-            const intensity =
-              intensityValues[Math.min(distance, intensityValues.length - 1)]
-
-            if (layerType === "categories" && placesStyles.length > 0) {
-              ledCommands.push({
-                place: placesStyles,
-                color: Settings.ledsStylesColor,
-                intensity: intensity < 1.0 ? intensity : undefined,
-                noreset: hasLit,
-              })
-              hasLit = true
-            } else if (layerType === "creators" && placesArtists.length > 0) {
-              ledCommands.push({
-                place: placesArtists,
-                color: Settings.ledsArtistsColor,
-                intensity: intensity < 1.0 ? intensity : undefined,
-                noreset: hasLit,
-              })
-              hasLit = true
-            } else if (layerType === "modal") {
-              ledCommands.push({
-                place: modalData.place,
-                color: Settings.ledsAlbumColor,
-                intensity: undefined, // Always 100%
-                noreset: hasLit,
-                blink: true,
-              })
-              hasLit = true
-            }
+          // 1. Categories (Background / Lowest intensity)
+          if (hasCategories) {
+            ledCommands.push({
+              place: placesStyles,
+              color: Settings.ledsStylesColor,
+              intensity: .1,
+              noreset: hasLit,
+            })
+            hasLit = true
           }
+
+          // 2. Creators (Middle layer / Medium intensity)
+          if (hasCreators) {
+            ledCommands.push({
+              place: placesArtists,
+              color: Settings.ledsArtistsColor,
+              intensity: .8,
+              noreset: hasLit,
+            })
+            hasLit = true
+          }
+
+          // 3. Modal (Focus layer / Highest priority / Full intensity)
+          if (hasModal) {
+            ledCommands.push({
+              place: modalData.place,
+              color: Settings.ledsAlbumColor,
+              intensity: 1,
+              blink: true,
+              noreset: hasLit,
+            })
+            hasLit = true
+          }
+
           if (ledCommands.length > 0) {
             await Leds.setLeds(ledCommands)
           }

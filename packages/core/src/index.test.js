@@ -16,7 +16,6 @@ describe("useCollectionStore", () => {
         formats: [],
       },
       sort: "added_desc",
-      activeLayers: [],
     })
   })
 
@@ -25,7 +24,6 @@ describe("useCollectionStore", () => {
     expect(state.items).toEqual({})
     expect(state.selected.creators).toEqual([])
     expect(state.sort).toBe("added_desc")
-    expect(state.activeLayers).toEqual([])
   })
 
   it("should update filters correctly (setFilter)", () => {
@@ -39,22 +37,20 @@ describe("useCollectionStore", () => {
     expect(newState.selected.categories).toEqual(["Rock", "Electronic"])
     // Ensure others are untouched
     expect(newState.selected.creators).toEqual([])
-    // activeLayers should include categories
-    expect(newState.activeLayers).toEqual(["categories"])
 
     // Act 2: Add creators
     store.setFilter("creators", ["Pink Floyd"])
 
     // Assert 2
     const newState2 = useCollectionStore.getState()
-    expect(newState2.activeLayers).toEqual(["categories", "creators"])
+    expect(newState2.selected.creators).toEqual(["Pink Floyd"])
 
     // Act 3: Remove categories
     store.setFilter("categories", [])
 
     // Assert 3
     const newState3 = useCollectionStore.getState()
-    expect(newState3.activeLayers).toEqual(["creators"])
+    expect(newState3.selected.categories).toEqual([])
   })
 
   it("should clear all filters correctly (clearFilters)", () => {
@@ -65,7 +61,6 @@ describe("useCollectionStore", () => {
         categories: ["Rock"],
         formats: ["Vinyl"],
       },
-      activeLayers: ["categories", "creators"],
     })
 
     // Act
@@ -76,23 +71,6 @@ describe("useCollectionStore", () => {
     expect(newState.selected.creators).toEqual([])
     expect(newState.selected.categories).toEqual([])
     expect(newState.selected.formats).toEqual([])
-    expect(newState.activeLayers).toEqual([])
-  })
-
-  it("should push and pop layers chronologically (toggleLayer)", () => {
-    const store = useCollectionStore.getState()
-
-    // Add creators layer
-    store.toggleLayer("creators", true)
-    expect(useCollectionStore.getState().activeLayers).toEqual(["creators"])
-
-    // Adding existing layer again should not duplicate
-    store.toggleLayer("creators", true)
-    expect(useCollectionStore.getState().activeLayers).toEqual(["creators"])
-
-    // Remove creators layer
-    store.toggleLayer("creators", false)
-    expect(useCollectionStore.getState().activeLayers).toEqual([])
   })
 
   it("should update sort order (setSort)", () => {
