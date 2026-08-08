@@ -138,7 +138,7 @@ const Header = () => {
                   <SettingsButton
                     onClick={() => {
                       setExpanded(false)
-                      setShowSettings(true)
+                      setTimeout(() => setShowSettings(true), 350)
                     }}
                   />
                   <HeaderButton
