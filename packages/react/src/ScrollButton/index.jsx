@@ -23,8 +23,14 @@ const ScrollButton = () => {
 
   // RENDER
   return (
-    <div className="ScrollButton" style={{ opacity: display ? 1 : 0 }}>
-      <FontAwesomeIcon icon={faArrowCircleUp} onClick={scrollToTop} />
+    <div
+      className={`fixed-bottom d-flex justify-content-center ScrollButtonWrapper ${
+        display ? "visible" : ""
+      }`}
+    >
+      <div className="ScrollButton" style={{ pointerEvents: "auto" }}>
+        <FontAwesomeIcon icon={faArrowCircleUp} onClick={scrollToTop} />
+      </div>
     </div>
   )
 }

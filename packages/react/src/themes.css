@@ -28,7 +28,7 @@
   --tropo-tag-hover: #475569;
   --tropo-dot: #f87171;
   --tropo-progress: #64748b;
-  --tropo-scroll-btn: #64748b;
+  --tropo-footer-btn: #64748b;
   --tropo-item-card: #141c28;
   --tropo-item-footer: #1a2232;
   --tropo-link: #94a3b8;
@@ -58,7 +58,7 @@
   --tropo-tag-hover: #075985;
   --tropo-dot: #38bdf8;
   --tropo-progress: #0ea5e9;
-  --tropo-scroll-btn: #0ea5e9;
+  --tropo-footer-btn: #0ea5e9;
   --tropo-item-card: #091729;
   --tropo-item-footer: #0d1f35;
   --tropo-link: #7dd3fc;
@@ -88,7 +88,7 @@
   --tropo-tag-hover: #581c87;
   --tropo-dot: #e879f9;
   --tropo-progress: #a855f7;
-  --tropo-scroll-btn: #a855f7;
+  --tropo-footer-btn: #a855f7;
   --tropo-item-card: #100b1a;
   --tropo-item-footer: #160f24;
   --tropo-link: #c084fc;
@@ -118,7 +118,7 @@
   --tropo-tag-hover: #166534;
   --tropo-dot: #4ade80;
   --tropo-progress: #22c55e;
-  --tropo-scroll-btn: #22c55e;
+  --tropo-footer-btn: #22c55e;
   --tropo-item-card: #08110a;
   --tropo-item-footer: #0d1a10;
   --tropo-link: #86efac;
@@ -148,7 +148,7 @@
   --tropo-tag-hover: #cbd5e1;
   --tropo-dot: #ef4444;
   --tropo-progress: #3b82f6;
-  --tropo-scroll-btn: #3b82f6;
+  --tropo-footer-btn: #3b82f6;
   --tropo-item-card: #ffffff;
   --tropo-item-footer: #f8fafc;
   --tropo-link: #2563eb;
@@ -178,7 +178,7 @@
   --tropo-tag-hover: #9a3412;
   --tropo-dot: #ff9d00;
   --tropo-progress: #ff8c00;
-  --tropo-scroll-btn: #ff8c00;
+  --tropo-footer-btn: #ff8c00;
   --tropo-item-card: #0a0a0a;
   --tropo-item-footer: #121212;
   --tropo-link: #ff9d00;

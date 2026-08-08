@@ -2,22 +2,15 @@ import React from "react"
 import { Trans, useTranslation } from "react-i18next"
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import {
-  faGlobe,
-  faInfoCircle,
-  faUserEdit,
-} from "@fortawesome/free-solid-svg-icons"
+import { faGlobe, faUserEdit } from "@fortawesome/free-solid-svg-icons"
 import { faGithub } from "@fortawesome/free-brands-svg-icons"
 
 import { InfoModal } from "@tropo/react"
 import { useAppStore } from "@tropo/core"
 import { getProviderInfo } from "../provider"
 
-import "./About.css"
-
 // COMPONENT About
 const About = () => {
-  const isOnline = useAppStore((s) => s.isOnline)
   const showAbout = useAppStore((s) => s.showAbout)
   const setShowAbout = useAppStore((s) => s.setShowAbout)
   const [_] = useTranslation()
@@ -91,10 +84,6 @@ const About = () => {
           </div>
         </>
       </InfoModal>
-      <div className="About" onClick={() => setShowAbout(true)}>
-        <FontAwesomeIcon icon={faInfoCircle} />
-        {!isOnline && <div className="offline">{_("Offline mode")}</div>}
-      </div>
     </>
   )
 }

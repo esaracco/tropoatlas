@@ -1,5 +1,6 @@
 .Result {
   position: relative;
+  padding-bottom: calc(var(--infobar-height, 40px) + 15px);
 }
 
 .Result .top-progress {

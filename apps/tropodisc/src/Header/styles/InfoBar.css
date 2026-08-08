@@ -1,19 +1,19 @@
 .InfoBar {
-  transform: rotate(-90deg) translate(-100%, 0);
-  transform-origin: 0 0;
   position: fixed;
-  top: 62px;
+  bottom: 0;
+  left: 0;
+  width: 100%;
   z-index: 1020;
   font-size: 0.72rem;
   line-height: 1;
   letter-spacing: 0.02em;
   background: var(--tropo-surface-2);
-  border: 1px solid var(--tropo-border);
-  padding: 5px 10px;
+  border-top: 1px solid var(--tropo-border);
+  padding: 8px 10px;
   color: var(--tropo-text-muted);
-  border-radius: 0 0 6px 6px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.2);
   backdrop-filter: blur(8px);
+  text-align: center;
   transition:
     color 0.3s,
     background 0.3s;
@@ -29,4 +29,15 @@
   color: var(--tropo-danger-text);
   border-color: var(--tropo-danger-border);
   font-weight: 600;
+}
+
+.InfoBar .offline-badge {
+  font-size: 0.75rem;
+  color: var(--tropo-danger-text);
+  font-weight: bold;
+  background: var(--tropo-danger-bg);
+  border: 1px solid var(--tropo-danger-border);
+  border-radius: 4px;
+  padding: 1px 6px;
+  display: inline-block;
 }

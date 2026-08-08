@@ -1,0 +1,14 @@
+.AboutButton {
+  cursor: pointer;
+  color: var(--tropo-footer-btn);
+  font-size: 1.5rem;
+  transition: color 0.3s;
+}
+
+.AboutButton:hover {
+  color: var(--tropo-accent-hover);
+}
+
+.AboutButton .fa-circle-info {
+  filter: drop-shadow(0 0 3px rgba(0, 0, 0, 0.4));
+}

@@ -2,6 +2,8 @@ html,
 #root {
   background: var(--tropo-bg);
   color: var(--tropo-text);
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
   transition:
     background 0.3s,
     color 0.3s;

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, useRef } from "react"
 import { useCollectionStore } from "@tropo/core"
 import { useTranslation } from "react-i18next"
 
@@ -7,6 +7,7 @@ import { faChevronDown, faChevronUp } from "@fortawesome/free-solid-svg-icons"
 
 import "./styles/InfoBar.css"
 
+import { AboutButton } from "@tropo/react"
 import { useAppStore } from "@tropo/core"
 
 // COMPONENT InfoBar
@@ -21,6 +22,24 @@ const InfoBar = () => {
   const selected = useCollectionStore((s) => s.selected)
   const items = useCollectionStore((s) => s.items)
   const [_] = useTranslation()
+  const isOnline = useAppStore((s) => s.isOnline)
+  const setShowAbout = useAppStore((s) => s.setShowAbout)
+  const infoBarRef = useRef(null)
+
+  // EFFECT: Track InfoBar height to adjust bottom padding
+  useEffect(() => {
+    if (!infoBarRef.current) return
+    const resizeObserver = new ResizeObserver(() => {
+      if (infoBarRef.current) {
+        document.documentElement.style.setProperty(
+          "--infobar-height",
+          `${infoBarRef.current.offsetHeight}px`,
+        )
+      }
+    })
+    resizeObserver.observe(infoBarRef.current)
+    return () => resizeObserver.disconnect()
+  }, [])
 
   // EFFECT
   useEffect(() => {
@@ -55,11 +74,11 @@ const InfoBar = () => {
         }
         return (
           <>
+            {label}
             <FontAwesomeIcon
               icon={dir === "desc" ? faChevronDown : faChevronUp}
               style={{ marginRight: "5px" }}
             />
-            {label}
           </>
         )
       }
@@ -107,8 +126,26 @@ const InfoBar = () => {
   // RENDER
   return (
     !loading && (
-      <div className={`InfoBar ${noResult ? "noresult" : ""}`}>
-        {noResult ? _("No result") : info}
+      <div
+        ref={infoBarRef}
+        className={`InfoBar fixed-bottom d-flex flex-column ${
+          noResult ? "noresult" : ""
+        }`}
+      >
+        {!isOnline && (
+          <div className="w-100 text-center mb-1">
+            <span className="offline-badge">{_("Offline mode")}</span>
+          </div>
+        )}
+        <div className="d-flex align-items-center justify-content-between w-100 gap-1">
+          <div style={{ width: "80px", textAlign: "left" }}>
+            <AboutButton onClick={() => setShowAbout(true)} />
+          </div>
+          <div className="text-center flex-grow-1">
+            {noResult ? _("No result") : info}
+          </div>
+          <div style={{ width: "80px" }}></div>
+        </div>
       </div>
     )
   )
