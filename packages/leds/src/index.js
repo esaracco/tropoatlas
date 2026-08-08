@@ -40,40 +40,46 @@ export class LedsClient {
     }
   }
 
-  setLeds(props = {}) {
-    const {
-      place,
-      color,
-      intensity,
-      blink,
-      noreset = false,
-      keepalive = false,
-    } = props
-    const params = new URLSearchParams()
+  setLeds(props) {
+    const isReset =
+      !props || (Object.keys(props).length === 0 && !Array.isArray(props))
 
-    // Modular and safe URL construction (automatic URL encoding, e.g. # -> %23)
-    if (place !== undefined) {
-      params.append("leds", Array.isArray(place) ? place.join(",") : place)
-    }
-    if (color !== undefined) {
-      params.append("color", color)
-    }
-    if (intensity !== undefined) {
-      params.append("intensity", intensity)
-    }
-    if (blink !== undefined) {
-      params.append("blink", blink)
-    }
-
-    // Add noreset only if there are specific actions to perform
-    if (place !== undefined || color !== undefined) {
-      params.append("noreset", Number(noreset))
-      return this.#request(`${this.apiBase}?${params.toString()}`, {
-        keepalive,
+    let payload = []
+    if (!isReset) {
+      const items = Array.isArray(props) ? props : [props]
+      payload = items.map((item) => {
+        const data = {}
+        if (item.place !== undefined) {
+          data.leds = Array.isArray(item.place)
+            ? item.place.join(",")
+            : String(item.place)
+        }
+        if (item.color !== undefined) {
+          data.color = String(item.color)
+        }
+        if (item.intensity !== undefined) {
+          data.intensity = item.intensity
+        }
+        if (item.blink !== undefined) {
+          data.blink = Number(item.blink)
+        }
+        if (item.place !== undefined || item.color !== undefined) {
+          data.noreset = Number(item.noreset || false)
+        }
+        return data
       })
     }
 
-    return this.#request(this.apiBase, { keepalive })
+    const body = new URLSearchParams()
+    body.append("data", JSON.stringify(payload))
+
+    const keepalive = !Array.isArray(props) && props ? props.keepalive : false
+
+    return this.#request(this.apiBase, {
+      method: "POST",
+      body,
+      keepalive,
+    })
   }
 
   setRuler(props = {}) {

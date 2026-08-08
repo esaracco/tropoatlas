@@ -254,6 +254,7 @@ const Result = () => {
           let hasLit = false
 
           // Iterate layers by display priority
+          const ledCommands = []
           for (const layerType of DISPLAY_PRIORITY) {
             const chronoIndex = activeLayers.indexOf(layerType)
             if (chronoIndex === -1) continue // Skip if layer is not active
@@ -267,7 +268,7 @@ const Result = () => {
               intensityValues[Math.min(distance, intensityValues.length - 1)]
 
             if (layerType === "search" && placesSearch.length > 0) {
-              await Leds.setLeds({
+              ledCommands.push({
                 place: placesSearch,
                 color: Settings.ledsSearchColor,
                 intensity: intensity < 1.0 ? intensity : undefined,
@@ -276,7 +277,7 @@ const Result = () => {
               })
               hasLit = true
             } else if (layerType === "categories" && placesStyles.length > 0) {
-              await Leds.setLeds({
+              ledCommands.push({
                 place: placesStyles,
                 color: Settings.ledsStylesColor,
                 intensity: intensity < 1.0 ? intensity : undefined,
@@ -284,7 +285,7 @@ const Result = () => {
               })
               hasLit = true
             } else if (layerType === "creators" && placesArtists.length > 0) {
-              await Leds.setLeds({
+              ledCommands.push({
                 place: placesArtists,
                 color: Settings.ledsArtistsColor,
                 intensity: intensity < 1.0 ? intensity : undefined,
@@ -292,7 +293,7 @@ const Result = () => {
               })
               hasLit = true
             } else if (layerType === "modal") {
-              await Leds.setLeds({
+              ledCommands.push({
                 place: modalData.place,
                 color: Settings.ledsAlbumColor,
                 intensity: undefined, // Always 100%
@@ -300,6 +301,9 @@ const Result = () => {
               })
               hasLit = true
             }
+          }
+          if (ledCommands.length > 0) {
+            await Leds.setLeds(ledCommands)
           }
         } else if (turnOffLeds.current) {
           turnOffLeds.current = false

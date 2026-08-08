@@ -60,26 +60,38 @@ Once started, the board will listen for HTTP requests on port **80**.
 ## Turn on LEDs
 
 ```
-GET /leds
+POST /leds
 ```
 
-### Parameters
+### Payload
 
-| Parameter   | Required | Description                                                    |
+The endpoint expects a form parameter named `data` containing a **JSON array** of LED command objects. If the array is empty (`[]`), all LEDs are turned off.
+
+#### JSON Object Properties
+
+| Property    | Required | Description                                                    |
 | ----------- | -------- | -------------------------------------------------------------- |
-| `leds`      | ✅       | Comma-separated list of LED indices.                           |
-| `color`     | ✅       | RGB color as `R,G,B` (0–255).                                  |
+| `leds`      | ✅       | Comma-separated list of LED indices (e.g., `"1,30,500"`).      |
+| `color`     | ✅       | RGB color as `"R,G,B"` (0–255).                                |
 | `intensity` | No       | Float (0.0 to 1.0) to dynamically scale the brightness.        |
 | `blink`     | No       | `1` to apply a blinking animation (toggles every 500ms).       |
 | `noreset`   | No       | `1` to preserve the current LEDs before applying the new ones. |
 
 ### Example
 
+Send a `POST` request (e.g., `application/x-www-form-urlencoded`) with the `data` parameter:
+
 ```
-GET /leds?leds=1,30,500&color=50,25,200&intensity=0.4&blink=1
+data=[{"leds":"1,30,500","color":"50,25,200","intensity":0.4,"blink":1}]
 ```
 
 Turns on LEDs **1**, **30** and **500** using the RGB color `(50,25,200)` scaled down to 40% brightness, and applies a blinking animation.
+
+To clear all LEDs, send an empty array:
+
+```
+data=[]
+```
 
 ---
 

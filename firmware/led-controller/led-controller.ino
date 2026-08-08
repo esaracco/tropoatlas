@@ -1,6 +1,7 @@
 #include <WiFi.h>
 #include <WebServer.h>
 #include <FastLED.h>
+#include <ArduinoJson.h>
 
 /* ===================== CONFIG ===================== */
 
@@ -86,54 +87,87 @@ void runAnimation() {
   ledWatchdogClear();
 }
 
+void applyLeds(const char* ledsArg, const char* colorArg, bool noreset, bool blink, float intensity) {
+  uint8_t r, g, b;
+
+  if (!parseColor(String(colorArg), r, g, b) || (r == 0 && g == 0 && b == 0)) {
+    clearAllLeds(true);
+    return;
+  }
+
+  intensity = constrain(intensity, 0.0f, 1.0f);
+  r = (uint8_t)(r * intensity);
+  g = (uint8_t)(g * intensity);
+  b = (uint8_t)(b * intensity);
+
+  if (!noreset) {
+    clearAllLeds(false);
+  }
+
+  // strtok_r() modifies its input, so make a temporary copy.
+  size_t len = strlen(ledsArg);
+  char buf[len + 1];
+  strcpy(buf, ledsArg);
+
+  char* save;
+  char* tok = strtok_r(buf, ",", &save);
+
+  while (tok) {
+    int pos = atoi(tok);
+
+    if (pos >= 1 && pos <= NUM_STRIPS * NUM_LEDS) {
+      pos--;
+
+      int stripIdx = pos / NUM_LEDS;
+      int ledIdx = pos % NUM_LEDS;
+
+      targetLeds[stripIdx][ledIdx].setRGB(r, g, b);
+      blinkMask[stripIdx][ledIdx] = blink;
+      leds[stripIdx][ledIdx].setRGB(r, g, b);
+    }
+
+    tok = strtok_r(NULL, ",", &save);
+  }
+}
+
 /* ===================== HTTP HANDLERS ===================== */
 
 void onServerEventLeds() {
-  uint8_t r, g, b;
+  JsonDocument doc;
 
   ledWatchdogClear();
-  if (!server.hasArg("leds") || server.arg("color") == "0,0,0" || !parseColor(server.arg("color"), r, g, b)) {
+
+  DeserializationError error = deserializeJson(doc, server.arg("data"));
+
+  if (error || !doc.is<JsonArray>()) {
+    server.send(400, "application/json", "{\"error\":\"Invalid JSON array\"}");
+    return;
+  }
+
+  JsonArray arr = doc.as<JsonArray>();
+
+  if (arr.size() == 0) {
     clearAllLeds(true);
   } else {
-    if (server.hasArg("intensity")) {
-      float intensity = server.arg("intensity").toFloat();
-      intensity = constrain(intensity, 0.0f, 1.0f);
-      r = (uint8_t)(r * intensity);
-      g = (uint8_t)(g * intensity);
-      b = (uint8_t)(b * intensity);
-    }
+    for (JsonObject item : arr) {
+      const char* ledsArg = item["leds"];
+      const char* colorArg = item["color"];
 
-    const String& s = server.arg("leds");
-    char buf[s.length() + 1];
-    s.toCharArray(buf, sizeof(buf));
-
-    char* save;
-    char* tok = strtok_r(buf, ",", &save);
-
-    if (!(server.hasArg("noreset") && server.arg("noreset") == "1")) {
-      clearAllLeds(false);
-    }
-
-    bool hasBlinkArg = server.hasArg("blink");
-    bool doBlink = (hasBlinkArg && server.arg("blink") == "1");
-
-    while (tok) {
-      int pos = atoi(tok);
-      if (pos >= 1 && pos <= NUM_STRIPS * NUM_LEDS) {
-        pos--;
-        int stripIdx = pos / NUM_LEDS;
-        int ledIdx = pos % NUM_LEDS;
-        targetLeds[stripIdx][ledIdx].setRGB(r, g, b);
-        if (hasBlinkArg) {
-          blinkMask[stripIdx][ledIdx] = doBlink;
-        }
-        leds[stripIdx][ledIdx].setRGB(r, g, b);
+      if (!ledsArg || !colorArg) {
+        server.send(400, "application/json", "{\"error\":\"leds and color are required\"}");
+        return;
       }
-      tok = strtok_r(NULL, ",", &save);
+
+      bool noreset = item["noreset"] == 1;
+      bool blink = item["blink"] == 1;
+      float intensity = item["intensity"] | 1.0f;
+
+      applyLeds(ledsArg, colorArg, noreset, blink, intensity);
     }
-    FastLED.show();
-    ledWatchdogKick();
   }
+
+  FastLED.show();
+  ledWatchdogKick();
 
   server.send(200);
 }
@@ -170,7 +204,7 @@ void setup() {
 
   FastLED.setBrightness(50);
 
-  server.on("/leds", HTTP_GET, onServerEventLeds);
+  server.on("/leds", HTTP_POST, onServerEventLeds);
   server.on("/ruler", HTTP_GET, onServerEventRuler);
   server.begin();
 
