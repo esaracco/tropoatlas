@@ -282,6 +282,7 @@ const Result = () => {
                 color: Settings.ledsAlbumColor,
                 intensity: undefined, // Always 100%
                 noreset: hasLit,
+                blink: true,
               })
               hasLit = true
             }
