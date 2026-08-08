@@ -132,7 +132,7 @@ input.form-control-xs {
 }
 
 .nav-tabs .nav-link.active {
-  background: var(--tropo-surface-2) !important;
+  background: var(--tropo-surface) !important;
   color: var(--tropo-text) !important;
   border-color: var(--tropo-border) var(--tropo-border) transparent !important;
 }
@@ -155,6 +155,11 @@ input.form-control-xs {
   background: var(--tropo-surface-3) !important;
   border-color: var(--tropo-accent) !important;
   box-shadow: none !important;
+}
+
+.form-check-input:checked {
+  background-color: var(--tropo-accent) !important;
+  border-color: var(--tropo-accent) !important;
 }
 
 /* ── Toasts ───────────────────────────────────────────────── */

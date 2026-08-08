@@ -19,6 +19,7 @@ const InfoBar = () => {
   const styles = useCollectionStore((s) => s.categories)
   const creators = useCollectionStore((s) => s.creators)
   const selected = useCollectionStore((s) => s.selected)
+  const items = useCollectionStore((s) => s.items)
   const [_] = useTranslation()
 
   // EFFECT
@@ -29,7 +30,7 @@ const InfoBar = () => {
     if (loading) {
       setInfo(_("Synchronization in progress..."))
       // Search ok
-    } else if (styles.length && displayCount) {
+    } else if (displayCount > 0) {
       // Method _getSortLabel()
       const _getSortLabel = (s) => {
         const [field, dir] = s.split("_")
@@ -85,9 +86,9 @@ const InfoBar = () => {
         </>,
       )
       // No result
-    } else if (styles.length) {
+    } else if (Object.keys(items).length > 0) {
       setNoResult(true)
-      // Synchro failed
+      // Synchro failed or empty collection
     } else if (!loading) {
       setInfo(_("Synchronization failed!"))
     }
@@ -98,6 +99,7 @@ const InfoBar = () => {
     selected.categories,
     sort,
     styles,
+    items,
     creators,
     _,
   ])

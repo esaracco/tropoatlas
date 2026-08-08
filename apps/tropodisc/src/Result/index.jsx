@@ -34,7 +34,7 @@ const Result = () => {
   const fromRuler = useAppStore((s) => s.fromRuler)
   const setFromRuler = useAppStore((s) => s.setFromRuler)
   const searchStr = useAppStore((s) => s.searchStr)
-  const loading = useAppStore((s) => s.loading)
+  const isSyncing = useAppStore((s) => s.isSyncing)
   const progress = useAppStore((s) => s.progress)
   const setDisplayCount = useAppStore((s) => s.setDisplayCount)
   const scrollbarWidth = useScrollbarWidth()
@@ -242,7 +242,7 @@ const Result = () => {
           if (hasCategories) {
             ledCommands.push({
               place: placesStyles,
-              color: Settings.ledsStylesColor,
+              color: Settings.getLedsStylesColor(),
               intensity: 0.05,
               noreset: hasLit,
             })
@@ -253,7 +253,7 @@ const Result = () => {
           if (hasCreators) {
             ledCommands.push({
               place: placesArtists,
-              color: Settings.ledsArtistsColor,
+              color: Settings.getLedsArtistsColor(),
               intensity: 0.5,
               noreset: hasLit,
             })
@@ -264,7 +264,7 @@ const Result = () => {
           if (hasModal) {
             ledCommands.push({
               place: modalData.place,
-              color: Settings.ledsAlbumColor,
+              color: Settings.getLedsAlbumColor(),
               intensity: 0.1,
               blink: true,
               noreset: hasLit,
@@ -313,7 +313,7 @@ const Result = () => {
         <AlbumModal modalData={modalData} setModalData={setModalData} />
       )}
       <div className="Result">
-        {loading && !result.length && (
+        {isSyncing && (
           <div className="sync-overlay">
             <div className="sync-card">
               <div className="sync-icon-wrapper">

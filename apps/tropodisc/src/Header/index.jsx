@@ -10,6 +10,8 @@ import * as Settings from "../utils/settings"
 import ResetButton from "./ResetButton"
 import SynchroButton from "./SynchroButton"
 import LedsButton from "./LedsButton"
+import SettingsButton from "./SettingsButton"
+import SettingsModal from "../Settings/SettingsModal"
 import InfoBar from "./InfoBar"
 
 import { useAppStore } from "@tropo/core"
@@ -31,6 +33,7 @@ const Header = () => {
   const setSort = useCollectionStore((s) => s.setSort)
   const [_] = useTranslation()
   const [expanded, setExpanded] = useState(false)
+  const [showSettings, setShowSettings] = useState(false)
 
   const customFields = getItem("customFieldsInfo") || {}
 
@@ -132,6 +135,12 @@ const Header = () => {
                   className={`justify-content-end flex-grow-1 align-items-stretch align-items-${expandBreakpoint}-center mb-0 flex-column flex-${expandBreakpoint}-row flex-nowrap gap-2 gap-${expandBreakpoint}-0`}
                 >
                   <ResetButton />
+                  <SettingsButton
+                    onClick={() => {
+                      setExpanded(false)
+                      setShowSettings(true)
+                    }}
+                  />
                   <HeaderButton
                     label={_("Styles")}
                     type="checkbox"
@@ -203,6 +212,10 @@ const Header = () => {
         </Container>
       </Navbar>
       <InfoBar />
+      <SettingsModal
+        show={showSettings}
+        onHide={() => setShowSettings(false)}
+      />
     </>
   )
 }

@@ -63,5 +63,21 @@
   "Year": "Année",
   "You are offline!": "Vous êtes hors ligne!",
   "You are offline. Your changes have been saved locally and will be synchronized when the connection is restored.": "Vous êtes hors ligne. Vos modifications ont été enregistrées localement et seront synchronisées dès que la connexion sera rétablie.",
-  "LEDs are enabled but your data provider is not configured to support the physical location field (place).": "Les LEDs sont activées mais votre fournisseur de données n'est pas configuré pour supporter le champ d'emplacement physique (place)."
+  "LEDs are enabled but your data provider is not configured to support the physical location field (place).": "Les LEDs sont activées mais votre fournisseur de données n'est pas configuré pour supporter le champ d'emplacement physique (place).",
+  "Warning: Changing these values requires a manual resynchronization to take effect.": "Attention : La modification de ces valeurs nécessite une resynchronisation manuelle pour être prise en compte.",
+  "Settings": "Paramètres",
+  "General": "Général",
+  "Currency": "Devise",
+  "LEDs": "LEDs",
+  "Artists Color (RGB)": "Couleur des Artistes (RGB)",
+  "Must be a valid RGB format (e.g. 255,0,0) and not 0,0,0": "Doit être un format RGB valide (ex: 255,0,0) et non 0,0,0",
+  "Styles Color (RGB)": "Couleur des Styles (RGB)",
+  "Album Color (RGB)": "Couleur de l'Album (RGB)",
+  "Your data provider is not configured to support the physical location field (place) but LEDs are enabled.": "Votre fournisseur de données n'est pas configuré pour supporter le champ d'emplacement physique (place) mais les LEDs sont activées.",
+  "Formats (comma separated, or `all`)": "Formats (séparés par des virgules, ou 'all')",
+  "Custom Fields Mapping": "Mapping des champs personnalisés",
+  "Location Field (e.g., `place`)": "Champ d'emplacement (ex: 'place')",
+  "Price Field (e.g., `price`)": "Champ de prix (ex: 'price')",
+  "Styles Field (e.g., `styles`)": "Champ de styles (ex: 'styles')",
+  "Only show albums that have at least one custom field": "N'afficher que les albums ayant au moins un champ personnalisé"
 }

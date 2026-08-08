@@ -1,8 +1,11 @@
 import sleep from "sleep-promise"
-import { normalize, BasePlugin } from "@tropo/core"
+import { normalize, BasePlugin, useSettingsStore } from "@tropo/core"
 import vinylImg192 from "./assets/vinyl-300.png"
 import vinylImg300 from "./assets/vinyl-300.png"
 import logo from "./assets/logo.png"
+
+// Marker function for i18n static extraction
+const _ = (s) => s
 
 export class DiscogsPlugin extends BasePlugin {
   constructor(config = {}) {
@@ -10,22 +13,42 @@ export class DiscogsPlugin extends BasePlugin {
     const env = config.env || {}
     this.token = env.VITE_DISCOGS_TOKEN || config.token
     this.user = env.VITE_DISCOGS_USER || config.user
-    this.itemsPerRequest =
-      Number(
-        env.VITE_DISCOGS_API_ITEMS_PER_REQUEST || config.itemsPerRequest,
-      ) || 250
-    this.requestDelay =
-      Number(env.VITE_DISCOGS_API_REQUEST_DELAY || config.requestDelay) || 2
-    this.formats = env.VITE_DISCOGS_FORMATS || config.formats || "all"
-    this.placeField = env.VITE_DISCOGS_FIELD_PLACE || config.placeField
-    this.priceField = env.VITE_DISCOGS_FIELD_PRICE || config.priceField
-    this.stylesField = env.VITE_DISCOGS_FIELD_STYLES || config.stylesField
-    this.fieldsRequired =
-      env.VITE_DISCOGS_FIELDS_REQUIRED || config.fieldsRequired || "no"
     this.devMode = config.devMode || false
 
     this.fieldsId = {}
     this.apiBase = config.apiBase || "https://api.discogs.com"
+  }
+
+  get config() {
+    return useSettingsStore.getState().pluginsConfig.discogs || {}
+  }
+
+  get itemsPerRequest() {
+    return Number(this.config.apiItemsPerRequest) || 250
+  }
+
+  get requestDelay() {
+    return Number(this.config.apiRequestDelay) || 2
+  }
+
+  get formats() {
+    return this.config.formats || "all"
+  }
+
+  get placeField() {
+    return this.config.fieldPlace
+  }
+
+  get priceField() {
+    return this.config.fieldPrice
+  }
+
+  get stylesField() {
+    return this.config.fieldStyles
+  }
+
+  get fieldsRequired() {
+    return this.config.fieldsRequired || "no"
   }
 
   getProviderInfo() {
@@ -37,6 +60,50 @@ export class DiscogsPlugin extends BasePlugin {
         !this.formats ||
         this.formats === "all" ||
         this.formats.indexOf(",") > -1,
+    }
+  }
+
+  getSettingsSchema() {
+    return [
+      {
+        key: "formats",
+        label: _("Formats (comma separated, or `all`)"),
+        type: "text",
+        requiresResync: true,
+      },
+      { type: "header", label: _("Custom Fields Mapping") },
+      {
+        key: "fieldPlace",
+        label: _("Location Field (e.g., `place`)"),
+        type: "text",
+        requiresResync: true,
+      },
+      {
+        key: "fieldPrice",
+        label: _("Price Field (e.g., `price`)"),
+        type: "text",
+        requiresResync: true,
+      },
+      {
+        key: "fieldStyles",
+        label: _("Styles Field (e.g., `styles`)"),
+        type: "text",
+        requiresResync: true,
+      },
+      {
+        key: "fieldsRequired",
+        label: _("Only show albums that have at least one custom field"),
+        type: "boolean",
+        requiresResync: true,
+      },
+    ]
+  }
+
+  getDraftCapabilities(config) {
+    return {
+      supportsPlace: !!config.fieldPlace,
+      supportsPrice: !!config.fieldPrice,
+      supportsCategories: !!config.fieldStyles,
     }
   }
 

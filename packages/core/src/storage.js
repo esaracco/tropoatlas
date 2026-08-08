@@ -39,9 +39,16 @@ export const getItem = (name) =>
 
 export const removeItem = (name) => localStorage.removeItem(buildCacheKey(name))
 
+export const SETTINGS_STORE_KEY = "settings-v1"
+
 export const clearAllCaches = async (keysToPreserve = []) => {
   const appName = import.meta.env.VITE_APP_NAME || "tropoatlas"
   const prefix = `${appName}-`
+
+  const allKeysToPreserve = [
+    ...keysToPreserve,
+    buildCacheKey(SETTINGS_STORE_KEY),
+  ]
 
   // 1. Caches API
   const cacheNames = await caches.keys()
@@ -55,7 +62,7 @@ export const clearAllCaches = async (keysToPreserve = []) => {
   const lsKeysToRemove = []
   for (let i = 0; i < localStorage.length; i++) {
     const key = localStorage.key(i)
-    if (key && key.startsWith(prefix) && !keysToPreserve.includes(key)) {
+    if (key && key.startsWith(prefix) && !allKeysToPreserve.includes(key)) {
       lsKeysToRemove.push(key)
     }
   }

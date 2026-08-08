@@ -30,7 +30,9 @@ const App = () => {
   const [_] = useTranslation()
   const setIsOnline = useAppStore((s) => s.setIsOnline)
   const setLoading = useAppStore((s) => s.setLoading)
+  const setIsSyncing = useAppStore((s) => s.setIsSyncing)
   const setProgress = useAppStore((s) => s.setProgress)
+  const setDisplayCount = useAppStore((s) => s.setDisplayCount)
 
   // EFFECT 1
   useEffect(() => {
@@ -130,13 +132,16 @@ const App = () => {
           })
           setItems(mappedItems)
           setCategories(stylesArr)
+          setDisplayCount(Object.keys(mappedItems).length)
           setLoading(false)
         } else {
           // Fetch from provider
+          setIsSyncing(true)
           plugin
             .getCollection((prog) => setProgress(prog))
             .then((items) => {
               setItems(items)
+              setDisplayCount(Object.keys(items).length)
 
               const categories = new Set()
 
@@ -165,6 +170,7 @@ const App = () => {
             })
             .finally(() => {
               setLoading(false)
+              setIsSyncing(false)
             })
         }
       } catch (e) {

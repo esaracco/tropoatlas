@@ -1,11 +1,12 @@
 import { create } from "zustand"
 import { persist } from "zustand/middleware"
-import { buildCacheKey } from "./storage"
+import { buildCacheKey, SETTINGS_STORE_KEY } from "./storage"
 
 // Generic App UI Store
 export const useAppStore = create((set) => ({
   isOnline: typeof navigator !== "undefined" ? navigator.onLine : true,
   loading: false,
+  isSyncing: false,
   searchStr: "",
   fromRuler: false,
   progress: 0,
@@ -14,6 +15,7 @@ export const useAppStore = create((set) => ({
 
   setIsOnline: (isOnline) => set({ isOnline }),
   setLoading: (loading) => set({ loading }),
+  setIsSyncing: (isSyncing) => set({ isSyncing }),
   setSearchStr: (searchStr) => set({ searchStr }),
   setFromRuler: (fromRuler) => set({ fromRuler }),
   setProgress: (progress) => set({ progress }),
@@ -65,6 +67,53 @@ export const useCollectionStore = create(
         sort: state.sort,
         selected: state.selected,
       }),
+    },
+  ),
+)
+// Settings Store
+export const useSettingsStore = create(
+  persist(
+    (set) => ({
+      general: {
+        currency: import.meta.env.VITE_CURRENCY || "EUR",
+      },
+      hardware: {
+        ledsArtistsColor:
+          import.meta.env.VITE_LEDS_ARTISTS_COLOR || "255, 0, 0",
+        ledsStylesColor: import.meta.env.VITE_LEDS_STYLES_COLOR || "0, 0, 255",
+        ledsAlbumColor:
+          import.meta.env.VITE_LEDS_ALBUM_COLOR || "255, 255, 255",
+      },
+      pluginsConfig: {
+        discogs: {
+          apiItemsPerRequest:
+            parseInt(import.meta.env.VITE_DISCOGS_API_ITEMS_PER_REQUEST, 10) ||
+            500,
+          apiRequestDelay:
+            parseInt(import.meta.env.VITE_DISCOGS_API_REQUEST_DELAY, 10) ||
+            1200,
+          formats: import.meta.env.VITE_DISCOGS_FORMATS || "Vinyl,CD",
+          fieldPlace: import.meta.env.VITE_DISCOGS_FIELD_PLACE || "",
+          fieldPrice: import.meta.env.VITE_DISCOGS_FIELD_PRICE || "",
+          fieldStyles: import.meta.env.VITE_DISCOGS_FIELD_STYLES || "",
+          fieldsRequired: import.meta.env.VITE_DISCOGS_FIELDS_REQUIRED || "",
+        },
+      },
+      setGeneral: (updates) =>
+        set((state) => ({ general: { ...state.general, ...updates } })),
+      setHardware: (updates) =>
+        set((state) => ({ hardware: { ...state.hardware, ...updates } })),
+      setPluginConfig: (pluginName, updates) =>
+        set((state) => ({
+          pluginsConfig: {
+            ...state.pluginsConfig,
+            [pluginName]: { ...state.pluginsConfig[pluginName], ...updates },
+          },
+        })),
+    }),
+    {
+      name: buildCacheKey(SETTINGS_STORE_KEY),
+      version: 2,
     },
   ),
 )

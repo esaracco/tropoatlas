@@ -29,11 +29,33 @@ export class BasePlugin {
   }
 
   /**
+   * Return the plugin's configuration schema for dynamic UI generation.
+   * @returns {Array<Object>}
+   */
+  getSettingsSchema() {
+    return []
+  }
+
+  /**
    * Validates the configuration/environment variables for the plugin.
    * @param {function} onConfigError - Callback to trigger on error.
    */
   validateSettings(onConfigError) {
     throw new Error("validateSettings() must be implemented by the plugin.")
+  }
+
+  /**
+   * Return information about which custom fields the provider supports based on a draft configuration.
+   * This is a synchronous, offline check for UI reactivity.
+   * @param {Object} config - The plugin's draft configuration object.
+   * @returns {CustomFieldsInfo}
+   */
+  getDraftCapabilities(config) {
+    return {
+      supportsPlace: false,
+      supportsPrice: false,
+      supportsCategories: false,
+    }
   }
 
   /**

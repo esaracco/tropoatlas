@@ -6,14 +6,20 @@ export const env = import.meta.env.MODE
 
 export const appName = import.meta.env.VITE_APP_NAME
 
-export const currency = import.meta.env.VITE_CURRENCY || "€"
+import { useSettingsStore } from "@tropo/core"
 
 export const setLeds = import.meta.env.VITE_SET_LEDS || "no"
-export const ledsArtistsColor =
-  import.meta.env.VITE_LEDS_ARTISTS_COLOR || "0,0,255"
-export const ledsStylesColor =
-  import.meta.env.VITE_LEDS_STYLES_COLOR || "0,255,0"
-export const ledsAlbumColor = import.meta.env.VITE_LEDS_ALBUM_COLOR || "255,0,0"
+
+export const getCurrency = () => useSettingsStore.getState().general.currency
+
+export const getLedsArtistsColor = () =>
+  useSettingsStore.getState().hardware.ledsArtistsColor
+
+export const getLedsStylesColor = () =>
+  useSettingsStore.getState().hardware.ledsStylesColor
+
+export const getLedsAlbumColor = () =>
+  useSettingsStore.getState().hardware.ledsAlbumColor
 
 // Function to validate settings, to be called from a React
 // component (e.g. App.jsx)

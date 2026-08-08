@@ -241,7 +241,7 @@ const AlbumModal = ({ modalData, setModalData }) => {
                       data-field="price"
                       onChange={onChange}
                     />{" "}
-                    {Settings.currency || "€"}
+                    {Settings.getCurrency() || "€"}
                   </td>
                 </tr>
               )}
