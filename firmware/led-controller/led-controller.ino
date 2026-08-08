@@ -158,8 +158,8 @@ void onServerEventLeds() {
         return;
       }
 
-      bool noreset = item["noreset"] == 1;
-      bool blink = item["blink"] == 1;
+      bool noreset = item["noreset"] | false;
+      bool blink = item["blink"] | false;
       float intensity = item["intensity"] | 1.0f;
 
       applyLeds(ledsArg, colorArg, noreset, blink, intensity);

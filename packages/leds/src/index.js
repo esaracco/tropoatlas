@@ -61,10 +61,10 @@ export class LedsClient {
           data.intensity = item.intensity
         }
         if (item.blink !== undefined) {
-          data.blink = Number(item.blink)
+          data.blink = Boolean(item.blink)
         }
         if (item.place !== undefined || item.color !== undefined) {
-          data.noreset = Number(item.noreset || false)
+          data.noreset = Boolean(item.noreset || false)
         }
         return data
       })
