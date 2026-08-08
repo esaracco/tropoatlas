@@ -133,10 +133,36 @@ const SettingsModal = ({ show, onHide }) => {
     return Number(r) <= 255 && Number(g) <= 255 && Number(b) <= 255
   }
 
+  const ColorFeedback = () => (
+    <Form.Control.Feedback type="invalid">
+      {_("Must be a valid RGB format (e.g. 255,0,0) and not 0,0,0")}
+    </Form.Control.Feedback>
+  )
+
+  const handleClose = () => {
+    const corrections = {}
+    if (!isValidColor(hardware.ledsArtistsColor)) {
+      corrections.ledsArtistsColor =
+        import.meta.env.VITE_LEDS_ARTISTS_COLOR || "0,0,130"
+    }
+    if (!isValidColor(hardware.ledsStylesColor)) {
+      corrections.ledsStylesColor =
+        import.meta.env.VITE_LEDS_STYLES_COLOR || "0,150,0"
+    }
+    if (!isValidColor(hardware.ledsAlbumColor)) {
+      corrections.ledsAlbumColor =
+        import.meta.env.VITE_LEDS_ALBUM_COLOR || "255,0,0"
+    }
+    if (Object.keys(corrections).length > 0) {
+      setHardware(corrections)
+    }
+    onHide()
+  }
+
   return (
     <Modal
       show={show}
-      onHide={onHide}
+      onHide={handleClose}
       size="lg"
       scrollable
       fullscreen="sm-down"
@@ -186,11 +212,7 @@ const SettingsModal = ({ show, onHide }) => {
                       setHardware({ ledsArtistsColor: e.target.value })
                     }
                   />
-                  <Form.Control.Feedback type="invalid">
-                    {_(
-                      "Must be a valid RGB format (e.g. 255,0,0) and not 0,0,0",
-                    )}
-                  </Form.Control.Feedback>
+                  <ColorFeedback />
                 </Form.Group>
                 <Form.Group className="mb-3">
                   <Form.Label>{_("Styles Color (RGB)")}</Form.Label>
@@ -202,6 +224,7 @@ const SettingsModal = ({ show, onHide }) => {
                       setHardware({ ledsStylesColor: e.target.value })
                     }
                   />
+                  <ColorFeedback />
                 </Form.Group>
                 <Form.Group className="mb-3">
                   <Form.Label>{_("Album Color (RGB)")}</Form.Label>
@@ -213,6 +236,7 @@ const SettingsModal = ({ show, onHide }) => {
                       setHardware({ ledsAlbumColor: e.target.value })
                     }
                   />
+                  <ColorFeedback />
                 </Form.Group>
               </Form>
             </Tab>
@@ -236,7 +260,7 @@ const SettingsModal = ({ show, onHide }) => {
         </Tabs>
       </Modal.Body>
       <Modal.Footer>
-        <Button variant="secondary" onClick={onHide}>
+        <Button variant="secondary" onClick={handleClose}>
           {_("Close")}
         </Button>
       </Modal.Footer>

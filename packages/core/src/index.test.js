@@ -59,7 +59,7 @@ describe("useCollectionStore", () => {
       selected: {
         creators: ["Pink Floyd"],
         categories: ["Rock"],
-        formats: ["Vinyl"],
+        formats: ["vinyl"],
       },
     })
 

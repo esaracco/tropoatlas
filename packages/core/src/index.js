@@ -78,11 +78,9 @@ export const useSettingsStore = create(
         currency: import.meta.env.VITE_CURRENCY || "EUR",
       },
       hardware: {
-        ledsArtistsColor:
-          import.meta.env.VITE_LEDS_ARTISTS_COLOR || "255, 0, 0",
-        ledsStylesColor: import.meta.env.VITE_LEDS_STYLES_COLOR || "0, 0, 255",
-        ledsAlbumColor:
-          import.meta.env.VITE_LEDS_ALBUM_COLOR || "255, 255, 255",
+        ledsArtistsColor: import.meta.env.VITE_LEDS_ARTISTS_COLOR || "0,0,130",
+        ledsStylesColor: import.meta.env.VITE_LEDS_STYLES_COLOR || "0,150,0",
+        ledsAlbumColor: import.meta.env.VITE_LEDS_ALBUM_COLOR || "255,0,0",
       },
       pluginsConfig: {
         discogs: {
@@ -92,7 +90,7 @@ export const useSettingsStore = create(
           apiRequestDelay:
             parseInt(import.meta.env.VITE_DISCOGS_API_REQUEST_DELAY, 10) ||
             1200,
-          formats: import.meta.env.VITE_DISCOGS_FORMATS || "Vinyl,CD",
+          formats: import.meta.env.VITE_DISCOGS_FORMATS || "vinyl",
           fieldPlace: import.meta.env.VITE_DISCOGS_FIELD_PLACE || "",
           fieldPrice: import.meta.env.VITE_DISCOGS_FIELD_PRICE || "",
           fieldStyles: import.meta.env.VITE_DISCOGS_FIELD_STYLES || "",
