@@ -41,6 +41,10 @@ export const removeItem = (name) => localStorage.removeItem(buildCacheKey(name))
 
 export const SETTINGS_STORE_KEY = "settings-v1"
 
+// Current version of the storage schema. Increment when local storage
+// structure changes to force a re-sync.
+export const STORAGE_SCHEMA_VERSION = 1
+
 export const clearAllCaches = async (keysToPreserve = []) => {
   const appName = import.meta.env.VITE_APP_NAME || "tropoatlas"
   const prefix = `${appName}-`

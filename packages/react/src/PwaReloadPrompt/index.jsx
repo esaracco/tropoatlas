@@ -6,7 +6,6 @@ const PwaReloadPrompt = ({
   message = "Update available! The app will be reloaded.",
   buttonReload = "Reload",
   buttonClose = "Close",
-  onClearCaches,
 }) => {
   const {
     needRefresh: [needRefresh, setNeedRefresh],
@@ -27,9 +26,6 @@ const PwaReloadPrompt = ({
   }
 
   const handleUpdate = async () => {
-    if (onClearCaches) {
-      await onClearCaches()
-    }
     updateServiceWorker(true)
   }
 

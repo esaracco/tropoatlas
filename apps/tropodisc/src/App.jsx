@@ -18,6 +18,7 @@ import {
   setItem,
   clearAllCaches,
   buildCacheKey,
+  STORAGE_SCHEMA_VERSION,
 } from "@tropo/core"
 import { plugin, getProviderInfo, validateProviderSettings } from "./provider"
 
@@ -79,15 +80,14 @@ const App = () => {
     setLoading(true)
 
     const initData = async () => {
-      // 1. Check version and clear cache if updated
-      // eslint-disable-next-line no-undef
-      const appVersion = __APP_VERSION__
-      const versionKey = buildCacheKey("version")
-      const cachedVersion = localStorage.getItem(versionKey)
+      // 1. Check storage schema version and clear cache if updated
+      const schemaVersionKey = buildCacheKey("schema_version")
+      const cachedSchemaVersion = localStorage.getItem(schemaVersionKey)
+      const currentSchemaVersion = String(STORAGE_SCHEMA_VERSION)
 
-      if (appVersion && cachedVersion !== appVersion) {
-        await clearAllCaches([versionKey])
-        localStorage.setItem(versionKey, appVersion)
+      if (cachedSchemaVersion !== currentSchemaVersion) {
+        await clearAllCaches([schemaVersionKey])
+        localStorage.setItem(schemaVersionKey, currentSchemaVersion)
       }
 
       const setItems = useCollectionStore.getState().setItems
@@ -176,7 +176,6 @@ const App = () => {
       <Result />
       <ScrollButton />
       <PwaReloadPrompt
-        onClearCaches={clearAllCaches}
         message={_("Update available! The app will be reloaded.")}
         buttonReload={_("Reload")}
         buttonClose={_("Close")}
