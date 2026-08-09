@@ -4,7 +4,6 @@ import i18n from "i18next"
 import { ToastContainer, toast } from "react-toastify"
 
 import * as Settings from "./utils/settings"
-import * as Leds from "./utils/leds"
 
 import Header from "./Header"
 import About from "./About"
@@ -46,28 +45,14 @@ const App = () => {
         }
       }
     }
-    let _unloadEvent
-
-    if (Settings.setLeds === "yes") {
-      _unloadEvent = () => {
-        // Send the request in the background (keepalive) without blocking the
-        // window close
-        Leds.setLeds({ keepalive: true })
-      }
-      window.addEventListener("pagehide", _unloadEvent)
-    }
-
     window.addEventListener("online", _onlineEvent)
     window.addEventListener("offline", _onlineEvent)
 
     return () => {
       window.removeEventListener("offline", _onlineEvent)
       window.removeEventListener("online", _onlineEvent)
-      if (_unloadEvent) {
-        window.removeEventListener("pagehide", _unloadEvent)
-      }
     }
-  }, [_])
+  })
 
   // EFFECT 2
   useEffect(() => {

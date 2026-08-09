@@ -40,9 +40,8 @@ export class LedsClient {
     }
   }
 
-  setLeds(props) {
-    const isReset =
-      !props || (Object.keys(props).length === 0 && !Array.isArray(props))
+  setLeds(props, fetchOptions = {}) {
+    const isReset = !props || Object.keys(props).length === 0
 
     let payload = []
     if (!isReset) {
@@ -73,12 +72,10 @@ export class LedsClient {
     const body = new URLSearchParams()
     body.append("data", JSON.stringify(payload))
 
-    const keepalive = !Array.isArray(props) && props ? props.keepalive : false
-
     return this.#request(this.apiBase, {
       method: "POST",
       body,
-      keepalive,
+      ...fetchOptions,
     })
   }
 
