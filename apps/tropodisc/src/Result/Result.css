@@ -1,5 +1,6 @@
 .Result {
   position: relative;
+  margin-top: 8px;
   padding-bottom: calc(var(--infobar-height, 40px) + 15px);
 }
 
