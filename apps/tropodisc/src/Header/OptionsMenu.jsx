@@ -8,6 +8,7 @@ import {
   faSync,
   faLightbulb,
   faPalette,
+  faInfoCircle,
 } from "@fortawesome/free-solid-svg-icons"
 import { ConfirmModal, ThemeSelector } from "@tropo/react"
 import { useAppStore, useCollectionStore, clearAllCaches } from "@tropo/core"
@@ -17,6 +18,7 @@ import * as Leds from "../utils/leds"
 const OptionsMenu = ({ onOpenSettings }) => {
   const [_] = useTranslation()
   const isOnline = useAppStore((s) => s.isOnline)
+  const setShowAbout = useAppStore((s) => s.setShowAbout)
   const setFromRuler = useAppStore((s) => s.setFromRuler)
   const clearFilters = useCollectionStore((s) => s.clearFilters)
   const selected = useCollectionStore((s) => s.selected)
@@ -155,6 +157,17 @@ const OptionsMenu = ({ onOpenSettings }) => {
               <span>{_("Leds control")}</span>
             </Dropdown.Item>
           )}
+
+          <Dropdown.Item
+            onClick={() => setShowAbout(true)}
+            className="d-flex align-items-center gap-2 py-2"
+          >
+            <FontAwesomeIcon
+              icon={faInfoCircle}
+              className="options-menu-icon"
+            />
+            <span>{_("About")}</span>
+          </Dropdown.Item>
 
           <Dropdown.Divider />
 

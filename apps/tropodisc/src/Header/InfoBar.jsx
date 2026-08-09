@@ -7,7 +7,6 @@ import { faChevronDown, faChevronUp } from "@fortawesome/free-solid-svg-icons"
 
 import "./styles/InfoBar.css"
 
-import { AboutButton } from "@tropo/react"
 import { useAppStore } from "@tropo/core"
 
 // COMPONENT InfoBar
@@ -23,7 +22,6 @@ const InfoBar = () => {
   const items = useCollectionStore((s) => s.items)
   const [_] = useTranslation()
   const isOnline = useAppStore((s) => s.isOnline)
-  const setShowAbout = useAppStore((s) => s.setShowAbout)
   const infoBarRef = useRef(null)
 
   // EFFECT: Track InfoBar height to adjust bottom padding
@@ -137,14 +135,8 @@ const InfoBar = () => {
             <span className="offline-badge">{_("Offline mode")}</span>
           </div>
         )}
-        <div className="d-flex align-items-center justify-content-between w-100 gap-1">
-          <div style={{ width: "80px", textAlign: "left" }}>
-            <AboutButton onClick={() => setShowAbout(true)} />
-          </div>
-          <div className="text-center flex-grow-1">
-            {noResult ? _("No result") : info}
-          </div>
-          <div style={{ width: "80px" }}></div>
+        <div className="w-100 text-center">
+          {noResult ? _("No result") : info}
         </div>
       </div>
     )
