@@ -3,8 +3,10 @@ import { useCollectionStore } from "@tropo/core"
 import { useTranslation } from "react-i18next"
 import { HeaderButton, Search, ThemeSelector } from "@tropo/react"
 import { normalize, getItem } from "@tropo/core"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faSearch } from "@fortawesome/free-solid-svg-icons"
 
-import { Container, Nav, Navbar, Offcanvas } from "react-bootstrap"
+import { Button, Container, Nav, Navbar, Offcanvas } from "react-bootstrap"
 import * as Settings from "../utils/settings"
 
 import ResetButton from "./ResetButton"
@@ -34,6 +36,16 @@ const Header = () => {
   const [_] = useTranslation()
   const [expanded, setExpanded] = useState(false)
   const [showSettings, setShowSettings] = useState(false)
+  const [showSearch, setShowSearch] = useState(false)
+
+  const toggleSearch = () => {
+    if (showSearch) {
+      setSearchStr("")
+      setShowSearch(false)
+    } else {
+      setShowSearch(true)
+    }
+  }
 
   const customFields = getItem("customFieldsInfo") || {}
 
@@ -120,97 +132,105 @@ const Header = () => {
             )}
           </Navbar.Toggle>
           <div className="d-flex justify-content-center align-items-center flex-grow-1 flex-nowrap">
-            <div className="d-flex justify-content-center align-items-center">
-              <Navbar.Offcanvas
-                id={`offcanvasNavbar-expand-${expandBreakpoint}`}
-                aria-labelledby={`offcanvasNavbarLabel-expand-${expandBreakpoint}`}
-                placement="end"
-                data-bs-theme="dark"
-                className={`header-offcanvas header-offcanvas-${expandBreakpoint}`}
-              >
-                <Offcanvas.Header closeButton />
-                <Offcanvas.Body>
-                  <Nav
-                    className={`justify-content-end flex-grow-1 align-items-stretch align-items-${expandBreakpoint}-center mb-0 flex-column flex-${expandBreakpoint}-row flex-nowrap gap-2 gap-${expandBreakpoint}-0`}
-                  >
-                    <ResetButton />
-                    <SettingsButton
-                      onClick={() => {
-                        setExpanded(false)
-                        setTimeout(() => setShowSettings(true), 350)
-                      }}
-                    />
+            <Navbar.Offcanvas
+              id={`offcanvasNavbar-expand-${expandBreakpoint}`}
+              aria-labelledby={`offcanvasNavbarLabel-expand-${expandBreakpoint}`}
+              placement="end"
+              data-bs-theme="dark"
+              className={`header-offcanvas header-offcanvas-${expandBreakpoint}`}
+            >
+              <Offcanvas.Header closeButton />
+              <Offcanvas.Body>
+                <Nav
+                  className={`justify-content-center align-items-stretch align-items-${expandBreakpoint}-center mb-0 flex-column flex-${expandBreakpoint}-row flex-nowrap gap-2 gap-${expandBreakpoint}-0`}
+                >
+                  <ResetButton />
+                  <SettingsButton
+                    onClick={() => {
+                      setExpanded(false)
+                      setTimeout(() => setShowSettings(true), 350)
+                    }}
+                  />
+                  <HeaderButton
+                    label={_("Styles")}
+                    type="checkbox"
+                    stype="categories"
+                    selected={selected}
+                    content={allCategories}
+                    labels={labels}
+                    onReset={(type) => setFilter(type, [])}
+                    onChangeSelection={getOnChangeSelection("categories")}
+                    normalizeFn={normalize}
+                  />
+                  <HeaderButton
+                    label={_("Artists")}
+                    type="checkbox"
+                    stype="creators"
+                    selected={selected}
+                    content={allCreators}
+                    labels={labels}
+                    onReset={(type) => setFilter(type, [])}
+                    onChangeSelection={getOnChangeSelection("creators")}
+                    normalizeFn={normalize}
+                  />
+                  {showFormats && (
                     <HeaderButton
-                      label={_("Styles")}
+                      label={_("Formats")}
                       type="checkbox"
-                      stype="categories"
+                      stype="formats"
                       selected={selected}
-                      content={allCategories}
+                      content={allFormats}
                       labels={labels}
                       onReset={(type) => setFilter(type, [])}
-                      onChangeSelection={getOnChangeSelection("categories")}
+                      onChangeSelection={getOnChangeSelection("formats")}
                       normalizeFn={normalize}
                     />
-                    <HeaderButton
-                      label={_("Artists")}
-                      type="checkbox"
-                      stype="creators"
-                      selected={selected}
-                      content={allCreators}
-                      labels={labels}
-                      onReset={(type) => setFilter(type, [])}
-                      onChangeSelection={getOnChangeSelection("creators")}
-                      normalizeFn={normalize}
-                    />
-                    {showFormats && (
-                      <HeaderButton
-                        label={_("Formats")}
-                        type="checkbox"
-                        stype="formats"
-                        selected={selected}
-                        content={allFormats}
-                        labels={labels}
-                        onReset={(type) => setFilter(type, [])}
-                        onChangeSelection={getOnChangeSelection("formats")}
-                        normalizeFn={normalize}
-                      />
-                    )}
-                    <HeaderButton
-                      label={_("Sort")}
-                      type="radio"
-                      mark={false}
-                      content={{
-                        added: _("Date added"),
-                        artist: _("Artist"),
-                        rating: _("Note"),
-                        year: _("Year"),
-                        ...(customFields.supportsPlace && {
-                          place: _("Location"),
-                        }),
-                      }}
-                      sort={sort}
-                      onSortChange={setSort}
-                      labels={labels}
-                    />
-                    <SynchroButton />
-                    {Settings.setLeds === "yes" && <LedsButton />}
-                    <ThemeSelector
-                      storageKey="tropodisc-theme"
-                      title={_("Theme")}
-                      ariaLabel={_("Change theme")}
-                    />
-                  </Nav>
-                </Offcanvas.Body>
-              </Navbar.Offcanvas>
-            </div>
-            <Search
-              searchStr={searchStr}
-              setSearchStr={setSearchStr}
-              placeholder={_("artist, album...")}
-            />
+                  )}
+                  <HeaderButton
+                    label={_("Sort")}
+                    type="radio"
+                    mark={false}
+                    content={{
+                      added: _("Date added"),
+                      artist: _("Artist"),
+                      rating: _("Note"),
+                      year: _("Year"),
+                      ...(customFields.supportsPlace && {
+                        place: _("Location"),
+                      }),
+                    }}
+                    sort={sort}
+                    onSortChange={setSort}
+                    labels={labels}
+                  />
+                  <SynchroButton />
+                  {Settings.setLeds === "yes" && <LedsButton />}
+                  <ThemeSelector
+                    storageKey="tropodisc-theme"
+                    title={_("Theme")}
+                    ariaLabel={_("Change theme")}
+                  />
+                </Nav>
+              </Offcanvas.Body>
+            </Navbar.Offcanvas>
+            <Button
+              variant="secondary"
+              className={`HeaderButton search-toggle-btn flex-shrink-0 ${showSearch ? "active" : ""}`}
+              onClick={toggleSearch}
+              aria-label={_("Search")}
+            >
+              <FontAwesomeIcon icon={faSearch} />
+            </Button>
           </div>
         </Container>
       </Navbar>
+      <div className={`search-bar-drawer ${showSearch ? "open" : ""}`}>
+        <Search
+          searchStr={searchStr}
+          setSearchStr={setSearchStr}
+          placeholder={_("artist, album...")}
+        />
+      </div>
       <InfoBar />
       <SettingsModal
         show={showSettings}
