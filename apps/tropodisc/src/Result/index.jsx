@@ -310,7 +310,11 @@ const Result = () => {
   return (
     <>
       {modalData.artist && (
-        <AlbumModal modalData={modalData} setModalData={setModalData} />
+        <AlbumModal
+          key={modalData.instanceid}
+          modalData={modalData}
+          setModalData={setModalData}
+        />
       )}
       <div className="Result">
         {isSyncing && (

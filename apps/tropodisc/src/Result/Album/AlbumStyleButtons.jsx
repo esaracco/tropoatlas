@@ -31,7 +31,15 @@ const AlbumStyleButtons = ({ items, closeModal }) => {
         },
       })
     }
-  })
+
+    // Destroy Tagify instance on unmount
+    return () => {
+      if (tags.current) {
+        tags.current.destroy()
+        tags.current = null
+      }
+    }
+  }, [])
 
   // RENDER
   return (

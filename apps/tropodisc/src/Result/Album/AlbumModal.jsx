@@ -11,6 +11,7 @@ import { Rating } from "react-simple-star-rating"
 import { ConfirmModal } from "@tropo/react"
 import AlbumStyleButtons from "./AlbumStyleButtons"
 import AlbumButton from "./AlbumButton"
+import { setLatestClickedInstanceId } from "./index"
 
 import { getItem, setLargeItem, setItem } from "@tropo/core"
 import { updateItem, getCategories, getProviderInfo } from "../../provider"
@@ -147,6 +148,7 @@ const AlbumModal = ({ modalData, setModalData }) => {
 
   // METHOD onHideConfirm()
   const onHideConfirm = () => {
+    setLatestClickedInstanceId(null)
     setShowConfirm(false)
     setModalData({ ...modalData, show: false })
   }
@@ -157,6 +159,7 @@ const AlbumModal = ({ modalData, setModalData }) => {
 
     // If no changes, just close modal
     if (!Object.keys(changes).length) {
+      setLatestClickedInstanceId(null)
       setModalData({ ...modalData, show: false })
       return
     }

@@ -44,6 +44,13 @@ const backgroundQueue = {
   },
 }
 
+// Track latest clicked album instance ID to prevent stale async responses
+let latestClickedInstanceId = null
+
+export const setLatestClickedInstanceId = (id) => {
+  latestClickedInstanceId = id
+}
+
 // COMPONENT Album
 const Album = ({
   setModalData,
@@ -151,8 +158,19 @@ const Album = ({
 
   // METHOD onClick()
   const onClick = (e) => {
+    const targetInstanceId =
+      e && e.currentTarget ? e.currentTarget.dataset.instanceid : instanceid
+    setLatestClickedInstanceId(targetInstanceId)
+
     getReleaseData(e)
       .then((r) => {
+        // Discard stale async responses if user clicked another album
+        if (
+          latestClickedInstanceId !== null &&
+          String(latestClickedInstanceId) !== String(r.id)
+        ) {
+          return
+        }
         const config = [
           {
             regex: /\[([^\]]+)\]\(([^)]+)\)/g,
