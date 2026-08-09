@@ -7,7 +7,7 @@ This file defines the rules and conventions that the AI agent must follow when w
 - **Comments Language**: All code comments and documentation within the codebase MUST be written in **English**.
 - **Comment Placement**: Do NOT place comments at the end of a line of code (inline comments). Always place comments on the line(s) directly ABOVE the code they describe.
 - **Comment Line Length**: Code comments MUST NOT exceed 80 characters per line (including leading indentation and comment prefixes like `//`). Break long comments into multiple single-line comments directly above the code.
-- **Commit Messages**: All git commit messages MUST be written in **English** (using Conventional Commits format). Use precise component/subsystem scopes (e.g., `header`, `navbar`, `search`, `leds`, `settings`, `agents`) rather than generic app scopes like `tropodisc`.
+- **Commit Messages**: All git commit messages MUST be written in **English** (using Conventional Commits format). Use precise component/subsystem scopes (e.g., `header`, `navbar`, `search`, `leds`, `settings`, `agents`) rather than generic app scopes like `tropodisc`. Provide ONLY the raw commit message text string itself, without wrapping it in a `git commit -m` shell command.
 - **Package Manager**: Use `npm`. Do not use `yarn`, `pnpm`, or `bun`.
 - **No tests execution**: DO NOT run tests (such as `vitest`, `jest`, or any test commands) during or after modifications. The user takes care of executing tests.
 - **No npm scripts**: DO NOT run `npm run` scripts (such as `npm run lint`, `npm run format`, `npm run pre-commit`, `npm run i18n:check`, etc.). The agent must not execute these commands.
