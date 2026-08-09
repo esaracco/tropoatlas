@@ -5,8 +5,8 @@ import { Button } from "react-bootstrap"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faBroom } from "@fortawesome/free-solid-svg-icons"
 
-// COMPONENT ResetButton
-const ResetButton = () => {
+// COMPONENT ClearFiltersButton
+const ClearFiltersButton = () => {
   const clearFilters = useCollectionStore((s) => s.clearFilters)
 
   const [display, setDisplay] = useState(false)
@@ -28,7 +28,6 @@ const ResetButton = () => {
     display && (
       <Button
         variant="secondary"
-        size="sm"
         className="HeaderButton"
         onClick={() => clearFilters()}
       >
@@ -38,4 +37,4 @@ const ResetButton = () => {
   )
 }
 
-export default ResetButton
+export default ClearFiltersButton

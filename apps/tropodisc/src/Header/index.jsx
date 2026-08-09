@@ -9,7 +9,7 @@ import { faSearch } from "@fortawesome/free-solid-svg-icons"
 import { Button, Container, Nav, Navbar, Offcanvas } from "react-bootstrap"
 import * as Settings from "../utils/settings"
 
-import ResetButton from "./ResetButton"
+import ClearFiltersButton from "./ClearFiltersButton"
 import SynchroButton from "./SynchroButton"
 import LedsButton from "./LedsButton"
 import SettingsButton from "./SettingsButton"
@@ -142,7 +142,7 @@ const Header = () => {
                 <Nav
                   className={`justify-content-center align-items-stretch align-items-${expandBreakpoint}-center mb-0 flex-column flex-${expandBreakpoint}-row flex-nowrap gap-2 gap-${expandBreakpoint}-0`}
                 >
-                  <ResetButton />
+                  <ClearFiltersButton />
                   <SettingsButton
                     onClick={() => {
                       setExpanded(false)
