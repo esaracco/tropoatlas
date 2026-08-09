@@ -131,21 +131,7 @@
 
 /* ── Collapsible Search Bar ───────────────────────────────── */
 .search-toggle-btn {
-  margin-left: 0;
-  margin-right: 0;
-}
-
-/* On mobile/tablet, when nav buttons disappear into offcanvas, push loupe button to the far right */
-@media (max-width: 767.98px) {
-  .header-offcanvas-md ~ .search-toggle-btn {
-    margin-left: auto !important;
-  }
-}
-
-@media (max-width: 575.98px) {
-  .header-offcanvas-sm ~ .search-toggle-btn {
-    margin-left: auto !important;
-  }
+  margin-left: auto !important;
 }
 
 .search-bar-drawer {
