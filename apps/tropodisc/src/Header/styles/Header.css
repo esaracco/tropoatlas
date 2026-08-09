@@ -50,6 +50,13 @@
 }
 
 /* ── Navbar ───────────────────────────────────────────────── */
+/* Sticky container for the Header component */
+.Header.sticky-top {
+  position: sticky;
+  top: 0;
+  z-index: 1030;
+}
+
 .navbar.bg-dark {
   background-color: var(--tropo-surface) !important;
   border-bottom: 1px solid var(--tropo-border) !important;

@@ -97,15 +97,13 @@ const Header = () => {
     }
   }
 
-  // RENDER
   return (
-    <>
+    <div className="sticky-top Header">
       <Navbar
-        sticky="top"
         expand={expandBreakpoint}
         expanded={expanded}
         onToggle={setExpanded}
-        className="shadow-sm bg-dark Header"
+        className="shadow-sm bg-dark"
         data-bs-theme="dark"
       >
         <Container fluid className="d-flex align-items-center flex-nowrap">
@@ -236,7 +234,7 @@ const Header = () => {
         show={showSettings}
         onHide={() => setShowSettings(false)}
       />
-    </>
+    </div>
   )
 }
 
