@@ -14,6 +14,7 @@ This file defines the rules and conventions that the AI agent must follow when w
   - `apps/*`: Main applications (e.g., `tropodisc`).
   - `packages/*`: Shared libraries and components (e.g., `core`, `react`, `leds`).
   - `plugins/*`: Plugins (e.g., `discogs`).
+- **Rule Abstraction**: Do NOT hardcode specific numeric raw values (e.g. pixel widths, arbitrary z-indices) in rule or documentation files. Document abstract design principles, responsive layout intentions, and architectural invariants instead. Exact numbers belong in code tokens and constants.
 
 ## Architecture & Data Providers
 - **Decoupling**: TropoAtlas uses a generic, plugin-based architecture. The main application (`apps/tropodisc`) MUST remain completely agnostic and MUST NOT contain code specific to a data provider (like Discogs).
@@ -51,3 +52,8 @@ This file defines the rules and conventions that the AI agent must follow when w
   - If a button opens a global root-level Modal (e.g., `SettingsModal`), the Offcanvas MUST be explicitly closed before opening the modal.
   - If a button opens an inline Modal (e.g., `ConfirmModal` inside `SynchroButton`), the Offcanvas MUST NOT be closed, otherwise the modal will be instantly unmounted.
   - Interactive dropdowns (Styles, Artists) MUST NOT close the Offcanvas, allowing users to select multiple options without reopening the menu.
+
+## Lifecycle & Header Navigation Architecture
+- **Unreliable Page Unload Events**: Do NOT rely on browser window unload events (`pagehide`, `beforeunload`, `unload`) to execute critical I/O operations or network requests (e.g., turning off hardware LEDs or clearing storage). Hardware teardown and session cleanup must rely on explicit user actions or server/firmware TTL timeouts.
+- **Header Layout & Separation of Concerns**: The main navigation header separates collection exploration controls (filters, search, sort) centered in the primary bar from system tools & preferences (settings, sync, LEDs, theme) consolidated into a single right-anchored `OptionsMenu` dropdown.
+- **Theme Hydration & FOUC Prevention**: Initial theme hydration (`data-theme`) MUST be executed synchronously via an inline script in the `<head>` of `index.html` before initial DOM paint to prevent Flash of Unstyled Content (FOUC). React components MUST NOT duplicate initial hydration logic on page reload.
