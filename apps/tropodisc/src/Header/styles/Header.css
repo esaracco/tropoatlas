@@ -1,5 +1,5 @@
 /* ── Offcanvas ────────────────────────────────────────────── */
-@media (max-width: 767.98px) {
+@media (max-width: 575.98px) {
   .header-offcanvas.show,
   .header-offcanvas.offcanvas-toggling {
     width: 160px !important;
@@ -20,9 +20,7 @@
     justify-content: center;
     padding: 6px 0;
   }
-}
 
-@media (max-width: 575.98px) {
   .header-offcanvas .HeaderButton {
     width: 100%;
     margin-bottom: 4px;
@@ -39,16 +37,6 @@
   }
 }
 
-@media (min-width: 768px) {
-  .header-offcanvas-md.offcanvas-toggling {
-    display: none !important;
-  }
-
-  .header-offcanvas-md {
-    flex-grow: 0 !important;
-  }
-}
-
 /* ── Navbar ───────────────────────────────────────────────── */
 /* Sticky container for the Header component */
 .Header.sticky-top {
@@ -58,6 +46,8 @@
 }
 
 .navbar.bg-dark {
+  position: relative;
+  z-index: 1040;
   background-color: var(--tropo-surface) !important;
   border-bottom: 1px solid var(--tropo-border) !important;
   backdrop-filter: blur(8px) !important;
@@ -73,11 +63,6 @@
     font-size: 1rem !important;
     padding: 10px 14px !important;
     border-radius: 8px !important;
-  }
-
-  .ThemeSelector-dot {
-    width: 20px;
-    height: 20px;
   }
 }
 
@@ -131,10 +116,12 @@
 
 /* ── Collapsible Search Bar ───────────────────────────────── */
 .search-toggle-btn {
-  margin-left: auto !important;
+  margin-left: 0;
 }
 
 .search-bar-drawer {
+  position: relative;
+  z-index: 100;
   display: block;
   max-height: 0;
   opacity: 0;
@@ -160,4 +147,103 @@
   max-width: 600px;
   margin: 0 auto;
   width: 100%;
+}
+
+/* ── Options Menu Dropdown ────────────────────────────────── */
+.options-menu-dropdown {
+  position: relative;
+  z-index: 1050;
+}
+
+.options-menu-popover {
+  background-color: var(--tropo-surface-2, #1e293b) !important;
+  border: 1px solid var(--tropo-surface-3, rgba(255, 255, 255, 0.15)) !important;
+  border-radius: 10px;
+  min-width: 190px;
+  z-index: 1060 !important;
+  box-shadow:
+    0 10px 30px -5px rgba(0, 0, 0, 0.5),
+    0 4px 12px -2px rgba(0, 0, 0, 0.3) !important;
+}
+
+[data-theme="light"] .options-menu-popover {
+  background-color: var(--tropo-surface, #ffffff) !important;
+  border-color: rgba(0, 0, 0, 0.14) !important;
+  box-shadow:
+    0 10px 30px -5px rgba(0, 0, 0, 0.15),
+    0 4px 12px -2px rgba(0, 0, 0, 0.08) !important;
+}
+
+.options-menu-popover .dropdown-item {
+  color: var(--tropo-text, inherit) !important;
+  font-size: 0.9rem;
+  transition:
+    background-color 0.2s,
+    color 0.2s;
+  border-radius: 6px;
+  margin: 2px 4px;
+  width: calc(100% - 8px);
+}
+
+.options-menu-popover .dropdown-item:hover,
+.options-menu-popover .dropdown-item:focus {
+  background-color: var(
+    --tropo-accent-subtle,
+    rgba(255, 255, 255, 0.1)
+  ) !important;
+}
+
+.options-menu-popover .dropdown-divider {
+  border-top: 1px solid var(--tropo-surface-3, rgba(255, 255, 255, 0.15)) !important;
+  margin: 6px 0;
+  opacity: 0.8;
+}
+
+[data-theme="light"] .options-menu-popover .dropdown-divider {
+  border-top-color: rgba(0, 0, 0, 0.12) !important;
+}
+
+.options-menu-popover .options-menu-icon {
+  color: var(--tropo-text) !important;
+  opacity: 0.85;
+  width: 16px;
+}
+
+.options-menu-popover .options-menu-theme-label {
+  color: var(--tropo-text) !important;
+  font-size: 0.9rem;
+}
+
+/* Transparent Toggle Buttons for Options Menu & Search Button */
+.options-menu-dropdown .dropdown-toggle,
+.options-menu-dropdown .dropdown-toggle.btn-secondary,
+.search-toggle-btn,
+.search-toggle-btn.btn-secondary {
+  background-color: transparent !important;
+  border-color: transparent !important;
+  color: var(--tropo-text) !important;
+  box-shadow: none !important;
+  transition:
+    background-color 0.2s,
+    color 0.2s;
+}
+
+.options-menu-dropdown .dropdown-toggle:hover,
+.options-menu-dropdown .dropdown-toggle:focus-visible,
+.options-menu-dropdown .dropdown-toggle.show,
+.search-toggle-btn:hover,
+.search-toggle-btn:focus-visible,
+.search-toggle-btn.active {
+  background-color: var(
+    --tropo-accent-subtle,
+    rgba(255, 255, 255, 0.1)
+  ) !important;
+  color: var(--tropo-text) !important;
+}
+
+.options-menu-dropdown .dropdown-toggle:focus:not(:focus-visible),
+.search-toggle-btn:not(.active):focus:not(:focus-visible) {
+  background-color: transparent !important;
+  box-shadow: none !important;
+  outline: none !important;
 }

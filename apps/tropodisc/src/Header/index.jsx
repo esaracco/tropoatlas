@@ -1,18 +1,15 @@
 import React, { useState, useEffect } from "react"
 import { useCollectionStore } from "@tropo/core"
 import { useTranslation } from "react-i18next"
-import { HeaderButton, Search, ThemeSelector } from "@tropo/react"
+import { HeaderButton, Search } from "@tropo/react"
 import { normalize, getItem } from "@tropo/core"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faSearch } from "@fortawesome/free-solid-svg-icons"
 
 import { Button, Container, Nav, Navbar, Offcanvas } from "react-bootstrap"
-import * as Settings from "../utils/settings"
 
 import ClearFiltersButton from "./ClearFiltersButton"
-import SynchroButton from "./SynchroButton"
-import LedsButton from "./LedsButton"
-import SettingsButton from "./SettingsButton"
+import OptionsMenu from "./OptionsMenu"
 import SettingsModal from "../Settings/SettingsModal"
 import InfoBar from "./InfoBar"
 
@@ -60,18 +57,19 @@ const Header = () => {
   ).sort()
 
   const showFormats = getProviderInfo().multipleFormats
-  const expandBreakpoint = showFormats ? "md" : "sm"
+  const expandBreakpoint = "sm"
 
   useEffect(() => {
     const handleResize = () => {
-      const breakpointWidth = expandBreakpoint === "md" ? 768 : 576
+      // Header.css:@media (min-width: 576px)
+      const breakpointWidth = 576
       if (window.innerWidth >= breakpointWidth && expanded) {
         setExpanded(false)
       }
     }
     window.addEventListener("resize", handleResize)
     return () => window.removeEventListener("resize", handleResize)
-  }, [expanded, expandBreakpoint])
+  }, [expanded])
 
   useEffect(() => {
     if (sort.startsWith("place_") && !customFields.supportsPlace) {
@@ -143,12 +141,6 @@ const Header = () => {
                   className={`justify-content-center align-items-stretch align-items-${expandBreakpoint}-center mb-0 flex-column flex-${expandBreakpoint}-row flex-nowrap gap-2 gap-${expandBreakpoint}-0`}
                 >
                   <ClearFiltersButton />
-                  <SettingsButton
-                    onClick={() => {
-                      setExpanded(false)
-                      setTimeout(() => setShowSettings(true), 350)
-                    }}
-                  />
                   <HeaderButton
                     label={_("Styles")}
                     type="checkbox"
@@ -201,24 +193,28 @@ const Header = () => {
                     onSortChange={setSort}
                     labels={labels}
                   />
-                  <SynchroButton />
-                  {Settings.setLeds === "yes" && <LedsButton />}
-                  <ThemeSelector
-                    storageKey="tropodisc-theme"
-                    title={_("Theme")}
-                    ariaLabel={_("Change theme")}
-                  />
+                  <Button
+                    variant="secondary"
+                    className={`HeaderButton search-toggle-btn flex-shrink-0 d-none d-sm-inline-block ${showSearch ? "active" : ""}`}
+                    onClick={toggleSearch}
+                    aria-label={_("Search")}
+                  >
+                    <FontAwesomeIcon icon={faSearch} />
+                  </Button>
                 </Nav>
               </Offcanvas.Body>
             </Navbar.Offcanvas>
+          </div>
+          <div className="d-flex align-items-center ms-auto flex-shrink-0 gap-1">
             <Button
               variant="secondary"
-              className={`HeaderButton search-toggle-btn flex-shrink-0 ${showSearch ? "active" : ""}`}
+              className={`HeaderButton search-toggle-btn flex-shrink-0 d-sm-none ${showSearch ? "active" : ""}`}
               onClick={toggleSearch}
               aria-label={_("Search")}
             >
               <FontAwesomeIcon icon={faSearch} />
             </Button>
+            <OptionsMenu onOpenSettings={() => setShowSettings(true)} />
           </div>
         </Container>
       </Navbar>

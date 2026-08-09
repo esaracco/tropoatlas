@@ -52,7 +52,7 @@ const App = () => {
       window.removeEventListener("offline", _onlineEvent)
       window.removeEventListener("online", _onlineEvent)
     }
-  })
+  }, [])
 
   // EFFECT 2
   useEffect(() => {
