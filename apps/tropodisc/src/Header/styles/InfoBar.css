@@ -9,7 +9,8 @@
   letter-spacing: 0.02em;
   background: var(--tropo-surface-2);
   border-top: 1px solid var(--tropo-border);
-  padding: 8px 10px;
+  /* Include iOS safe area bottom inset to avoid home indicator overlap */
+  padding: 8px 10px calc(8px + env(safe-area-inset-bottom, 0px)) 10px;
   color: var(--tropo-text-muted);
   box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.2);
   backdrop-filter: blur(8px);
