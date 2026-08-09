@@ -20,11 +20,12 @@
     justify-content: center;
     padding: 6px 0;
   }
+}
 
-  .header-offcanvas.show .ThemeSelector-dot,
-  .header-offcanvas.offcanvas-toggling .ThemeSelector-dot {
-    width: 20px;
-    height: 20px;
+@media (max-width: 575.98px) {
+  .header-offcanvas .HeaderButton {
+    width: 100%;
+    margin-bottom: 4px;
   }
 }
 
@@ -54,18 +55,24 @@
   .header-offcanvas .HeaderButton {
     font-size: 1rem !important;
     padding: 10px 14px !important;
-    width: 100%;
-    text-align: center;
-    margin-bottom: 4px;
+  }
+
+  .ThemeSelector-dot {
+    width: 20px;
+    height: 20px;
   }
 }
 
 /* ── Hamburger toggle ─────────────────────────────────────── */
 .navbar-toggler {
+  height: 46px !important;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   margin-right: 6px !important;
   border: 1px solid var(--tropo-border) !important;
   border-radius: 8px !important;
-  padding: 10px 14px !important;
+  padding: 0 14px !important;
   transition: background 0.2s;
   position: relative;
 }

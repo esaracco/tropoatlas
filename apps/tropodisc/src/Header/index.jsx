@@ -96,18 +96,16 @@ const Header = () => {
         className="shadow-sm bg-dark Header"
         data-bs-theme="dark"
       >
-        <Container
-          fluid
-          className="d-flex justify-content-center align-items-center flex-nowrap"
-        >
+        <Container fluid className="d-flex align-items-center flex-nowrap">
           <Navbar.Brand
-            className={`d-none d-${expandBreakpoint}-block me-2 p-0 m-0`}
+            className="p-0 m-0 me-2 flex-shrink-0"
             style={{ cursor: "pointer" }}
             onClick={() => setShowAbout(true)}
           >
             <img src="/icon-180.png" height="36" width="36" alt="TropoDisc" />
           </Navbar.Brand>
           <Navbar.Toggle
+            className="flex-shrink-0 me-2"
             aria-controls={`offcanvasNavbar-expand-${expandBreakpoint}`}
           >
             <span className="navbar-toggler-icon"></span>
@@ -121,94 +119,96 @@ const Header = () => {
               ""
             )}
           </Navbar.Toggle>
-          <div className="d-flex justify-content-center align-items-center">
-            <Navbar.Offcanvas
-              id={`offcanvasNavbar-expand-${expandBreakpoint}`}
-              aria-labelledby={`offcanvasNavbarLabel-expand-${expandBreakpoint}`}
-              placement="end"
-              data-bs-theme="dark"
-              className={`header-offcanvas header-offcanvas-${expandBreakpoint}`}
-            >
-              <Offcanvas.Header closeButton />
-              <Offcanvas.Body>
-                <Nav
-                  className={`justify-content-end flex-grow-1 align-items-stretch align-items-${expandBreakpoint}-center mb-0 flex-column flex-${expandBreakpoint}-row flex-nowrap gap-2 gap-${expandBreakpoint}-0`}
-                >
-                  <ResetButton />
-                  <SettingsButton
-                    onClick={() => {
-                      setExpanded(false)
-                      setTimeout(() => setShowSettings(true), 350)
-                    }}
-                  />
-                  <HeaderButton
-                    label={_("Styles")}
-                    type="checkbox"
-                    stype="categories"
-                    selected={selected}
-                    content={allCategories}
-                    labels={labels}
-                    onReset={(type) => setFilter(type, [])}
-                    onChangeSelection={getOnChangeSelection("categories")}
-                    normalizeFn={normalize}
-                  />
-                  <HeaderButton
-                    label={_("Artists")}
-                    type="checkbox"
-                    stype="creators"
-                    selected={selected}
-                    content={allCreators}
-                    labels={labels}
-                    onReset={(type) => setFilter(type, [])}
-                    onChangeSelection={getOnChangeSelection("creators")}
-                    normalizeFn={normalize}
-                  />
-                  {showFormats && (
+          <div className="d-flex justify-content-center align-items-center flex-grow-1 flex-nowrap">
+            <div className="d-flex justify-content-center align-items-center">
+              <Navbar.Offcanvas
+                id={`offcanvasNavbar-expand-${expandBreakpoint}`}
+                aria-labelledby={`offcanvasNavbarLabel-expand-${expandBreakpoint}`}
+                placement="end"
+                data-bs-theme="dark"
+                className={`header-offcanvas header-offcanvas-${expandBreakpoint}`}
+              >
+                <Offcanvas.Header closeButton />
+                <Offcanvas.Body>
+                  <Nav
+                    className={`justify-content-end flex-grow-1 align-items-stretch align-items-${expandBreakpoint}-center mb-0 flex-column flex-${expandBreakpoint}-row flex-nowrap gap-2 gap-${expandBreakpoint}-0`}
+                  >
+                    <ResetButton />
+                    <SettingsButton
+                      onClick={() => {
+                        setExpanded(false)
+                        setTimeout(() => setShowSettings(true), 350)
+                      }}
+                    />
                     <HeaderButton
-                      label={_("Formats")}
+                      label={_("Styles")}
                       type="checkbox"
-                      stype="formats"
+                      stype="categories"
                       selected={selected}
-                      content={allFormats}
+                      content={allCategories}
                       labels={labels}
                       onReset={(type) => setFilter(type, [])}
-                      onChangeSelection={getOnChangeSelection("formats")}
+                      onChangeSelection={getOnChangeSelection("categories")}
                       normalizeFn={normalize}
                     />
-                  )}
-                  <HeaderButton
-                    label={_("Sort")}
-                    type="radio"
-                    mark={false}
-                    content={{
-                      added: _("Date added"),
-                      artist: _("Artist"),
-                      rating: _("Note"),
-                      year: _("Year"),
-                      ...(customFields.supportsPlace && {
-                        place: _("Location"),
-                      }),
-                    }}
-                    sort={sort}
-                    onSortChange={setSort}
-                    labels={labels}
-                  />
-                  <SynchroButton />
-                  {Settings.setLeds === "yes" && <LedsButton />}
-                  <ThemeSelector
-                    storageKey="tropodisc-theme"
-                    title={_("Theme")}
-                    ariaLabel={_("Change theme")}
-                  />
-                </Nav>
-              </Offcanvas.Body>
-            </Navbar.Offcanvas>
+                    <HeaderButton
+                      label={_("Artists")}
+                      type="checkbox"
+                      stype="creators"
+                      selected={selected}
+                      content={allCreators}
+                      labels={labels}
+                      onReset={(type) => setFilter(type, [])}
+                      onChangeSelection={getOnChangeSelection("creators")}
+                      normalizeFn={normalize}
+                    />
+                    {showFormats && (
+                      <HeaderButton
+                        label={_("Formats")}
+                        type="checkbox"
+                        stype="formats"
+                        selected={selected}
+                        content={allFormats}
+                        labels={labels}
+                        onReset={(type) => setFilter(type, [])}
+                        onChangeSelection={getOnChangeSelection("formats")}
+                        normalizeFn={normalize}
+                      />
+                    )}
+                    <HeaderButton
+                      label={_("Sort")}
+                      type="radio"
+                      mark={false}
+                      content={{
+                        added: _("Date added"),
+                        artist: _("Artist"),
+                        rating: _("Note"),
+                        year: _("Year"),
+                        ...(customFields.supportsPlace && {
+                          place: _("Location"),
+                        }),
+                      }}
+                      sort={sort}
+                      onSortChange={setSort}
+                      labels={labels}
+                    />
+                    <SynchroButton />
+                    {Settings.setLeds === "yes" && <LedsButton />}
+                    <ThemeSelector
+                      storageKey="tropodisc-theme"
+                      title={_("Theme")}
+                      ariaLabel={_("Change theme")}
+                    />
+                  </Nav>
+                </Offcanvas.Body>
+              </Navbar.Offcanvas>
+            </div>
+            <Search
+              searchStr={searchStr}
+              setSearchStr={setSearchStr}
+              placeholder={_("artist, album...")}
+            />
           </div>
-          <Search
-            searchStr={searchStr}
-            setSearchStr={setSearchStr}
-            placeholder={_("artist, album...")}
-          />
         </Container>
       </Navbar>
       <InfoBar />
