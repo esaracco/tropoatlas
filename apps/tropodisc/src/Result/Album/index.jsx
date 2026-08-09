@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from "react"
 import { useCollectionStore } from "@tropo/core"
 import { toast } from "react-toastify"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faSync } from "@fortawesome/free-solid-svg-icons"
 import { useTranslation } from "react-i18next"
 
 import processString from "react-process-string"
@@ -81,22 +79,22 @@ const Album = ({
           // Unmount safe state update inside getReleaseData isn't strictly
           //  guaranteed, but state updates on unmounted components don't
           // throw warnings in React 18 and we only care about updating the
-          //store anyway.
-          await getReleaseData(instanceid)
+          // store anyway.
+          await getReleaseData(instanceid, false)
         }
       })
     }
   }, [year, instanceid])
 
   // METHOD getReleaseData()
-  const getReleaseData = async (e) => {
+  const getReleaseData = async (e, showLoader = true) => {
     const instanceId =
       e && e.currentTarget ? e.currentTarget.dataset.instanceid : e
     let album = useCollectionStore.getState().items[instanceId]
 
     // Get remote data if not yet in cache
     if (album.tracklist === undefined) {
-      setLoader(true)
+      if (showLoader) setLoader(true)
 
       try {
         album = await getItemDetails(album)
@@ -106,7 +104,7 @@ const Album = ({
         setItems(newItems)
         setLargeItem("releases", newItems)
       } finally {
-        setLoader(false)
+        if (showLoader) setLoader(false)
       }
     }
 
@@ -323,11 +321,12 @@ const Album = ({
   // RENDER
   return (
     <div
-      className="Album"
+      className={`Album${loader ? " is-loading" : ""}`}
       onClick={onClick}
       style={{ width: thumbWidth }}
       data-instanceid={instanceid}
     >
+      {loader && <div className="card-loader-bar" />}
       <LazyLoadImage
         onError={onError}
         placeholderSrc={vinylImg300}
@@ -335,11 +334,6 @@ const Album = ({
         height={thumbWidth}
         width={thumbWidth}
       />
-      {loader && (
-        <div className="loader">
-          <FontAwesomeIcon icon={faSync} spin />
-        </div>
-      )}
       {getProviderInfo().multipleFormats && format && (
         <div className="format-badge">{format}</div>
       )}

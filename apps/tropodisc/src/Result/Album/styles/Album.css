@@ -46,9 +46,37 @@
   z-index: 2;
 }
 
-.Album .loader {
+.Album.is-loading img {
+  opacity: 0.75;
+  filter: brightness(0.85);
+  transition:
+    opacity 0.2s,
+    filter 0.2s;
+}
+
+.Album .card-loader-bar {
   position: absolute;
-  font-size: 2rem;
-  margin: -44px 0 0 4px;
-  color: var(--tropo-accent);
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--tropo-accent, #dc3545) 50%,
+    transparent 100%
+  );
+  background-size: 200% 100%;
+  animation: cardShimmer 1.2s infinite linear;
+  z-index: 5;
+  box-shadow: 0 1px 4px var(--tropo-accent, #dc3545);
+}
+
+@keyframes cardShimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
 }
