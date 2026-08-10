@@ -3,6 +3,7 @@
 This file defines the rules and conventions that the AI agent must follow when working on the `tropoatlas` project.
 
 ## General Rules
+- **Rule Scope & Governance**: Do NOT add transient UI styling choices, local variable names, or temporary bug-fix logic to `AGENTS.md`. Only document non-negotiable architectural invariants, system boundaries, hardware contracts, and monorepo guardrails.
 - **Discussion Mode**: If the user's prompt includes the `#discuss` keyword, you MUST NOT use any code editing or execution tools. Only analyze and discuss the topic.
 - **Comments Language**: All code comments and documentation within the codebase MUST be written in **English**.
 - **Comment Placement**: Do NOT place comments at the end of a line of code (inline comments). Always place comments on the line(s) directly ABOVE the code they describe.
