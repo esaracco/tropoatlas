@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next"
 import { Button } from "react-bootstrap"
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faCompactDisc } from "@fortawesome/free-solid-svg-icons"
+import { faUser } from "@fortawesome/free-solid-svg-icons"
 
 import "./styles/AlbumButton.css"
 
@@ -41,8 +41,16 @@ const AlbumButton = ({ artist, closeModal }) => {
   return (
     count > 1 && (
       <div className="AlbumButton">
-        <Button size="sm" variant="primary" onClick={onClick}>
-          <FontAwesomeIcon icon={faCompactDisc} /> <b>{count}</b>{" "}
+        <Button
+          size="sm"
+          variant="primary"
+          onClick={onClick}
+          title={_("Show all {{count}} albums by {{artist}}", {
+            count,
+            artist,
+          })}
+        >
+          <FontAwesomeIcon icon={faUser} /> <b>{count}</b>{" "}
           <span>{_("albums")}</span>
         </Button>
       </div>

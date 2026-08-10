@@ -43,24 +43,7 @@ const Result = () => {
   const setCreators = useCollectionStore((s) => s.setCreators)
   const setFormats = useCollectionStore((s) => s.setFormats)
 
-  const [modalData, setModalData] = useState({
-    show: false,
-    releaseid: 0,
-    instanceid: 0,
-    folderid: 0,
-    rating: null,
-    tracklist: null,
-    maintitle: null,
-    notes: null,
-    country: null,
-    artist: null,
-    format: null,
-    thumb: null,
-    cover: null,
-    place: null,
-    price: null,
-    styles: [],
-  })
+  const [activeInstanceId, setActiveInstanceId] = useState(null)
   const selected = useCollectionStore((s) => s.selected)
   const releases = useCollectionStore((s) => s.items)
   const sort = useCollectionStore((s) => s.sort)
@@ -231,7 +214,10 @@ const Result = () => {
       ledsTimeout = setTimeout(async () => {
         const hasCategories = placesStyles.length > 0
         const hasCreators = placesArtists.length > 0
-        const hasModal = modalData.show && modalData.place
+        const activeAlbum = activeInstanceId ? releases[activeInstanceId] : null
+        const hasModal = Boolean(
+          activeInstanceId && activeAlbum && activeAlbum.place,
+        )
 
         if (hasCategories || hasCreators || hasModal) {
           turnOffLeds.current = true
@@ -263,7 +249,7 @@ const Result = () => {
           // 3. Modal (Focus layer / Highest priority / Full intensity)
           if (hasModal) {
             ledCommands.push({
-              place: modalData.place,
+              place: activeAlbum.place,
               color: Settings.getLedsAlbumColor(),
               intensity: 0.1,
               blink: true,
@@ -299,8 +285,8 @@ const Result = () => {
     searchStr,
     fromRuler,
     setFromRuler,
-    modalData.show,
-    modalData.place,
+    activeInstanceId,
+    releases,
   ])
 
   const thumbWidth = calculateThumbWidth()
@@ -309,11 +295,11 @@ const Result = () => {
   // RENDER
   return (
     <>
-      {modalData.artist && (
+      {activeInstanceId && (
         <AlbumModal
-          key={modalData.instanceid}
-          modalData={modalData}
-          setModalData={setModalData}
+          key={activeInstanceId}
+          instanceId={activeInstanceId}
+          onClose={() => setActiveInstanceId(null)}
         />
       )}
       <div className="Result">
@@ -355,7 +341,7 @@ const Result = () => {
             return (
               <Album
                 key={item.id}
-                setModalData={setModalData}
+                setActiveInstanceId={setActiveInstanceId}
                 instanceid={item.id}
                 img={item[img]}
                 thumbWidth={thumbWidth}

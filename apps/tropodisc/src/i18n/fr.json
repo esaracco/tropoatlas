@@ -14,10 +14,8 @@
   "Close": "Fermer",
   "Confirm": "Confirmer",
   "Confirmation": "Confirmation",
-  "{{count}} discs": "{{count}} disques",
   "Date added": "Date d'ajout",
   "Either there is a network problem, the provider is overloaded or the image URLs have changed.": "Soit il y a un problème réseau, soit le fournisseur de données est trop chargé, ou les URLs des images ont changé.",
-  "Format": "Format",
   "Formats": "Formats",
   "General informations": "Infos générales",
   "If the problem persists, please re-sync your collection.": "Si le problème persiste, veuillez re-synchroniser votre collection.",
@@ -38,9 +36,7 @@
   "Offline mode": "Mode déconnecté",
   "Options": "Options",
   "Organize your collection, enrich it with your own metadata, and optionally locate albums instantly using LED strips": "Organisez votre collection, enrichissez-la avec vos propres métadonnées et, en option, localisez instantanément vos albums grâce à des bandes LED.",
-  "Origine": "Origine",
   "Purchasing price": "Prix d'achat",
-  "price": "prix",
   "Reload": "Recharger",
   "Reset": "Réinitialiser",
   "Save changes?": "Enregistrer les modifications?",
@@ -83,5 +79,7 @@
   "Location Field (e.g., `place`)": "Champ d'emplacement (ex: 'place')",
   "Price Field (e.g., `price`)": "Champ de prix (ex: 'price')",
   "Styles Field (e.g., `styles`)": "Champ de styles (ex: 'styles')",
-  "Only show albums that have at least one custom field": "N'afficher que les albums ayant au moins un champ personnalisé"
+  "Only show albums that have at least one custom field": "N'afficher que les albums ayant au moins un champ personnalisé",
+  "View release on {{provider}}": "Consulter la fiche sur {{provider}}",
+  "Show all {{count}} albums by {{artist}}": "Voir les {{count}} albums de {{artist}}"
 }

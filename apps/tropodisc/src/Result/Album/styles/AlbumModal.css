@@ -2,47 +2,73 @@
   color: var(--tropo-link);
 }
 
-.AlbumModal .artist {
-  font-size: 1.2em;
-  line-height: 1.2em;
-  color: var(--tropo-text);
-}
-
-.AlbumModal .rating .r {
-  color: var(--tropo-star);
-}
-
-.AlbumModal .rating .s {
-  color: var(--tropo-text-faint);
-}
-
 .AlbumModal .modal-title {
   width: 100%;
-  font-size: 16px;
-  font-weight: bold;
   padding-right: 5px;
-  color: var(--tropo-text);
 }
 
-.AlbumModal .modal-title span {
-  font-weight: normal;
-  font-style: italic;
+.AlbumModal .artist-name {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--tropo-text);
+  line-height: 1.25;
+}
+
+.AlbumModal .album-details {
+  font-size: 0.9rem;
   color: var(--tropo-text-muted);
+  font-weight: 400;
+  margin-top: 2px;
 }
 
 .AlbumModal .modal-icon {
   width: 150px;
-  height: 150px;
   text-align: center;
+  vertical-align: top;
 }
 
-.AlbumModal ul {
+.AlbumModal .album-tracks ul {
   list-style-type: none;
-  padding-left: 10px;
+  padding-left: 0;
+  margin-bottom: 0;
 }
 
-.AlbumModal .album-tracks ul .heading {
-  margin: 10px;
+.AlbumModal .album-tracks .heading {
+  margin: 12px 0 6px 0;
+  padding-bottom: 4px;
+  border-bottom: 1px solid var(--tropo-border);
+  color: var(--tropo-text-muted);
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.AlbumModal .album-tracks .track-item {
+  padding: 4px 6px;
+  border-radius: 4px;
+  transition: background-color 0.15s ease-in-out;
+}
+
+.AlbumModal .album-tracks .track-item:hover {
+  background-color: var(--tropo-surface-2);
+}
+
+.AlbumModal .album-tracks .track-position {
+  font-family: monospace;
+  font-size: 0.85em;
+  min-width: 30px;
+  color: var(--tropo-text-muted);
+  font-weight: 600;
+}
+
+.AlbumModal .album-tracks .track-title {
+  color: var(--tropo-text);
+}
+
+.AlbumModal .album-tracks .track-duration {
+  color: var(--tropo-text-muted);
+  font-size: 0.85em;
+  font-family: monospace;
 }
 
 .AlbumModal .modal-body {
@@ -67,18 +93,58 @@
   padding: 10px;
 }
 
-.AlbumModal th,
-.AlbumModal td {
-  vertical-align: middle;
-}
-
-.AlbumModal .place {
+.AlbumModal .table th {
+  background: var(--tropo-surface) !important;
   font-weight: bold;
+  text-align: right;
 }
 
-.AlbumModal .price {
-  display: inline-block;
-  width: 50px;
+/* Ultra-compact InputGroup styling for place and price fields (24px) */
+.AlbumModal .input-group .input-group-text,
+.AlbumModal .input-group .form-control,
+.AlbumModal .form-control {
+  height: 24px;
+  padding: 0.1rem 0.35rem;
+  font-size: 0.75rem;
+  line-height: 1;
+}
+
+.AlbumModal .input-group-text {
+  background-color: var(--tropo-surface-2);
+  border-color: var(--tropo-border);
+  color: var(--tropo-text-muted);
+  border: none;
+}
+
+.AlbumModal .place-icon-addon,
+.AlbumModal .price-icon-addon {
+  font-size: 0.7rem;
+  opacity: 0.7;
+}
+
+.AlbumModal .price-control {
+  text-align: right;
+}
+
+.AlbumModal .form-control,
+.AlbumModal .input-group .form-control {
+  background-color: var(--tropo-surface-2);
+  border-color: var(--tropo-border);
+  color: var(--tropo-text);
+  border: none;
+}
+
+.AlbumModal .input-group .form-control:focus {
+  background-color: var(--tropo-surface-2);
+  border-color: var(--tropo-focus-ring, #0d6efd);
+  color: var(--tropo-text);
+  box-shadow: none;
+}
+
+.AlbumModal .form-control {
+  background-color: var(--tropo-surface-2);
+  border-color: var(--tropo-border);
+  color: var(--tropo-text);
 }
 
 .AlbumModal .reset {
@@ -93,9 +159,64 @@
   border-radius: 4px;
 }
 
-/* Generic Provider logo styling */
+/* Generic Provider logo styling in footer */
+.AlbumModal .provider-link-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.25rem 0.6rem;
+  text-decoration: none;
+  border-color: var(--tropo-border);
+  color: var(--tropo-text);
+  background-color: var(--tropo-surface);
+}
+
+.AlbumModal .provider-link-btn:hover {
+  background-color: var(--tropo-surface-2);
+  border-color: var(--tropo-text-muted);
+}
+
+.AlbumModal .provider-logo-wrapper {
+  background-color: #ffffff;
+  border-radius: 3px;
+  padding: 2px 6px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 22px;
+}
+
 .AlbumModal .provider-logo {
-  height: 20px;
+  height: 16px;
+  max-width: 80px;
+  object-fit: contain;
   display: block;
   filter: none;
+}
+
+.AlbumModal .provider-link-icon {
+  font-size: 0.9em;
+  font-weight: bold;
+  opacity: 0.8;
+}
+
+@media (max-width: 576px) {
+  .AlbumModal .table th:not(.modal-icon) {
+    display: block;
+    font-size: 0.75rem;
+    color: var(--tropo-text-muted);
+    font-weight: 600;
+    padding-bottom: 2px;
+    text-align: left;
+  }
+
+  .AlbumModal .table th:not(.modal-icon):after {
+    content: ":";
+  }
+
+  .AlbumModal .table td:not(.modal-icon) {
+    display: block;
+    padding-top: 0;
+    padding-bottom: 8px;
+  }
 }

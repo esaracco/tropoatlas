@@ -1,12 +1,23 @@
 import React, { useState, useRef } from "react"
 import { useCollectionStore } from "@tropo/core"
 import { useTranslation } from "react-i18next"
-import { Modal, Button, Table, Tab, Tabs, Form } from "react-bootstrap"
+import {
+  Modal,
+  Button,
+  Table,
+  Tab,
+  Tabs,
+  Form,
+  InputGroup,
+} from "react-bootstrap"
 import { toast } from "react-toastify"
+import processString from "react-process-string"
 
 import ImageGallery from "react-image-gallery"
 import "react-image-gallery/styles/image-gallery.css"
 import { Rating } from "react-simple-star-rating"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faPen } from "@fortawesome/free-solid-svg-icons"
 
 import { ConfirmModal } from "@tropo/react"
 import AlbumStyleButtons from "./AlbumStyleButtons"
@@ -21,31 +32,70 @@ import vinylImg300 from "../../assets/vinyl-300.png"
 
 import "./styles/AlbumModal.css"
 
+// METHOD getTracks()
+const getTracks = (tracklist) => {
+  if (!tracklist || !Array.isArray(tracklist)) return null
+  let tracks
+  tracklist.forEach((item) => {
+    switch (item.type_) {
+      case "heading":
+        if (item.title !== "") {
+          tracks = (
+            <>
+              {tracks}
+              <li className="heading">
+                <b>{item.title}</b>
+              </li>
+            </>
+          )
+        }
+        break
+      case "index":
+        tracks = (
+          <>
+            {tracks}
+            {getTracks(item.sub_tracks)}
+          </>
+        )
+        break
+      case "track":
+        tracks = (
+          <>
+            {tracks}
+            <li className="track-item d-flex align-items-baseline gap-2">
+              <span className="track-position">{item.position}</span>
+              <span className="track-title flex-grow-1">{item.title}</span>
+              {item.duration && (
+                <span className="track-duration">{item.duration}</span>
+              )}
+            </li>
+          </>
+        )
+        break
+      default:
+    }
+  })
+
+  return tracks
+}
+
 // COMPONENT AlbumModal
-const AlbumModal = ({ modalData, setModalData }) => {
+const AlbumModal = ({ instanceId, onClose }) => {
   const setItems = useCollectionStore((s) => s.setItems)
   const setCategories = useCollectionStore((s) => s.setCategories)
   const setFilter = useCollectionStore((s) => s.setFilter)
+  const selectedCategories = useCollectionStore((s) => s.selected.categories)
+  const releases = useCollectionStore((s) => s.items)
+
+  const release = releases ? releases[instanceId] : null
 
   const [showConfirm, setShowConfirm] = useState(false)
-  const selectedStyles = useCollectionStore((s) => s.selected.categories)
-  const releases = useCollectionStore((s) => s.items)
-  const {
-    show,
-    maintitle,
-    rating,
-    cover,
-    format,
-    artist,
-    place,
-    country,
-    price,
-    styles,
-    externalUrl,
-    instanceid,
-    notes,
-    tracklist,
-  } = modalData
+  const [formState, setFormState] = useState({
+    rating: release?.rating ?? 0,
+    place: release?.place ?? "",
+    price: release?.price ?? "",
+  })
+
   const [_] = useTranslation()
   const refIG = useRef(null)
   const customFields = getItem("customFieldsInfo") || {}
@@ -58,6 +108,8 @@ const AlbumModal = ({ modalData, setModalData }) => {
     ++customFieldsCount
   }
 
+  if (!release) return null
+
   // METHOD handleIGClick()
   const handleIGClick = () => {
     if (refIG.current && refIG.current.toggleFullScreen) {
@@ -67,7 +119,7 @@ const AlbumModal = ({ modalData, setModalData }) => {
 
   // METHOD getSaveActionInfo()
   const getSaveActionInfo = () => {
-    modalData.categories = (() => {
+    const categories = (() => {
       const r = []
       document
         .querySelectorAll(".AlbumStyleButtons tag")
@@ -75,56 +127,78 @@ const AlbumModal = ({ modalData, setModalData }) => {
       return r.slice().sort()
     })()
     const releasesClone = { ...releases }
-    const release = { ...releasesClone[instanceid] }
+    const releaseClone = { ...releasesClone[instanceId] }
     const changes = {}
 
-    if (rating !== release.rating) {
-      changes.rating = rating
-    }
-    if (place !== release.place) {
-      changes.place = place
-    }
-    if (price !== release.price) {
-      changes.price = price
-    }
-    if (
-      customFields.supportsCategories &&
-      modalData.categories.join(",") !== release.categories.join(",")
-    ) {
-      changes.categories = modalData.categories
+    const currentRating = formState.rating ?? 0
+    const originalRating = releaseClone.rating ?? 0
+    if (currentRating !== originalRating) {
+      changes.rating = formState.rating
     }
 
-    return { releasesClone, release, changes }
+    const currentPlace = String(formState.place ?? "").trim()
+    const originalPlace = String(releaseClone.place ?? "").trim()
+    if (currentPlace !== originalPlace) {
+      changes.place = formState.place
+    }
+
+    const currentPrice = String(formState.price ?? "").trim()
+    const originalPrice = String(releaseClone.price ?? "").trim()
+    if (currentPrice !== originalPrice) {
+      changes.price = formState.price
+    }
+
+    if (customFields.supportsCategories) {
+      const currentCategories = categories.join(",")
+      const originalCategories = (releaseClone.categories || [])
+        .slice()
+        .sort()
+        .join(",")
+      if (currentCategories !== originalCategories) {
+        changes.categories = categories
+      }
+    }
+
+    return { releasesClone, release: releaseClone, changes }
   }
 
   // METHOD onSave()
   const onSave = async () => {
-    const { releasesClone, release, changes } = getSaveActionInfo()
+    const {
+      releasesClone,
+      release: releaseToUpdate,
+      changes,
+    } = getSaveActionInfo()
 
     onHideConfirm()
 
     // Optimistic UI update
     if (changes.categories) {
-      release.categories = changes.categories
+      releaseToUpdate.categories = changes.categories
     }
-    releasesClone[instanceid] = { ...release, place, price, rating }
+    releasesClone[instanceId] = {
+      ...releaseToUpdate,
+      place: formState.place,
+      price: formState.price,
+      rating: formState.rating,
+    }
     setItems(releasesClone)
     setLargeItem("releases", releasesClone)
 
     if (changes.categories) {
-      // Rebuild global styles list
-      const allStyles = getCategories(releasesClone)
-      setCategories(allStyles)
-      setItem("styles", allStyles)
-      // Remove non-existent styles if previously selected
+      // Rebuild global categories list
+      const allCategories = getCategories(releasesClone)
+      setCategories(allCategories)
+      setItem("styles", allCategories)
+      // Remove non-existent categories if previously selected
       setFilter(
         "categories",
-        selectedStyles.filter((s) => allStyles.indexOf(s) > -1),
+        selectedCategories.filter((s) => allCategories.indexOf(s) > -1),
       )
     }
 
     try {
-      await updateItem(release, changes)
+      await updateItem(releaseToUpdate, changes)
     } catch (e) {
       if (!navigator.onLine) {
         toast.info(
@@ -150,7 +224,7 @@ const AlbumModal = ({ modalData, setModalData }) => {
   const onHideConfirm = () => {
     setLatestClickedInstanceId(null)
     setShowConfirm(false)
-    setModalData({ ...modalData, show: false })
+    onClose()
   }
 
   // METHOD onHide()
@@ -160,7 +234,7 @@ const AlbumModal = ({ modalData, setModalData }) => {
     // If no changes, just close modal
     if (!Object.keys(changes).length) {
       setLatestClickedInstanceId(null)
-      setModalData({ ...modalData, show: false })
+      onClose()
       return
     }
 
@@ -169,13 +243,67 @@ const AlbumModal = ({ modalData, setModalData }) => {
   }
 
   // METHOD onRatingClick()
-  const onRatingClick = (value) => setModalData({ ...modalData, rating: value })
+  const onRatingClick = (value) =>
+    setFormState((prev) => ({ ...prev, rating: value }))
 
   // METHOD onChange()
   const onChange = (e) => {
     const el = e.target
-    setModalData({ ...modalData, [el.dataset.field]: el.value })
+    setFormState((prev) => ({ ...prev, [el.dataset.field]: el.value }))
   }
+
+  // METHOD renderNotes()
+  const renderNotes = () => {
+    if (!release.notes && !release.globalNotes) return null
+    const config = [
+      {
+        regex: /\[([^\]]+)\]\(([^)]+)\)/g,
+        fn: (k, r) => (
+          <a key={k} href={r[2]} rel="noopener noreferrer" target="_blank">
+            {r[1]}
+          </a>
+        ),
+      },
+      {
+        regex: /\r\n\r\n|\n\n/g,
+        fn: (k) => <p key={k} />,
+      },
+      {
+        regex: /\r\n|\n/g,
+        fn: (k) => <br key={k} />,
+      },
+    ]
+
+    if (release.notes && release.globalNotes) {
+      return (
+        <>
+          <div>
+            {_("This copy")} ({release.country}
+            {release.year ? " " + release.year : ""}) :
+          </div>
+          <div className="release" style={{ whiteSpace: "pre-wrap" }}>
+            {processString(config)(release.notes)}
+          </div>
+          <br />
+          <div>{_("General informations")} :</div>
+          <div className="master" style={{ whiteSpace: "pre-wrap" }}>
+            {processString(config)(release.globalNotes)}
+          </div>
+        </>
+      )
+    }
+
+    return (
+      <div style={{ whiteSpace: "pre-wrap" }}>
+        {processString(config)(
+          release.notes ? release.notes : release.globalNotes,
+        )}
+      </div>
+    )
+  }
+
+  const renderedTracks = getTracks(release.tracklist)
+  const renderedNotes = renderNotes()
 
   // RENDER
   return (
@@ -184,17 +312,27 @@ const AlbumModal = ({ modalData, setModalData }) => {
         {_("Save changes?")}
       </ConfirmModal>
       <Modal
-        show={show}
+        show={true}
         onHide={onHide}
         className="AlbumModal"
         scrollable
         fullscreen="sm-down"
       >
         <Modal.Header closeButton>
-          <Modal.Title>{maintitle}</Modal.Title>
+          <Modal.Title>
+            <div className="artist-name">{release.creator}</div>
+            <div className="album-details">
+              {release.year ? release.year + " - " : ""}
+              <strong>{release.title}</strong>
+              <br />
+              <em>
+                {[release.format, release.country].filter(Boolean).join(", ")}
+              </em>
+            </div>
+          </Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Table striped bordered size="sm">
+          <Table borderless size="sm">
             <tbody>
               <tr>
                 <th>{_("Note")} </th>
@@ -202,7 +340,7 @@ const AlbumModal = ({ modalData, setModalData }) => {
                   <Rating
                     size="20"
                     onClick={onRatingClick}
-                    initialValue={rating}
+                    initialValue={formState.rating}
                   />{" "}
                 </td>
                 <td rowSpan={4 + customFieldsCount} className="modal-icon">
@@ -211,23 +349,28 @@ const AlbumModal = ({ modalData, setModalData }) => {
                     onClick={handleIGClick}
                     showPlayButton={false}
                     showThumbnails={false}
-                    items={[{ original: cover || vinylImg300 }]}
+                    items={[{ original: release.cover || vinylImg300 }]}
                   />
-                  <AlbumButton closeModal={onHide} artist={artist} />
+                  <AlbumButton closeModal={onHide} artist={release.creator} />
                 </td>
               </tr>
               {customFields.supportsPlace && (
                 <tr>
                   <th>{_("Location")}</th>
-                  <td className="place">
-                    <Form.Control
-                      type="text"
-                      size="xs"
-                      defaultValue={place}
-                      placeholder={_("storage place")}
-                      data-field="place"
-                      onChange={onChange}
-                    />
+                  <td>
+                    <InputGroup size="sm" className="place-input-group">
+                      <InputGroup.Text className="place-icon-addon">
+                        <FontAwesomeIcon icon={faPen} />
+                      </InputGroup.Text>
+                      <Form.Control
+                        type="text"
+                        className="place-control"
+                        defaultValue={formState.place}
+                        placeholder={_("storage place")}
+                        data-field="place"
+                        onChange={onChange}
+                      />
+                    </InputGroup>
                   </td>
                 </tr>
               )}
@@ -235,80 +378,96 @@ const AlbumModal = ({ modalData, setModalData }) => {
                 <tr>
                   <th>{_("Purchasing price")}</th>
                   <td>
-                    <Form.Control
-                      type="text"
-                      className="price"
-                      size="xs"
-                      defaultValue={price}
-                      placeholder={_("price")}
-                      data-field="price"
-                      onChange={onChange}
-                    />{" "}
-                    {Settings.getCurrency() || "€"}
+                    <InputGroup size="sm" className="price-input-group">
+                      <InputGroup.Text className="price-icon-addon">
+                        <FontAwesomeIcon icon={faPen} />
+                      </InputGroup.Text>
+                      <Form.Control
+                        type="text"
+                        className="price-control"
+                        defaultValue={formState.price}
+                        data-field="price"
+                        onChange={onChange}
+                      />
+                      <InputGroup.Text className="price-currency-addon">
+                        {Settings.getCurrency() || "€"}
+                      </InputGroup.Text>
+                    </InputGroup>
                   </td>
                 </tr>
               )}
               <tr>
-                <th>{_("Origine")}</th>
-                <td>{country}</td>
-              </tr>
-              <tr>
                 <th>{_("Style")}</th>
                 <td>
-                  <AlbumStyleButtons closeModal={onHide} items={styles} />
-                </td>
-              </tr>
-              <tr>
-                <th>{_("Format")}</th>
-                <td>{format}</td>
-              </tr>
-              <tr>
-                <td colSpan="3" align="center">
-                  <Button
-                    variant="light"
-                    size="sm"
-                    href={externalUrl}
-                    target="_blank"
-                  >
-                    <img
-                      alt={getProviderInfo().name}
-                      className="provider-logo"
-                      src={getProviderInfo().logo}
-                    />
-                  </Button>
+                  <AlbumStyleButtons
+                    closeModal={onHide}
+                    categories={release.categories}
+                  />
                 </td>
               </tr>
             </tbody>
           </Table>
-          {(notes || tracklist) && (
+          <hr />
+          {(renderedNotes || renderedTracks) && (
             <Tabs
               defaultActiveKey={
-                tracklist ? "album-tracks" : notes ? "album-infos" : ""
+                renderedTracks
+                  ? "album-tracks"
+                  : renderedNotes
+                    ? "album-infos"
+                    : ""
               }
             >
-              {notes && (
+              {renderedNotes && (
                 <Tab
                   eventKey="album-infos"
                   title={_("Info")}
                   className="album-infos"
                 >
-                  {notes}
+                  {renderedNotes}
                 </Tab>
               )}
-              {tracklist && (
+              {renderedTracks && (
                 <Tab
                   eventKey="album-tracks"
                   title={_("Tracks")}
                   className="album-tracks"
                 >
-                  <ul>{tracklist}</ul>
+                  <ul>{renderedTracks}</ul>
                 </Tab>
               )}
             </Tabs>
           )}
         </Modal.Body>
-        <Modal.Footer>
-          <Button onClick={onHide}>{_("Close")}</Button>
+        <Modal.Footer className="d-flex justify-content-between align-items-center">
+          {release.externalUrl && (
+            <Button
+              variant="outline-secondary"
+              size="sm"
+              href={release.externalUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="provider-link-btn d-inline-flex align-items-center"
+              title={_("View release on {{provider}}", {
+                provider: getProviderInfo().name,
+              })}
+              aria-label={_("View release on {{provider}}", {
+                provider: getProviderInfo().name,
+              })}
+            >
+              <span className="provider-logo-wrapper">
+                <img
+                  alt={getProviderInfo().name}
+                  className="provider-logo"
+                  src={getProviderInfo().logo}
+                />
+              </span>
+              <span className="provider-link-icon">↗</span>
+            </Button>
+          )}
+          <Button variant="secondary" onClick={onHide}>
+            {_("Close")}
+          </Button>
         </Modal.Footer>
       </Modal>
     </>

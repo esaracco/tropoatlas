@@ -1,6 +1,9 @@
 import React, { useEffect, useRef } from "react"
 import { useCollectionStore } from "@tropo/core"
 import { useTranslation } from "react-i18next"
+import { InputGroup } from "react-bootstrap"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faPen } from "@fortawesome/free-solid-svg-icons"
 
 import Tagify from "@yaireo/tagify"
 
@@ -10,9 +13,9 @@ import "@yaireo/tagify/dist/tagify.css"
 import "./styles/AlbumStyleButtons.css"
 
 // COMPONENT AlbumStyleButtons
-const AlbumStyleButtons = ({ items, closeModal }) => {
+const AlbumStyleButtons = ({ categories, closeModal }) => {
   const setFilter = useCollectionStore((s) => s.setFilter)
-  const styles = useCollectionStore((s) => s.categories)
+  const availableCategories = useCollectionStore((s) => s.categories)
   const [_] = useTranslation()
   const tags = useRef(null)
   const customFields = getItem("customFieldsInfo") || {}
@@ -21,7 +24,7 @@ const AlbumStyleButtons = ({ items, closeModal }) => {
   useEffect(() => {
     if (!tags.current) {
       tags.current = new Tagify(document.querySelector(".AlbumStyleButtons"), {
-        whitelist: styles,
+        whitelist: availableCategories,
         callbacks: {
           click: (e) => {
             setFilter("creators", [])
@@ -41,16 +44,23 @@ const AlbumStyleButtons = ({ items, closeModal }) => {
     }
   }, [])
 
+  const initialValues = (categories || []).map((item) => ({ value: item }))
+
   // RENDER
   return (
-    <>
+    <InputGroup size="sm" className="style-input-group">
+      {customFields.supportsCategories && (
+        <InputGroup.Text className="style-icon-addon">
+          <FontAwesomeIcon icon={faPen} />
+        </InputGroup.Text>
+      )}
       <input
         className="AlbumStyleButtons"
         readOnly={!customFields.supportsCategories}
         placeholder={_("New style...")}
-        defaultValue={JSON.stringify(items.map((item) => ({ value: item })))}
+        defaultValue={JSON.stringify(initialValues)}
       />
-    </>
+    </InputGroup>
   )
 }
 

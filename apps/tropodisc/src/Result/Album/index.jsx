@@ -2,8 +2,6 @@ import React, { useState, useEffect } from "react"
 import { useCollectionStore } from "@tropo/core"
 import { toast } from "react-toastify"
 import { useTranslation } from "react-i18next"
-
-import processString from "react-process-string"
 import { LazyLoadImage } from "react-lazy-load-image-component"
 
 import { getItemDetails, getItemImages, getProviderInfo } from "../../provider"
@@ -51,7 +49,7 @@ export const setLatestClickedInstanceId = (id) => {
 
 // COMPONENT Album
 const Album = ({
-  setModalData,
+  setActiveInstanceId,
   thumbWidth,
   instanceid,
   img,
@@ -111,49 +109,6 @@ const Album = ({
     return album
   }
 
-  // METHOD getTracks()
-  const getTracks = (tracklist) => {
-    let tracks
-    tracklist.forEach((item) => {
-      switch (item.type_) {
-        case "heading":
-          if (item.title !== "") {
-            tracks = (
-              <>
-                {tracks}
-                <li className="heading">
-                  <b>{item.title}</b>
-                </li>
-              </>
-            )
-          }
-          break
-        case "index":
-          tracks = (
-            <>
-              {tracks}
-              {getTracks(item.sub_tracks)}
-            </>
-          )
-          break
-        case "track":
-          tracks = (
-            <>
-              {tracks}
-              <li>
-                {item.position} - {item.title}
-                {item.duration && ` (${item.duration})`}
-              </li>
-            </>
-          )
-          break
-        default:
-      }
-    })
-
-    return tracks
-  }
-
   // METHOD onClick()
   const onClick = (e) => {
     const targetInstanceId =
@@ -169,85 +124,7 @@ const Album = ({
         ) {
           return
         }
-        const config = [
-          {
-            regex: /\[([^\]]+)\]\(([^)]+)\)/g,
-            fn: (k, r) => (
-              <a key={k} href={r[2]} rel="noopener noreferrer" target="_blank">
-                {r[1]}
-              </a>
-            ),
-          },
-          {
-            regex: /\r\n\r\n|\n\n/g,
-            fn: (k) => <p key={k} />,
-          },
-          {
-            regex: /\r\n|\n/g,
-            fn: (k) => <br key={k} />,
-          },
-        ]
-
-        let notes = null
-
-        if (r.notes && r.globalNotes) {
-          notes = (
-            <>
-              <div>
-                {_("This copy")} ({r.country}
-                {r.year ? " " + r.year : ""}) :
-              </div>
-              <div className="release" style={{ whiteSpace: "pre-wrap" }}>
-                {processString(config)(r.notes)}
-              </div>
-              <br />
-              <div>{_("General informations")} :</div>
-              <div className="master" style={{ whiteSpace: "pre-wrap" }}>
-                {processString(config)(r.globalNotes)}
-              </div>
-            </>
-          )
-        } else if (r.notes || r.globalNotes) {
-          notes = (
-            <div style={{ whiteSpace: "pre-wrap" }}>
-              {processString(config)(r.notes ? r.notes : r.globalNotes)}
-            </div>
-          )
-        }
-
-        // Update modal values and show modal
-        setModalData({
-          show: true,
-          instanceid: r.id,
-          folderid: r.folderid,
-          rating: r.rating,
-          tracklist: getTracks(r.tracklist),
-          externalUrl: r.externalUrl,
-          maintitle: (
-            <>
-              <div className="artist">
-                {r.creator}
-                <br />
-                {r.year ? r.year + " - " : ""}
-                {r.title}
-              </div>
-              {r.lpcount > 1 ? (
-                <span>{_("{{count}} discs", { count: r.lpcount })}</span>
-              ) : (
-                ""
-              )}
-            </>
-          ),
-          notes: notes,
-          country: r.country,
-          artist: r.creator,
-          format: r.format,
-          thumb: r.thumb,
-          cover: r.cover,
-          place: r.place,
-          price: r.price,
-          styles: r.categories,
-        })
+        setActiveInstanceId(r.id)
       })
       .catch((e) => {
         if (!navigator.onLine) {
