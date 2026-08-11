@@ -281,6 +281,10 @@ const AlbumModal = ({ instanceId, onClose }) => {
         regex: /\r\n|\n/g,
         fn: (k) => <br key={k} />,
       },
+      {
+        regex: /\[(.+):\]/g,
+        fn: (k, r) => <b>{r[1]}:</b>,
+      },
     ]
 
     if (release.notes && release.globalNotes) {
