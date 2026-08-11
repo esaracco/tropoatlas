@@ -2,9 +2,23 @@
   color: var(--tropo-link);
 }
 
+.AlbumModal .modal-header {
+  position: relative;
+  align-items: flex-start;
+}
+
+.AlbumModal .modal-header .btn-close,
+.AlbumModal .modal-header .close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  margin: 0;
+  z-index: 10;
+}
+
 .AlbumModal .modal-title {
   width: 100%;
-  padding-right: 5px;
+  padding-right: 25px;
 }
 
 .AlbumModal .artist-name {
@@ -21,9 +35,21 @@
   margin-top: 2px;
 }
 
+.AlbumModal .modal-header-content {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+}
+
 .AlbumModal .modal-icon {
-  width: 150px;
+  width: 120px;
+  flex-shrink: 0;
   text-align: center;
+}
+
+.AlbumModal .modal-header-info {
+  flex: 1;
+  min-width: 0;
   vertical-align: top;
 }
 
@@ -93,10 +119,18 @@
   padding: 10px;
 }
 
+.AlbumModal .table {
+  width: auto;
+  margin-left: auto;
+  margin-right: auto;
+}
+
 .AlbumModal .table th {
   background: var(--tropo-surface) !important;
   font-weight: bold;
   text-align: right;
+  width: 1%;
+  white-space: nowrap;
 }
 
 /* Ultra-compact InputGroup styling for place and price fields (24px) */
@@ -201,22 +235,7 @@
 }
 
 @media (max-width: 576px) {
-  .AlbumModal .table th:not(.modal-icon) {
-    display: block;
-    font-size: 0.75rem;
-    color: var(--tropo-text-muted);
-    font-weight: 600;
-    padding-bottom: 2px;
-    text-align: left;
-  }
-
-  .AlbumModal .table th:not(.modal-icon):after {
-    content: ":";
-  }
-
-  .AlbumModal .table td:not(.modal-icon) {
-    display: block;
-    padding-top: 0;
-    padding-bottom: 8px;
+  .AlbumModal .modal-icon {
+    width: 90px;
   }
 }

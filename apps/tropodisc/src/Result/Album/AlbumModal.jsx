@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react"
+import React, { useEffect, useState, useRef } from "react"
 import { useCollectionStore } from "@tropo/core"
 import { useTranslation } from "react-i18next"
 import {
@@ -18,10 +18,10 @@ import "react-image-gallery/styles/image-gallery.css"
 import { Rating } from "react-simple-star-rating"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faPen } from "@fortawesome/free-solid-svg-icons"
+import { faUser } from "@fortawesome/free-solid-svg-icons"
 
 import { ConfirmModal } from "@tropo/react"
 import AlbumStyleButtons from "./AlbumStyleButtons"
-import ArtistAlbumsButton from "./ArtistAlbumsButton"
 import { setLatestClickedInstanceId } from "./index"
 
 import { getItem, setLargeItem, setItem } from "@tropo/core"
@@ -86,6 +86,7 @@ const AlbumModal = ({ instanceId, onClose }) => {
   const setFilter = useCollectionStore((s) => s.setFilter)
   const selectedCategories = useCollectionStore((s) => s.selected.categories)
   const releases = useCollectionStore((s) => s.items)
+  const [count, setCount] = useState(0)
 
   const release = releases ? releases[instanceId] : null
 
@@ -99,16 +100,24 @@ const AlbumModal = ({ instanceId, onClose }) => {
   const [_] = useTranslation()
   const refIG = useRef(null)
   const customFields = getItem("customFieldsInfo") || {}
-  let customFieldsCount = 0
+  let haveCustomFields =
+    customFields.supportsPlace ||
+    customFields.supportsPrice ||
+    customFields.supportsCategories
 
-  if (customFields.supportsPlace) {
-    ++customFieldsCount
-  }
-  if (customFields.supportsPrice) {
-    ++customFieldsCount
-  }
+  useEffect(() => {
+    if (!release) return null
 
-  if (!release) return null
+    let c = 0
+    if (releases) {
+      for (const key in releases) {
+        if (releases[key].creator === release.creator) {
+          c++
+        }
+      }
+    }
+    setCount(c)
+  }, [release, releases])
 
   // METHOD handleIGClick()
   const handleIGClick = () => {
@@ -229,11 +238,11 @@ const AlbumModal = ({ instanceId, onClose }) => {
 
   // METHOD onHide()
   const onHide = () => {
-    const { changes } = getSaveActionInfo()
-
-    // If no changes, just close modal
-    if (!Object.keys(changes).length) {
-      setLatestClickedInstanceId(null)
+    if (
+      formState.place === (release.place || "") &&
+      formState.price === (release.price || "") &&
+      formState.rating === (release.rating || 0)
+    ) {
       onClose()
       return
     }
@@ -320,43 +329,61 @@ const AlbumModal = ({ instanceId, onClose }) => {
       >
         <Modal.Header closeButton>
           <Modal.Title>
-            <div className="artist-name">{release.creator}</div>
-            <div className="album-details">
-              {release.year ? release.year + " - " : ""}
-              <strong>{release.title}</strong>
-              <br />
-              <em>
-                {[release.format, release.country].filter(Boolean).join(", ")}
-              </em>
+            <div className="modal-header-content">
+              <div className="modal-icon">
+                <ImageGallery
+                  ref={refIG}
+                  onClick={handleIGClick}
+                  showPlayButton={false}
+                  showThumbnails={false}
+                  items={[{ original: release.cover || vinylImg300 }]}
+                />
+              </div>
+              <div className="modal-header-info">
+                <div className="artist-name">{release.creator}</div>
+                <div className="album-details">
+                  {release.year ? release.year + " – " : ""}
+                  <strong>{release.title}</strong>
+                  <br />
+                  <em>
+                    {[release.format, release.country]
+                      .filter(Boolean)
+                      .join(", ")}
+                  </em>
+                  {count > 1 && (
+                    <div>
+                      <a
+                        href="#"
+                        onClick={() => {
+                          setFilter("creators", [release.creator])
+                          onHide()
+                        }}
+                        title={_("Show all {{count}} albums by {{artist}}", {
+                          count,
+                          artist: release.creator,
+                        })}
+                      >
+                        <FontAwesomeIcon icon={faUser} /> <b>{count}</b>{" "}
+                        <span>{_("albums")}</span>
+                      </a>
+                      <div>
+                        {" "}
+                        <Rating
+                          size="20"
+                          onClick={onRatingClick}
+                          initialValue={formState.rating}
+                        />
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
             </div>
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Table borderless size="sm">
             <tbody>
-              <tr>
-                <th>{_("Note")} </th>
-                <td className="rating">
-                  <Rating
-                    size="20"
-                    onClick={onRatingClick}
-                    initialValue={formState.rating}
-                  />{" "}
-                </td>
-                <td rowSpan={4 + customFieldsCount} className="modal-icon">
-                  <ImageGallery
-                    ref={refIG}
-                    onClick={handleIGClick}
-                    showPlayButton={false}
-                    showThumbnails={false}
-                    items={[{ original: release.cover || vinylImg300 }]}
-                  />
-                  <ArtistAlbumsButton
-                    closeModal={onHide}
-                    artist={release.creator}
-                  />
-                </td>
-              </tr>
               {customFields.supportsPlace && (
                 <tr>
                   <th>{_("Location")}</th>
@@ -399,18 +426,20 @@ const AlbumModal = ({ instanceId, onClose }) => {
                   </td>
                 </tr>
               )}
-              <tr>
-                <th>{_("Style")}</th>
-                <td>
-                  <AlbumStyleButtons
-                    closeModal={onHide}
-                    categories={release.categories}
-                  />
-                </td>
-              </tr>
+              {customFields.supportsCategories && (
+                <tr>
+                  <th>{_("Style")}</th>
+                  <td>
+                    <AlbumStyleButtons
+                      closeModal={onHide}
+                      categories={release.categories}
+                    />
+                  </td>
+                </tr>
+              )}
             </tbody>
           </Table>
-          <hr />
+          {haveCustomFields && <hr />}
           {(renderedNotes || renderedTracks) && (
             <Tabs
               defaultActiveKey={
