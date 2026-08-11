@@ -3,7 +3,7 @@ import { Button, Container, Modal } from "react-bootstrap"
 import { useTranslation } from "react-i18next"
 import { useCollectionStore } from "@tropo/core"
 
-import * as Leds from "../utils/leds"
+import { ledsClient } from "../utils/leds"
 
 import { useAppStore } from "@tropo/core"
 
@@ -28,7 +28,7 @@ const LedsButton = () => {
       setFromRuler(true)
       clearFilters()
     }
-    Leds.setRuler({ show: state })
+    ledsClient.setRuler({ show: state })
     setRulerShown(state)
   }
 
@@ -39,7 +39,7 @@ const LedsButton = () => {
     ) {
       clearFilters()
     } else {
-      Leds.setRuler({ show: false })
+      ledsClient.setRuler({ show: false })
       setRulerShown(false)
     }
   }

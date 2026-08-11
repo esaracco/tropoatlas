@@ -1,13 +1,76 @@
+import { useSettingsStore } from "@tropo/core"
+
+// Marker function for i18n static extraction
+const _ = (s) => s
+
 export class LedsClient {
+  static INVALID_COLOR_MSG = _(
+    "Must be a valid RGB format (e.g. 255,0,0) and not 0,0,0",
+  )
+
+  static isValidColor(val) {
+    if (!val) return false
+    const str = String(val).replace(/\s/g, "")
+    if (str === "0,0,0") return false
+    const match = str.match(/^(\d{1,3}),(\d{1,3}),(\d{1,3})$/)
+    if (!match) return false
+    const [, r, g, b] = match
+    return Number(r) <= 255 && Number(g) <= 255 && Number(b) <= 255
+  }
+
   constructor(options = {}) {
     this.apiBase = options.apiBase || "/api/leds"
     this.rulerBase = options.rulerBase || "/api/ruler"
-    this.timeoutMs = options.timeoutMs || 5000 // 5 seconds default timeout
+    // Default timeout: 5 seconds
+    this.timeoutMs = options.timeoutMs || 5000
     this.onError =
       options.onError ||
       ((err) => {
         console.error("LedsClient error:", err)
       })
+  }
+
+  validateSettings(onConfigError) {
+    if (!onConfigError) return
+
+    const hardware = useSettingsStore.getState().hardware || {}
+    const colorFields = [
+      {
+        envKey: "VITE_LEDS_ARTISTS_COLOR",
+        storeKey: "ledsArtistsColor",
+      },
+      {
+        envKey: "VITE_LEDS_STYLES_COLOR",
+        storeKey: "ledsStylesColor",
+      },
+      {
+        envKey: "VITE_LEDS_ALBUM_COLOR",
+        storeKey: "ledsAlbumColor",
+      },
+    ]
+
+    colorFields.forEach(({ envKey, storeKey }) => {
+      const envVal = import.meta.env[envKey]
+      const storeVal = hardware[storeKey]
+
+      // Check if the environment variable itself is present but invalid
+      const isEnvInvalid =
+        envVal !== undefined &&
+        envVal !== "" &&
+        !LedsClient.isValidColor(envVal)
+
+      // Check if the active store value is invalid
+      const isStoreInvalid =
+        storeVal !== undefined &&
+        storeVal !== "" &&
+        !LedsClient.isValidColor(storeVal)
+
+      if (isEnvInvalid || isStoreInvalid) {
+        onConfigError("The {{field}} environment variable is invalid!", {
+          field: envKey,
+        })
+      }
+    })
   }
 
   async #request(url, options = {}) {

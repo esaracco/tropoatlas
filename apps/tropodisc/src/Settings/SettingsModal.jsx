@@ -1,7 +1,8 @@
 import React from "react"
 import { useTranslation } from "react-i18next"
 import { Modal, Tabs, Tab, Form, Button, Alert } from "react-bootstrap"
-import { isValidColor, useSettingsStore } from "@tropo/core"
+import { useSettingsStore } from "@tropo/core"
+import { LedsClient } from "@tropo/leds"
 import provider from "../provider"
 
 const SettingsModal = ({ show, onHide }) => {
@@ -119,23 +120,29 @@ const SettingsModal = ({ show, onHide }) => {
 
   const ColorFeedback = () => (
     <Form.Control.Feedback type="invalid">
-      {_("Must be a valid RGB format (e.g. 255,0,0) and not 0,0,0")}
+      {_(LedsClient.INVALID_COLOR_MSG)}
     </Form.Control.Feedback>
   )
 
   const handleClose = () => {
     const corrections = {}
-    if (!isValidColor(hardware.ledsArtistsColor)) {
-      corrections.ledsArtistsColor =
-        import.meta.env.VITE_LEDS_ARTISTS_COLOR || "0,0,130"
+    if (!LedsClient.isValidColor(hardware.ledsArtistsColor)) {
+      const envVal = import.meta.env.VITE_LEDS_ARTISTS_COLOR
+      corrections.ledsArtistsColor = LedsClient.isValidColor(envVal)
+        ? envVal
+        : "0,0,130"
     }
-    if (!isValidColor(hardware.ledsStylesColor)) {
-      corrections.ledsStylesColor =
-        import.meta.env.VITE_LEDS_STYLES_COLOR || "0,150,0"
+    if (!LedsClient.isValidColor(hardware.ledsStylesColor)) {
+      const envVal = import.meta.env.VITE_LEDS_STYLES_COLOR
+      corrections.ledsStylesColor = LedsClient.isValidColor(envVal)
+        ? envVal
+        : "0,150,0"
     }
-    if (!isValidColor(hardware.ledsAlbumColor)) {
-      corrections.ledsAlbumColor =
-        import.meta.env.VITE_LEDS_ALBUM_COLOR || "255,0,0"
+    if (!LedsClient.isValidColor(hardware.ledsAlbumColor)) {
+      const envVal = import.meta.env.VITE_LEDS_ALBUM_COLOR
+      corrections.ledsAlbumColor = LedsClient.isValidColor(envVal)
+        ? envVal
+        : "255,0,0"
     }
     if (Object.keys(corrections).length > 0) {
       setHardware(corrections)
@@ -191,7 +198,9 @@ const SettingsModal = ({ show, onHide }) => {
                   <Form.Control
                     type="text"
                     value={hardware.ledsArtistsColor}
-                    isInvalid={!isValidColor(hardware.ledsArtistsColor)}
+                    isInvalid={
+                      !LedsClient.isValidColor(hardware.ledsArtistsColor)
+                    }
                     onChange={(e) =>
                       setHardware({ ledsArtistsColor: e.target.value })
                     }
@@ -203,7 +212,9 @@ const SettingsModal = ({ show, onHide }) => {
                   <Form.Control
                     type="text"
                     value={hardware.ledsStylesColor}
-                    isInvalid={!isValidColor(hardware.ledsStylesColor)}
+                    isInvalid={
+                      !LedsClient.isValidColor(hardware.ledsStylesColor)
+                    }
                     onChange={(e) =>
                       setHardware({ ledsStylesColor: e.target.value })
                     }
@@ -215,7 +226,9 @@ const SettingsModal = ({ show, onHide }) => {
                   <Form.Control
                     type="text"
                     value={hardware.ledsAlbumColor}
-                    isInvalid={!isValidColor(hardware.ledsAlbumColor)}
+                    isInvalid={
+                      !LedsClient.isValidColor(hardware.ledsAlbumColor)
+                    }
                     onChange={(e) =>
                       setHardware({ ledsAlbumColor: e.target.value })
                     }

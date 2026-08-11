@@ -2,7 +2,7 @@ import i18n from "../i18n"
 import { toast } from "react-toastify"
 import { LedsClient } from "@tropo/leds"
 
-const client = new LedsClient({
+export const ledsClient = new LedsClient({
   onError: (e) => {
     if (!navigator.onLine) return
     console.error(e.message)
@@ -11,13 +11,3 @@ const client = new LedsClient({
     })
   },
 })
-
-export const setLeds = client.setLeds.bind(client)
-export const setRuler = client.setRuler.bind(client)
-
-const leds = {
-  setLeds,
-  setRuler,
-}
-
-export default leds

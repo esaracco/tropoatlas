@@ -1,5 +1,6 @@
 import i18n from "../i18n"
 import { toast } from "react-toastify"
+import { ledsClient } from "./leds"
 
 // Get constants from .env file
 export const env = import.meta.env.MODE
@@ -39,4 +40,10 @@ export function validateSettings() {
       { autoClose: false },
     ),
   )
+
+  if (setLeds === "yes") {
+    ledsClient.validateSettings((msg, params) =>
+      toast.error(i18n.t(msg, params), { autoClose: false }),
+    )
+  }
 }

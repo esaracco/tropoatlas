@@ -4,7 +4,7 @@ import { ProgressBar } from "react-bootstrap"
 import { VirtuosoGrid } from "react-virtuoso"
 
 import * as Settings from "../utils/settings"
-import * as Leds from "../utils/leds"
+import { ledsClient } from "../utils/leds"
 
 import Album from "./Album"
 import AlbumModal from "./Album/AlbumModal"
@@ -259,12 +259,12 @@ const Result = () => {
           }
 
           if (ledCommands.length > 0) {
-            await Leds.setLeds(ledCommands)
+            await ledsClient.setLeds(ledCommands)
           }
         } else if (turnOffLeds.current) {
           turnOffLeds.current = false
           if (!fromRuler) {
-            Leds.setLeds()
+            ledsClient.setLeds()
           } else {
             setFromRuler(false)
           }

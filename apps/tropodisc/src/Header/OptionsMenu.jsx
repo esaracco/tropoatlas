@@ -13,7 +13,7 @@ import {
 import { ConfirmModal, ThemeSelector } from "@tropo/react"
 import { useAppStore, useCollectionStore, clearAllCaches } from "@tropo/core"
 import * as Settings from "../utils/settings"
-import * as Leds from "../utils/leds"
+import { ledsClient } from "../utils/leds"
 
 const OptionsMenu = ({ onOpenSettings }) => {
   const [_] = useTranslation()
@@ -50,7 +50,7 @@ const OptionsMenu = ({ onOpenSettings }) => {
       setFromRuler(true)
       clearFilters()
     }
-    Leds.setRuler({ show: state })
+    ledsClient.setRuler({ show: state })
     setRulerShown(state)
   }
 
@@ -61,7 +61,7 @@ const OptionsMenu = ({ onOpenSettings }) => {
     ) {
       clearFilters()
     } else {
-      Leds.setRuler({ show: false })
+      ledsClient.setRuler({ show: false })
       setRulerShown(false)
     }
   }
