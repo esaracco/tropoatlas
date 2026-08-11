@@ -21,7 +21,7 @@ import { faPen } from "@fortawesome/free-solid-svg-icons"
 
 import { ConfirmModal } from "@tropo/react"
 import AlbumStyleButtons from "./AlbumStyleButtons"
-import AlbumButton from "./AlbumButton"
+import ArtistAlbumsButton from "./ArtistAlbumsButton"
 import { setLatestClickedInstanceId } from "./index"
 
 import { getItem, setLargeItem, setItem } from "@tropo/core"
@@ -351,7 +351,10 @@ const AlbumModal = ({ instanceId, onClose }) => {
                     showThumbnails={false}
                     items={[{ original: release.cover || vinylImg300 }]}
                   />
-                  <AlbumButton closeModal={onHide} artist={release.creator} />
+                  <ArtistAlbumsButton
+                    closeModal={onHide}
+                    artist={release.creator}
+                  />
                 </td>
               </tr>
               {customFields.supportsPlace && (

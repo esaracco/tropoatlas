@@ -6,10 +6,10 @@ import { Button } from "react-bootstrap"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faUser } from "@fortawesome/free-solid-svg-icons"
 
-import "./styles/AlbumButton.css"
+import "./styles/ArtistAlbumsButton.css"
 
-// COMPONENT AlbumButton
-const AlbumButton = ({ artist, closeModal }) => {
+// COMPONENT ArtistAlbumsButton
+const ArtistAlbumsButton = ({ artist, closeModal }) => {
   const setFilter = useCollectionStore((s) => s.setFilter)
   const releases = useCollectionStore((s) => s.items)
   const [count, setCount] = useState(0)
@@ -40,7 +40,7 @@ const AlbumButton = ({ artist, closeModal }) => {
   // RENDER
   return (
     count > 1 && (
-      <div className="AlbumButton">
+      <div className="ArtistAlbumsButton">
         <Button
           size="sm"
           variant="primary"
@@ -58,4 +58,4 @@ const AlbumButton = ({ artist, closeModal }) => {
   )
 }
 
-export default AlbumButton
+export default ArtistAlbumsButton
