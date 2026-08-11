@@ -1,7 +1,7 @@
 import React from "react"
 import { useTranslation } from "react-i18next"
 import { Modal, Tabs, Tab, Form, Button, Alert } from "react-bootstrap"
-import { useSettingsStore } from "@tropo/core"
+import { isValidColor, useSettingsStore } from "@tropo/core"
 import provider from "../provider"
 
 const SettingsModal = ({ show, onHide }) => {
@@ -115,16 +115,6 @@ const SettingsModal = ({ show, onHide }) => {
         })}
       </Form>
     )
-  }
-
-  const isValidColor = (val) => {
-    if (!val) return false
-    const str = String(val).replace(/\s/g, "")
-    if (str === "0,0,0") return false
-    const match = str.match(/^(\d{1,3}),(\d{1,3}),(\d{1,3})$/)
-    if (!match) return false
-    const [, r, g, b] = match
-    return Number(r) <= 255 && Number(g) <= 255 && Number(b) <= 255
   }
 
   const ColorFeedback = () => (

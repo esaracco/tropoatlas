@@ -115,3 +115,13 @@ const normalizeToken = (value) => {
 
 export const normalize = (value) =>
   value.replace(/\S+/g, normalizeToken).replace(RE_REPLACE_SPACES, "_")
+
+export const isValidColor = (val) => {
+  if (!val) return false
+  const str = String(val).replace(/\s/g, "")
+  if (str === "0,0,0") return false
+  const match = str.match(/^(\d{1,3}),(\d{1,3}),(\d{1,3})$/)
+  if (!match) return false
+  const [, r, g, b] = match
+  return Number(r) <= 255 && Number(g) <= 255 && Number(b) <= 255
+}
