@@ -17,6 +17,7 @@ This file defines the rules and conventions that the AI agent must follow when w
   - `packages/*`: Shared libraries and components (e.g., `core`, `react`, `leds`).
   - `plugins/*`: Plugins (e.g., `discogs`).
 - **Rule Abstraction**: Do NOT hardcode specific numeric raw values (e.g. pixel widths, arbitrary z-indices) in rule or documentation files. Document abstract design principles, responsive layout intentions, and architectural invariants instead. Exact numbers belong in code tokens and constants.
+- **Code Sobriety & Single Access Path**: Avoid speculative code bloat for non-existent future requirements (KISS/YAGNI). Every class, utility method, or constant MUST have a single canonical export and access path. Avoid creating duplicate top-level function wrappers or redundant aliases for methods and constants that belong to a class or module.
 
 ## Architecture & Data Providers
 - **Decoupling**: TropoAtlas uses a generic, plugin-based architecture. The main application (`apps/tropodisc`) MUST remain completely agnostic and MUST NOT contain code specific to a data provider (like Discogs).
