@@ -7,8 +7,6 @@ import { LazyLoadImage } from "react-lazy-load-image-component"
 import { getItemDetails, getItemImages, getProviderInfo } from "../../provider"
 import { setLargeItem } from "@tropo/core"
 
-import vinylImg300 from "../../assets/vinyl-300.png"
-
 import "./styles/Album.css"
 
 // Queue to fetch missing years progressively in the background (max 1 req / 2s)
@@ -47,6 +45,22 @@ export const setLatestClickedInstanceId = (id) => {
   latestClickedInstanceId = id
 }
 
+// Module-level cache of image URLs already loaded during this session
+const loadedImageUrls = new Set()
+
+// Helper to check if an image URL is already in session or browser cache
+const isImageCached = (url) => {
+  if (!url) return false
+  if (loadedImageUrls.has(url)) return true
+  const imgObj = new Image()
+  imgObj.src = url
+  if (imgObj.complete && imgObj.naturalWidth !== 0) {
+    loadedImageUrls.add(url)
+    return true
+  }
+  return false
+}
+
 // COMPONENT Album
 const Album = ({
   setActiveInstanceId,
@@ -62,6 +76,7 @@ const Album = ({
 
   const [_] = useTranslation()
   const [loader, setLoader] = useState(false)
+  const isCached = isImageCached(img)
 
   // EFFECT: Queue fetching missing year in background
   useEffect(() => {
@@ -206,7 +221,10 @@ const Album = ({
       {loader && <div className="card-loader-bar" />}
       <LazyLoadImage
         onError={onError}
-        placeholderSrc={vinylImg300}
+        onLoad={() => {
+          if (img) loadedImageUrls.add(img)
+        }}
+        visibleByDefault={isCached}
         src={img}
         height={thumbWidth}
         width={thumbWidth}

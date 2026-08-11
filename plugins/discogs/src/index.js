@@ -259,11 +259,15 @@ export class DiscogsPlugin extends BasePlugin {
             year: info.year,
             title: info.title,
             cover:
-              this.devMode || info.cover_image?.includes("spacer.gif")
+              this.devMode ||
+              !info.cover_image ||
+              info.cover_image.includes("spacer.gif")
                 ? vinylImg300
                 : info.cover_image,
             thumb:
-              this.devMode || info.cover_image?.includes("spacer.gif")
+              this.devMode ||
+              !info.cover_image ||
+              info.cover_image.includes("spacer.gif")
                 ? vinylImg192
                 : info.thumb,
             place,
