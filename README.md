@@ -28,10 +28,12 @@ With TropoDisc you can:
 
 ## Screenshots
 
-<img width="500" src="https://github.com/user-attachments/assets/660d7ff5-454f-48d1-b5ce-342d2008d32f" />
-<img width="500" src="https://github.com/user-attachments/assets/e7c477f1-9a09-4b28-9994-6611644c71d7" />
-<img width="500" src="https://github.com/user-attachments/assets/02ce5f31-08c5-45d7-b990-453773741618" />
-<img width="500" src="https://github.com/user-attachments/assets/26f95234-f21a-4cf9-a612-057e1182345c" />
+<img width="500" alt="1" src="https://github.com/user-attachments/assets/301f74da-a024-4c1d-916a-9394f5dbe599" />
+<img width="500" alt="2" src="https://github.com/user-attachments/assets/20c90cfa-9fe7-42bb-8ed5-976bdbb3c674" />
+<img width="500" alt="3" src="https://github.com/user-attachments/assets/2e3d8115-1944-41cc-8d60-087bc2133736" />
+<img width="500" alt="4" src="https://github.com/user-attachments/assets/9d886bd5-dc07-4d00-9261-5bcacb6e159c" />
+<img width="500" alt="5" src="https://github.com/user-attachments/assets/1ffd917e-0104-4b0c-a113-fce5c14630f4" />
+
 
 ## Requirements
 
