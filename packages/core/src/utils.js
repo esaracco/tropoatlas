@@ -115,3 +115,14 @@ const normalizeToken = (value) => {
 
 export const normalize = (value) =>
   value.replace(/\S+/g, normalizeToken).replace(RE_REPLACE_SPACES, "_")
+
+// Checks if the string contains at least one Latin letter
+export const hasLatinLetter = (value) =>
+  typeof value === "string" && /\p{Script=Latin}/u.test(value)
+
+// Checks if the string contains at least one letter that is NOT Latin
+export const hasNonLatinLetter = (value) =>
+  typeof value === "string" &&
+  Array.from(value).some(
+    (char) => /\p{L}/u.test(char) && !/\p{Script=Latin}/u.test(char),
+  )

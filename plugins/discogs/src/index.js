@@ -1,11 +1,32 @@
 import sleep from "sleep-promise"
-import { normalize, BasePlugin, useSettingsStore } from "@tropo/core"
+import {
+  hasLatinLetter,
+  hasNonLatinLetter,
+  normalize,
+  BasePlugin,
+  useSettingsStore,
+} from "@tropo/core"
 import vinylImg192 from "./assets/vinyl-300.png"
 import vinylImg300 from "./assets/vinyl-300.png"
 import logo from "./assets/logo.png"
 
 // Marker function for i18n static extraction
 const _ = (s) => s
+
+export const getArtistName = ({ name, anv } = {}) => {
+  if (!name) return anv || ""
+  if (!anv) return name
+
+  if (
+    hasNonLatinLetter(name) &&
+    hasLatinLetter(anv) &&
+    !hasNonLatinLetter(anv)
+  ) {
+    return anv
+  }
+
+  return name
+}
 
 export class DiscogsPlugin extends BasePlugin {
   constructor(config = {}) {
@@ -244,7 +265,7 @@ export class DiscogsPlugin extends BasePlugin {
 
           styles.sort() // SORT CATEGORIES to match legacy behavior
 
-          const artist = info.artists[0].name.replace(/\(.*/, "")
+          const artist = getArtistName(info.artists[0]).replace(/\(.*/, "")
           const searchIndex = `${artist.replace(/\s/g, "-")}_${info.title.replace(/\s/g, "-")}_${normalize(artist)}_${normalize(info.title)}`
 
           releases[release.instance_id] = {
