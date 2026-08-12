@@ -370,16 +370,16 @@ const AlbumModal = ({ instanceId, onClose }) => {
                         <FontAwesomeIcon icon={faUser} /> <b>{count}</b>{" "}
                         <span>{_("albums")}</span>
                       </a>
-                      <div>
-                        {" "}
-                        <Rating
-                          size="20"
-                          onClick={onRatingClick}
-                          initialValue={formState.rating}
-                        />
-                      </div>
                     </div>
                   )}
+                  <div>
+                    {" "}
+                    <Rating
+                      size="20"
+                      onClick={onRatingClick}
+                      initialValue={formState.rating}
+                    />
+                  </div>
                 </div>
               </div>
             </div>
