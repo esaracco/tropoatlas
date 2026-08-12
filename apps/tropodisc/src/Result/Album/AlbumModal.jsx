@@ -238,11 +238,9 @@ const AlbumModal = ({ instanceId, onClose }) => {
 
   // METHOD onHide()
   const onHide = () => {
-    if (
-      formState.place === (release.place || "") &&
-      formState.price === (release.price || "") &&
-      formState.rating === (release.rating || 0)
-    ) {
+    const { changes } = getSaveActionInfo()
+
+    if (!Object.keys(changes).length) {
       onClose()
       return
     }
