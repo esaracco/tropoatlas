@@ -18,6 +18,7 @@
 #define WIFI_PASSWORD "********"
 
 #define LED_WATCHDOG_TIMEOUT_MS (5 * 60 * 1000UL)
+#define LED_PING_WATCHDOG_TIMEOUT_MS (15 * 1000UL)
 
 /* ===================== LEDS ===================== */
 
@@ -34,6 +35,7 @@ void clearAllLeds(bool show = false) {
 /* ===================== LED WATCHDOG ===================== */
 
 uint32_t ledWatchdogLastKick = 0;
+uint32_t ledPingWatchdogLastKick = 0;
 
 void ledWatchdogKick() {
   ledWatchdogLastKick = millis();
@@ -49,6 +51,24 @@ void ledWatchdogCheck() {
   if ((uint32_t)(millis() - ledWatchdogLastKick) >= LED_WATCHDOG_TIMEOUT_MS) {
     clearAllLeds(true);
     ledWatchdogClear();
+  }
+}
+
+void ledPingWatchdogKick() {
+  ledPingWatchdogLastKick = millis();
+}
+
+void ledPingWatchdogClear() {
+  ledPingWatchdogLastKick = 0;
+}
+
+void ledPingWatchdogCheck() {
+  if (!ledPingWatchdogLastKick) return;
+
+  if ((uint32_t)(millis() - ledPingWatchdogLastKick) >=
+      LED_PING_WATCHDOG_TIMEOUT_MS) {
+    clearAllLeds(true);
+    ledPingWatchdogClear();
   }
 }
 
@@ -172,10 +192,16 @@ void onServerEventLeds() {
   server.send(200);
 }
 
+void onServerEventPing() {
+  ledPingWatchdogKick();
+  server.send(200, "application/json", "{\"status\":\"ok\"}");
+}
+
 void onServerEventRuler() {
   ledWatchdogClear();
   if (server.hasArg("reset") && server.arg("reset") == "1") {
     clearAllLeds(true);
+    ledPingWatchdogClear();
   } else {
     clearAllLeds(false);
     for (uint8_t strip = 0; strip < NUM_STRIPS; strip++) {
@@ -204,6 +230,7 @@ void setup() {
 
   FastLED.setBrightness(50);
 
+  server.on("/ping", HTTP_GET, onServerEventPing);
   server.on("/leds", HTTP_POST, onServerEventLeds);
   server.on("/ruler", HTTP_GET, onServerEventRuler);
   server.begin();
@@ -214,6 +241,7 @@ void setup() {
 void loop() {
   server.handleClient();
   ledWatchdogCheck();
+  ledPingWatchdogCheck();
 
   static uint32_t lastBlinkTime = 0;
   static bool blinkIsOn = true;

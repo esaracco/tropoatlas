@@ -15,6 +15,11 @@ export default defineConfig(({ mode }) => {
       changeOrigin: true,
       rewrite: (path) => path.replace(/^\/api\/leds/, "/leds"),
     }
+    proxy["/api/ping"] = {
+      target: env.VITE_AUDIOLIBRARY_URL,
+      changeOrigin: true,
+      rewrite: (path) => path.replace(/^\/api\/ping/, "/ping"),
+    }
     proxy["/api/ruler"] = {
       target: env.VITE_AUDIOLIBRARY_URL,
       changeOrigin: true,

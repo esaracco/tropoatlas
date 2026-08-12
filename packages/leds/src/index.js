@@ -19,10 +19,10 @@ export class LedsClient {
   }
 
   constructor(options = {}) {
-    this.apiBase = options.apiBase || "/api/leds"
-    this.rulerBase = options.rulerBase || "/api/ruler"
-    // Default timeout: 5 seconds
+    this.apiBase = options.apiBase || "/api"
     this.timeoutMs = options.timeoutMs || 5000
+    this.pingIntervalMs = options.pingIntervalMs || 5000
+    this.heartbeatTimer = null
     this.onError =
       options.onError ||
       ((err) => {
@@ -135,7 +135,7 @@ export class LedsClient {
     const body = new URLSearchParams()
     body.append("data", JSON.stringify(payload))
 
-    return this.#request(this.apiBase, {
+    return this.#request(this.apiBase + "/leds", {
       method: "POST",
       body,
       ...fetchOptions,
@@ -145,6 +145,28 @@ export class LedsClient {
   setRuler(props = {}) {
     const { show = true } = props
     const params = new URLSearchParams({ reset: Number(!show) })
-    return this.#request(`${this.rulerBase}?${params.toString()}`)
+    return this.#request(`${this.apiBase}/ruler?${params.toString()}`)
+  }
+
+  async ping() {
+    try {
+      const response = await fetch(`${this.apiBase}/ping`, { method: "GET" })
+      return response.ok
+    } catch (err) {
+      console.warn("LEDs ping failed:", err.message)
+      return false
+    }
+  }
+
+  startHeartbeat(intervalMs = 5000) {
+    if (this.heartbeatTimer) return
+    this.heartbeatTimer = setInterval(() => this.ping(), intervalMs)
+  }
+
+  stopHeartbeat() {
+    if (this.heartbeatTimer) {
+      clearInterval(this.heartbeatTimer)
+      this.heartbeatTimer = null
+    }
   }
 }

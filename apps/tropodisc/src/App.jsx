@@ -2,6 +2,7 @@ import React, { useEffect } from "react"
 import { useTranslation } from "react-i18next"
 import i18n from "i18next"
 import { ToastContainer, toast } from "react-toastify"
+import { ledsClient } from "./utils/leds"
 
 import * as Settings from "./utils/settings"
 
@@ -48,8 +49,14 @@ const App = () => {
     }
     window.addEventListener("online", _onlineEvent)
     window.addEventListener("offline", _onlineEvent)
+    if (Settings.setLeds === "yes") {
+      ledsClient.startHeartbeat()
+    }
 
     return () => {
+      if (Settings.setLeds === "yes") {
+        ledsClient.stopHeartbeat()
+      }
       window.removeEventListener("offline", _onlineEvent)
       window.removeEventListener("online", _onlineEvent)
     }
