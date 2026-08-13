@@ -7,14 +7,18 @@ import { faClose, faSearch } from "@fortawesome/free-solid-svg-icons"
 import "./Search.css"
 
 // COMPONENT Search
-const Search = ({ placeholder, searchStr, setSearchStr }) => {
+const Search = ({ placeholder, searchStr, setSearchStr, inputRef }) => {
   // METHOD onChange()
   const onChange = (e) => setSearchStr(e.target.value)
 
   // METHOD onReset()
   const onReset = (e) => {
     setSearchStr("")
-    e.currentTarget.parentNode.querySelector("input").focus()
+    if (inputRef && inputRef.current) {
+      inputRef.current.focus()
+    } else {
+      e.currentTarget.parentNode.querySelector("input").focus()
+    }
   }
 
   // RENDER
@@ -23,6 +27,7 @@ const Search = ({ placeholder, searchStr, setSearchStr }) => {
       <InputGroup className="position-relative mb-0">
         <FontAwesomeIcon icon={faSearch} className="search-icon" />
         <Form.Control
+          ref={inputRef}
           type="text"
           onChange={onChange}
           value={searchStr}

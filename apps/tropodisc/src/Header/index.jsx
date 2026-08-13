@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, useRef } from "react"
 import { useCollectionStore } from "@tropo/core"
 import { useTranslation } from "react-i18next"
 import { HeaderButton, Search } from "@tropo/react"
@@ -34,6 +34,14 @@ const Header = () => {
   const [expanded, setExpanded] = useState(false)
   const [showSettings, setShowSettings] = useState(false)
   const [showSearch, setShowSearch] = useState(false)
+  const searchInputRef = useRef(null)
+
+  // Focus search input when search drawer is opened
+  useEffect(() => {
+    if (showSearch && searchInputRef.current) {
+      searchInputRef.current.focus()
+    }
+  }, [showSearch])
 
   const toggleSearch = () => {
     if (showSearch) {
@@ -220,6 +228,7 @@ const Header = () => {
       </Navbar>
       <div className={`search-bar-drawer ${showSearch ? "open" : ""}`}>
         <Search
+          inputRef={searchInputRef}
           searchStr={searchStr}
           setSearchStr={setSearchStr}
           placeholder={_("artist, album...")}
