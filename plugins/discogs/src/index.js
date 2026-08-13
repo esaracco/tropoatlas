@@ -30,7 +30,6 @@ export class DiscogsPlugin extends BasePlugin {
   constructor(config = {}) {
     super()
     const env = config.env || {}
-    this.token = env.VITE_DISCOGS_TOKEN || config.token
     this.user = env.VITE_DISCOGS_USER || config.user
     this.devMode = config.devMode || false
 
@@ -150,14 +149,13 @@ export class DiscogsPlugin extends BasePlugin {
   }
 
   async #request(method, service, args) {
+    // The Authorization header (Discogs token) is injected upstream by
+    // the reverse proxy (e.g., Nginx, Apache, or Vite dev server).
     const options = {
       method,
       headers: {
         "content-type": "application/json;charset=utf-8",
       },
-    }
-    if (this.token) {
-      options.headers["Authorization"] = `Discogs token=${this.token}`
     }
 
     let url = `${this.apiBase}/${service}`
