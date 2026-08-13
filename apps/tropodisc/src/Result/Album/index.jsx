@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next"
 import { LazyLoadImage } from "react-lazy-load-image-component"
 
 import { getItemDetails, getItemImages, getProviderInfo } from "../../provider"
-import { setLargeItem } from "@tropo/core"
+import { buildCacheKey, setLargeItem } from "@tropo/core"
 
 import "./styles/Album.css"
 
@@ -59,6 +59,27 @@ const isImageCached = (url) => {
     return true
   }
   return false
+}
+
+// Purge an image URL from browser Cache Storage
+const purgeImageCache = async (url) => {
+  if (!url || typeof window === "undefined" || !("caches" in window)) return
+  try {
+    const cleanUrl = url.split("?")[0]
+    const cache = await caches.open(buildCacheKey("item-covers"))
+    await cache.delete(url)
+    await cache.delete(cleanUrl)
+  } catch (e) {
+    console.warn("Failed to purge image from cache:", e.message)
+  }
+}
+
+// Append a timestamp query parameter to bypass browser/SW image cache
+const addCacheBuster = (url) => {
+  if (!url) return url
+  const timestamp = Date.now()
+  const sep = url.includes("?") ? "&" : "?"
+  return `${url}${sep}t=${timestamp}`
 }
 
 // COMPONENT Album
@@ -163,10 +184,14 @@ const Album = ({
       const items = useCollectionStore.getState().items
       const album = items[instanceid]
       if (album) {
+        // Purge previous image URLs from browser cache
+        await purgeImageCache(album.cover)
+        await purgeImageCache(album.thumb)
+
         const images = await getItemImages(album)
-        if (images) {
-          const cover = images.cover
-          const thumb = images.thumb
+        if (images && (images.cover || images.thumb)) {
+          const cover = addCacheBuster(images.cover)
+          const thumb = addCacheBuster(images.thumb)
 
           const releasesClone = { ...items }
           releasesClone[instanceid] = {
@@ -220,6 +245,7 @@ const Album = ({
     >
       {loader && <div className="card-loader-bar" />}
       <LazyLoadImage
+        key={img}
         onError={onError}
         onLoad={() => {
           if (img) loadedImageUrls.add(img)
