@@ -27,7 +27,7 @@ const Checkbox = ({ items, selected, onChangeSelection, normalizeFn }) => {
             <label>
               <input
                 type="checkbox"
-                defaultChecked={selected.indexOf(item) > -1}
+                checked={selected ? selected.indexOf(item) > -1 : false}
                 value={item}
                 onChange={onChange}
               />

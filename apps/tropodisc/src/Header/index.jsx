@@ -85,12 +85,23 @@ const Header = () => {
     }
   }, [sort, customFields.supportsPlace, setSort])
 
-  const labels = {
-    formats: _("Formats"),
-    artists: _("Artists"),
-    styles: _("Styles"),
-    close: _("Close"),
-  }
+  const activeFilters = [
+    selected.formats?.length > 0 && {
+      id: "formats",
+      label: _("Formats"),
+      onReset: () => setFilter("formats", []),
+    },
+    selected.creators?.length > 0 && {
+      id: "creators",
+      label: _("Artists"),
+      onReset: () => setFilter("creators", []),
+    },
+    selected.categories?.length > 0 && {
+      id: "categories",
+      label: _("Styles"),
+      onReset: () => setFilter("categories", []),
+    },
+  ].filter(Boolean)
 
   const getOnChangeSelection = (stype) => (value, isChecked) => {
     if (isChecked) {
@@ -155,8 +166,8 @@ const Header = () => {
                     stype="categories"
                     selected={selected}
                     content={allCategories}
-                    labels={labels}
-                    onReset={(type) => setFilter(type, [])}
+                    activeFilters={activeFilters}
+                    closeLabel={_("Close")}
                     onChangeSelection={getOnChangeSelection("categories")}
                     normalizeFn={normalize}
                   />
@@ -166,8 +177,8 @@ const Header = () => {
                     stype="creators"
                     selected={selected}
                     content={allCreators}
-                    labels={labels}
-                    onReset={(type) => setFilter(type, [])}
+                    activeFilters={activeFilters}
+                    closeLabel={_("Close")}
                     onChangeSelection={getOnChangeSelection("creators")}
                     normalizeFn={normalize}
                   />
@@ -178,8 +189,8 @@ const Header = () => {
                       stype="formats"
                       selected={selected}
                       content={allFormats}
-                      labels={labels}
-                      onReset={(type) => setFilter(type, [])}
+                      activeFilters={activeFilters}
+                      closeLabel={_("Close")}
                       onChangeSelection={getOnChangeSelection("formats")}
                       normalizeFn={normalize}
                     />
@@ -199,7 +210,7 @@ const Header = () => {
                     }}
                     sort={sort}
                     onSortChange={setSort}
-                    labels={labels}
+                    closeLabel={_("Close")}
                   />
                   <Button
                     variant="secondary"

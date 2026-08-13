@@ -15,44 +15,13 @@ const ButtonModal = ({
   onHide,
   show,
   selected,
-  onReset,
-  labels,
+  activeFilters = [],
+  closeLabel = "Close",
   onChangeSelection,
   normalizeFn,
   sort,
   onSortChange,
 }) => {
-  const uncheckAll = (e) => {
-    e.currentTarget
-      .closest(".modal-content")
-      .querySelectorAll(`.modal-body input[type="checkbox"]`)
-      .forEach((cb) => (cb.checked = false))
-  }
-
-  // METHOD onResetFormats()
-  const onResetFormats = (e) => {
-    onReset("formats")
-    if (stype === "formats") {
-      uncheckAll(e)
-    }
-  }
-
-  // METHOD onResetArtists()
-  const onResetArtists = (e) => {
-    onReset("creators")
-    if (stype === "creators") {
-      uncheckAll(e)
-    }
-  }
-
-  // METHOD onResetStyles()
-  const onResetStyles = (e) => {
-    onReset("categories")
-    if (stype === "categories") {
-      uncheckAll(e)
-    }
-  }
-
   // RENDER
   return (
     <Modal
@@ -65,28 +34,18 @@ const ButtonModal = ({
     >
       <Modal.Header closeButton className="position-relative">
         <Modal.Title>{label}</Modal.Title>
-        {type === "checkbox" && (
+        {type === "checkbox" && activeFilters.length > 0 && (
           <div className="cancel-box">
-            {selected && selected.formats && selected.formats.length > 0 && (
-              <Button variant="primary" onClick={onResetFormats}>
-                {labels.formats}
+            {activeFilters.map((filter) => (
+              <Button
+                key={filter.id}
+                variant="primary"
+                onClick={filter.onReset}
+              >
+                {filter.label}
                 <span>&times;</span>
               </Button>
-            )}
-            {selected && selected.creators && selected.creators.length > 0 && (
-              <Button variant="primary" onClick={onResetArtists}>
-                {labels.artists}
-                <span>&times;</span>
-              </Button>
-            )}
-            {selected &&
-              selected.categories &&
-              selected.categories.length > 0 && (
-                <Button variant="primary" onClick={onResetStyles}>
-                  {labels.styles}
-                  <span>&times;</span>
-                </Button>
-              )}
+            ))}
           </div>
         )}
       </Modal.Header>
@@ -108,7 +67,7 @@ const ButtonModal = ({
         )}
       </Modal.Body>
       <Modal.Footer>
-        <Button onClick={onHide}>{labels.close}</Button>
+        <Button onClick={onHide}>{closeLabel}</Button>
       </Modal.Footer>
     </Modal>
   )
