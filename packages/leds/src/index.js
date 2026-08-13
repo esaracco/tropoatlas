@@ -158,9 +158,9 @@ export class LedsClient {
     }
   }
 
-  startHeartbeat(intervalMs = 5000) {
+  startHeartbeat() {
     if (this.heartbeatTimer) return
-    this.heartbeatTimer = setInterval(() => this.ping(), intervalMs)
+    this.heartbeatTimer = setInterval(() => this.ping(), this.pingIntervalMs)
   }
 
   stopHeartbeat() {
