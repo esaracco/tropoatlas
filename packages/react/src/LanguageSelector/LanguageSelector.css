@@ -1,0 +1,19 @@
+/* ── LanguageSelector ────────────────────────────────────────── */
+
+.LanguageSelector {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.LanguageSelector .btn {
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.15rem 0.45rem;
+  line-height: 1.2;
+  border-radius: 4px;
+  transition:
+    background-color 0.2s,
+    color 0.2s,
+    border-color 0.2s;
+}

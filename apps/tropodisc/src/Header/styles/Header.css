@@ -209,7 +209,8 @@
   width: 16px;
 }
 
-.options-menu-popover .options-menu-theme-label {
+.options-menu-popover .options-menu-theme-label,
+.options-menu-popover .options-menu-language-label {
   color: var(--tropo-text) !important;
   font-size: 0.9rem;
 }

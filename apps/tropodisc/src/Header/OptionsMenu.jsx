@@ -9,8 +9,9 @@ import {
   faLightbulb,
   faPalette,
   faInfoCircle,
+  faLanguage,
 } from "@fortawesome/free-solid-svg-icons"
-import { ConfirmModal, ThemeSelector } from "@tropo/react"
+import { ConfirmModal, ThemeSelector, LanguageSelector } from "@tropo/react"
 import { useAppStore, useCollectionStore, clearAllCaches } from "@tropo/core"
 import * as Settings from "../utils/settings"
 import { ledsClient } from "../utils/leds"
@@ -181,6 +182,17 @@ const OptionsMenu = ({ onOpenSettings }) => {
               title={_("Theme")}
               ariaLabel={_("Change theme")}
             />
+          </div>
+
+          <div className="px-3 py-1 d-flex align-items-center justify-content-between gap-3">
+            <span className="options-menu-language-label d-flex align-items-center gap-2">
+              <FontAwesomeIcon
+                icon={faLanguage}
+                className="options-menu-icon"
+              />
+              <span>{_("Language")}</span>
+            </span>
+            <LanguageSelector ariaLabel={_("Change language")} />
           </div>
         </Dropdown.Menu>
       </Dropdown>
