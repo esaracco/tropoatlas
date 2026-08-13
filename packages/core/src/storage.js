@@ -1,5 +1,11 @@
 import localforage from "localforage"
 
+// Current version of the storage schema. Increment when local storage
+// structure changes to force a re-sync.
+export const STORAGE_SCHEMA_VERSION = 3
+
+export const SETTINGS_STORE_KEY = "settings-v1"
+
 export const buildCacheKey = (name) => {
   const appName = import.meta.env.VITE_APP_NAME || "tropoatlas"
   return name.startsWith(appName) ? name : appName + "-" + name
@@ -38,12 +44,6 @@ export const getItem = (name) =>
   JSON.parse(localStorage.getItem(buildCacheKey(name)))
 
 export const removeItem = (name) => localStorage.removeItem(buildCacheKey(name))
-
-export const SETTINGS_STORE_KEY = "settings-v1"
-
-// Current version of the storage schema. Increment when local storage
-// structure changes to force a re-sync.
-export const STORAGE_SCHEMA_VERSION = 2
 
 export const clearAllCaches = async (keysToPreserve = []) => {
   const appName = import.meta.env.VITE_APP_NAME || "tropoatlas"

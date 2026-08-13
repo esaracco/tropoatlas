@@ -15,6 +15,8 @@ import { useTranslation } from "react-i18next"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faSync } from "@fortawesome/free-solid-svg-icons"
 
+import vinylImg from "../assets/vinyl.png"
+
 import "./Result.css"
 
 const _setLeds = Settings.setLeds === "yes"
@@ -343,7 +345,7 @@ const Result = () => {
                 key={item.id}
                 setActiveInstanceId={setActiveInstanceId}
                 instanceid={item.id}
-                img={item[img]}
+                img={item[img] || vinylImg}
                 thumbWidth={thumbWidth}
                 artist={item.creator}
                 year={item.year}

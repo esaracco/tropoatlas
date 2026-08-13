@@ -6,8 +6,6 @@ import {
   BasePlugin,
   useSettingsStore,
 } from "@tropo/core"
-import vinylImg192 from "./assets/vinyl-300.png"
-import vinylImg300 from "./assets/vinyl-300.png"
 import logo from "./assets/logo.png"
 
 // Marker function for i18n static extraction
@@ -268,6 +266,11 @@ export class DiscogsPlugin extends BasePlugin {
           const artist = getArtistName(info.artists[0]).replace(/\(.*/, "")
           const searchIndex = `${artist.replace(/\s/g, "-")}_${info.title.replace(/\s/g, "-")}_${normalize(artist)}_${normalize(info.title)}`
 
+          const hasValidCover =
+            !this.devMode &&
+            info.cover_image &&
+            !info.cover_image.includes("spacer.gif")
+
           releases[release.instance_id] = {
             format,
             searchIndex,
@@ -279,18 +282,8 @@ export class DiscogsPlugin extends BasePlugin {
             creator: artist,
             year: info.year,
             title: info.title,
-            cover:
-              this.devMode ||
-              !info.cover_image ||
-              info.cover_image.includes("spacer.gif")
-                ? vinylImg300
-                : info.cover_image,
-            thumb:
-              this.devMode ||
-              !info.cover_image ||
-              info.cover_image.includes("spacer.gif")
-                ? vinylImg192
-                : info.thumb,
+            cover: hasValidCover ? info.cover_image : null,
+            thumb: hasValidCover ? info.thumb : null,
             place,
             price,
             categories: styles,

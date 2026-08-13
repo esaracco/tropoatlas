@@ -28,7 +28,7 @@ import { getItem, setLargeItem, setItem } from "@tropo/core"
 import { updateItem, getCategories, getProviderInfo } from "../../provider"
 import * as Settings from "../../utils/settings"
 
-import vinylImg300 from "../../assets/vinyl-300.png"
+import vinylImg from "../../assets/vinyl.png"
 
 import "./styles/AlbumModal.css"
 
@@ -338,7 +338,7 @@ const AlbumModal = ({ instanceId, onClose }) => {
                   onClick={handleIGClick}
                   showPlayButton={false}
                   showThumbnails={false}
-                  items={[{ original: release.cover || vinylImg300 }]}
+                  items={[{ original: release.cover || vinylImg }]}
                 />
               </div>
               <div className="modal-header-info">
