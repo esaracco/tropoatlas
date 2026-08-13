@@ -86,10 +86,9 @@ export const useSettingsStore = create(
         discogs: {
           apiItemsPerRequest:
             parseInt(import.meta.env.VITE_DISCOGS_API_ITEMS_PER_REQUEST, 10) ||
-            500,
+            250,
           apiRequestDelay:
-            parseInt(import.meta.env.VITE_DISCOGS_API_REQUEST_DELAY, 10) ||
-            1200,
+            parseInt(import.meta.env.VITE_DISCOGS_API_REQUEST_DELAY, 10) || 2,
           formats: import.meta.env.VITE_DISCOGS_FORMATS || "vinyl",
           fieldPlace: import.meta.env.VITE_DISCOGS_FIELD_PLACE || "",
           fieldPrice: import.meta.env.VITE_DISCOGS_FIELD_PRICE || "",
