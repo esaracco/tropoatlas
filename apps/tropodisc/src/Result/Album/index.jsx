@@ -95,7 +95,7 @@ const Album = ({
 }) => {
   const setItems = useCollectionStore((s) => s.setItems)
 
-  const [_] = useTranslation()
+  const { t } = useTranslation()
   const [loader, setLoader] = useState(false)
   const isCached = isImageCached(img)
 
@@ -164,12 +164,12 @@ const Album = ({
       })
       .catch((e) => {
         if (!navigator.onLine) {
-          toast.warning(_("You are offline!"), { toastId: "offline" })
+          toast.warning(t("You are offline!"), { toastId: "offline" })
         } else {
           console.error(e.message)
           toast.error(
-            _(e.message) ||
-              _("An error occurred while using the {{provider}} API!", {
+            t(e.message) ||
+              t("An error occurred while using the {{provider}} API!", {
                 provider: getProviderInfo().name,
               }),
           )
@@ -201,13 +201,13 @@ const Album = ({
           }
           setItems(releasesClone)
           setLargeItem("releases", releasesClone)
-          toast.success(_("Image recovered successfully!"))
+          toast.success(t("Image recovered successfully!"))
         } else {
-          toast.warning(_("Still no image available."))
+          toast.warning(t("Still no image available."))
         }
       }
     } catch (err) {
-      toast.error(_("Failed to fetch new image: ") + err.message)
+      toast.error(t("Failed to fetch new image: ") + err.message)
     }
     setLoader(false)
   }
@@ -215,20 +215,20 @@ const Album = ({
   const onError = () => {
     toast.error(
       <div>
-        <b>{_("Image loading error")}</b>
+        <b>{t("Image loading error")}</b>
         <br />
-        {_(
+        {t(
           "Either there is a network problem, the provider is overloaded or the image URLs have changed.",
         )}
         <br />
-        <i>{_("If the problem persists, please re-sync your collection.")}</i>
+        <i>{t("If the problem persists, please re-sync your collection.")}</i>
         <br />
         <br />
         <button
           onClick={retryImageLoad}
           className="btn btn-sm btn-outline-light"
         >
-          {_("Retry fetching image")}
+          {t("Retry fetching image")}
         </button>
       </div>,
       { autoClose: false, toastId: `imageLoadingError-${instanceid}` },

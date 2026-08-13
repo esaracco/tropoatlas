@@ -6,7 +6,7 @@ import { LedsClient } from "@tropo/leds"
 import provider from "../provider"
 
 const SettingsModal = ({ show, onHide }) => {
-  const [_] = useTranslation()
+  const { t } = useTranslation()
   const general = useSettingsStore((s) => s.general)
   const hardware = useSettingsStore((s) => s.hardware)
   const setGeneral = useSettingsStore((s) => s.setGeneral)
@@ -60,7 +60,7 @@ const SettingsModal = ({ show, onHide }) => {
       <Form className="p-3">
         {needsResync && (
           <Alert variant="warning" className="mb-4">
-            {_(
+            {t(
               "Warning: Changing these values requires a manual resynchronization to take effect.",
             )}
           </Alert>
@@ -75,7 +75,7 @@ const SettingsModal = ({ show, onHide }) => {
                 }
                 style={{ color: "var(--bs-heading-color)" }}
               >
-                {_(field.label)}
+                {t(field.label)}
               </h5>
             )
           }
@@ -84,7 +84,7 @@ const SettingsModal = ({ show, onHide }) => {
               <Form.Group className="mb-3" key={field.key}>
                 <Form.Check
                   id={field.key}
-                  label={_(field.label)}
+                  label={t(field.label)}
                   checked={
                     activeProviderConfig[field.key] === "yes" ||
                     activeProviderConfig[field.key] === true
@@ -102,7 +102,7 @@ const SettingsModal = ({ show, onHide }) => {
           }
           return (
             <Form.Group className="mb-3" key={field.key}>
-              <Form.Label>{_(field.label)}</Form.Label>
+              <Form.Label>{t(field.label)}</Form.Label>
               <Form.Control
                 type={field.type === "number" ? "number" : "text"}
                 min={field.min}
@@ -120,7 +120,7 @@ const SettingsModal = ({ show, onHide }) => {
 
   const ColorFeedback = () => (
     <Form.Control.Feedback type="invalid">
-      {_(LedsClient.INVALID_COLOR_MSG)}
+      {t(LedsClient.INVALID_COLOR_MSG)}
     </Form.Control.Feedback>
   )
 
@@ -159,15 +159,15 @@ const SettingsModal = ({ show, onHide }) => {
       fullscreen="sm-down"
     >
       <Modal.Header closeButton>
-        <Modal.Title>{_("Settings")}</Modal.Title>
+        <Modal.Title>{t("Settings")}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Tabs defaultActiveKey="datasource">
           {showGeneral && (
-            <Tab eventKey="general" title={_("General")}>
+            <Tab eventKey="general" title={t("General")}>
               <Form className="p-3">
                 <Form.Group className="mb-3">
-                  <Form.Label>{_("Currency")}</Form.Label>
+                  <Form.Label>{t("Currency")}</Form.Label>
                   <Form.Control
                     type="text"
                     value={general.currency}
@@ -184,17 +184,17 @@ const SettingsModal = ({ show, onHide }) => {
           )}
 
           {showLeds && (
-            <Tab eventKey="hardware" title={_("LEDs")}>
+            <Tab eventKey="hardware" title={t("LEDs")}>
               <Form className="p-3">
                 {!draftCaps.supportsPlace && (
                   <Alert variant="warning" className="mb-4">
-                    {_(
+                    {t(
                       "LEDs are enabled but your data provider is not configured to support the physical location field (place).",
                     )}
                   </Alert>
                 )}
                 <Form.Group className="mb-3">
-                  <Form.Label>{_("Artists Color (RGB)")}</Form.Label>
+                  <Form.Label>{t("Artists Color (RGB)")}</Form.Label>
                   <Form.Control
                     type="text"
                     value={hardware.ledsArtistsColor}
@@ -208,7 +208,7 @@ const SettingsModal = ({ show, onHide }) => {
                   <ColorFeedback />
                 </Form.Group>
                 <Form.Group className="mb-3">
-                  <Form.Label>{_("Styles Color (RGB)")}</Form.Label>
+                  <Form.Label>{t("Styles Color (RGB)")}</Form.Label>
                   <Form.Control
                     type="text"
                     value={hardware.ledsStylesColor}
@@ -222,7 +222,7 @@ const SettingsModal = ({ show, onHide }) => {
                   <ColorFeedback />
                 </Form.Group>
                 <Form.Group className="mb-3">
-                  <Form.Label>{_("Album Color (RGB)")}</Form.Label>
+                  <Form.Label>{t("Album Color (RGB)")}</Form.Label>
                   <Form.Control
                     type="text"
                     value={hardware.ledsAlbumColor}
@@ -246,7 +246,7 @@ const SettingsModal = ({ show, onHide }) => {
             >
               {showLeds && !draftCaps.supportsPlace && (
                 <Alert variant="warning" className="m-3 mb-0">
-                  {_(
+                  {t(
                     "Your data provider is not configured to support the physical location field (place) but LEDs are enabled.",
                   )}
                 </Alert>
@@ -258,7 +258,7 @@ const SettingsModal = ({ show, onHide }) => {
       </Modal.Body>
       <Modal.Footer>
         <Button variant="secondary" onClick={handleClose}>
-          {_("Close")}
+          {t("Close")}
         </Button>
       </Modal.Footer>
     </Modal>

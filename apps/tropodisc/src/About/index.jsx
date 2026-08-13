@@ -13,7 +13,7 @@ import { getProviderInfo } from "../provider"
 const About = () => {
   const showAbout = useAppStore((s) => s.showAbout)
   const setShowAbout = useAppStore((s) => s.setShowAbout)
-  const [_] = useTranslation()
+  const { t } = useTranslation()
 
   const desc = (
     <Trans
@@ -38,7 +38,7 @@ const About = () => {
   return (
     <>
       <InfoModal
-        title={_("About TropoDisc v{{version}}", {
+        title={t("About TropoDisc v{{version}}", {
           version: appVersion,
         })}
         show={showAbout}
@@ -61,7 +61,7 @@ const About = () => {
               className="btn btn-secondary btn-sm"
             >
               <FontAwesomeIcon icon={faGlobe} fixedWidth />
-              {" " + _("Website")}
+              {" " + t("Website")}
             </a>
             <a
               href="https://github.com/esaracco/tropoatlas"
@@ -79,7 +79,7 @@ const About = () => {
               className="btn btn-secondary btn-sm"
             >
               <FontAwesomeIcon icon={faUserEdit} fixedWidth size="xs" />
-              {" " + _("Author")}
+              {" " + t("Author")}
             </a>
           </div>
         </>

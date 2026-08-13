@@ -20,7 +20,7 @@ const InfoBar = () => {
   const creators = useCollectionStore((s) => s.creators)
   const selected = useCollectionStore((s) => s.selected)
   const items = useCollectionStore((s) => s.items)
-  const [_] = useTranslation()
+  const { t } = useTranslation()
   const isOnline = useAppStore((s) => s.isOnline)
   const infoBarRef = useRef(null)
 
@@ -45,7 +45,7 @@ const InfoBar = () => {
 
     // First synchro or fetching album's data for the first time
     if (loading) {
-      setInfo(_("Synchronization in progress..."))
+      setInfo(t("Synchronization in progress..."))
       // Search ok
     } else if (displayCount > 0) {
       // Method _getSortLabel()
@@ -54,19 +54,19 @@ const InfoBar = () => {
         let label = ""
         switch (field) {
           case "added":
-            label = _("Date added")
+            label = t("Date added")
             break
           case "artist":
-            label = _("Artist")
+            label = t("Artist")
             break
           case "rating":
-            label = _("Note")
+            label = t("Note")
             break
           case "year":
-            label = _("Year")
+            label = t("Year")
             break
           case "place":
-            label = _("Location")
+            label = t("Location")
             break
           default:
         }
@@ -90,16 +90,16 @@ const InfoBar = () => {
 
       setInfo(
         <>
-          <b>{displayCount}</b> {_(displayCount > 1 ? "albums" : "album")}{" "}
+          <b>{displayCount}</b> {t(displayCount > 1 ? "albums" : "album")}{" "}
           <b>{effectiveCategories.join(", ")}</b>{" "}
           {effectiveCreators.length ? (
             <>
-              {_("of")} <b>{effectiveCreators.join(", ")}</b>
+              {t("of")} <b>{effectiveCreators.join(", ")}</b>
             </>
           ) : (
             ""
           )}{" "}
-          {_("by")} <b>{_getSortLabel(sort)}</b>
+          {t("by")} <b>{_getSortLabel(sort)}</b>
         </>,
       )
       // No result
@@ -107,7 +107,7 @@ const InfoBar = () => {
       setNoResult(true)
       // Synchro failed or empty collection
     } else if (!loading) {
-      setInfo(_("Synchronization failed!"))
+      setInfo(t("Synchronization failed!"))
     }
   }, [
     loading,
@@ -118,7 +118,7 @@ const InfoBar = () => {
     styles,
     items,
     creators,
-    _,
+    t,
   ])
 
   // RENDER
@@ -132,11 +132,11 @@ const InfoBar = () => {
       >
         {!isOnline && (
           <div className="w-100 text-center mb-1">
-            <span className="offline-badge">{_("Offline mode")}</span>
+            <span className="offline-badge">{t("Offline mode")}</span>
           </div>
         )}
         <div className="w-100 text-center">
-          {noResult ? _("No result") : info}
+          {noResult ? t("No result") : info}
         </div>
       </div>
     )

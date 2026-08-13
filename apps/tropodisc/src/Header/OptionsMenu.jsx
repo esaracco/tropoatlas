@@ -17,7 +17,7 @@ import * as Settings from "../utils/settings"
 import { ledsClient } from "../utils/leds"
 
 const OptionsMenu = ({ onOpenSettings }) => {
-  const [_] = useTranslation()
+  const { t } = useTranslation()
   const isOnline = useAppStore((s) => s.isOnline)
   const setShowAbout = useAppStore((s) => s.setShowAbout)
   const setFromRuler = useAppStore((s) => s.setFromRuler)
@@ -75,7 +75,7 @@ const OptionsMenu = ({ onOpenSettings }) => {
           show={showSyncModal}
           setShow={setShowSyncModal}
         >
-          {_(
+          {t(
             "The synchronization of your collection can take several minutes.",
           )}
         </ConfirmModal>
@@ -90,7 +90,7 @@ const OptionsMenu = ({ onOpenSettings }) => {
           size="lg"
         >
           <Modal.Header closeButton>
-            <Modal.Title>{_("Leds control")}</Modal.Title>
+            <Modal.Title>{t("Leds control")}</Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <Container className="d-flex justify-content-center">
@@ -100,18 +100,18 @@ const OptionsMenu = ({ onOpenSettings }) => {
                   onClick={() => setRulerState(!rulerShown)}
                 >
                   {rulerShown
-                    ? _("Turn off the ruler")
-                    : _("Turn on the ruler")}
+                    ? t("Turn off the ruler")
+                    : t("Turn on the ruler")}
                 </Button>
                 <Button variant="primary" onClick={handleResetLeds}>
-                  {_("Reset")}
+                  {t("Reset")}
                 </Button>
               </div>
             </Container>
           </Modal.Body>
           <Modal.Footer>
             <Button onClick={() => setShowLedsModal(false)}>
-              {_("Close")}
+              {t("Close")}
             </Button>
           </Modal.Footer>
         </Modal>
@@ -122,7 +122,7 @@ const OptionsMenu = ({ onOpenSettings }) => {
           variant="secondary"
           className="HeaderButton border-0 d-flex align-items-center justify-content-center"
           id="options-dropdown"
-          aria-label={_("Options")}
+          aria-label={t("Options")}
         >
           <FontAwesomeIcon icon={faCog} size="lg" />
         </Dropdown.Toggle>
@@ -134,7 +134,7 @@ const OptionsMenu = ({ onOpenSettings }) => {
               className="d-flex align-items-center gap-2 py-2"
             >
               <FontAwesomeIcon icon={faSync} className="options-menu-icon" />
-              <span>{_("Sync collection")}</span>
+              <span>{t("Sync collection")}</span>
             </Dropdown.Item>
           )}
 
@@ -143,7 +143,7 @@ const OptionsMenu = ({ onOpenSettings }) => {
             className="d-flex align-items-center gap-2 py-2"
           >
             <FontAwesomeIcon icon={faSliders} className="options-menu-icon" />
-            <span>{_("Settings")}</span>
+            <span>{t("Settings")}</span>
           </Dropdown.Item>
 
           {Settings.setLeds === "yes" && isOnline && (
@@ -155,7 +155,7 @@ const OptionsMenu = ({ onOpenSettings }) => {
                 icon={faLightbulb}
                 className="options-menu-icon"
               />
-              <span>{_("Leds control")}</span>
+              <span>{t("Leds control")}</span>
             </Dropdown.Item>
           )}
 
@@ -167,7 +167,7 @@ const OptionsMenu = ({ onOpenSettings }) => {
               icon={faInfoCircle}
               className="options-menu-icon"
             />
-            <span>{_("About")}</span>
+            <span>{t("About")}</span>
           </Dropdown.Item>
 
           <Dropdown.Divider />
@@ -175,12 +175,12 @@ const OptionsMenu = ({ onOpenSettings }) => {
           <div className="px-3 py-1 d-flex align-items-center justify-content-between gap-3">
             <span className="options-menu-theme-label d-flex align-items-center gap-2">
               <FontAwesomeIcon icon={faPalette} className="options-menu-icon" />
-              <span>{_("Theme")}</span>
+              <span>{t("Theme")}</span>
             </span>
             <ThemeSelector
               storageKey="tropodisc-theme"
-              title={_("Theme")}
-              ariaLabel={_("Change theme")}
+              title={t("Theme")}
+              ariaLabel={t("Change theme")}
             />
           </div>
 
@@ -190,9 +190,9 @@ const OptionsMenu = ({ onOpenSettings }) => {
                 icon={faLanguage}
                 className="options-menu-icon"
               />
-              <span>{_("Language")}</span>
+              <span>{t("Language")}</span>
             </span>
-            <LanguageSelector ariaLabel={_("Change language")} />
+            <LanguageSelector ariaLabel={t("Change language")} />
           </div>
         </Dropdown.Menu>
       </Dropdown>

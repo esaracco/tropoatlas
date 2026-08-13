@@ -30,7 +30,7 @@ const Header = () => {
   const setFilter = useCollectionStore((s) => s.setFilter)
   const sort = useCollectionStore((s) => s.sort)
   const setSort = useCollectionStore((s) => s.setSort)
-  const [_] = useTranslation()
+  const { t } = useTranslation()
   const [expanded, setExpanded] = useState(false)
   const [showSettings, setShowSettings] = useState(false)
   const [showSearch, setShowSearch] = useState(false)
@@ -88,17 +88,17 @@ const Header = () => {
   const activeFilters = [
     selected.formats?.length > 0 && {
       id: "formats",
-      label: _("Formats"),
+      label: t("Formats"),
       onReset: () => setFilter("formats", []),
     },
     selected.creators?.length > 0 && {
       id: "creators",
-      label: _("Artists"),
+      label: t("Artists"),
       onReset: () => setFilter("creators", []),
     },
     selected.categories?.length > 0 && {
       id: "categories",
-      label: _("Styles"),
+      label: t("Styles"),
       onReset: () => setFilter("categories", []),
     },
   ].filter(Boolean)
@@ -161,62 +161,62 @@ const Header = () => {
                 >
                   <ClearFiltersButton />
                   <HeaderButton
-                    label={_("Styles")}
+                    label={t("Styles")}
                     type="checkbox"
                     stype="categories"
                     selected={selected}
                     content={allCategories}
                     activeFilters={activeFilters}
-                    closeLabel={_("Close")}
+                    closeLabel={t("Close")}
                     onChangeSelection={getOnChangeSelection("categories")}
                     normalizeFn={normalize}
                   />
                   <HeaderButton
-                    label={_("Artists")}
+                    label={t("Artists")}
                     type="checkbox"
                     stype="creators"
                     selected={selected}
                     content={allCreators}
                     activeFilters={activeFilters}
-                    closeLabel={_("Close")}
+                    closeLabel={t("Close")}
                     onChangeSelection={getOnChangeSelection("creators")}
                     normalizeFn={normalize}
                   />
                   {showFormats && (
                     <HeaderButton
-                      label={_("Formats")}
+                      label={t("Formats")}
                       type="checkbox"
                       stype="formats"
                       selected={selected}
                       content={allFormats}
                       activeFilters={activeFilters}
-                      closeLabel={_("Close")}
+                      closeLabel={t("Close")}
                       onChangeSelection={getOnChangeSelection("formats")}
                       normalizeFn={normalize}
                     />
                   )}
                   <HeaderButton
-                    label={_("Sort")}
+                    label={t("Sort")}
                     type="radio"
                     mark={false}
                     content={{
-                      added: _("Date added"),
-                      artist: _("Artist"),
-                      rating: _("Note"),
-                      year: _("Year"),
+                      added: t("Date added"),
+                      artist: t("Artist"),
+                      rating: t("Note"),
+                      year: t("Year"),
                       ...(customFields.supportsPlace && {
-                        place: _("Location"),
+                        place: t("Location"),
                       }),
                     }}
                     sort={sort}
                     onSortChange={setSort}
-                    closeLabel={_("Close")}
+                    closeLabel={t("Close")}
                   />
                   <Button
                     variant="secondary"
                     className={`HeaderButton search-toggle-btn flex-shrink-0 d-none d-sm-inline-block ${showSearch ? "active" : ""}`}
                     onClick={toggleSearch}
-                    aria-label={_("Search")}
+                    aria-label={t("Search")}
                   >
                     <FontAwesomeIcon icon={faSearch} />
                   </Button>
@@ -229,7 +229,7 @@ const Header = () => {
               variant="secondary"
               className={`HeaderButton search-toggle-btn flex-shrink-0 d-sm-none ${showSearch ? "active" : ""}`}
               onClick={toggleSearch}
-              aria-label={_("Search")}
+              aria-label={t("Search")}
             >
               <FontAwesomeIcon icon={faSearch} />
             </Button>
@@ -242,7 +242,7 @@ const Header = () => {
           inputRef={searchInputRef}
           searchStr={searchStr}
           setSearchStr={setSearchStr}
-          placeholder={_("artist, album...")}
+          placeholder={t("artist, album...")}
         />
       </div>
       <InfoBar />

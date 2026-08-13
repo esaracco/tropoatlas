@@ -6,7 +6,7 @@ import "./ConfirmModal.css"
 
 // COMPONENT ConfirmModal
 const ConfirmModal = ({ children, action, show, setShow }) => {
-  const [_] = useTranslation()
+  const { t } = useTranslation()
   const [hasShadow, setHasShadow] = useState(false)
 
   useEffect(() => {
@@ -30,15 +30,15 @@ const ConfirmModal = ({ children, action, show, setShow }) => {
       contentClassName={`ConfirmModal ${hasShadow ? "with-shadow" : ""}`}
     >
       <Modal.Header>
-        <Modal.Title>{_("Confirmation")}</Modal.Title>
+        <Modal.Title>{t("Confirmation")}</Modal.Title>
       </Modal.Header>
       <Modal.Body>{children}</Modal.Body>
       <Modal.Footer>
         <Button onClick={action} variant="primary">
-          {_("Confirm")}
+          {t("Confirm")}
         </Button>
         <Button onClick={onHide} variant="secondary">
-          {_("Cancel")}
+          {t("Cancel")}
         </Button>
       </Modal.Footer>
     </Modal>

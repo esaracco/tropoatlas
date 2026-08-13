@@ -17,7 +17,7 @@ import { useAppStore } from "@tropo/core"
 const SynchroButton = () => {
   const isOnline = useAppStore((s) => s.isOnline)
   const [showModal, setShowModal] = useState(false)
-  const [_] = useTranslation()
+  const { t } = useTranslation()
 
   // METHOD onConfirm()
   const onConfirm = async () => {
@@ -38,7 +38,7 @@ const SynchroButton = () => {
           show={showModal}
           setShow={setShowModal}
         >
-          {_(
+          {t(
             "The synchronization of your collection can take several minutes.",
           )}
         </ConfirmModal>

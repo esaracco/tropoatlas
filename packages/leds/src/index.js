@@ -1,10 +1,10 @@
 import { useSettingsStore } from "@tropo/core"
 
 // Marker function for i18n static extraction
-const _ = (s) => s
+const t = (s) => s
 
 export class LedsClient {
-  static INVALID_COLOR_MSG = _(
+  static INVALID_COLOR_MSG = t(
     "Must be a valid RGB format (e.g. 255,0,0) and not 0,0,0",
   )
 

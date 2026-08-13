@@ -16,7 +16,7 @@ import "./styles/AlbumStyleButtons.css"
 const AlbumStyleButtons = ({ categories, closeModal }) => {
   const setFilter = useCollectionStore((s) => s.setFilter)
   const availableCategories = useCollectionStore((s) => s.categories)
-  const [_] = useTranslation()
+  const { t } = useTranslation()
   const tags = useRef(null)
   const customFields = getItem("customFieldsInfo") || {}
 
@@ -57,7 +57,7 @@ const AlbumStyleButtons = ({ categories, closeModal }) => {
       <input
         className="AlbumStyleButtons"
         readOnly={!customFields.supportsCategories}
-        placeholder={_("New style...")}
+        placeholder={t("New style...")}
         defaultValue={JSON.stringify(initialValues)}
       />
     </InputGroup>

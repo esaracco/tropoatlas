@@ -47,7 +47,7 @@ This file defines the rules and conventions that the AI agent must follow when w
 - **Build-Time Variables**: Environment variables that affect the Vite proxy or server build (such as `VITE_SET_LEDS` and `VITE_AUDIOLIBRARY_URL`) must remain in `.env` as they are required at build/serve time. They serve as default fallback values for the settings store on initial hydration.
 
 ## UI & i18n Considerations
-- **i18n in Plugins**: Since plugins are UI-agnostic and do not import `react-i18next`, strings that require translation (like schema labels) should be wrapped in a dummy marker function (`const _ = (s) => s`) within the plugin. This allows the static analyzer (`npm run i18n:check`) to detect the keys, while the main application applies the actual translation (`t(field.label)`) at render time.
+- **i18n in Plugins**: Since plugins are UI-agnostic and do not import `react-i18next`, strings that require translation (like schema labels) should be wrapped in a dummy marker function (`const t = (s) => s`) within the plugin. This allows the static analyzer (`npm run i18n:check`) to detect the keys, while the main application applies the actual translation (`t(field.label)`) at render time.
 - **Offcanvas and Modals (Mobile UI)**: Stacking Bootstrap Modals over an open Offcanvas menu can cause backdrop conflicts when the modal is closed. 
   - If a button opens a global root-level Modal (e.g., `SettingsModal`), the Offcanvas MUST be explicitly closed before opening the modal.
   - If a button opens an inline Modal (e.g., `ConfirmModal` inside `SynchroButton`), the Offcanvas MUST NOT be closed, otherwise the modal will be instantly unmounted.

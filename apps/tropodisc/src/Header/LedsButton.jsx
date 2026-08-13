@@ -17,7 +17,7 @@ const LedsButton = () => {
   const clearFilters = useCollectionStore((s) => s.clearFilters)
 
   const selected = useCollectionStore((s) => s.selected)
-  const [_] = useTranslation()
+  const { t } = useTranslation()
 
   const setRulerState = (state) => {
     if (state === rulerShown) return
@@ -53,7 +53,7 @@ const LedsButton = () => {
           className="HeaderButton"
           onClick={() => setModalShow(true)}
         >
-          {_("Leds")}
+          {t("Leds")}
         </Button>
 
         <Modal
@@ -64,7 +64,7 @@ const LedsButton = () => {
           size="lg"
         >
           <Modal.Header closeButton>
-            <Modal.Title>{_("Leds control")}</Modal.Title>
+            <Modal.Title>{t("Leds control")}</Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <Container className="d-flex justify-content-center">
@@ -74,17 +74,17 @@ const LedsButton = () => {
                   onClick={() => setRulerState(!rulerShown)}
                 >
                   {rulerShown
-                    ? _("Turn off the ruler")
-                    : _("Turn on the ruler")}
+                    ? t("Turn off the ruler")
+                    : t("Turn on the ruler")}
                 </Button>
                 <Button variant="primary" onClick={handleReset}>
-                  {_("Reset")}
+                  {t("Reset")}
                 </Button>
               </div>
             </Container>
           </Modal.Body>
           <Modal.Footer>
-            <Button onClick={() => setModalShow(false)}>{_("Close")}</Button>
+            <Button onClick={() => setModalShow(false)}>{t("Close")}</Button>
           </Modal.Footer>
         </Modal>
       </>

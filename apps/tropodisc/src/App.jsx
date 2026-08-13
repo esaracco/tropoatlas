@@ -28,7 +28,7 @@ import "@tropo/react/src/global.css"
 
 // COMPONENT App
 const App = () => {
-  const [_] = useTranslation()
+  const { t } = useTranslation()
   const setIsOnline = useAppStore((s) => s.setIsOnline)
   const setLoading = useAppStore((s) => s.setLoading)
   const setIsSyncing = useAppStore((s) => s.setIsSyncing)
@@ -70,13 +70,13 @@ const App = () => {
       if (meta)
         meta.setAttribute(
           "content",
-          _(
+          t(
             "Organize your collection, enrich it with your own metadata, and optionally locate albums instantly using LED strips",
           ),
         )
-      document.title = `TropoDisc – ${_("A universal music collection manager")}`
+      document.title = `TropoDisc – ${t("A universal music collection manager")}`
     }
-  }, [_])
+  }, [t])
 
   // EFFECT 3
   useEffect(() => {
@@ -151,8 +151,8 @@ const App = () => {
             .catch((e) => {
               console.error(e.message)
               toast.error(
-                _(e.message) ||
-                  _("An error occurred while using the {{provider}} API!", {
+                t(e.message) ||
+                  t("An error occurred while using the {{provider}} API!", {
                     provider: getProviderInfo().name,
                   }),
                 {
@@ -183,9 +183,9 @@ const App = () => {
       <Result />
       <ScrollButton />
       <PwaReloadPrompt
-        message={_("Update available! The app will be reloaded.")}
-        buttonReload={_("Reload")}
-        buttonClose={_("Close")}
+        message={t("Update available! The app will be reloaded.")}
+        buttonReload={t("Reload")}
+        buttonClose={t("Close")}
       />
     </>
   )

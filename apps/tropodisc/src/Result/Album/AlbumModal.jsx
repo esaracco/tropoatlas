@@ -97,7 +97,7 @@ const AlbumModal = ({ instanceId, onClose }) => {
     price: release?.price ?? "",
   })
 
-  const [_] = useTranslation()
+  const { t } = useTranslation()
   const refIG = useRef(null)
   const customFields = getItem("customFieldsInfo") || {}
   let haveCustomFields =
@@ -211,7 +211,7 @@ const AlbumModal = ({ instanceId, onClose }) => {
     } catch (e) {
       if (!navigator.onLine) {
         toast.info(
-          _(
+          t(
             "You are offline. Your changes have been saved locally and will be synchronized when the connection is restored.",
           ),
           { autoClose: false },
@@ -219,8 +219,8 @@ const AlbumModal = ({ instanceId, onClose }) => {
       } else {
         console.error(e.message)
         toast.error(
-          _(e.message) ||
-            _("An error occurred while using the {{provider}} API!", {
+          t(e.message) ||
+            t("An error occurred while using the {{provider}} API!", {
               provider: getProviderInfo().name,
             }),
           { autoClose: false },
@@ -289,14 +289,14 @@ const AlbumModal = ({ instanceId, onClose }) => {
       return (
         <>
           <div>
-            {_("This copy")} ({release.country}
+            {t("This copy")} ({release.country}
             {release.year ? " " + release.year : ""}) :
           </div>
           <div className="release" style={{ whiteSpace: "pre-wrap" }}>
             {processString(config)(release.notes)}
           </div>
           <br />
-          <div>{_("General informations")} :</div>
+          <div>{t("General informations")} :</div>
           <div className="master" style={{ whiteSpace: "pre-wrap" }}>
             {processString(config)(release.globalNotes)}
           </div>
@@ -320,7 +320,7 @@ const AlbumModal = ({ instanceId, onClose }) => {
   return (
     <>
       <ConfirmModal action={onSave} show={showConfirm} setShow={onHideConfirm}>
-        {_("Save changes?")}
+        {t("Save changes?")}
       </ConfirmModal>
       <Modal
         show={true}
@@ -360,13 +360,13 @@ const AlbumModal = ({ instanceId, onClose }) => {
                           setFilter("creators", [release.creator])
                           onHide()
                         }}
-                        title={_("Show all {{count}} albums by {{artist}}", {
+                        title={t("Show all {{count}} albums by {{artist}}", {
                           count,
                           artist: release.creator,
                         })}
                       >
                         <FontAwesomeIcon icon={faUser} /> <b>{count}</b>{" "}
-                        <span>{_("albums")}</span>
+                        <span>{t("albums")}</span>
                       </a>
                     </div>
                   )}
@@ -388,7 +388,7 @@ const AlbumModal = ({ instanceId, onClose }) => {
             <tbody>
               {customFields.supportsPlace && (
                 <tr>
-                  <th>{_("Location")}</th>
+                  <th>{t("Location")}</th>
                   <td>
                     <InputGroup size="sm" className="place-input-group">
                       <InputGroup.Text className="place-icon-addon">
@@ -398,7 +398,7 @@ const AlbumModal = ({ instanceId, onClose }) => {
                         type="text"
                         className="place-control"
                         defaultValue={formState.place}
-                        placeholder={_("storage place")}
+                        placeholder={t("storage place")}
                         data-field="place"
                         onChange={onChange}
                       />
@@ -408,7 +408,7 @@ const AlbumModal = ({ instanceId, onClose }) => {
               )}
               {customFields.supportsPrice && (
                 <tr>
-                  <th>{_("Purchasing price")}</th>
+                  <th>{t("Purchasing price")}</th>
                   <td>
                     <InputGroup size="sm" className="price-input-group">
                       <InputGroup.Text className="price-icon-addon">
@@ -430,7 +430,7 @@ const AlbumModal = ({ instanceId, onClose }) => {
               )}
               {customFields.supportsCategories && (
                 <tr>
-                  <th>{_("Style")}</th>
+                  <th>{t("Style")}</th>
                   <td>
                     <AlbumStyleButtons
                       closeModal={onHide}
@@ -455,7 +455,7 @@ const AlbumModal = ({ instanceId, onClose }) => {
               {renderedNotes && (
                 <Tab
                   eventKey="album-infos"
-                  title={_("Info")}
+                  title={t("Info")}
                   className="album-infos"
                 >
                   {renderedNotes}
@@ -464,7 +464,7 @@ const AlbumModal = ({ instanceId, onClose }) => {
               {renderedTracks && (
                 <Tab
                   eventKey="album-tracks"
-                  title={_("Tracks")}
+                  title={t("Tracks")}
                   className="album-tracks"
                 >
                   <ul>{renderedTracks}</ul>
@@ -482,10 +482,10 @@ const AlbumModal = ({ instanceId, onClose }) => {
               target="_blank"
               rel="noopener noreferrer"
               className="provider-link-btn d-inline-flex align-items-center"
-              title={_("View release on {{provider}}", {
+              title={t("View release on {{provider}}", {
                 provider: getProviderInfo().name,
               })}
-              aria-label={_("View release on {{provider}}", {
+              aria-label={t("View release on {{provider}}", {
                 provider: getProviderInfo().name,
               })}
             >
@@ -500,7 +500,7 @@ const AlbumModal = ({ instanceId, onClose }) => {
             </Button>
           )}
           <Button variant="secondary" onClick={onHide}>
-            {_("Close")}
+            {t("Close")}
           </Button>
         </Modal.Footer>
       </Modal>

@@ -32,7 +32,7 @@ GridList.displayName = "GridList"
 
 // COMPONENT Result
 const Result = () => {
-  const [_] = useTranslation()
+  const { t } = useTranslation()
   const fromRuler = useAppStore((s) => s.fromRuler)
   const setFromRuler = useAppStore((s) => s.setFromRuler)
   const searchStr = useAppStore((s) => s.searchStr)
@@ -317,14 +317,14 @@ const Result = () => {
                 />
               </div>
               <h3 className="sync-title">
-                {_("Synchronization in progress...")}
+                {t("Synchronization in progress...")}
               </h3>
               <div className="sync-progress-wrapper">
                 <ProgressBar animated variant="danger" now={progress} />
                 <span className="sync-percentage">{Math.round(progress)}%</span>
               </div>
               <p className="sync-subtitle">
-                {_(
+                {t(
                   "The synchronization of your collection can take several minutes.",
                 )}
               </p>

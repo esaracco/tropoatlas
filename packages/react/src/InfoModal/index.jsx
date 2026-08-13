@@ -11,7 +11,7 @@ const InfoModal = ({
   closeButton = true,
   ...rest
 }) => {
-  const [_] = useTranslation()
+  const { t } = useTranslation()
 
   // METHOD onHide()
   const onHide = () => setShow(false)
@@ -20,11 +20,11 @@ const InfoModal = ({
   return (
     <Modal show={show} onHide={onHide} scrollable size="lg" {...rest}>
       <Modal.Header closeButton={closeButton}>
-        <Modal.Title>{title || _("Information")}</Modal.Title>
+        <Modal.Title>{title || t("Information")}</Modal.Title>
       </Modal.Header>
       <Modal.Body className="text-justify">{children}</Modal.Body>
       <Modal.Footer>
-        <Button onClick={onHide}>{_("Close")}</Button>
+        <Button onClick={onHide}>{t("Close")}</Button>
       </Modal.Footer>
     </Modal>
   )

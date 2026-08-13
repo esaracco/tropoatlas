@@ -9,7 +9,7 @@ import {
 import logo from "./assets/logo.png"
 
 // Marker function for i18n static extraction
-const _ = (s) => s
+const t = (s) => s
 
 export const getArtistName = ({ name, anv } = {}) => {
   if (!name) return anv || ""
@@ -85,32 +85,32 @@ export class DiscogsPlugin extends BasePlugin {
     return [
       {
         key: "formats",
-        label: _("Formats (comma separated, or `all`)"),
+        label: t("Formats (comma separated, or `all`)"),
         type: "text",
         requiresResync: true,
       },
-      { type: "header", label: _("Custom Fields Mapping") },
+      { type: "header", label: t("Custom Fields Mapping") },
       {
         key: "fieldPlace",
-        label: _("Location Field (e.g., `place`)"),
+        label: t("Location Field (e.g., `place`)"),
         type: "text",
         requiresResync: true,
       },
       {
         key: "fieldPrice",
-        label: _("Price Field (e.g., `price`)"),
+        label: t("Price Field (e.g., `price`)"),
         type: "text",
         requiresResync: true,
       },
       {
         key: "fieldStyles",
-        label: _("Styles Field (e.g., `styles`)"),
+        label: t("Styles Field (e.g., `styles`)"),
         type: "text",
         requiresResync: true,
       },
       {
         key: "fieldsRequired",
-        label: _("Only show albums that have at least one custom field"),
+        label: t("Only show albums that have at least one custom field"),
         type: "boolean",
         requiresResync: true,
       },
