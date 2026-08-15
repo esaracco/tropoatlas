@@ -103,7 +103,7 @@ export class LedsClient {
     }
   }
 
-  setLeds(props, fetchOptions = {}) {
+  async setLeds(props, fetchOptions = {}) {
     const isReset = !props || Object.keys(props).length === 0
 
     let payload = []
@@ -135,17 +135,35 @@ export class LedsClient {
     const body = new URLSearchParams()
     body.append("data", JSON.stringify(payload))
 
-    return this.#request(this.apiBase + "/leds", {
+    const response = await this.#request(this.apiBase + "/leds", {
       method: "POST",
       body,
       ...fetchOptions,
     })
+
+    if (!isReset && payload.length > 0) {
+      this.startHeartbeat()
+    } else {
+      this.stopHeartbeat()
+    }
+
+    return response
   }
 
-  setRuler(props = {}) {
+  async setRuler(props = {}) {
     const { show = true } = props
     const params = new URLSearchParams({ reset: Number(!show) })
-    return this.#request(`${this.apiBase}/ruler?${params.toString()}`)
+    const response = await this.#request(
+      `${this.apiBase}/ruler?${params.toString()}`,
+    )
+
+    if (show) {
+      this.startHeartbeat()
+    } else {
+      this.stopHeartbeat()
+    }
+
+    return response
   }
 
   async ping() {
