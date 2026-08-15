@@ -6,6 +6,7 @@ body,
   margin: 0;
   padding: 0;
   overflow: hidden;
+  overscroll-behavior: none;
   background: var(--tropo-bg);
   color: var(--tropo-text);
   -webkit-text-size-adjust: 100%;
@@ -22,6 +23,7 @@ body,
   height: 100dvh;
   width: 100%;
   overflow: hidden;
+  overscroll-behavior: none;
   position: relative;
 }
 

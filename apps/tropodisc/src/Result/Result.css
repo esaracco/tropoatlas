@@ -13,6 +13,7 @@
 .Result [data-virtuoso-scroller="true"],
 .Result [data-viewport-type="element"] {
   overflow-anchor: none;
+  overscroll-behavior-y: contain;
 }
 
 .Result .top-progress {
