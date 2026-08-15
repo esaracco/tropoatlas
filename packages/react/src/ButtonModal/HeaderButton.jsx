@@ -7,7 +7,14 @@ import "./HeaderButton.css"
 
 // COMPONENT HeaderButton
 const HeaderButton = (props) => {
-  const { label, selected = {}, stype, mark = true } = props
+  const {
+    label,
+    selected = {},
+    stype,
+    mark = true,
+    onClick,
+    ...modalProps
+  } = props
   const [modalShow, setModalShow] = useState(false)
 
   // RENDER
@@ -16,20 +23,24 @@ const HeaderButton = (props) => {
       <Button
         variant="warning"
         className="HeaderButton"
-        onClick={() => setModalShow(true)}
+        onClick={onClick || (() => setModalShow(true))}
       >
         {label}
-        {mark &&
-          selected &&
-          stype &&
-          selected[stype] &&
-          selected[stype].length > 0 && <div className="selected-mark"></div>}
+        {mark && selected?.[stype]?.length > 0 && (
+          <div className="selected-mark"></div>
+        )}
       </Button>
-      <ButtonModal
-        {...props}
-        show={modalShow}
-        onHide={() => setModalShow(false)}
-      />
+      {!onClick && (
+        <ButtonModal
+          {...modalProps}
+          label={label}
+          selected={selected}
+          stype={stype}
+          mark={mark}
+          show={modalShow}
+          onHide={() => setModalShow(false)}
+        />
+      )}
     </>
   )
 }

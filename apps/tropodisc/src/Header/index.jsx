@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react"
 import { useCollectionStore } from "@tropo/core"
 import { useTranslation } from "react-i18next"
-import { HeaderButton, Search } from "@tropo/react"
+import { ButtonModal, HeaderButton, Search } from "@tropo/react"
 import { normalize, getItem } from "@tropo/core"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faClose, faSearch } from "@fortawesome/free-solid-svg-icons"
@@ -32,6 +32,7 @@ const Header = () => {
   const { t } = useTranslation()
   const [expanded, setExpanded] = useState(false)
   const [showSettings, setShowSettings] = useState(false)
+  const [activeModal, setActiveModal] = useState(null)
   const [showSearch, setShowSearch] = useState(false)
   const searchInputRef = useRef(null)
 
@@ -187,55 +188,28 @@ const Header = () => {
                     <ClearFiltersButton />
                     <HeaderButton
                       label={t("Styles")}
-                      type="checkbox"
                       stype="categories"
                       selected={selected}
-                      content={allCategories}
-                      activeFilters={activeFilters}
-                      closeLabel={t("Close")}
-                      onChangeSelection={getOnChangeSelection("categories")}
-                      normalizeFn={normalize}
+                      onClick={() => setActiveModal("categories")}
                     />
                     <HeaderButton
                       label={t("Artists")}
-                      type="checkbox"
                       stype="creators"
                       selected={selected}
-                      content={allCreators}
-                      activeFilters={activeFilters}
-                      closeLabel={t("Close")}
-                      onChangeSelection={getOnChangeSelection("creators")}
-                      normalizeFn={normalize}
+                      onClick={() => setActiveModal("creators")}
                     />
                     {showFormats && (
                       <HeaderButton
                         label={t("Formats")}
-                        type="checkbox"
                         stype="formats"
                         selected={selected}
-                        content={allFormats}
-                        activeFilters={activeFilters}
-                        closeLabel={t("Close")}
-                        onChangeSelection={getOnChangeSelection("formats")}
-                        normalizeFn={normalize}
+                        onClick={() => setActiveModal("formats")}
                       />
                     )}
                     <HeaderButton
                       label={t("Sort")}
-                      type="radio"
                       mark={false}
-                      content={{
-                        added: t("Date added"),
-                        artist: t("Artist"),
-                        rating: t("Note"),
-                        year: t("Year"),
-                        ...(customFields.supportsPlace && {
-                          place: t("Location"),
-                        }),
-                      }}
-                      sort={sort}
-                      onSortChange={setSort}
-                      closeLabel={t("Close")}
+                      onClick={() => setActiveModal("sort")}
                     />
                     <Button
                       variant="secondary"
@@ -263,6 +237,65 @@ const Header = () => {
           </Container>
         )}
       </Navbar>
+      <ButtonModal
+        show={activeModal === "categories"}
+        label={t("Styles")}
+        type="checkbox"
+        stype="categories"
+        selected={selected}
+        content={allCategories}
+        activeFilters={activeFilters}
+        closeLabel={t("Close")}
+        onChangeSelection={getOnChangeSelection("categories")}
+        normalizeFn={normalize}
+        onHide={() => setActiveModal(null)}
+      />
+      <ButtonModal
+        show={activeModal === "creators"}
+        label={t("Artists")}
+        type="checkbox"
+        stype="creators"
+        selected={selected}
+        content={allCreators}
+        activeFilters={activeFilters}
+        closeLabel={t("Close")}
+        onChangeSelection={getOnChangeSelection("creators")}
+        normalizeFn={normalize}
+        onHide={() => setActiveModal(null)}
+      />
+      {showFormats && (
+        <ButtonModal
+          show={activeModal === "formats"}
+          label={t("Formats")}
+          type="checkbox"
+          stype="formats"
+          selected={selected}
+          content={allFormats}
+          activeFilters={activeFilters}
+          closeLabel={t("Close")}
+          onChangeSelection={getOnChangeSelection("formats")}
+          normalizeFn={normalize}
+          onHide={() => setActiveModal(null)}
+        />
+      )}
+      <ButtonModal
+        show={activeModal === "sort"}
+        label={t("Sort")}
+        type="radio"
+        content={{
+          added: t("Date added"),
+          artist: t("Artist"),
+          rating: t("Note"),
+          year: t("Year"),
+          ...(customFields.supportsPlace && {
+            place: t("Location"),
+          }),
+        }}
+        sort={sort}
+        onSortChange={setSort}
+        closeLabel={t("Close")}
+        onHide={() => setActiveModal(null)}
+      />
       <SettingsModal
         show={showSettings}
         onHide={() => setShowSettings(false)}
