@@ -59,6 +59,7 @@
   .navbar.bg-dark .HeaderButton,
   .header-offcanvas .HeaderButton,
   .search-toggle-btn,
+  .search-close-btn,
   .navbar-toggler {
     font-size: 1rem !important;
     padding: 10px 14px !important;
@@ -114,39 +115,19 @@
   }
 }
 
-/* ── Collapsible Search Bar ───────────────────────────────── */
+/* ── In-place Navbar Search ───────────────────────────────── */
 .search-toggle-btn {
   margin-left: 0;
 }
 
-.search-bar-drawer {
-  position: relative;
-  z-index: 100;
-  display: block;
-  max-height: 0;
-  opacity: 0;
-  overflow: hidden;
-  background: var(--tropo-surface);
-  border-bottom: 0px solid var(--tropo-border);
-  transition:
-    max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-    opacity 0.25s ease,
-    padding 0.3s ease,
-    border-bottom-width 0.3s ease;
-  padding: 0 12px;
-}
-
-.search-bar-drawer.open {
-  max-height: 70px;
-  opacity: 1;
-  padding: 8px 12px;
-  border-bottom: 1px solid var(--tropo-border);
-}
-
-.search-bar-drawer .Search {
+.header-search-container {
   max-width: 600px;
   margin: 0 auto;
   width: 100%;
+}
+
+.header-search-container .Search {
+  position: static;
 }
 
 /* ── Options Menu Dropdown ────────────────────────────────── */
@@ -215,11 +196,13 @@
   font-size: 0.9rem;
 }
 
-/* Transparent Toggle Buttons for Options Menu & Search Button */
+/* Transparent Buttons for Options Menu, Search Toggle & Close */
 .options-menu-dropdown .dropdown-toggle,
 .options-menu-dropdown .dropdown-toggle.btn-secondary,
 .search-toggle-btn,
-.search-toggle-btn.btn-secondary {
+.search-toggle-btn.btn-secondary,
+.search-close-btn,
+.search-close-btn.btn-secondary {
   background-color: transparent !important;
   border-color: transparent !important;
   color: var(--tropo-text) !important;
@@ -234,7 +217,8 @@
 .options-menu-dropdown .dropdown-toggle.show,
 .search-toggle-btn:hover,
 .search-toggle-btn:focus-visible,
-.search-toggle-btn.active {
+.search-close-btn:hover,
+.search-close-btn:focus-visible {
   background-color: var(
     --tropo-accent-subtle,
     rgba(255, 255, 255, 0.1)
@@ -243,7 +227,8 @@
 }
 
 .options-menu-dropdown .dropdown-toggle:focus:not(:focus-visible),
-.search-toggle-btn:not(.active):focus:not(:focus-visible) {
+.search-toggle-btn:focus:not(:focus-visible),
+.search-close-btn:focus:not(:focus-visible) {
   background-color: transparent !important;
   box-shadow: none !important;
   outline: none !important;

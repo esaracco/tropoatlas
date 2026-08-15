@@ -4,14 +4,13 @@ import { useTranslation } from "react-i18next"
 import { HeaderButton, Search } from "@tropo/react"
 import { normalize, getItem } from "@tropo/core"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faSearch } from "@fortawesome/free-solid-svg-icons"
+import { faClose, faSearch } from "@fortawesome/free-solid-svg-icons"
 
 import { Button, Container, Nav, Navbar, Offcanvas } from "react-bootstrap"
 
 import ClearFiltersButton from "./ClearFiltersButton"
 import OptionsMenu from "./OptionsMenu"
 import SettingsModal from "../Settings/SettingsModal"
-import InfoBar from "./InfoBar"
 
 import { useAppStore } from "@tropo/core"
 import "./styles/Header.css"
@@ -36,15 +35,18 @@ const Header = () => {
   const [showSearch, setShowSearch] = useState(false)
   const searchInputRef = useRef(null)
 
-  // Focus search input when search drawer is opened
+  // Manage search input focus and blur with in-place search visibility
   useEffect(() => {
-    if (showSearch && searchInputRef.current) {
-      searchInputRef.current.focus()
+    if (showSearch) {
+      searchInputRef.current?.focus()
+    } else {
+      searchInputRef.current?.blur()
     }
   }, [showSearch])
 
   const toggleSearch = () => {
     if (showSearch) {
+      searchInputRef.current?.blur()
       setSearchStr("")
       setShowSearch(false)
     } else {
@@ -123,129 +125,144 @@ const Header = () => {
         className="shadow-sm bg-dark"
         data-bs-theme="dark"
       >
-        <Container fluid className="d-flex align-items-center flex-nowrap">
-          <Navbar.Brand
-            className="p-0 m-0 me-2 flex-shrink-0"
-            style={{ cursor: "pointer" }}
-            onClick={() => setShowAbout(true)}
+        {showSearch ? (
+          <Container
+            fluid
+            className="d-flex align-items-center flex-nowrap gap-2"
           >
-            <img src="/icon-180.png" height="36" width="36" alt="TropoDisc" />
-          </Navbar.Brand>
-          <Navbar.Toggle
-            className="flex-shrink-0 me-2"
-            aria-controls={`offcanvasNavbar-expand-${expandBreakpoint}`}
-          >
-            <span className="navbar-toggler-icon"></span>
-            {selected.categories.length ||
-            selected.creators.length ||
-            selected.formats.length ? (
-              <span className="badge">
-                <span className="selected-mark"></span>
-              </span>
-            ) : (
-              ""
-            )}
-          </Navbar.Toggle>
-          <div className="d-flex justify-content-center align-items-center flex-grow-1 flex-nowrap">
-            <Navbar.Offcanvas
-              id={`offcanvasNavbar-expand-${expandBreakpoint}`}
-              aria-labelledby={`offcanvasNavbarLabel-expand-${expandBreakpoint}`}
-              placement="end"
-              data-bs-theme="dark"
-              className={`header-offcanvas header-offcanvas-${expandBreakpoint}`}
-            >
-              <Offcanvas.Header closeButton />
-              <Offcanvas.Body>
-                <Nav
-                  className={`justify-content-center align-items-stretch align-items-${expandBreakpoint}-center mb-0 flex-column flex-${expandBreakpoint}-row flex-nowrap gap-2 gap-${expandBreakpoint}-0`}
-                >
-                  <ClearFiltersButton />
-                  <HeaderButton
-                    label={t("Styles")}
-                    type="checkbox"
-                    stype="categories"
-                    selected={selected}
-                    content={allCategories}
-                    activeFilters={activeFilters}
-                    closeLabel={t("Close")}
-                    onChangeSelection={getOnChangeSelection("categories")}
-                    normalizeFn={normalize}
-                  />
-                  <HeaderButton
-                    label={t("Artists")}
-                    type="checkbox"
-                    stype="creators"
-                    selected={selected}
-                    content={allCreators}
-                    activeFilters={activeFilters}
-                    closeLabel={t("Close")}
-                    onChangeSelection={getOnChangeSelection("creators")}
-                    normalizeFn={normalize}
-                  />
-                  {showFormats && (
-                    <HeaderButton
-                      label={t("Formats")}
-                      type="checkbox"
-                      stype="formats"
-                      selected={selected}
-                      content={allFormats}
-                      activeFilters={activeFilters}
-                      closeLabel={t("Close")}
-                      onChangeSelection={getOnChangeSelection("formats")}
-                      normalizeFn={normalize}
-                    />
-                  )}
-                  <HeaderButton
-                    label={t("Sort")}
-                    type="radio"
-                    mark={false}
-                    content={{
-                      added: t("Date added"),
-                      artist: t("Artist"),
-                      rating: t("Note"),
-                      year: t("Year"),
-                      ...(customFields.supportsPlace && {
-                        place: t("Location"),
-                      }),
-                    }}
-                    sort={sort}
-                    onSortChange={setSort}
-                    closeLabel={t("Close")}
-                  />
-                  <Button
-                    variant="secondary"
-                    className={`HeaderButton search-toggle-btn flex-shrink-0 d-none d-sm-inline-block ${showSearch ? "active" : ""}`}
-                    onClick={toggleSearch}
-                    aria-label={t("Search")}
-                  >
-                    <FontAwesomeIcon icon={faSearch} />
-                  </Button>
-                </Nav>
-              </Offcanvas.Body>
-            </Navbar.Offcanvas>
-          </div>
-          <div className="d-flex align-items-center ms-auto flex-shrink-0 gap-1">
+            <div className="flex-grow-1 header-search-container">
+              <Search
+                inputRef={searchInputRef}
+                searchStr={searchStr}
+                setSearchStr={setSearchStr}
+                placeholder={t("artist, album...")}
+              />
+            </div>
             <Button
               variant="secondary"
-              className={`HeaderButton search-toggle-btn flex-shrink-0 d-sm-none ${showSearch ? "active" : ""}`}
+              className="HeaderButton search-close-btn flex-shrink-0"
               onClick={toggleSearch}
-              aria-label={t("Search")}
+              aria-label={t("Close")}
             >
-              <FontAwesomeIcon icon={faSearch} />
+              <FontAwesomeIcon icon={faClose} />
             </Button>
-            <OptionsMenu onOpenSettings={() => setShowSettings(true)} />
-          </div>
-        </Container>
+          </Container>
+        ) : (
+          <Container fluid className="d-flex align-items-center flex-nowrap">
+            <Navbar.Brand
+              className="p-0 m-0 me-2 flex-shrink-0"
+              style={{ cursor: "pointer" }}
+              onClick={() => setShowAbout(true)}
+            >
+              <img src="/icon-180.png" height="36" width="36" alt="TropoDisc" />
+            </Navbar.Brand>
+            <Navbar.Toggle
+              className="flex-shrink-0 me-2"
+              aria-controls={`offcanvasNavbar-expand-${expandBreakpoint}`}
+            >
+              <span className="navbar-toggler-icon"></span>
+              {selected.categories.length ||
+              selected.creators.length ||
+              selected.formats.length ? (
+                <span className="badge">
+                  <span className="selected-mark"></span>
+                </span>
+              ) : (
+                ""
+              )}
+            </Navbar.Toggle>
+            <div className="d-flex justify-content-center align-items-center flex-grow-1 flex-nowrap">
+              <Navbar.Offcanvas
+                id={`offcanvasNavbar-expand-${expandBreakpoint}`}
+                aria-labelledby={`offcanvasNavbarLabel-expand-${expandBreakpoint}`}
+                placement="end"
+                data-bs-theme="dark"
+                className={`header-offcanvas header-offcanvas-${expandBreakpoint}`}
+              >
+                <Offcanvas.Header closeButton />
+                <Offcanvas.Body>
+                  <Nav
+                    className={`justify-content-center align-items-stretch align-items-${expandBreakpoint}-center mb-0 flex-column flex-${expandBreakpoint}-row flex-nowrap gap-2 gap-${expandBreakpoint}-0`}
+                  >
+                    <ClearFiltersButton />
+                    <HeaderButton
+                      label={t("Styles")}
+                      type="checkbox"
+                      stype="categories"
+                      selected={selected}
+                      content={allCategories}
+                      activeFilters={activeFilters}
+                      closeLabel={t("Close")}
+                      onChangeSelection={getOnChangeSelection("categories")}
+                      normalizeFn={normalize}
+                    />
+                    <HeaderButton
+                      label={t("Artists")}
+                      type="checkbox"
+                      stype="creators"
+                      selected={selected}
+                      content={allCreators}
+                      activeFilters={activeFilters}
+                      closeLabel={t("Close")}
+                      onChangeSelection={getOnChangeSelection("creators")}
+                      normalizeFn={normalize}
+                    />
+                    {showFormats && (
+                      <HeaderButton
+                        label={t("Formats")}
+                        type="checkbox"
+                        stype="formats"
+                        selected={selected}
+                        content={allFormats}
+                        activeFilters={activeFilters}
+                        closeLabel={t("Close")}
+                        onChangeSelection={getOnChangeSelection("formats")}
+                        normalizeFn={normalize}
+                      />
+                    )}
+                    <HeaderButton
+                      label={t("Sort")}
+                      type="radio"
+                      mark={false}
+                      content={{
+                        added: t("Date added"),
+                        artist: t("Artist"),
+                        rating: t("Note"),
+                        year: t("Year"),
+                        ...(customFields.supportsPlace && {
+                          place: t("Location"),
+                        }),
+                      }}
+                      sort={sort}
+                      onSortChange={setSort}
+                      closeLabel={t("Close")}
+                    />
+                    <Button
+                      variant="secondary"
+                      className="HeaderButton search-toggle-btn flex-shrink-0 d-none d-sm-inline-block"
+                      onClick={toggleSearch}
+                      aria-label={t("Search")}
+                    >
+                      <FontAwesomeIcon icon={faSearch} />
+                    </Button>
+                  </Nav>
+                </Offcanvas.Body>
+              </Navbar.Offcanvas>
+            </div>
+            <div className="d-flex align-items-center ms-auto flex-shrink-0 gap-1">
+              <Button
+                variant="secondary"
+                className="HeaderButton search-toggle-btn flex-shrink-0 d-sm-none"
+                onClick={toggleSearch}
+                aria-label={t("Search")}
+              >
+                <FontAwesomeIcon icon={faSearch} />
+              </Button>
+              <OptionsMenu onOpenSettings={() => setShowSettings(true)} />
+            </div>
+          </Container>
+        )}
       </Navbar>
-      <div className={`search-bar-drawer ${showSearch ? "open" : ""}`}>
-        <Search
-          inputRef={searchInputRef}
-          searchStr={searchStr}
-          setSearchStr={setSearchStr}
-          placeholder={t("artist, album...")}
-        />
-      </div>
-      <InfoBar />
       <SettingsModal
         show={showSettings}
         onHide={() => setShowSettings(false)}

@@ -8,6 +8,7 @@ import * as Settings from "./utils/settings"
 import Header from "./Header"
 import About from "./About"
 import Result from "./Result"
+import InfoBar from "./Header/InfoBar"
 import { ScrollButton, PwaReloadPrompt } from "@tropo/react"
 import {
   useAppStore,
@@ -183,6 +184,7 @@ const App = () => {
       <Header />
       <About />
       <Result />
+      <InfoBar />
       <ScrollButton />
       <PwaReloadPrompt
         message={t("Update available! The app will be reloaded.")}
