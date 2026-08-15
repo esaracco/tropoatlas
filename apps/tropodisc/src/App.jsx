@@ -1,7 +1,7 @@
 import React, { useEffect } from "react"
 import { useTranslation } from "react-i18next"
 import i18n from "i18next"
-import { ToastContainer, toast } from "react-toastify"
+import { ToastContainer, toast, cssTransition } from "react-toastify"
 import { ledsClient } from "./utils/leds"
 
 import * as Settings from "./utils/settings"
@@ -25,6 +25,13 @@ import { plugin, getProviderInfo, validateProviderSettings } from "./provider"
 
 import "react-toastify/dist/ReactToastify.css"
 import "@tropo/react/src/global.css"
+
+// Smooth fade-slide transition matching the PwaReloadPrompt animation
+const ToastTransition = cssTransition({
+  enter: "toast-fade-slide-enter",
+  exit: "toast-fade-slide-exit",
+  appendPosition: false,
+})
 
 // COMPONENT App
 const App = () => {
@@ -101,20 +108,18 @@ const App = () => {
       const setCategories = useCollectionStore.getState().setCategories
 
       try {
-        const [cachedReleases, cachedStyles] = await Promise.all([
-          getLargeItem("releases"),
-          Promise.resolve(getItem("styles")),
+        const [cachedItems, cachedCategories] = await Promise.all([
+          getLargeItem("items"),
+          Promise.resolve(getItem("categories")),
         ])
-        if (cachedStyles && cachedStyles.length) {
+        if (cachedCategories && cachedCategories.length) {
           // Restore from cache
-          const releasesObj = cachedReleases || {}
-          const stylesArr = cachedStyles || []
+          const itemsObj = cachedItems || {}
+          const categoriesArr = cachedCategories || []
 
           // Populate Zustand store
-
-          // Map legacy to new format for Zustand
           const mappedItems = {}
-          Object.values(releasesObj).forEach((r) => {
+          Object.values(itemsObj).forEach((r) => {
             mappedItems[r.instanceid || r.id] = {
               ...r,
               creator: r.artist || r.creator,
@@ -123,7 +128,7 @@ const App = () => {
             }
           })
           setItems(mappedItems)
-          setCategories(stylesArr)
+          setCategories(categoriesArr)
           setDisplayCount(Object.keys(mappedItems).length)
           setLoading(false)
         } else {
@@ -141,12 +146,12 @@ const App = () => {
                 item.categories.forEach((c) => categories.add(c))
               })
 
-              const stylesArray = Array.from(categories).sort()
-              setCategories(stylesArray)
+              const categoriesArray = Array.from(categories).sort()
+              setCategories(categoriesArray)
 
               // Save to cache
-              setLargeItem("releases", items)
-              setItem("styles", stylesArray)
+              setLargeItem("items", items)
+              setItem("categories", categoriesArray)
             })
             .catch((e) => {
               console.error(e.message)
@@ -177,7 +182,11 @@ const App = () => {
   // RENDER
   return (
     <>
-      <ToastContainer position="bottom-right" />
+      <ToastContainer
+        position="bottom-right"
+        transition={ToastTransition}
+        hideProgressBar={true}
+      />
       <Header />
       <About />
       <Result />

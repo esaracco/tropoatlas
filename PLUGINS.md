@@ -16,9 +16,10 @@ Your plugin class must implement the following methods:
 - **`getCustomFieldsInfo()`**: Returns `{ supportsPlace, supportsPrice, supportsCategories }`.
 - **`getCollection(onProgress)`**: Fetches all the lightweight items from the API, mapping them to the internal `Item` format.
 - **`getItemDetails(item)`**: Fetches additional detailed data (tracklist, full notes, etc.) for a specific item.
-- **`getItemImages(item)`**: Fetches the high and low resolution images `{ cover, thumb }` for an item.
+- **`getItemImage(item)`**: Fetches the artwork image `{ cover }` for an item.
 - **`updateItem(item, changes)`**: Updates user-specific data on the remote service (e.g. rating, location/place, price, custom categories).
 - **`getCategories(items)`**: Extracts and sorts all unique categories from the given collection of items.
+- **`getMaxRequestsPerMinute()`**: Returns the maximum allowed API requests per minute (defaults to `60` if omitted or higher).
 
 ### Example Plugin Skeleton
 

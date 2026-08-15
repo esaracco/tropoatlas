@@ -69,14 +69,17 @@ registerRoute(
   }),
 )
 
-// Cache albums covers and other collection items
+// Cache album covers and artwork images using CacheFirst strategy
 registerRoute(
-  ({ url }) => url.pathname.endsWith(".jpeg"),
+  ({ url }) =>
+    url.pathname.startsWith("/api/discogs-image/") ||
+    url.origin.includes("discogs") ||
+    /\.(jpe?g|png|webp)($|\?)/i.test(url.pathname),
   new CacheFirst({
     cacheName: buildCacheKey("item-covers"),
     plugins: [
-      new ExpirationPlugin({ maxEntries: 150 }),
-      new CacheableResponsePlugin({ statuses: [0, 200] }),
+      new ExpirationPlugin({ maxEntries: 500 }),
+      new CacheableResponsePlugin({ statuses: [200] }),
     ],
   }),
 )

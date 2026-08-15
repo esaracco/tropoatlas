@@ -4,7 +4,7 @@ import { toast } from "react-toastify"
 import { useTranslation } from "react-i18next"
 import { LazyLoadImage } from "react-lazy-load-image-component"
 
-import { getItemDetails, getItemImages, getProviderInfo } from "../../provider"
+import { getItemDetails, getItemImage, getProviderInfo } from "../../provider"
 import { buildCacheKey, setLargeItem } from "@tropo/core"
 
 import "./styles/Album.css"
@@ -51,7 +51,7 @@ const loadedImageUrls = new Set()
 // Helper to check if an image URL is already in session or browser cache
 const isImageCached = (url) => {
   if (!url) return false
-  if (loadedImageUrls.has(url)) return true
+  if (url.startsWith("data:") || loadedImageUrls.has(url)) return true
   const imgObj = new Image()
   imgObj.src = url
   if (imgObj.complete && imgObj.naturalWidth !== 0) {
@@ -85,7 +85,7 @@ const addCacheBuster = (url) => {
 // COMPONENT Album
 const Album = ({
   setActiveInstanceId,
-  thumbWidth,
+  cardWidth,
   instanceid,
   img,
   artist,
@@ -136,7 +136,7 @@ const Album = ({
         const items = useCollectionStore.getState().items
         const newItems = { ...items, [instanceId]: album }
         setItems(newItems)
-        setLargeItem("releases", newItems)
+        setLargeItem("items", newItems)
       } finally {
         if (showLoader) setLoader(false)
       }
@@ -184,23 +184,20 @@ const Album = ({
       const items = useCollectionStore.getState().items
       const album = items[instanceid]
       if (album) {
-        // Purge previous image URLs from browser cache
+        // Purge previous image URL from browser cache
         await purgeImageCache(album.cover)
-        await purgeImageCache(album.thumb)
 
-        const images = await getItemImages(album)
-        if (images && (images.cover || images.thumb)) {
+        const images = await getItemImage(album)
+        if (images && images.cover) {
           const cover = addCacheBuster(images.cover)
-          const thumb = addCacheBuster(images.thumb)
 
           const releasesClone = { ...items }
           releasesClone[instanceid] = {
             ...album,
             cover,
-            thumb,
           }
           setItems(releasesClone)
-          setLargeItem("releases", releasesClone)
+          setLargeItem("items", releasesClone)
           toast.success(t("Image recovered successfully!"))
         } else {
           toast.warning(t("Still no image available."))
@@ -213,6 +210,7 @@ const Album = ({
   }
 
   const onError = () => {
+    if (!img) return
     toast.error(
       <div>
         <b>{t("Image loading error")}</b>
@@ -240,7 +238,7 @@ const Album = ({
     <div
       className={`Album${loader ? " is-loading" : ""}`}
       onClick={onClick}
-      style={{ width: thumbWidth }}
+      style={{ width: cardWidth }}
       data-instanceid={instanceid}
     >
       {loader && <div className="card-loader-bar" />}
@@ -252,13 +250,13 @@ const Album = ({
         }}
         visibleByDefault={isCached}
         src={img}
-        height={thumbWidth}
-        width={thumbWidth}
+        height={cardWidth}
+        width={cardWidth}
       />
       {getProviderInfo().multipleFormats && format && (
         <div className="format-badge">{format}</div>
       )}
-      <div className="artist text-truncate" style={{ width: thumbWidth }}>
+      <div className="artist text-truncate" style={{ width: cardWidth }}>
         {artist}
         <br />
         {year ? `${year} - ` : ""}

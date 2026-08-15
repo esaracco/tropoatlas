@@ -87,8 +87,6 @@ export const useSettingsStore = create(
           apiItemsPerRequest:
             parseInt(import.meta.env.VITE_DISCOGS_API_ITEMS_PER_REQUEST, 10) ||
             250,
-          apiRequestDelay:
-            parseInt(import.meta.env.VITE_DISCOGS_API_REQUEST_DELAY, 10) || 2,
           formats: import.meta.env.VITE_DISCOGS_FORMATS || "vinyl",
           fieldPlace: import.meta.env.VITE_DISCOGS_FIELD_PLACE || "",
           fieldPrice: import.meta.env.VITE_DISCOGS_FIELD_PRICE || "",
@@ -118,6 +116,7 @@ export const useSettingsStore = create(
 export * from "./storage.js"
 export * from "./utils.js"
 export * from "./plugin.js"
+export * from "./backup.js"
 
 export const getPluginTerminology = (pluginName) => {
   const terminologies = {

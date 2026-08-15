@@ -248,3 +248,59 @@
   box-shadow: none !important;
   outline: none !important;
 }
+
+/* Export Modal Estimation & Progress Styling */
+.export-estimation-box {
+  background-color: var(--tropo-surface-2, rgba(255, 255, 255, 0.05));
+  border: 1px solid var(--tropo-border, rgba(255, 255, 255, 0.1));
+  color: var(--tropo-text, #e2e8f0);
+  border-radius: 6px;
+  padding: 0.65rem 0.85rem;
+}
+
+.export-estimation-box .estimation-label {
+  color: var(--tropo-text, #e2e8f0);
+}
+
+.export-estimation-box .estimation-value {
+  color: var(--tropo-accent-hover, var(--tropo-accent, #38bdf8));
+  font-weight: 600;
+}
+
+.export-estimation-box .estimation-icon {
+  color: var(--tropo-accent, #0ea5e9);
+  font-size: 1.1rem;
+}
+
+.export-progress-time {
+  color: var(--tropo-text, #e2e8f0);
+  font-size: 0.95rem;
+}
+
+.export-progress-time .time-value {
+  color: var(--tropo-accent-hover, var(--tropo-accent, #38bdf8));
+  font-weight: 600;
+}
+
+.export-progressbar-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.export-progressbar-wrapper .progress {
+  height: 1.4rem;
+  background-color: var(--tropo-surface-3, rgba(255, 255, 255, 0.1));
+}
+
+.export-progressbar-label {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-weight: 600;
+  font-size: 0.85rem;
+  color: var(--tropo-text, #ffffff);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
+  pointer-events: none;
+  z-index: 2;
+}

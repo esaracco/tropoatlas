@@ -192,13 +192,13 @@ const AlbumModal = ({ instanceId, onClose }) => {
       rating: formState.rating,
     }
     setItems(releasesClone)
-    setLargeItem("releases", releasesClone)
+    setLargeItem("items", releasesClone)
 
     if (changes.categories) {
       // Rebuild global categories list
       const allCategories = getCategories(releasesClone)
       setCategories(allCategories)
-      setItem("styles", allCategories)
+      setItem("categories", allCategories)
       // Remove non-existent categories if previously selected
       setFilter(
         "categories",

@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import { Dropdown, Modal, Button, Container } from "react-bootstrap"
+import { Dropdown } from "react-bootstrap"
 import { useTranslation } from "react-i18next"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import {
@@ -10,26 +10,26 @@ import {
   faPalette,
   faInfoCircle,
   faLanguage,
+  faDownload,
+  faUpload,
 } from "@fortawesome/free-solid-svg-icons"
 import { ConfirmModal, ThemeSelector, LanguageSelector } from "@tropo/react"
-import { useAppStore, useCollectionStore, clearAllCaches } from "@tropo/core"
+import { useAppStore, clearAllCaches } from "@tropo/core"
 import * as Settings from "../utils/settings"
-import { ledsClient } from "../utils/leds"
+import ExportBackupModal from "./ExportBackupModal"
+import ImportBackupModal from "./ImportBackupModal"
+import LedsModal from "./LedsModal"
 
 const OptionsMenu = ({ onOpenSettings }) => {
   const { t } = useTranslation()
   const isOnline = useAppStore((s) => s.isOnline)
   const setShowAbout = useAppStore((s) => s.setShowAbout)
-  const setFromRuler = useAppStore((s) => s.setFromRuler)
-  const clearFilters = useCollectionStore((s) => s.clearFilters)
-  const selected = useCollectionStore((s) => s.selected)
 
-  // Sync Modal State
+  const [isBackupBusy, setIsBackupBusy] = useState(false)
   const [showSyncModal, setShowSyncModal] = useState(false)
-
-  // LEDs Modal State
+  const [showExportModal, setShowExportModal] = useState(false)
+  const [showImportModal, setShowImportModal] = useState(false)
   const [showLedsModal, setShowLedsModal] = useState(false)
-  const [rulerShown, setRulerShown] = useState(false)
 
   // Sync handler
   const onConfirmSync = async () => {
@@ -39,32 +39,6 @@ const OptionsMenu = ({ onOpenSettings }) => {
       "tropodisc-ui-storage-v2",
     ])
     window.location.reload()
-  }
-
-  // LEDs handlers
-  const setRulerState = (state) => {
-    if (state === rulerShown) return
-    if (
-      !rulerShown &&
-      (selected.categories.length || selected.creators.length)
-    ) {
-      setFromRuler(true)
-      clearFilters()
-    }
-    ledsClient.setRuler({ show: state })
-    setRulerShown(state)
-  }
-
-  const handleResetLeds = () => {
-    if (
-      !rulerShown &&
-      (selected.categories.length || selected.creators.length)
-    ) {
-      clearFilters()
-    } else {
-      ledsClient.setRuler({ show: false })
-      setRulerShown(false)
-    }
   }
 
   return (
@@ -81,40 +55,25 @@ const OptionsMenu = ({ onOpenSettings }) => {
         </ConfirmModal>
       )}
 
-      {Settings.setLeds === "yes" && (
-        <Modal
+      <ExportBackupModal
+        show={showExportModal}
+        onHide={() => setShowExportModal(false)}
+        isBusy={isBackupBusy}
+        setIsBusy={setIsBackupBusy}
+      />
+
+      <ImportBackupModal
+        show={showImportModal}
+        onHide={() => setShowImportModal(false)}
+        isBusy={isBackupBusy}
+        setIsBusy={setIsBackupBusy}
+      />
+
+      {Settings.setLeds === "yes" && isOnline && (
+        <LedsModal
           show={showLedsModal}
           onHide={() => setShowLedsModal(false)}
-          onExited={() => setRulerState(false)}
-          scrollable
-          size="lg"
-        >
-          <Modal.Header closeButton>
-            <Modal.Title>{t("Leds control")}</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <Container className="d-flex justify-content-center">
-              <div className="d-grid gap-2">
-                <Button
-                  variant="primary"
-                  onClick={() => setRulerState(!rulerShown)}
-                >
-                  {rulerShown
-                    ? t("Turn off the ruler")
-                    : t("Turn on the ruler")}
-                </Button>
-                <Button variant="primary" onClick={handleResetLeds}>
-                  {t("Reset")}
-                </Button>
-              </div>
-            </Container>
-          </Modal.Body>
-          <Modal.Footer>
-            <Button onClick={() => setShowLedsModal(false)}>
-              {t("Close")}
-            </Button>
-          </Modal.Footer>
-        </Modal>
+        />
       )}
 
       <Dropdown align="end" className="options-menu-dropdown me-1">
@@ -168,6 +127,26 @@ const OptionsMenu = ({ onOpenSettings }) => {
               className="options-menu-icon"
             />
             <span>{t("About")}</span>
+          </Dropdown.Item>
+
+          <Dropdown.Divider />
+
+          <Dropdown.Item
+            onClick={() => setShowExportModal(true)}
+            disabled={isBackupBusy}
+            className="d-flex align-items-center gap-2 py-2"
+          >
+            <FontAwesomeIcon icon={faDownload} className="options-menu-icon" />
+            <span>{t("Export collection")}</span>
+          </Dropdown.Item>
+
+          <Dropdown.Item
+            onClick={() => setShowImportModal(true)}
+            disabled={isBackupBusy}
+            className="d-flex align-items-center gap-2 py-2"
+          >
+            <FontAwesomeIcon icon={faUpload} className="options-menu-icon" />
+            <span>{t("Import backup")}</span>
           </Dropdown.Item>
 
           <Dropdown.Divider />

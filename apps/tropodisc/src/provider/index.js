@@ -47,19 +47,23 @@ plugin
 export const getMaster = plugin.getMaster.bind(plugin)
 export const getItemDetails = plugin.getItemDetails.bind(plugin)
 export const getCustomFieldsInfo = plugin.getCustomFieldsInfo.bind(plugin)
-export const getItemImages = plugin.getItemImages.bind(plugin)
+export const getItemImage = plugin.getItemImage.bind(plugin)
 export const updateItem = plugin.updateItem.bind(plugin)
 export const getCategories = plugin.getCategories.bind(plugin)
 export const getProviderInfo = plugin.getProviderInfo.bind(plugin)
+export const getMaxRequestsPerMinute = plugin.getMaxRequestsPerMinute
+  ? plugin.getMaxRequestsPerMinute.bind(plugin)
+  : () => 60
 
 const provider = {
   plugin,
   getItemDetails,
   getCustomFieldsInfo,
-  getItemImages,
+  getItemImage,
   updateItem,
   getCategories,
   getProviderInfo,
+  getMaxRequestsPerMinute,
 }
 
 export default provider

@@ -25,6 +25,8 @@ With TropoDisc you can:
 - 🏷️ Add your own metadata through custom fields
 - 📍 Store the exact physical location of every album
 - 💡 Instantly locate an album using ESP32-controlled LED strips *(optional)*
+- 📦 Export & extract full collection backups (metadata & covers) to portable ZIP archives
+- 📥 Restore your collection offline from backup archives
 
 ## Screenshots
 
@@ -34,6 +36,16 @@ With TropoDisc you can:
 <img width="500" alt="4" src="https://github.com/user-attachments/assets/9d886bd5-dc07-4d00-9261-5bcacb6e159c" />
 <img width="500" alt="5" src="https://github.com/user-attachments/assets/1ffd917e-0104-4b0c-a113-fce5c14630f4" />
 
+## Backup & Complete Collection Extraction
+
+TropoDisc includes a complete client-side backup and export system with two operational modes:
+
+- **Quick Export**: Instantly exports all currently cached metadata and album covers into a portable ZIP archive containing a `collection.json` manifest and local artwork in a `covers/` directory.
+- **Full Extraction & Enrichment**: When enabled, the application proactively fetches any missing album details (tracklists, release notes, release years) and downloads high-resolution cover artwork from the data provider before packaging the archive.
+  - **Provider-Safe Rate Limiting**: Enforces strict per-request limits (default 55 requests/min) across independent parallel queues for API metadata and image proxy downloads.
+  - **Automatic Retry Backoff**: Transparently recovers from temporary HTTP 429 rate limit responses with exponential backoff.
+  - **Dynamic Time Estimation & Real-time Progress**: Displays accurate remaining countdown and live progress throughout the extraction process.
+  - **Offline Import & Restoration**: Easily restore or migrate your collection on another device by importing the ZIP backup without needing an internet connection.
 
 ## Requirements
 
@@ -103,12 +115,20 @@ npm run build
     </Directory>
 
     # Secure Discogs API Proxy (Token Injection)
-    <Location /api/discogs>
+    <Location /api/discogs/>
         RequestHeader set Authorization "Discogs token=YOUR_SECRET_TOKEN"
         RequestHeader set User-Agent "TropoDisc"
         ProxyPreserveHost Off
-        ProxyPass https://api.discogs.com
-        ProxyPassReverse https://api.discogs.com
+        ProxyPass https://api.discogs.com/
+        ProxyPassReverse https://api.discogs.com/
+    </Location>
+
+    # Discogs Artwork Image Proxy (CORS bypass for client-side ZIP export)
+    <Location /api/discogs-image/>
+        Header set Access-Control-Allow-Origin "*"
+        ProxyPreserveHost Off
+        ProxyPass https://i.discogs.com/
+        ProxyPassReverse https://i.discogs.com/
     </Location>
 
     # (Optional) LED Server Proxy

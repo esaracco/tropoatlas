@@ -3,7 +3,7 @@
 This file defines the rules and conventions that the AI agent must follow when working on the `tropoatlas` project.
 
 ## General Rules
-- **Rule Scope & Governance**: Do NOT add transient UI styling choices, local variable names, or temporary bug-fix logic to `AGENTS.md`. Only document non-negotiable architectural invariants, system boundaries, hardware contracts, and monorepo guardrails.
+- **Rule Scope & Governance**: Do NOT add user-specific personal preferences, transient UI styling choices, local variable names, or temporary bug-fix logic to `AGENTS.md`. Only document non-negotiable architectural invariants, system boundaries, hardware contracts, and monorepo guardrails.
 - **Comments Language**: All code comments and documentation within the codebase MUST be written in **English**.
 - **Comment Placement**: Do NOT place comments at the end of a line of code (inline comments). Always place comments on the line(s) directly ABOVE the code they describe.
 - **Comment Line Length**: Code comments MUST NOT exceed 80 characters per line (including leading indentation and comment prefixes like `//`). Break long comments into multiple single-line comments directly above the code.
@@ -22,6 +22,7 @@ This file defines the rules and conventions that the AI agent must follow when w
 - **Configuration**: The application selects the active provider via the `VITE_DATA_PROVIDER` environment variable. Plugin-specific variables (like `VITE_DISCOGS_USER`) must only be parsed and validated by their respective plugin.
 - **Feature Ignorance**: Plugins MUST remain completely ignorant of app-level features (e.g., IoT LEDs). Any validation logic combining app settings (like `VITE_SET_LEDS`) with provider capabilities MUST be handled by the main application.
 - **Terminology**: Use generic terms in the main application state and logic (e.g., `creator`, `categories`) rather than provider-specific terms (e.g., `artist`, `styles`).
+- **Development Mode Image Isolation**: In development mode (`devMode`), data provider plugins MUST NOT assign or fetch remote cover artwork URLs. This prevents API/CDN rate-limit exhaustion and unnecessary network traffic during local development.
 
 ## Presentation Site (`apps/tropodisc/docs/`)
 - **Location**: Static presentation site files are located in `apps/tropodisc/docs/` (`index.html` for English, `index-fr.html` for French).
@@ -47,7 +48,7 @@ This file defines the rules and conventions that the AI agent must follow when w
 - **Build-Time Variables**: Environment variables that affect the Vite proxy or server build (such as `VITE_SET_LEDS` and `VITE_AUDIOLIBRARY_URL`) must remain in `.env` as they are required at build/serve time. They serve as default fallback values for the settings store on initial hydration.
 
 ## UI & i18n Considerations
-- **i18n in Plugins**: Since plugins are UI-agnostic and do not import `react-i18next`, strings that require translation (like schema labels) should be wrapped in a dummy marker function (`const t = (s) => s`) within the plugin. This allows the static analyzer (`npm run i18n:check`) to detect the keys, while the main application applies the actual translation (`t(field.label)`) at render time.
+- **i18n in Non-UI Packages & Plugins**: Since non-UI packages (e.g., `@tropo/core`, `@tropo/leds`) and plugins are UI-agnostic and do not import `react-i18next`, any user-facing strings or error messages requiring translation MUST be wrapped in a dummy marker function (`const t = (s) => s`). This allows the static analyzer (`npm run i18n:check`) to detect the keys, while the main application applies the actual translation (`t(...)`) at render time.
 - **Offcanvas and Modals (Mobile UI)**: Stacking Bootstrap Modals over an open Offcanvas menu can cause backdrop conflicts when the modal is closed. 
   - If a button opens a global root-level Modal (e.g., `SettingsModal`), the Offcanvas MUST be explicitly closed before opening the modal.
   - If a button opens an inline Modal (e.g., `ConfirmModal` inside `SynchroButton`), the Offcanvas MUST NOT be closed, otherwise the modal will be instantly unmounted.

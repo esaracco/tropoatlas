@@ -85,12 +85,12 @@ export class BasePlugin {
   }
 
   /**
-   * Fetches high-res and low-res images for the item.
+   * Fetches high-res cover image for the item.
    * @param {Object} item
-   * @returns {Promise<{cover: string, thumb: string}|null>}
+   * @returns {Promise<{cover: string}|null>}
    */
-  async getItemImages(item) {
-    throw new Error("getItemImages() must be implemented by the plugin.")
+  async getItemImage(item) {
+    throw new Error("getItemImage() must be implemented by the plugin.")
   }
 
   /**
@@ -110,5 +110,13 @@ export class BasePlugin {
    */
   getCategories(items) {
     throw new Error("getCategories() must be implemented by the plugin.")
+  }
+
+  /**
+   * Returns the maximum allowed API requests per minute.
+   * @returns {number}
+   */
+  getMaxRequestsPerMinute() {
+    return 60
   }
 }

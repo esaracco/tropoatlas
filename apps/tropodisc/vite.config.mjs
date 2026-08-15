@@ -35,9 +35,69 @@ export default defineConfig(({ mode }) => {
       rewrite: (path) => path.replace(/^\/api\/discogs/, ""),
       headers: {
         Authorization: `Discogs token=${token}`,
-        "User-Agent": "Tropodisc/2.0",
+        "User-Agent": "TropoDisc",
       },
     }
+  }
+
+  proxy["/api/discogs-image"] = {
+    target: "https://i.discogs.com",
+    changeOrigin: true,
+    rewrite: (path) => path.replace(/^\/api\/discogs-image/, ""),
+    headers: {
+      "User-Agent": "TropoDisc",
+    },
+    configure: (proxyServer) => {
+      proxyServer.on("proxyRes", (proxyRes) => {
+        proxyRes.headers["access-control-allow-origin"] = "*"
+      })
+    },
+  }
+
+  // Image proxy middleware to bypass CORS for client-side ZIP export
+  const imageProxyPlugin = {
+    name: "image-proxy-plugin",
+    configureServer(server) {
+      server.middlewares.use("/api/proxy-image", async (req, res) => {
+        const targetUrl = new URL(req.url, "http://localhost").searchParams.get(
+          "url",
+        )
+
+        if (!targetUrl) {
+          res.statusCode = 400
+          res.end("Missing url parameter")
+          return
+        }
+
+        try {
+          const response = await fetch(targetUrl, {
+            headers: {
+              "User-Agent": "TropoDisc",
+            },
+          })
+
+          if (!response.ok) {
+            res.statusCode = response.status
+            res.end("Failed to fetch image from target server")
+            return
+          }
+
+          const arrayBuffer = await response.arrayBuffer()
+          const buffer = Buffer.from(arrayBuffer)
+
+          res.setHeader("Access-Control-Allow-Origin", "*")
+          res.setHeader("Access-Control-Allow-Methods", "GET, OPTIONS")
+          res.setHeader(
+            "Content-Type",
+            response.headers.get("content-type") || "image/jpeg",
+          )
+          res.end(buffer)
+        } catch (err) {
+          res.statusCode = 500
+          res.end(`Image proxy error: ${err.message}`)
+        }
+      })
+    },
   }
 
   return {
@@ -45,6 +105,7 @@ export default defineConfig(({ mode }) => {
       __APP_VERSION__: JSON.stringify(packageJson.version),
     },
     plugins: [
+      imageProxyPlugin,
       react(),
       VitePWA({
         strategies: "injectManifest",

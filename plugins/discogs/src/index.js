@@ -27,6 +27,8 @@ export const getArtistName = ({ name, anv } = {}) => {
 }
 
 export class DiscogsPlugin extends BasePlugin {
+  #lastRequestTime = 0
+
   constructor(config = {}) {
     super()
     const env = config.env || {}
@@ -43,10 +45,6 @@ export class DiscogsPlugin extends BasePlugin {
 
   get itemsPerRequest() {
     return Number(this.config.apiItemsPerRequest) || 250
-  }
-
-  get requestDelay() {
-    return Number(this.config.apiRequestDelay) || 2
   }
 
   get formats() {
@@ -148,7 +146,21 @@ export class DiscogsPlugin extends BasePlugin {
     }
   }
 
-  async #request(method, service, args) {
+  async #request(method, service, args, retryCount = 0) {
+    // Respect rate limit: minimum delay between consecutive calls
+    // (default 55 requests/minute).
+    const effectiveLimit = Math.max(
+      1,
+      Math.min(this.getMaxRequestsPerMinute() || 60, 60) - 5,
+    )
+    const minDelayMs = Math.ceil(60000 / effectiveLimit)
+    const now = Date.now()
+    const elapsed = now - this.#lastRequestTime
+    if (elapsed < minDelayMs) {
+      await sleep(minDelayMs - elapsed)
+    }
+    this.#lastRequestTime = Date.now()
+
     // The Authorization header (Discogs token) is injected upstream by
     // the reverse proxy (e.g., Nginx, Apache, or Vite dev server).
     const options = {
@@ -163,10 +175,30 @@ export class DiscogsPlugin extends BasePlugin {
     if (method === "POST" && args) options.body = JSON.stringify(args)
 
     const r = await fetch(url, options)
+
+    // Handle 429 Too Many Requests with automatic backoff and retry
+    if (r.status === 429 && retryCount < 3) {
+      console.warn(
+        `Discogs API rate limit reached (429). Retrying after backoff (attempt ${retryCount + 1}/3)...`,
+      )
+      await sleep(8000 * (retryCount + 1))
+      return this.#request(method, service, args, retryCount + 1)
+    }
+
     if (r.ok) {
+      // Check remaining quota header and delay if quota is exhausted
+      const remainingHeader = r.headers.get("X-Discogs-Ratelimit-Remaining")
+      if (remainingHeader !== null) {
+        const remaining = parseInt(remainingHeader, 10)
+        if (!isNaN(remaining) && remaining <= 1) {
+          await sleep(2000)
+        }
+      }
+
       const text = await r.text()
       return text ? JSON.parse(text) : null
     }
+
     throw new Error(`Discogs API Error: ${r.statusText}`)
   }
 
@@ -238,8 +270,6 @@ export class DiscogsPlugin extends BasePlugin {
     let currentProgress = 10
 
     for (let i = 1; i <= pages; i++) {
-      if (i > 1) await sleep(this.requestDelay * 1000)
-
       const r = await this.#request(
         "GET",
         `users/${this.user}/collection/folders/0/releases`,
@@ -269,6 +299,13 @@ export class DiscogsPlugin extends BasePlugin {
             info.cover_image &&
             !info.cover_image.includes("spacer.gif")
 
+          const coverUrl = hasValidCover
+            ? info.cover_image?.replace(
+                "https://i.discogs.com/",
+                "/api/discogs-image/",
+              )
+            : null
+
           releases[release.instance_id] = {
             format,
             searchIndex,
@@ -280,8 +317,7 @@ export class DiscogsPlugin extends BasePlugin {
             creator: artist,
             year: info.year,
             title: info.title,
-            cover: hasValidCover ? info.cover_image : null,
-            thumb: hasValidCover ? info.thumb : null,
+            cover: coverUrl,
             place,
             price,
             categories: styles,
@@ -365,8 +401,23 @@ export class DiscogsPlugin extends BasePlugin {
         ? master.tracklist
         : []
 
+    // Extract cover artwork if available from release images
+    let cover = item.cover
+    if (
+      !this.devMode &&
+      !cover &&
+      release.images &&
+      release.images.length > 0
+    ) {
+      cover = release.images[0].uri?.replace(
+        "https://i.discogs.com/",
+        "/api/discogs-image/",
+      )
+    }
+
     return {
       ...item,
+      cover,
       year,
       country: release.country,
       notes: rNotes,
@@ -376,14 +427,15 @@ export class DiscogsPlugin extends BasePlugin {
     }
   }
 
-  async getItemImages(item) {
-    if (!item.releaseid) return null
+  async getItemImage(item) {
+    if (this.devMode || !item.releaseid) return null
     const r = await this.getRelease({ id: item.releaseid })
     if (r && r.images && r.images.length > 0) {
-      return {
-        cover: r.images[0].uri,
-        thumb: r.images[0].uri150,
-      }
+      const cover = r.images[0].uri?.replace(
+        "https://i.discogs.com/",
+        "/api/discogs-image/",
+      )
+      return { cover }
     }
     return null
   }
@@ -441,5 +493,10 @@ export class DiscogsPlugin extends BasePlugin {
       cats.forEach((s) => styles.add(s))
     })
     return Array.from(styles).sort()
+  }
+
+  // Discogs API rate limit is 60 requests per minute
+  getMaxRequestsPerMinute() {
+    return 60
   }
 }

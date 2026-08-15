@@ -2,7 +2,7 @@ import localforage from "localforage"
 
 // Current version of the storage schema. Increment when local storage
 // structure changes to force a re-sync.
-export const STORAGE_SCHEMA_VERSION = 3
+export const STORAGE_SCHEMA_VERSION = 5
 
 export const SETTINGS_STORE_KEY = "settings-v1"
 

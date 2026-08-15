@@ -52,8 +52,8 @@ const Result = () => {
   const turnOffLeds = useRef(false)
   const winWidth = useWindowWidth(100)
 
-  // METHOD calculateThumbWidth()
-  const calculateThumbWidth = () => {
+  // Calculate dynamic responsive card width for grid layout
+  const calculateCardWidth = () => {
     const thresholds = [300, 400, 600, 800, 1000, 1200]
     const index = thresholds.findIndex((t) => winWidth < t)
     const itemsByCol = index === -1 ? 8 : index + 2
@@ -291,8 +291,7 @@ const Result = () => {
     releases,
   ])
 
-  const thumbWidth = calculateThumbWidth()
-  const img = thumbWidth <= 150 ? "thumb" : "cover"
+  const cardWidth = calculateCardWidth()
 
   // RENDER
   return (
@@ -345,8 +344,8 @@ const Result = () => {
                 key={item.id}
                 setActiveInstanceId={setActiveInstanceId}
                 instanceid={item.id}
-                img={item[img] || vinylImg}
-                thumbWidth={thumbWidth}
+                img={item.cover || vinylImg}
+                cardWidth={cardWidth}
                 artist={item.creator}
                 year={item.year}
                 title={item.title}

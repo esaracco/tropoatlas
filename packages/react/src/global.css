@@ -213,3 +213,34 @@ input.form-control-xs {
 .Toastify__close-button:hover {
   opacity: 1 !important;
 }
+
+/* ── Smooth Toast Transitions ───────────────────────────────── */
+@keyframes toast-fade-slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes toast-fade-slide-down {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+}
+
+.toast-fade-slide-enter {
+  animation: toast-fade-slide-up 0.25s ease-out forwards;
+}
+
+.toast-fade-slide-exit {
+  animation: toast-fade-slide-down 0.2s ease-in forwards;
+}
