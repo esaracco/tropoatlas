@@ -98,7 +98,7 @@
   "Backup imported successfully!": "Sauvegarde importée avec succès !",
   "Backup import failed:": "Échec de l'importation de la sauvegarde :",
   "Are you sure you want to export your collection to a ZIP file?": "Voulez-vous vraiment exporter votre collection dans un fichier ZIP ?",
-  "Are you sure you want to import a collection ZIP file? This will overwrite existing local data.": "Voulez-vous vraiment importer uni ZIP de votre collection ? Cela remplacera les données locales actuelles.",
+  "Are you sure you want to import a collection ZIP file? This will overwrite existing local data.": "Voulez-vous vraiment importer un ZIP de votre collection ? Cela remplacera les données locales actuelles.",
   "Download missing covers and details": "Télécharger les pochettes et détails manquants",
   "Calculating estimated time...": "Calcul du temps estimé...",
   "Estimated time:": "Temps estimé :",
