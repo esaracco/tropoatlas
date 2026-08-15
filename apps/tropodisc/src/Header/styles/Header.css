@@ -147,6 +147,12 @@
   border: 1px solid var(--tropo-surface-3, rgba(255, 255, 255, 0.15)) !important;
   border-radius: 10px;
   min-width: 190px;
+  max-height: calc(100vh - 65px);
+  max-height: calc(100dvh - 65px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: var(--tropo-surface-3) transparent;
   z-index: 1060 !important;
   box-shadow:
     0 10px 30px -5px rgba(0, 0, 0, 0.5),
