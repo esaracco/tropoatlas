@@ -29,13 +29,16 @@ import { BasePlugin } from "@tropo/core"
 export class DummyPlugin extends BasePlugin {
   constructor(config = {}) {
     super()
-    this.token = config.env.VITE_DUMMY_TOKEN
+    const env = config.env || {}
+    this.user = env.VITE_DUMMY_USER || config.user
+    this.devMode = config.devMode || false
+    this.apiBase = config.apiBase || "https://api.dummy.com"
   }
 
   getProviderInfo() {
     return {
       name: "Dummy",
-      url: "https://dummy.com",
+      url: "https://www.dummy.com",
       logo: null,
       multipleFormats: true,
     }
