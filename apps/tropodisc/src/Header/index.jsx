@@ -38,7 +38,7 @@ const Header = () => {
   // Manage search input focus and blur with in-place search visibility
   useEffect(() => {
     if (showSearch) {
-      searchInputRef.current?.focus()
+      searchInputRef.current?.focus({ preventScroll: true })
     } else {
       searchInputRef.current?.blur()
     }
@@ -117,7 +117,7 @@ const Header = () => {
   }
 
   return (
-    <div className="sticky-top Header">
+    <div className="Header">
       <Navbar
         expand={expandBreakpoint}
         expanded={expanded}

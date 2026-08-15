@@ -5,26 +5,38 @@ import { faArrowCircleUp } from "@fortawesome/free-solid-svg-icons"
 import "./ScrollButton.css"
 
 // COMPONENT ScrollButton
-const ScrollButton = () => {
+const ScrollButton = ({ scrollerRef, onScrollToTop }) => {
   const [display, setDisplay] = useState(false)
 
   // METHOD scrollToTop()
-  const scrollToTop = () => window.scrollTo({ top: 0, behavior: "smooth" })
+  const scrollToTop = () => {
+    if (onScrollToTop) {
+      onScrollToTop()
+    } else if (scrollerRef && scrollerRef.current) {
+      scrollerRef.current.scrollTo({ top: 0, behavior: "smooth" })
+    } else {
+      window.scrollTo({ top: 0, behavior: "smooth" })
+    }
+  }
 
   // EFFECT
   useEffect(() => {
-    // Method _onScroll()
-    const _onScroll = () => setDisplay(window.scrollY > 300)
+    const target = (scrollerRef && scrollerRef.current) || window
 
-    window.addEventListener("scroll", _onScroll)
+    const _onScroll = () => {
+      const scrollPos = target === window ? window.scrollY : target.scrollTop
+      setDisplay(scrollPos > 300)
+    }
 
-    return () => window.removeEventListener("scroll", _onScroll)
-  }, [])
+    target.addEventListener("scroll", _onScroll)
+
+    return () => target.removeEventListener("scroll", _onScroll)
+  }, [scrollerRef])
 
   // RENDER
   return (
     <div
-      className={`fixed-bottom d-flex justify-content-center ScrollButtonWrapper ${
+      className={`d-flex justify-content-center ScrollButtonWrapper ${
         display ? "visible" : ""
       }`}
     >

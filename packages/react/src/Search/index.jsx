@@ -15,9 +15,11 @@ const Search = ({ placeholder, searchStr, setSearchStr, inputRef }) => {
   const onReset = (e) => {
     setSearchStr("")
     if (inputRef && inputRef.current) {
-      inputRef.current.focus()
+      inputRef.current.focus({ preventScroll: true })
     } else {
-      e.currentTarget.parentNode.querySelector("input").focus()
+      e.currentTarget.parentNode
+        .querySelector("input")
+        ?.focus({ preventScroll: true })
     }
   }
 

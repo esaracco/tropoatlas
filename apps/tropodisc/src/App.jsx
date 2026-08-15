@@ -9,7 +9,7 @@ import Header from "./Header"
 import About from "./About"
 import Result from "./Result"
 import InfoBar from "./Header/InfoBar"
-import { ScrollButton, PwaReloadPrompt } from "@tropo/react"
+import { PwaReloadPrompt } from "@tropo/react"
 import {
   useAppStore,
   useCollectionStore,
@@ -175,7 +175,7 @@ const App = () => {
 
   // RENDER
   return (
-    <>
+    <div className="app-shell">
       <ToastContainer
         position="bottom-right"
         transition={ToastTransition}
@@ -185,13 +185,12 @@ const App = () => {
       <About />
       <Result />
       <InfoBar />
-      <ScrollButton />
       <PwaReloadPrompt
         message={t("Update available! The app will be reloaded.")}
         buttonReload={t("Reload")}
         buttonClose={t("Close")}
       />
-    </>
+    </div>
   )
 }
 

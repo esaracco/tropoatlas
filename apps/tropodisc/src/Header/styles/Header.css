@@ -38,10 +38,9 @@
 }
 
 /* ── Navbar ───────────────────────────────────────────────── */
-/* Sticky container for the Header component */
-.Header.sticky-top {
-  position: sticky;
-  top: 0;
+.Header {
+  flex-shrink: 0;
+  position: relative;
   z-index: 1030;
 }
 
@@ -50,9 +49,16 @@
   z-index: 1040;
   background-color: var(--tropo-surface) !important;
   border-bottom: 1px solid var(--tropo-border) !important;
-  backdrop-filter: blur(8px) !important;
-  min-height: 52px;
+  height: 53px;
+  min-height: 53px;
+  max-height: 53px;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
   transition: background-color 0.3s;
+}
+
+.navbar.bg-dark > .container-fluid {
+  height: 100%;
 }
 
 @media (max-width: 1000px) {

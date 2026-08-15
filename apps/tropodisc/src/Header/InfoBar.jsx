@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react"
+import React, { useState, useEffect } from "react"
 import { useCollectionStore } from "@tropo/core"
 import { useTranslation } from "react-i18next"
 
@@ -22,22 +22,6 @@ const InfoBar = () => {
   const items = useCollectionStore((s) => s.items)
   const { t } = useTranslation()
   const isOnline = useAppStore((s) => s.isOnline)
-  const infoBarRef = useRef(null)
-
-  // EFFECT: Track InfoBar height to adjust bottom padding
-  useEffect(() => {
-    if (!infoBarRef.current) return
-    const resizeObserver = new ResizeObserver(() => {
-      if (infoBarRef.current) {
-        document.documentElement.style.setProperty(
-          "--infobar-height",
-          `${infoBarRef.current.offsetHeight}px`,
-        )
-      }
-    })
-    resizeObserver.observe(infoBarRef.current)
-    return () => resizeObserver.disconnect()
-  }, [])
 
   // EFFECT
   useEffect(() => {
@@ -125,10 +109,7 @@ const InfoBar = () => {
   return (
     !loading && (
       <div
-        ref={infoBarRef}
-        className={`InfoBar fixed-bottom d-flex flex-column ${
-          noResult ? "noresult" : ""
-        }`}
+        className={`InfoBar d-flex flex-column ${noResult ? "noresult" : ""}`}
       >
         {!isOnline && (
           <div className="w-100 text-center mb-1">

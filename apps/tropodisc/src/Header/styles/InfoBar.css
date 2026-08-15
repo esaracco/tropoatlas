@@ -1,7 +1,6 @@
 .InfoBar {
-  position: fixed;
-  bottom: 0;
-  left: 0;
+  position: relative;
+  flex-shrink: 0;
   width: 100%;
   z-index: 1020;
   font-size: 0.72rem;
@@ -13,7 +12,6 @@
   padding: 8px 10px calc(8px + env(safe-area-inset-bottom, 0px)) 10px;
   color: var(--tropo-text-muted);
   box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.2);
-  backdrop-filter: blur(8px);
   text-align: center;
   transition:
     color 0.3s,

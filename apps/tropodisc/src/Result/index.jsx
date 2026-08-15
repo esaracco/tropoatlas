@@ -9,7 +9,7 @@ import { ledsClient } from "../utils/leds"
 import Album from "./Album"
 import AlbumModal from "./Album/AlbumModal"
 import { normalize } from "@tropo/core"
-import { useScrollbarWidth, useWindowWidth } from "@tropo/react"
+import { useScrollbarWidth, useWindowWidth, ScrollButton } from "@tropo/react"
 import { useAppStore } from "@tropo/core"
 import { useTranslation } from "react-i18next"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
@@ -25,7 +25,11 @@ const GridList = React.forwardRef(({ style, ...props }, ref) => (
   <div
     {...props}
     ref={ref}
-    style={{ ...style, display: "flex", flexWrap: "wrap" }}
+    style={{
+      ...style,
+      display: "flex",
+      flexWrap: "wrap",
+    }}
   />
 ))
 GridList.displayName = "GridList"
@@ -40,6 +44,8 @@ const Result = () => {
   const progress = useAppStore((s) => s.progress)
   const setDisplayCount = useAppStore((s) => s.setDisplayCount)
   const scrollbarWidth = useScrollbarWidth()
+  const virtuosoRef = useRef(null)
+  const scrollerRef = useRef(null)
 
   const setCategories = useCollectionStore((s) => s.setCategories)
   const setCreators = useCollectionStore((s) => s.setCreators)
@@ -50,7 +56,7 @@ const Result = () => {
   const releases = useCollectionStore((s) => s.items)
   const sort = useCollectionStore((s) => s.sort)
   const turnOffLeds = useRef(false)
-  const winWidth = useWindowWidth(100)
+  const winWidth = useWindowWidth(0)
 
   // Calculate dynamic responsive card width for grid layout
   const calculateCardWidth = () => {
@@ -331,7 +337,9 @@ const Result = () => {
           </div>
         )}
         <VirtuosoGrid
-          useWindowScroll
+          ref={virtuosoRef}
+          scrollerRef={(el) => (scrollerRef.current = el)}
+          style={{ height: "100%", width: "100%", overflowAnchor: "none" }}
           totalCount={result.length}
           overscan={200}
           components={{
@@ -353,6 +361,12 @@ const Result = () => {
               />
             )
           }}
+        />
+        <ScrollButton
+          onScrollToTop={() =>
+            virtuosoRef.current?.scrollToIndex({ index: 0, behavior: "smooth" })
+          }
+          scrollerRef={scrollerRef}
         />
       </div>
     </>

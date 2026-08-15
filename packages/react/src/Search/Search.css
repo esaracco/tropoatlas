@@ -9,6 +9,8 @@
   color: var(--tropo-text) !important;
   border-radius: 6px !important;
   text-align: center;
+  /* Prevent iOS Safari auto-zoom on input focus */
+  font-size: 16px !important;
   padding: 4px 28px 4px 32px; /* right padding for clear, left padding for search icon */
   transition:
     border-color 0.18s,
