@@ -45,14 +45,23 @@ export const getItem = (name) =>
 
 export const removeItem = (name) => localStorage.removeItem(buildCacheKey(name))
 
+// Keys that must never be removed during cache clears (user preferences,
+// UI state, and structural schema version metadata).
+export const DEFAULT_PRESERVED_KEYS = [
+  SETTINGS_STORE_KEY,
+  "theme",
+  "ui-storage-v2",
+  "schema_version",
+  "customFieldsInfo",
+]
+
 export const clearAllCaches = async (keysToPreserve = []) => {
   const appName = import.meta.env.VITE_APP_NAME || "tropoatlas"
   const prefix = `${appName}-`
 
-  const allKeysToPreserve = [
-    ...keysToPreserve,
-    buildCacheKey(SETTINGS_STORE_KEY),
-  ]
+  const preservedKeys = new Set(
+    [...DEFAULT_PRESERVED_KEYS, ...keysToPreserve].map(buildCacheKey),
+  )
 
   // 1. Caches API
   const cacheNames = await caches.keys()
@@ -66,7 +75,7 @@ export const clearAllCaches = async (keysToPreserve = []) => {
   const lsKeysToRemove = []
   for (let i = 0; i < localStorage.length; i++) {
     const key = localStorage.key(i)
-    if (key && key.startsWith(prefix) && !allKeysToPreserve.includes(key)) {
+    if (key && key.startsWith(prefix) && !preservedKeys.has(key)) {
       lsKeysToRemove.push(key)
     }
   }

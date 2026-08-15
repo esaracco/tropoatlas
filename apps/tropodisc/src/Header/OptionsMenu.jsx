@@ -33,11 +33,7 @@ const OptionsMenu = ({ onOpenSettings }) => {
 
   // Sync handler
   const onConfirmSync = async () => {
-    await clearAllCaches([
-      "i18nextLng",
-      "tropodisc-theme",
-      "tropodisc-ui-storage-v2",
-    ])
+    await clearAllCaches()
     window.location.reload()
   }
 

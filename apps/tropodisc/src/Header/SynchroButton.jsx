@@ -21,11 +21,7 @@ const SynchroButton = () => {
 
   // METHOD onConfirm()
   const onConfirm = async () => {
-    await clearAllCaches([
-      "i18nextLng",
-      "tropodisc-theme",
-      "tropodisc-ui-storage-v2",
-    ])
+    await clearAllCaches()
     window.location.reload()
   }
 

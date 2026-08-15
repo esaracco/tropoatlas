@@ -93,7 +93,7 @@ const App = () => {
       const currentSchemaVersion = String(STORAGE_SCHEMA_VERSION)
 
       if (cachedSchemaVersion !== currentSchemaVersion) {
-        await clearAllCaches([schemaVersionKey])
+        await clearAllCaches()
         localStorage.setItem(schemaVersionKey, currentSchemaVersion)
       }
 
