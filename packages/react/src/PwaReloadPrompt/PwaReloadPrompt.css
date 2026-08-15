@@ -1,37 +1,62 @@
 /* ── PwaReloadPrompt ────────────────────────────────────────── */
 .PwaReloadPrompt-container {
   position: fixed;
-  bottom: 20px;
-  right: 20px;
+  top: 0;
+  left: 0;
+  right: 0;
   z-index: 9999;
+  width: 100%;
   display: flex;
-  flex-direction: column;
-  gap: 10px;
+  justify-content: center;
+  animation: slide-down 0.3s ease-out;
 }
 
-.PwaReloadPrompt-toast {
+.PwaReloadPrompt-banner {
+  width: 100%;
   background-color: var(--tropo-surface);
   color: var(--tropo-text);
-  border: 1px solid var(--tropo-border);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  border-radius: 8px;
-  padding: 16px 20px;
+  border-bottom: 2px solid var(--tropo-accent);
+  box-shadow:
+    0 4px 20px rgba(0, 0, 0, 0.35),
+    0 0 0 1px var(--tropo-accent-subtle);
+  padding: 10px 20px;
   display: flex;
-  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.PwaReloadPrompt-header {
+  display: flex;
+  align-items: center;
   gap: 12px;
-  max-width: 320px;
-  animation: slide-up 0.3s ease-out;
+}
+
+.PwaReloadPrompt-icon-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  min-width: 32px;
+  border-radius: 50%;
+  background-color: var(--tropo-accent-subtle);
+  color: var(--tropo-accent);
+  font-size: 0.9rem;
 }
 
 .PwaReloadPrompt-message {
   font-size: 0.95rem;
+  font-weight: 500;
   line-height: 1.4;
+  color: var(--tropo-text);
 }
 
 .PwaReloadPrompt-buttons {
   display: flex;
   gap: 8px;
-  justify-content: flex-end;
+  align-items: center;
+  flex-shrink: 0;
 }
 
 .PwaReloadPrompt-btn {
@@ -43,7 +68,8 @@
   font-size: 0.85rem;
   font-weight: 500;
   cursor: pointer;
-  transition: all 0.2s;
+  white-space: nowrap;
+  transition: all 0.2s ease-in-out;
 }
 
 .PwaReloadPrompt-btn:hover {
@@ -62,10 +88,10 @@
   border-color: var(--tropo-accent-hover);
 }
 
-@keyframes slide-up {
+@keyframes slide-down {
   from {
     opacity: 0;
-    transform: translateY(20px);
+    transform: translateY(-100%);
   }
   to {
     opacity: 1;
@@ -74,13 +100,15 @@
 }
 
 @media (max-width: 576px) {
-  .PwaReloadPrompt-container {
-    bottom: 16px;
-    right: 16px;
-    left: 16px;
+  .PwaReloadPrompt-banner {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 12px 16px;
+    gap: 10px;
   }
 
-  .PwaReloadPrompt-toast {
-    max-width: 100%;
+  .PwaReloadPrompt-buttons {
+    align-self: flex-end;
   }
 }
+
