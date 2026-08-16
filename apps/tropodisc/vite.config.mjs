@@ -112,10 +112,18 @@ export default defineConfig(({ mode }) => {
         srcDir: "src",
         filename: "service-worker.js",
         manifest: {
+          lang: "en",
           short_name: "TropoDisc",
           name: "TropoDisc – A universal music collection manager",
           description:
             "Organize your collection, enrich it with your own metadata, and optionally locate albums instantly using LED strips",
+          translations: {
+            fr: {
+              name: "TropoDisc – Un gestionnaire universel de collection musicale",
+              description:
+                "Organisez votre collection, enrichissez-la avec vos propres métadonnées et, en option, localisez instantanément vos albums grâce à des bandes LED.",
+            },
+          },
           icons: [
             {
               src: "icon-192.png",
