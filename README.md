@@ -91,13 +91,19 @@ Open your browser at `http://localhost:3000`.
 
 TropoDisc is designed to be highly secure in production. The React frontend is purely static, and API calls are proxied through your web server (like Apache) to inject the secret Discogs token on the fly.
 
-1. Build the production application from the root folder:
+1. Enable the required Apache modules:
+```bash
+sudo a2enmod headers rewrite proxy proxy_http ssl
+sudo systemctl restart apache2
+```
+
+2. Build the production application from the root folder:
 ```bash
 npm run build
 ```
-*(This builds all workspaces and creates static files in `apps/tropodisc/build`)*
+*(This builds all workspaces, generates static files in `apps/tropodisc/build`, and automatically creates `.htaccess` and `headers.conf` with SPA routing, cache headers, and the dynamic User-Agent).*
 
-2. Configure Apache as a reverse proxy to serve the files and securely inject your token:
+3. Configure Apache as a reverse proxy to serve the files and securely inject your token:
 
 ```apache
 <VirtualHost *:443>
@@ -106,18 +112,17 @@ npm run build
 
     SSLProxyEngine On
 
-    # Single Page Application routing fallback
+    # Static files and .htaccess support
     <Directory /var/www/tropoatlas/apps/tropodisc/build>
         Options Indexes FollowSymLinks
         AllowOverride All
-        FallbackResource /index.html
         Require all granted
     </Directory>
 
     # Secure Discogs API Proxy (Token Injection)
     <Location /api/discogs/>
         RequestHeader set Authorization "Discogs token=YOUR_SECRET_TOKEN"
-        RequestHeader set User-Agent "TropoDisc"
+        IncludeOptional /var/www/tropoatlas/apps/tropodisc/build/headers.conf
         ProxyPreserveHost Off
         ProxyPass https://api.discogs.com/
         ProxyPassReverse https://api.discogs.com/
@@ -125,6 +130,7 @@ npm run build
 
     # Discogs Artwork Image Proxy (CORS bypass for client-side ZIP export)
     <Location /api/discogs-image/>
+        IncludeOptional /var/www/tropoatlas/apps/tropodisc/build/headers.conf
         Header set Access-Control-Allow-Origin "*"
         ProxyPreserveHost Off
         ProxyPass https://i.discogs.com/
