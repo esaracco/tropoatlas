@@ -8,6 +8,11 @@ export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), "")
   const packageJson = JSON.parse(fs.readFileSync("./package.json", "utf8"))
 
+  // Derive User-Agent string dynamically from package metadata
+  const appName =
+    packageJson.name === "tropodisc" ? "TropoDisc" : packageJson.name
+  const userAgent = `${appName}/${packageJson.version} (${packageJson.homepage})`
+
   const proxy = {}
   if (env.VITE_SET_LEDS === "yes" && env.VITE_AUDIOLIBRARY_URL) {
     proxy["/api/leds"] = {
@@ -35,7 +40,7 @@ export default defineConfig(({ mode }) => {
       rewrite: (path) => path.replace(/^\/api\/discogs/, ""),
       headers: {
         Authorization: `Discogs token=${token}`,
-        "User-Agent": "TropoDisc",
+        "User-Agent": userAgent,
       },
     }
   }
@@ -45,7 +50,7 @@ export default defineConfig(({ mode }) => {
     changeOrigin: true,
     rewrite: (path) => path.replace(/^\/api\/discogs-image/, ""),
     headers: {
-      "User-Agent": "TropoDisc",
+      "User-Agent": userAgent,
     },
     configure: (proxyServer) => {
       proxyServer.on("proxyRes", (proxyRes) => {
@@ -72,7 +77,7 @@ export default defineConfig(({ mode }) => {
         try {
           const response = await fetch(targetUrl, {
             headers: {
-              "User-Agent": "TropoDisc",
+              "User-Agent": userAgent,
             },
           })
 

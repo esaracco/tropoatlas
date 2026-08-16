@@ -27,7 +27,7 @@ server {
     location /api/discogs/ {
         # IMPORTANT: Envsubst will replace ${DISCOGS_TOKEN} with your env var
         proxy_set_header Authorization "Discogs token=${DISCOGS_TOKEN}";
-        proxy_set_header User-Agent "TropoDisc";
+        proxy_set_header User-Agent "__USER_AGENT__";
         
         # Configuration SSL strict for Discogs (Cloudflare)
         proxy_set_header Host api.discogs.com;
@@ -40,7 +40,7 @@ server {
     # Discogs Artwork CDN Proxy (CORS bypass for client-side ZIP export)
     location /api/discogs-image/ {
         proxy_set_header Host i.discogs.com;
-        proxy_set_header User-Agent "TropoDisc";
+        proxy_set_header User-Agent "__USER_AGENT__";
         proxy_ssl_server_name on;
         proxy_ssl_protocols TLSv1.2 TLSv1.3;
 
@@ -59,7 +59,7 @@ server {
 
         resolver 8.8.8.8 1.1.1.1 valid=300s;
         proxy_set_header Host $image_host;
-        proxy_set_header User-Agent "TropoDisc";
+        proxy_set_header User-Agent "__USER_AGENT__";
         proxy_ssl_server_name on;
         proxy_ssl_protocols TLSv1.2 TLSv1.3;
 
