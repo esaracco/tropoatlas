@@ -82,7 +82,7 @@
   "Location Field (e.g., `place`)": "Champ d'emplacement (ex: 'place')",
   "Price Field (e.g., `price`)": "Champ de prix (ex: 'price')",
   "Styles Field (e.g., `styles`)": "Champ de styles (ex: 'styles')",
-  "Only show albums that have at least one custom field": "N'afficher que les albums ayant au moins un champ personnalisé",
+  "Only sync albums that have at least one custom field": "Ne synchroniser que les albums ayant au moins un champ personnalisé",
   "View release on {{provider}}": "Consulter la fiche sur {{provider}}",
   "Show all {{count}} albums by {{artist}}": "Voir les {{count}} albums de {{artist}}",
   "Export collection": "Exporter la collection",

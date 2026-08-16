@@ -108,7 +108,7 @@ export class DiscogsPlugin extends BasePlugin {
       },
       {
         key: "fieldsRequired",
-        label: t("Only show albums that have at least one custom field"),
+        label: t("Only sync albums that have at least one custom field"),
         type: "boolean",
         requiresResync: true,
       },
