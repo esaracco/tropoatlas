@@ -33,6 +33,8 @@ const About = () => {
 
   // eslint-disable-next-line no-undef
   const appVersion = __APP_VERSION__
+  // eslint-disable-next-line no-undef
+  const appHomepage = __APP_HOMEPAGE__
 
   // RENDER
   return (
@@ -55,7 +57,7 @@ const About = () => {
           <p>{desc}</p>
           <div className="d-flex flex-wrap justify-content-center gap-2">
             <a
-              href="https://tropodisc.esaracco.fr"
+              href={appHomepage}
               rel="noopener noreferrer"
               target="_blank"
               className="btn btn-secondary btn-sm"

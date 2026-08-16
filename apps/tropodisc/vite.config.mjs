@@ -161,6 +161,7 @@ export default defineConfig(({ mode }) => {
   return {
     define: {
       __APP_VERSION__: JSON.stringify(packageJson.version),
+      __APP_HOMEPAGE__: JSON.stringify(packageJson.homepage),
     },
     plugins: [
       imageProxyPlugin,
