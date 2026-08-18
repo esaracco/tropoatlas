@@ -189,7 +189,7 @@ void onServerEventLeds() {
   FastLED.show();
   ledWatchdogKick();
 
-  server.send(200);
+  server.send(200, "application/json", "{\"status\":\"ok\"}");
 }
 
 void onServerEventPing() {
@@ -214,7 +214,7 @@ void onServerEventRuler() {
     }
     FastLED.show();
   }
-  server.send(200);
+  server.send(200, "application/json", "{\"status\":\"ok\"}");
 }
 
 /* ===================== SETUP / LOOP ===================== */

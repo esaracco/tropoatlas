@@ -15,19 +15,23 @@ export default defineConfig(({ mode }) => {
 
   const proxy = {}
   if (env.VITE_SET_LEDS === "yes" && env.VITE_AUDIOLIBRARY_URL) {
-    proxy["/api/leds"] = {
+    const ledProxyOptions = {
       target: env.VITE_AUDIOLIBRARY_URL,
       changeOrigin: true,
+      headers: {
+        Connection: "close",
+      },
+    }
+    proxy["/api/leds"] = {
+      ...ledProxyOptions,
       rewrite: (path) => path.replace(/^\/api\/leds/, "/leds"),
     }
     proxy["/api/ping"] = {
-      target: env.VITE_AUDIOLIBRARY_URL,
-      changeOrigin: true,
+      ...ledProxyOptions,
       rewrite: (path) => path.replace(/^\/api\/ping/, "/ping"),
     }
     proxy["/api/ruler"] = {
-      target: env.VITE_AUDIOLIBRARY_URL,
-      changeOrigin: true,
+      ...ledProxyOptions,
       rewrite: (path) => path.replace(/^\/api\/ruler/, "/ruler"),
     }
   }

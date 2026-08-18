@@ -267,12 +267,20 @@ const Result = () => {
           }
 
           if (ledCommands.length > 0) {
-            await ledsClient.setLeds(ledCommands)
+            try {
+              await ledsClient.setLeds(ledCommands)
+            } catch {
+              // Handled by ledsClient.onError
+            }
           }
         } else if (turnOffLeds.current) {
           turnOffLeds.current = false
           if (!fromRuler) {
-            ledsClient.setLeds()
+            try {
+              await ledsClient.setLeds()
+            } catch {
+              // Handled by ledsClient.onError
+            }
           } else {
             setFromRuler(false)
           }

@@ -22,7 +22,7 @@ const LedsModal = ({ show, onHide }) => {
       setFromRuler(true)
       clearFilters()
     }
-    ledsClient.setRuler({ show: state })
+    ledsClient.setRuler({ show: state }).catch(() => {})
     setRulerShown(state)
   }
 
@@ -33,7 +33,7 @@ const LedsModal = ({ show, onHide }) => {
     ) {
       clearFilters()
     } else {
-      ledsClient.setRuler({ show: false })
+      ledsClient.setRuler({ show: false }).catch(() => {})
       setRulerShown(false)
     }
   }
