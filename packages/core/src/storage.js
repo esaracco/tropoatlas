@@ -51,7 +51,7 @@ export const DEFAULT_PRESERVED_KEYS = [
   SETTINGS_STORE_KEY,
   "theme",
   "ui-storage-v2",
-  "schema_version",
+  "schemaVersion",
   "customFieldsInfo",
 ]
 

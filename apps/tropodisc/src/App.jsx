@@ -89,7 +89,7 @@ const App = () => {
 
     const initData = async () => {
       // 1. Check storage schema version and clear cache if updated
-      const schemaVersionKey = buildCacheKey("schema_version")
+      const schemaVersionKey = buildCacheKey("schemaVersion")
       const cachedSchemaVersion = localStorage.getItem(schemaVersionKey)
       const currentSchemaVersion = String(STORAGE_SCHEMA_VERSION)
 
