@@ -121,13 +121,10 @@ const AlbumModal = ({ instanceId, onClose }) => {
 
   // METHOD getSaveActionInfo()
   const getSaveActionInfo = () => {
-    const categories = (() => {
-      const r = []
-      document
-        .querySelectorAll(".AlbumStyleButtons tag")
-        .forEach((t) => r.push(t.getAttribute("value")))
-      return r.slice().sort()
-    })()
+    const categories = Array.from(
+      document.querySelectorAll(".AlbumStyleButtons tag .tagify__tag-text"),
+      (t) => t.textContent,
+    ).sort()
     const releasesClone = { ...releases }
     const releaseClone = { ...releasesClone[instanceId] }
     const changes = {}
