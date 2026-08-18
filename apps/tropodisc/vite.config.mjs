@@ -46,6 +46,11 @@ export default defineConfig(({ mode }) => {
         Authorization: `Discogs token=${token}`,
         "User-Agent": userAgent,
       },
+      configure: (proxyServer) => {
+        proxyServer.on("proxyRes", (proxyRes) => {
+          delete proxyRes.headers["set-cookie"]
+        })
+      },
     }
   }
 
@@ -58,6 +63,7 @@ export default defineConfig(({ mode }) => {
     },
     configure: (proxyServer) => {
       proxyServer.on("proxyRes", (proxyRes) => {
+        delete proxyRes.headers["set-cookie"]
         proxyRes.headers["access-control-allow-origin"] = "*"
       })
     },
@@ -152,6 +158,10 @@ export default defineConfig(({ mode }) => {
 <IfModule mod_headers.c>
     # Set dynamic User-Agent for reverse proxy requests
     RequestHeader set User-Agent "${userAgent}"
+
+    # Strip upstream Set-Cookie headers to prevent invalid domain cookie errors in browsers
+    Header unset Set-Cookie
+    Header always unset Set-Cookie
 </IfModule>
 `
       this.emitFile({
