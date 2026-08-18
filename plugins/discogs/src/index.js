@@ -286,8 +286,15 @@ export class DiscogsPlugin extends BasePlugin {
 
           if (this.fieldsRequired === "yes" && !haveFields) continue
 
-          if (styles) styles = styles.trim().split(/\s*,\s*/)
-          else styles = info.styles || info.genres || []
+          if (styles) {
+            styles = styles.trim().split(/\s*,\s*/)
+          } else {
+            styles = info.styles?.length
+              ? info.styles
+              : info.genres?.length
+                ? info.genres
+                : []
+          }
 
           styles.sort() // SORT CATEGORIES to match legacy behavior
 
