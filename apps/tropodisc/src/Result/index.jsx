@@ -347,7 +347,12 @@ const Result = () => {
         <VirtuosoGrid
           ref={virtuosoRef}
           scrollerRef={(el) => (scrollerRef.current = el)}
-          style={{ height: "100%", width: "100%", overflowAnchor: "none" }}
+          style={{
+            height: "100%",
+            width: "100%",
+            overflowAnchor: "none",
+            overflowX: "hidden",
+          }}
           totalCount={result.length}
           overscan={200}
           components={{

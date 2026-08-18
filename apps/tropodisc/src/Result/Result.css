@@ -12,6 +12,7 @@
 
 .Result [data-virtuoso-scroller="true"],
 .Result [data-viewport-type="element"] {
+  overflow-x: hidden;
   overflow-anchor: none;
   overscroll-behavior-y: contain;
 }
