@@ -33,50 +33,43 @@ import vinylImg from "../../assets/vinyl.png"
 import "./styles/AlbumModal.css"
 
 // METHOD getTracks()
-const getTracks = (tracklist) => {
-  if (!tracklist || !Array.isArray(tracklist)) return null
-  let tracks
-  tracklist.forEach((item) => {
+const getTracks = (tracklist, prefix = "track") => {
+  if (!tracklist || !Array.isArray(tracklist) || tracklist.length === 0) {
+    return null
+  }
+
+  const elements = tracklist.flatMap((item, index) => {
+    const key = `${prefix}-${index}-${item.position || ""}`
+
     switch (item.type_) {
       case "heading":
-        if (item.title !== "") {
-          tracks = (
-            <>
-              {tracks}
-              <li className="heading">
-                <b>{item.title}</b>
-              </li>
-            </>
-          )
-        }
-        break
+        if (!item.title) return []
+        return (
+          <li key={key} className="heading">
+            <b>{item.title}</b>
+          </li>
+        )
       case "index":
-        tracks = (
-          <>
-            {tracks}
-            {getTracks(item.sub_tracks)}
-          </>
-        )
-        break
+        return getTracks(item.sub_tracks, `${key}-sub`) || []
       case "track":
-        tracks = (
-          <>
-            {tracks}
-            <li className="track-item d-flex align-items-baseline gap-2">
-              <span className="track-position">{item.position}</span>
-              <span className="track-title flex-grow-1">{item.title}</span>
-              {item.duration && (
-                <span className="track-duration">{item.duration}</span>
-              )}
-            </li>
-          </>
+        return (
+          <li
+            key={key}
+            className="track-item d-flex align-items-baseline gap-2"
+          >
+            <span className="track-position">{item.position}</span>
+            <span className="track-title flex-grow-1">{item.title}</span>
+            {item.duration && (
+              <span className="track-duration">{item.duration}</span>
+            )}
+          </li>
         )
-        break
       default:
+        return []
     }
   })
 
-  return tracks
+  return elements.length > 0 ? elements : null
 }
 
 // COMPONENT AlbumModal
@@ -281,7 +274,7 @@ const AlbumModal = ({ instanceId, onClose }) => {
       },
       {
         regex: /\[(.+):\]/g,
-        fn: (k, r) => <b>{r[1]}:</b>,
+        fn: (k, r) => <b key={k}>{r[1]}:</b>,
       },
     ]
 
