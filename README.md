@@ -145,6 +145,11 @@ npm run build
 </VirtualHost>
 ```
 
+4. After the build, reload Apache to apply the directives from `headers.conf`:
+```bash
+sudo systemctl reload apache2
+```
+
 ## Using Custom Fields (Discogs Plugin)
 
 When using the Discogs plugin, TropoDisc can map to three optional custom fields in your Discogs collection:
