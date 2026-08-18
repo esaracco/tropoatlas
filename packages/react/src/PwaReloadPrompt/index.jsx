@@ -1,7 +1,5 @@
 import React from "react"
 import { useRegisterSW } from "virtual:pwa-register/react"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faSync } from "@fortawesome/free-solid-svg-icons"
 import "./PwaReloadPrompt.css"
 
 const PwaReloadPrompt = ({
@@ -37,9 +35,7 @@ const PwaReloadPrompt = ({
     <div className="PwaReloadPrompt-container">
       <div className="PwaReloadPrompt-banner">
         <div className="PwaReloadPrompt-header">
-          <div className="PwaReloadPrompt-icon-wrapper">
-            <FontAwesomeIcon icon={faSync} className="PwaReloadPrompt-icon" />
-          </div>
+          <div className="PwaReloadPrompt-icon-wrapper">{"\u{1F389}"}</div>
           <div className="PwaReloadPrompt-message">{message}</div>
         </div>
         <div className="PwaReloadPrompt-buttons">
