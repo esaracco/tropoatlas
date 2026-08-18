@@ -13,7 +13,7 @@ TropoAtlas is built on a modern **NPM Monorepo** architecture using **Vite**, **
 - `apps/tropodisc`: The main React application. It is a generic and agnostic music collection manager.
 - `packages/react`: A library of reusable, generic UI components (`@tropo/react`).
 - `packages/core`: Core utilities and state management (`@tropo/core`).
-- `packages/leds`: The HTTP client that handles physical LED strips integration (`@tropo/leds`).
+- `packages/leds`: Standalone HTTP client for ESP32-driven LED strips (`@tropo/leds`).
 - `plugins/*`: Data providers that plug into TropoDisc. Currently includes `@tropo/discogs`.
 
 ## Why TropoDisc?
@@ -24,9 +24,9 @@ With TropoDisc you can:
 - 🔎 Browse and search your collection quickly
 - 🏷️ Add your own metadata through custom fields
 - 📍 Store the exact physical location of every album
-- 💡 Instantly locate an album using ESP32-controlled LED strips *(optional)*
-- 📦 Export & extract full collection backups (metadata & covers) to portable ZIP archives
-- 📥 Restore your collection offline from backup archives
+- 💡 Instantly locate an album on your shelves with connected LED strips *(optional)*
+- 📦 Export complete collection backups (metadata & cover artwork) to portable ZIP archives
+- 📥 Restore your collection offline from ZIP backup archives
 
 ## Screenshots
 
@@ -36,7 +36,7 @@ With TropoDisc you can:
 <img width="500" alt="4" src="https://github.com/user-attachments/assets/9d886bd5-dc07-4d00-9261-5bcacb6e159c" />
 <img width="500" alt="5" src="https://github.com/user-attachments/assets/1ffd917e-0104-4b0c-a113-fce5c14630f4" />
 
-## Backup & Complete Collection Extraction
+## Backup & Complete Collection Export / Restore
 
 TropoDisc includes a complete client-side backup and export system with two operational modes:
 
@@ -79,7 +79,7 @@ For the Discogs plugin, required variables are:
 
 You can generate your personal token here: https://www.discogs.com/developers#page:authentication
 
-Start the development servers (React Frontend + LED Backend concurrently):
+Start the development server:
 
 ```bash
 npm run dev

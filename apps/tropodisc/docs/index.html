@@ -14,11 +14,11 @@
     />
     <meta
       name="description"
-      content="TropoDisc is a universal music collection manager connected to your music libraries (Discogs). Store physical shelf locations and locate vinyls and CDs instantly with ESP32 LED strips."
+      content="TropoDisc is a universal music collection manager connected to your music library (Discogs). Store physical shelf locations and locate records and CDs instantly with connected LED strips."
     />
     <meta
       name="keywords"
-      content="TropoDisc, TropoAtlas, vinyl manager, Discogs, music collection, LED shelf locator, ESP32, LED strip shelf, vinyl records, CDs, music library, React monorepo"
+      content="TropoDisc, TropoAtlas, vinyl manager, Discogs, music collection, LED shelf locator, ESP32, connected LED strip, vinyl records, CDs, music library, React monorepo"
     />
     <meta name="author" content="Emmanuel Saracco" />
     <meta name="robots" content="index, follow" />
@@ -46,7 +46,7 @@
     />
     <meta
       property="og:description"
-      content="Connect your Discogs collection to your physical shelves. Search, enrich metadata, and illuminate the exact location of your albums with ESP32 LED."
+      content="Connect your Discogs collection to your physical shelves. Search, enrich metadata, and illuminate the exact location of your albums with connected LED strips."
     />
     <meta property="og:image" content="./icon-512.png" />
     <meta property="og:site_name" content="TropoDisc" />
@@ -63,7 +63,7 @@
     />
     <meta
       name="twitter:description"
-      content="The ideal bridge between your digital music library (Discogs) and physical shelves thanks to LED strip location tracking."
+      content="The ideal bridge between your digital music library (Discogs) and physical shelves thanks to connected LED strip location tracking."
     />
     <meta name="twitter:image" content="./icon-512.png" />
 
@@ -85,7 +85,7 @@
           "price": "0",
           "priceCurrency": "EUR"
         },
-        "description": "Universal provider-decoupled music collection manager with optional ESP32 LED strip integration to physically locate albums on shelves.",
+        "description": "Universal music collection manager decoupled from data providers, with optional connected LED strip integration to physically locate albums on shelves.",
         "license": "https://www.gnu.org/licenses/gpl-3.0.html",
         "image": "https://tropodisc.esaracco.fr/icon-512.png"
       }
@@ -163,8 +163,8 @@
         <p class="hero-subtitle">
           Tropo<span class="brand-text-disc">Disc</span> is an open-source,
           universal music collection manager. Synchronize your albums (Discogs),
-          customize your metadata, and locate your records on your shelf
-          instantly with connected LED strips.
+          customize your metadata, and easily locate your records on your shelf
+          with connected LED strips.
         </p>
 
         <div class="hero-cta">
@@ -257,8 +257,7 @@
               <div class="feature-icon">💡</div>
               <h3 class="feature-title">Physical LED Locator</h3>
               <p class="feature-desc">
-                Connect Tropo<span class="brand-text-disc">Disc</span> to
-                ESP32-driven LED strips. Select an album on screen: its exact
+                Quickly locate your albums: select a record on screen and its
                 location lights up on your shelf!
               </p>
             </article>
@@ -275,15 +274,18 @@
             <article class="feature-card" id="card-monorepo">
               <div class="feature-icon">📦</div>
               <h3 class="feature-title">Monorepo Architecture</h3>
-              <p class="feature-desc">Divided into reusable packages.</p>
+              <p class="feature-desc">
+                Modular monorepo architecture divided into reusable packages and
+                data plugins.
+              </p>
             </article>
 
             <article class="feature-card" id="card-backup">
               <div class="feature-icon">💾</div>
-              <h3 class="feature-title">ZIP Export & Extraction</h3>
+              <h3 class="feature-title">ZIP Backup & Restore</h3>
               <p class="feature-desc">
-                Export and extract full collection backups with metadata and
-                covers into portable ZIP archives for offline use.
+                Export and restore complete collection backups with metadata
+                and cover artwork into portable ZIP archives.
               </p>
             </article>
 
@@ -311,19 +313,21 @@
                 Find your records in the blink of an eye
               </h2>
               <p class="led-description">
-                By configuring location numbers in your collection, Tropo<span
+                Simply set the location of your albums: Tropo<span
                   class="brand-text-disc"
                   >Disc</span
                 >
-                sends lightweight requests to your LED strip server.
+                takes care of controlling the LED strips on your shelves.
               </p>
               <ul class="led-list">
                 <li class="led-list-item">
-                  ✨ <b>Immediate visual indication</b> when searching
+                  ✨ <b>Immediate visual indication</b> when searching or selecting an album
                 </li>
-                <!-- <li class="led-list-item">🎨 <b>Customizable colors</b> based on musical style or artist</li>-->
                 <li class="led-list-item">
-                  🔌 <b>Simple HTTP integration</b> with ESP32
+                  🎨 <b>Customizable colors</b> for musical styles, artists, and albums
+                </li>
+                <li class="led-list-item">
+                  🔌 <b>Direct HTTP integration</b> with ESP32-driven LED strips
                 </li>
               </ul>
             </div>
@@ -430,7 +434,9 @@
             <div class="arch-card">
               <span class="arch-tag">packages/leds</span>
               <h4>@tropo/leds</h4>
-              <p>Standalone HTTP client for LED strip interaction.</p>
+              <p>
+                Standalone HTTP client for ESP32-driven LED strips.
+              </p>
             </div>
             <div class="arch-card">
               <span class="arch-tag">plugins/discogs</span>
