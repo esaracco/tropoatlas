@@ -34,6 +34,12 @@ const GridList = React.forwardRef(({ style, ...props }, ref) => (
 ))
 GridList.displayName = "GridList"
 
+const GRID_COMPONENTS = {
+  Header: () => <div style={{ height: "8px", width: "100%" }} />,
+  Footer: () => <div style={{ height: "8px", width: "100%" }} />,
+  List: GridList,
+}
+
 // COMPONENT Result
 const Result = () => {
   const { t } = useTranslation()
@@ -339,9 +345,7 @@ const Result = () => {
           }}
           totalCount={result.length}
           overscan={200}
-          components={{
-            List: GridList,
-          }}
+          components={GRID_COMPONENTS}
           itemContent={(index) => {
             const item = result[index]
             return (
