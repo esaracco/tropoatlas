@@ -172,12 +172,30 @@ export default defineConfig(({ mode }) => {
     },
   }
 
+  // Extract default theme surface color from CSS tokens (single source of truth)
+  const themesCssPath = new URL(
+    "../../packages/react/src/themes.css",
+    import.meta.url,
+  )
+  const themesCss = fs.readFileSync(themesCssPath, "utf8")
+  const surfaceMatch = themesCss.match(/--tropo-surface:\s*(#[0-9a-fA-F]{3,8})/)
+  const defaultThemeColor = surfaceMatch ? surfaceMatch[1] : "#111827"
+
+  // Inject default theme surface color into index.html
+  const themeColorPlugin = {
+    name: "theme-color-plugin",
+    transformIndexHtml(html) {
+      return html.replace("%THEME_SURFACE_COLOR%", defaultThemeColor)
+    },
+  }
+
   return {
     define: {
       __APP_VERSION__: JSON.stringify(packageJson.version),
       __APP_HOMEPAGE__: JSON.stringify(packageJson.homepage),
     },
     plugins: [
+      themeColorPlugin,
       imageProxyPlugin,
       apacheConfigPlugin,
       react(),
@@ -221,8 +239,8 @@ export default defineConfig(({ mode }) => {
           start_url: "/",
           id: "/",
           display: "standalone",
-          theme_color: "#0d0f14",
-          background_color: "#0d0f14",
+          theme_color: defaultThemeColor,
+          background_color: defaultThemeColor,
         },
         injectManifest: {
           globPatterns: ["**/*.{js,css,html,ico,png,svg,json}"],

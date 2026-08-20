@@ -13,30 +13,17 @@ const ThemeSelector = ({
     () => localStorage.getItem(storageKey) || themes[0],
   )
 
-  const getThemeColor = (t) => {
-    switch (t) {
-      case "blue":
-        return "#060e1a"
-      case "purple":
-        return "#0a0810"
-      case "green":
-        return "#060d08"
-      case "orange":
-        return "#080808"
-      case "light":
-        return "#f8fafc"
-      default:
-        // dark
-        return "#0d0f14"
-    }
-  }
-
   useEffect(() => {
     document.documentElement.setAttribute("data-theme", theme)
     localStorage.setItem(storageKey, theme)
     const metaThemeColor = document.querySelector('meta[name="theme-color"]')
     if (metaThemeColor) {
-      metaThemeColor.setAttribute("content", getThemeColor(theme))
+      const surfaceColor = getComputedStyle(document.documentElement)
+        .getPropertyValue("--tropo-surface")
+        .trim()
+      if (surfaceColor) {
+        metaThemeColor.setAttribute("content", surfaceColor)
+      }
     }
   }, [theme, storageKey])
 
