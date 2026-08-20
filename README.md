@@ -33,10 +33,10 @@ With TropoDisc you can:
 ## Screenshots
 
 <img width="500" alt="1" src="https://github.com/user-attachments/assets/f74e2c37-86cc-4db1-8281-1e88297f7387" />
-<img width="500" alt="2" src="https://github.com/user-attachments/assets/20c90cfa-9fe7-42bb-8ed5-976bdbb3c674" />
-<img width="500" alt="3" src="https://github.com/user-attachments/assets/2e3d8115-1944-41cc-8d60-087bc2133736" />
-<img width="500" alt="4" src="https://github.com/user-attachments/assets/9d886bd5-dc07-4d00-9261-5bcacb6e159c" />
-<img width="500" alt="5" src="https://github.com/user-attachments/assets/1ffd917e-0104-4b0c-a113-fce5c14630f4" />
+<img width="500" alt="2" src="https://github.com/user-attachments/assets/e73f3c7c-f3e2-4bf5-9ec3-8e0399199a41" />
+<img width="500" alt="3" src="https://github.com/user-attachments/assets/fdee05b8-104e-475e-9bf0-88dcd323b508" />
+<img width="500" alt="4" src="https://github.com/user-attachments/assets/efe24956-5fc0-4763-b929-13fc54ae652c" />
+<img width="500" alt="5" src="https://github.com/user-attachments/assets/acfe0993-05a6-43a4-a836-ea52aad920b8" />
 
 ## Backup & Complete Collection Export / Restore
 
