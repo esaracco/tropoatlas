@@ -7,7 +7,14 @@ import { faClose, faSearch } from "@fortawesome/free-solid-svg-icons"
 import "./Search.css"
 
 // COMPONENT Search
-const Search = ({ placeholder, searchStr, setSearchStr, inputRef }) => {
+const Search = ({
+  placeholder,
+  searchStr,
+  setSearchStr,
+  inputRef,
+  onEscape,
+  onKeyDown,
+}) => {
   // METHOD onChange()
   const onChange = (e) => setSearchStr(e.target.value)
 
@@ -23,6 +30,24 @@ const Search = ({ placeholder, searchStr, setSearchStr, inputRef }) => {
     }
   }
 
+  // Handle Escape key: clear search if populated, otherwise trigger onEscape
+  const handleKeyDown = (e) => {
+    if (e.key === "Escape") {
+      if (searchStr !== "") {
+        e.preventDefault()
+        e.stopPropagation()
+        setSearchStr("")
+      } else if (onEscape) {
+        e.preventDefault()
+        e.stopPropagation()
+        onEscape(e)
+      }
+    }
+    if (onKeyDown) {
+      onKeyDown(e)
+    }
+  }
+
   // RENDER
   return (
     <div className="Search">
@@ -32,6 +57,7 @@ const Search = ({ placeholder, searchStr, setSearchStr, inputRef }) => {
           ref={inputRef}
           type="text"
           onChange={onChange}
+          onKeyDown={handleKeyDown}
           value={searchStr}
           placeholder={placeholder}
         />

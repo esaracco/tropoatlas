@@ -55,6 +55,33 @@ const Header = () => {
     }
   }
 
+  // Handle global Escape key to close search bar when input is not focused
+  useEffect(() => {
+    if (!showSearch) return
+
+    const handleKeyDown = (e) => {
+      if (e.key !== "Escape") return
+
+      // Let open modals/drawers handle Escape without closing search underneath
+      const hasOpenOverlay = Boolean(
+        document.querySelector(
+          ".modal, [role='dialog'], .modal-backdrop, .offcanvas.show, .offcanvas-backdrop",
+        ),
+      )
+      if (hasOpenOverlay) return
+
+      // Skip if search input is focused (handled by Search component)
+      if (document.activeElement === searchInputRef.current) return
+
+      e.preventDefault()
+      e.stopPropagation()
+      toggleSearch()
+    }
+
+    window.addEventListener("keydown", handleKeyDown, true)
+    return () => window.removeEventListener("keydown", handleKeyDown, true)
+  }, [showSearch])
+
   const customFields = getItem("customFieldsInfo") || {}
 
   const allCategories = Array.from(
@@ -136,6 +163,7 @@ const Header = () => {
                 inputRef={searchInputRef}
                 searchStr={searchStr}
                 setSearchStr={setSearchStr}
+                onEscape={toggleSearch}
                 placeholder={t("artist, album...")}
               />
             </div>
