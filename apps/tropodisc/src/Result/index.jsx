@@ -70,7 +70,6 @@ const Result = () => {
   // MEMOIZED FILTERING
   const {
     result,
-    places,
     placesStyles,
     placesArtists,
     availableCategories,
@@ -78,8 +77,7 @@ const Result = () => {
     availableFormats,
   } = useMemo(() => {
     const keys = Object.keys(releases)
-    const res = []
-    const places = []
+    const result = []
     const search = normalize(searchStr)
 
     const sStylesLen = selected.categories.length
@@ -148,7 +146,8 @@ const Result = () => {
 
       const hasPlace = _setLeds && r.place && r.place.match(/^\d+$/)
 
-      // Collect available options (an option is available if the release matches ALL OTHER filters)
+      // Collect available options (an option is available if the release
+      // matches ALL OTHER filters)
       if (matchArtist && matchFormat) {
         r.categories.forEach((c) => fCategories.add(c))
       }
@@ -162,10 +161,7 @@ const Result = () => {
       }
 
       if (matchStyle && matchArtist && matchFormat) {
-        if (hasPlace) {
-          places.push(r.place)
-        }
-        res.push(r)
+        result.push(r)
       }
 
       if (hasPlace) {
@@ -182,8 +178,7 @@ const Result = () => {
     }
 
     return {
-      result: res,
-      places,
+      result,
       placesStyles: Array.from(placesStyles),
       placesArtists: Array.from(placesArtists),
       availableCategories: Array.from(fCategories).sort(),
@@ -192,7 +187,6 @@ const Result = () => {
     }
   }, [searchStr, releases, selected, sort])
 
-  const placesStr = places.join(",")
   const placesStylesStr = placesStyles.join(",")
   const placesArtistsStr = placesArtists.join(",")
 
@@ -215,90 +209,80 @@ const Result = () => {
 
   // EFFECT: Handle LEDs
   useEffect(() => {
-    let ledsTimeout
+    if (!_setLeds) return
 
-    if (_setLeds) {
-      // Debounce LED API calls to prevent flooding the IoT server
-      ledsTimeout = setTimeout(async () => {
-        const hasCategories = placesStyles.length > 0
-        const hasCreators = placesArtists.length > 0
-        const activeAlbum = activeInstanceId ? releases[activeInstanceId] : null
-        const hasModal = Boolean(
-          activeInstanceId && activeAlbum && activeAlbum.place,
-        )
+    const manageLeds = async () => {
+      const hasCategories = placesStyles.length > 0
+      const hasCreators = placesArtists.length > 0
+      const activeAlbum = activeInstanceId ? releases[activeInstanceId] : null
+      const hasModal = Boolean(
+        activeInstanceId && activeAlbum && activeAlbum.place,
+      )
 
-        if (hasCategories || hasCreators || hasModal) {
-          turnOffLeds.current = true
-          let hasLit = false
-          const ledCommands = []
+      if (hasCategories || hasCreators || hasModal) {
+        turnOffLeds.current = true
+        let hasLit = false
+        const ledCommands = []
 
-          // 1. Categories (Background / Lowest intensity)
-          if (hasCategories) {
-            ledCommands.push({
-              place: placesStyles,
-              color: Settings.getLedsStylesColor(),
-              intensity: 0.05,
-              noreset: hasLit,
-            })
-            hasLit = true
-          }
+        // 1. Categories (Background / Lowest intensity)
+        if (hasCategories) {
+          ledCommands.push({
+            place: placesStyles,
+            color: Settings.getLedsStylesColor(),
+            intensity: 0.05,
+            noreset: hasLit,
+          })
+          hasLit = true
+        }
 
-          // 2. Creators (Middle layer / Medium intensity)
-          if (hasCreators) {
-            ledCommands.push({
-              place: placesArtists,
-              color: Settings.getLedsArtistsColor(),
-              intensity: 0.5,
-              noreset: hasLit,
-            })
-            hasLit = true
-          }
+        // 2. Creators (Middle layer / Medium intensity)
+        if (hasCreators) {
+          ledCommands.push({
+            place: placesArtists,
+            color: Settings.getLedsArtistsColor(),
+            intensity: 0.5,
+            noreset: hasLit,
+          })
+          hasLit = true
+        }
 
-          // 3. Modal (Focus layer / Highest priority / Full intensity)
-          if (hasModal) {
-            ledCommands.push({
-              place: activeAlbum.place,
-              color: Settings.getLedsAlbumColor(),
-              intensity: 0.1,
-              blink: true,
-              noreset: hasLit,
-            })
-            hasLit = true
-          }
+        // 3. Modal (Focus layer / Highest priority / Full intensity)
+        if (hasModal) {
+          ledCommands.push({
+            place: activeAlbum.place,
+            color: Settings.getLedsAlbumColor(),
+            intensity: 0.1,
+            blink: true,
+            noreset: hasLit,
+          })
+          hasLit = true
+        }
 
-          if (ledCommands.length > 0) {
-            try {
-              await ledsClient.setLeds(ledCommands)
-            } catch {
-              // Handled by ledsClient.onError
-            }
-          }
-        } else if (turnOffLeds.current) {
-          turnOffLeds.current = false
-          if (!fromRuler) {
-            try {
-              await ledsClient.setLeds()
-            } catch {
-              // Handled by ledsClient.onError
-            }
-          } else {
-            setFromRuler(false)
+        if (ledCommands.length > 0) {
+          try {
+            await ledsClient.setLeds(ledCommands)
+          } catch {
+            // Handled by ledsClient.onError
           }
         }
-      }, 400) // 400ms debounce
-    }
-
-    return () => {
-      if (ledsTimeout) {
-        clearTimeout(ledsTimeout)
+      } else if (turnOffLeds.current) {
+        turnOffLeds.current = false
+        if (!fromRuler) {
+          try {
+            await ledsClient.setLeds()
+          } catch {
+            // Handled by ledsClient.onError
+          }
+        } else {
+          setFromRuler(false)
+        }
       }
     }
+
+    manageLeds()
   }, [
-    placesStr,
     placesStylesStr,
     placesArtistsStr,
-    selected,
-    searchStr,
     fromRuler,
     setFromRuler,
     activeInstanceId,
