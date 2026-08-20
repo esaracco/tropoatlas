@@ -4,6 +4,8 @@ _TropoAtlas is the successor to TropoDisc. The [TropoDisc repository](https://gi
 
 # TropoDisc
 
+**Tropodisc is a free software music collection manager. Synchronize your albums (Discogs), customize your metadata, and instantly locate your vinyl records and CDs on your shelves using connected LED strips.**
+
 <div align="center"><img src="apps/tropodisc/public/icon-180.png" alt="TropoDisc logo" /></div>
 
 ## Architecture

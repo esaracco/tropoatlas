@@ -72,10 +72,10 @@ const App = () => {
         meta.setAttribute(
           "content",
           t(
-            "Organize your collection, enrich it with your own metadata, and optionally locate albums instantly using LED strips",
+            "Organize your collection, enrich it with your own metadata, and locate albums instantly using LED strips",
           ),
         )
-      document.title = `TropoDisc – ${t("A universal music collection manager")}`
+      document.title = `TropoDisc – ${t("A music collection manager")}`
     }
   }, [t])
 

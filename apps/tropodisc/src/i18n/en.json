@@ -1,3 +1,3 @@
 {
-  "keyAboutMessage": "TropoDisc is a universal music collection manager. Your data is currently synchronized via the <ProviderLink>{{provider}}</ProviderLink> provider."
+  "keyAboutMessage": "TropoDisc is a free and open-source music collection manager. Synchronize your albums (<ProviderLink>{{provider}}</ProviderLink>), customize your metadata, and instantly locate your vinyl records and CDs on your shelves using connected LED strips.."
 }

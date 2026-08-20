@@ -208,12 +208,12 @@ export default defineConfig(({ mode }) => {
           short_name: "TropoDisc",
           name: "TropoDisc – A universal music collection manager",
           description:
-            "Organize your collection, enrich it with your own metadata, and optionally locate albums instantly using LED strips",
+            "Organize your collection, enrich it with your own metadata, and locate albums instantly using LED strips",
           translations: {
             fr: {
               name: "TropoDisc – Un gestionnaire universel de collection musicale",
               description:
-                "Organisez votre collection, enrichissez-la avec vos propres métadonnées et, en option, localisez instantanément vos albums grâce à des bandes LED.",
+                "Organisez votre collection, enrichissez-la avec vos propres métadonnées, et localisez instantanément vos albums grâce à des bandes LED.",
             },
           },
           icons: [
