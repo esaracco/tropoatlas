@@ -13,7 +13,7 @@ import { getProviderInfo } from "../provider"
 const About = () => {
   const showAbout = useAppStore((s) => s.showAbout)
   const setShowAbout = useAppStore((s) => s.setShowAbout)
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
 
   const desc = (
     <Trans
@@ -54,7 +54,7 @@ const About = () => {
             className="mx-auto d-block mb-2"
             alt="Logo"
           />
-          <p>{desc}</p>
+          <p lang={i18n.language}>{desc}</p>
           <div className="d-flex flex-wrap justify-content-center gap-2">
             <a
               href={appHomepage}

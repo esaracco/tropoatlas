@@ -11,7 +11,7 @@ const InfoModal = ({
   closeButton = true,
   ...rest
 }) => {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
 
   // METHOD onHide()
   const onHide = () => setShow(false)
@@ -22,7 +22,9 @@ const InfoModal = ({
       <Modal.Header closeButton={closeButton}>
         <Modal.Title>{title || t("Information")}</Modal.Title>
       </Modal.Header>
-      <Modal.Body className="text-justify">{children}</Modal.Body>
+      <Modal.Body className="text-justify" lang={i18n.language}>
+        {children}
+      </Modal.Body>
       <Modal.Footer>
         <Button onClick={onHide}>{t("Close")}</Button>
       </Modal.Footer>
