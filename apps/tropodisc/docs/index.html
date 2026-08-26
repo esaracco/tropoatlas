@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" class="dark">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -12,7 +12,7 @@
     />
     <meta
       name="description"
-      content="TropoDisc is a free software music collection manager. Synchronize your albums (Discogs), customize your metadata, and instantly locate your vinyl records and CDs on your shelves using connected LED strips."
+      content="TropoDisc is an free software music collection manager. Synchronize your albums (Discogs), customize your metadata, and instantly locate your vinyl records and CDs on your shelves using connected LED strips."
     />
     <meta
       name="keywords"
@@ -44,7 +44,7 @@
     />
     <meta
       property="og:description"
-      content="TropoDisc is a free software music collection manager. Synchronize your albums (Discogs), customize your metadata, and instantly locate your vinyl records and CDs on your shelves using connected LED strips."
+      content="TropoDisc is an free software music collection manager. Synchronize your albums (Discogs), customize your metadata, and instantly locate your vinyl records and CDs on your shelves using connected LED strips."
     />
     <meta property="og:image" content="./icon-512.png" />
     <meta property="og:site_name" content="TropoDisc" />
@@ -61,7 +61,7 @@
     />
     <meta
       name="twitter:description"
-      content="TropoDisc is a free software music collection manager. Synchronize your albums (Discogs), customize your metadata, and instantly locate your vinyl records and CDs on your shelves using connected LED strips."
+      content="TropoDisc is an free software music collection manager. Synchronize your albums (Discogs), customize your metadata, and instantly locate your vinyl records and CDs on your shelves using connected LED strips."
     />
     <meta name="twitter:image" content="./icon-512.png" />
 
@@ -83,7 +83,7 @@
           "price": "0",
           "priceCurrency": "EUR"
         },
-        "description": "TropoDisc is a free software music collection manager. Synchronize your albums (Discogs), customize your metadata, and instantly locate your vinyl records and CDs on your shelves using connected LED strips.",
+        "description": "TropoDisc is an free software music collection manager. Synchronize your albums (Discogs), customize your metadata, and instantly locate your vinyl records and CDs on your shelves using connected LED strips.",
         "license": "https://www.gnu.org/licenses/gpl-3.0.html",
         "image": "https://tropodisc.esaracco.fr/icon-512.png"
       }
@@ -101,8 +101,8 @@
             src="./icon-180.png"
             alt="TropoDisc Logo"
             class="brand-logo"
-            width="42"
-            height="42"
+            width="32"
+            height="32"
           />
           <span>Tropo<span class="brand-text-disc">Disc</span></span>
         </a>
@@ -110,6 +110,9 @@
         <ul class="nav-links">
           <li>
             <a href="#features" class="nav-link" id="nav-features">Features</a>
+          </li>
+          <li>
+            <a href="#leds" class="nav-link" id="nav-leds">LED Locator</a>
           </li>
           <li>
             <a href="#architecture" class="nav-link" id="nav-architecture"
@@ -139,11 +142,6 @@
             class="btn btn-secondary"
             id="btn-github-nav"
           >
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-              <path
-                d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"
-              />
-            </svg>
             GitHub
           </a>
         </div>
@@ -154,15 +152,15 @@
     <header class="hero" id="top">
       <div class="container">
         <h1 class="hero-title">
-          The ideal bridge between your
+          The bridge between your
           <span class="brand-text-disc">digital and physical</span> collection
         </h1>
 
         <p class="hero-subtitle">
-          Tropo<span class="brand-text-disc">Disc</span> is a free software
-          music collection manager. Synchronize your albums (Discogs), customize
-          your metadata, and easily locate your records on your shelf with
-          connected LED strips.
+          Tropo<span class="brand-text-disc">Disc</span> is an free software
+          music collection manager. Synchronize your albums from Discogs, enrich
+          them with custom metadata, and locate your records on physical shelves
+          with connected LED strips.
         </p>
 
         <div class="hero-cta">
@@ -170,45 +168,8 @@
             >Deploy TropoDisc</a
           >
           <a href="#leds" class="btn btn-secondary" id="btn-hero-leds"
-            >Explore LED Locator 💡</a
+            >Explore LED Locator</a
           >
-        </div>
-
-        <!-- Hero Showcase Box -->
-        <div class="hero-showcase">
-          <div class="showcase-header">
-            <div class="dot dot-red"></div>
-            <div class="dot dot-yellow"></div>
-            <div class="dot dot-green"></div>
-            <span class="showcase-title"
-              >tropodisc.local — collection view</span
-            >
-          </div>
-          <div class="showcase-body">
-            <div class="showcase-info">
-              <h3>Universal & Decoupled Management</h3>
-              <p>
-                Tropo<span class="brand-text-disc">Disc</span> is 100%
-                independent from any single provider. Thanks to its plugin
-                architecture, connect Discogs or your own data source with
-                complete security.
-              </p>
-              <div class="showcase-tags">
-                <span class="arch-tag">⚡ Vite + React 18</span>
-                <span class="arch-tag">🐻 Zustand State</span>
-                <span class="arch-tag">🔒 Secure API Client</span>
-              </div>
-            </div>
-            <div class="showcase-media">
-              <img
-                src="./icon-512.png"
-                alt="TropoDisc App Preview"
-                class="showcase-img"
-                width="220"
-                height="220"
-              />
-            </div>
-          </div>
         </div>
       </div>
     </header>
@@ -219,23 +180,17 @@
       <section class="section" id="features">
         <div class="container">
           <div class="section-header">
-            <span class="section-tag"
-              >Why Tropo<span class="brand-text-disc">Disc</span>?</span
-            >
-            <h2 class="section-title">
-              A reimagined experience for
-              <span class="brand-text-disc">music lovers</span>
-            </h2>
+            <span class="section-tag">Features</span>
+            <h2 class="section-title">Designed for serious music collectors</h2>
             <p class="section-description">
-              Stop wasting time searching for a vinyl or CD among hundreds of
-              references.
+              A responsive, modular manager built for large vinyl and CD
+              collections.
             </p>
           </div>
 
           <div class="features-grid">
             <article class="feature-card" id="card-search">
-              <div class="feature-icon">🔎</div>
-              <h3 class="feature-title">Instant Search & Sorting</h3>
+              <h3 class="feature-title">Instant Search & Filter</h3>
               <p class="feature-desc">
                 Filter and sort your collection in real-time by artist, year,
                 date added, rating, or physical shelf location.
@@ -243,56 +198,41 @@
             </article>
 
             <article class="feature-card" id="card-metadata">
-              <div class="feature-icon">🏷️</div>
               <h3 class="feature-title">Custom Metadata</h3>
               <p class="feature-desc">
-                Enrich your album entries with custom fields: location, purchase
-                price, and your own tagged styles.
+                Enrich album entries with custom fields: exact shelf position,
+                purchase price and simplified styles.
               </p>
             </article>
 
             <article class="feature-card" id="card-led">
-              <div class="feature-icon">💡</div>
               <h3 class="feature-title">Physical LED Locator</h3>
               <p class="feature-desc">
-                Quickly locate your albums: select a record on screen and its
-                location lights up on your shelf!
+                Select an album, styles, or artists on the screen, and the corresponding slots on your shelf light up thanks to LED strips.
               </p>
             </article>
 
             <article class="feature-card" id="card-security">
-              <div class="feature-icon">🔒</div>
               <h3 class="feature-title">Security & API Proxy</h3>
               <p class="feature-desc">
-                Secure proxy architecture (Apache/Nginx Docker). Your secret API
-                tokens are never exposed on the browser side.
+                Proxy architecture with Apache/Nginx. Personal API tokens and
+                credentials are never exposed to client browsers.
               </p>
             </article>
 
             <article class="feature-card" id="card-monorepo">
-              <div class="feature-icon">📦</div>
-              <h3 class="feature-title">Monorepo Architecture</h3>
+              <h3 class="feature-title">Decoupled Architecture</h3>
               <p class="feature-desc">
-                Modular monorepo architecture divided into reusable packages and
-                data plugins.
+                A clean NPM workspace monorepo separating UI components, state
+                management, hardware drivers, and data plugins.
               </p>
             </article>
 
             <article class="feature-card" id="card-backup">
-              <div class="feature-icon">💾</div>
-              <h3 class="feature-title">ZIP Backup & Restore</h3>
+              <h3 class="feature-title">Portable Backups</h3>
               <p class="feature-desc">
-                Export and restore complete collection backups with metadata and
-                cover artwork into portable ZIP archives.
-              </p>
-            </article>
-
-            <article class="feature-card" id="card-responsive">
-              <div class="feature-icon">📱</div>
-              <h3 class="feature-title">Smooth & Responsive Interface</h3>
-              <p class="feature-desc">
-                Dynamic virtual grid optimized for large collections with
-                thousands of records.
+                Export and restore full collection archives with metadata and
+                cover artwork in portable ZIP packages.
               </p>
             </article>
           </div>
@@ -304,30 +244,23 @@
         <div class="container">
           <div class="led-section">
             <div>
-              <span class="section-tag section-tag-led"
-                >IoT & ESP32 Technology</span
-              >
+              <span class="section-tag">IoT Hardware</span>
               <h2 class="section-title">
                 Find your records in the blink of an eye
               </h2>
-              <p class="led-description">
-                Simply set the location of your albums: Tropo<span
+              <p class="section-description">
+                Let Tropo<span
                   class="brand-text-disc"
                   >Disc</span
                 >
-                takes care of controlling the LED strips on your shelves.
+                control the LED strips of your shelves!
               </p>
               <ul class="led-list">
                 <li class="led-list-item">
-                  ✨ <b>Immediate visual indication</b> when searching or
-                  selecting an album
+Immediate visual indication of the selected album, filtered styles, or filtered artists.
                 </li>
                 <li class="led-list-item">
-                  🎨 <b>Customizable colors</b> for musical styles, artists, and
-                  albums
-                </li>
-                <li class="led-list-item">
-                  🔌 <b>Direct HTTP integration</b> with ESP32-driven LED strips
+                  Direct HTTP integration with lightweight ESP32 firmware.
                 </li>
               </ul>
             </div>
@@ -335,7 +268,8 @@
             <!-- Interactive LED simulation -->
             <div class="shelf-demo">
               <div class="shelf-header">
-                <span class="shelf-led-active">Active LED #310 and #314</span>
+                <span>Shelf</span>
+                <span class="shelf-led-active">Active LED: 310, 314</span>
               </div>
               <div class="shelf-row">
                 <div class="shelf-col">
@@ -394,9 +328,7 @@
                   <div class="led-bulb"></div>
                 </div>
               </div>
-              <p class="shelf-caption">
-                LED illumination simulator at selected location
-              </p>
+              <p class="shelf-caption">LED-based location simulation</p>
             </div>
           </div>
         </div>
@@ -406,40 +338,39 @@
       <section class="section" id="architecture">
         <div class="container">
           <div class="section-header">
-            <span class="section-tag">Monorepo Structure</span>
-            <h2 class="section-title">A modular & decoupled architecture</h2>
+            <span class="section-tag">Monorepo Packages</span>
+            <h2 class="section-title">Clean & decoupled structure</h2>
             <p class="section-description">
-              Built with modern Web standards (NPM Workspaces, Vite, Vitest).
+              Modular components organized as independent NPM packages and data
+              plugins.
             </p>
           </div>
 
           <div class="arch-cards">
             <div class="arch-card">
               <span class="arch-tag">apps/tropodisc</span>
-              <h4>React Application</h4>
-              <p>Main application: music collection manager.</p>
+              <h3>React Application</h3>
+              <p>Primary client application for collection browsing.</p>
             </div>
             <div class="arch-card">
               <span class="arch-tag">packages/core</span>
-              <h4>@tropo/core</h4>
-              <p>
-                Global Zustand state management, normalization and utilities.
-              </p>
+              <h3>@tropo/core</h3>
+              <p>State management with Zustand, caching, and normalizers.</p>
             </div>
             <div class="arch-card">
               <span class="arch-tag">packages/react</span>
-              <h4>@tropo/react</h4>
-              <p>Generic and reusable UI components.</p>
+              <h3>@tropo/react</h3>
+              <p>Reusable UI components.</p>
             </div>
             <div class="arch-card">
               <span class="arch-tag">packages/leds</span>
-              <h4>@tropo/leds</h4>
-              <p>Standalone HTTP client for ESP32-driven LED strips.</p>
+              <h3>@tropo/leds</h3>
+              <p>HTTP client for LED strip hardware communication.</p>
             </div>
             <div class="arch-card">
               <span class="arch-tag">plugins/discogs</span>
-              <h4>@tropo/discogs</h4>
-              <p>Discogs API integration plugin and its custom fields.</p>
+              <h3>@tropo/discogs</h3>
+              <p>Discogs API integration plugin.</p>
             </div>
           </div>
         </div>
@@ -450,21 +381,21 @@
         <div class="container">
           <div class="section-header">
             <span class="section-tag">Deployment</span>
-            <h2 class="section-title">Ready to install in minutes</h2>
+            <h2 class="section-title">Quick Start</h2>
             <p class="section-description">
-              Install Tropo<span class="brand-text-disc">Disc</span> locally or
-              deploy it to your server via Docker or Apache.
+              Run Tropo<span class="brand-text-disc">Disc</span> locally or
+              deploy via Docker.
             </p>
           </div>
 
           <div class="code-box">
             <div class="code-header">
-              <span>Quick start in development</span>
+              <span>Local development setup</span>
               <span>Bash</span>
             </div>
             <div class="code-content">
               <span class="code-comment"
-                ># 1. Clone repository and install monorepo dependencies</span
+                ># 1. Clone repository and install dependencies</span
               ><br />
               git clone https://github.com/esaracco/tropoatlas.git<br />
               cd tropoatlas<br />

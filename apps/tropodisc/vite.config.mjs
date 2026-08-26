@@ -182,8 +182,7 @@ export default defineConfig(({ mode }) => {
   const defaultThemeColor = surfaceMatch ? surfaceMatch[1] : "#111827"
 
   const themeColors = {}
-  const themeBlockRegex =
-    /(?:\[data-theme="([^"]+)"\]|:root)[^{]*\{([^}]+)\}/g
+  const themeBlockRegex = /(?:\[data-theme="([^"]+)"\]|:root)[^{]*\{([^}]+)\}/g
   let blockMatch
   while ((blockMatch = themeBlockRegex.exec(themesCss)) !== null) {
     const themeName = blockMatch[1] || "dark"
