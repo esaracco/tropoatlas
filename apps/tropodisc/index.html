@@ -23,10 +23,13 @@
     <title>TropoDisc – A universal music collection manager</title>
     <script>
       try {
-        document.documentElement.setAttribute(
-          "data-theme",
-          localStorage.getItem("tropodisc-theme") || "dark",
-        )
+        var theme = localStorage.getItem("tropodisc-theme") || "dark"
+        document.documentElement.setAttribute("data-theme", theme)
+        var themeColors = %THEME_COLORS_MAP%
+        var metaThemeColor = document.querySelector('meta[name="theme-color"]')
+        if (metaThemeColor && themeColors[theme]) {
+          metaThemeColor.setAttribute("content", themeColors[theme])
+        }
       } catch (e) {}
     </script>
   </head>

@@ -172,20 +172,36 @@ export default defineConfig(({ mode }) => {
     },
   }
 
-  // Extract default theme surface color from CSS tokens (single source of truth)
+  // Extract theme surface colors from CSS tokens (single source of truth)
   const themesCssPath = new URL(
     "../../packages/react/src/themes.css",
     import.meta.url,
   )
   const themesCss = fs.readFileSync(themesCssPath, "utf8")
-  const surfaceMatch = themesCss.match(/--tropo-surface:\s*(#[0-9a-fA-F]{3,8})/)
+  const surfaceMatch = themesCss.match(/--tropo-surface:\s*(#[0-9a-f]{3,8})/i)
   const defaultThemeColor = surfaceMatch ? surfaceMatch[1] : "#111827"
 
-  // Inject default theme surface color into index.html
+  const themeColors = {}
+  const themeBlockRegex =
+    /(?:\[data-theme="([^"]+)"\]|:root)[^{]*\{([^}]+)\}/g
+  let blockMatch
+  while ((blockMatch = themeBlockRegex.exec(themesCss)) !== null) {
+    const themeName = blockMatch[1] || "dark"
+    const colorMatch = blockMatch[2].match(
+      /--tropo-surface:\s*(#[0-9a-f]{3,8})/i,
+    )
+    if (colorMatch) {
+      themeColors[themeName] = colorMatch[1]
+    }
+  }
+
+  // Inject theme surface colors into index.html
   const themeColorPlugin = {
     name: "theme-color-plugin",
     transformIndexHtml(html) {
-      return html.replace("%THEME_SURFACE_COLOR%", defaultThemeColor)
+      return html
+        .replace("%THEME_SURFACE_COLOR%", defaultThemeColor)
+        .replace("%THEME_COLORS_MAP%", JSON.stringify(themeColors))
     },
   }
 
