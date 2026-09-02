@@ -6,8 +6,6 @@
 
 > _Note: TropoMusic (the music collection application within this ecosystem) is the direct successor to the original [TropoDisc repository](https://github.com/esaracco/tropodisc), which has been archived and remains available for historical reference._
 
-<div align="center"><img src="apps/tropomusic/public/icon-180.png" alt="TropoAtlas logo" /></div>
-
 ---
 
 ## Applications Suite
@@ -39,17 +37,6 @@ tropoatlas/
 └── firmware/
     └── led-controller/      # ESP32-S3 Mini firmware for WS2812B addressable LED shelves
 ```
-
----
-
-## TropoMusic Screenshots
-
-<img width="500" alt="1" src="https://github.com/user-attachments/assets/4e72ed74-d19e-4c26-9747-c1493bd2922f" />
-<img width="500" alt="2" src="https://github.com/user-attachments/assets/9cd1bbe9-da27-42a2-b0be-f8187db370ea" />
-<img width="500" alt="3" src="https://github.com/user-attachments/assets/8f6ef975-7895-4317-aa44-f66397b7d29f" />
-<img width="500" alt="4" src="https://github.com/user-attachments/assets/804d0a05-7b21-459a-a8c5-ca349fb6b7b1" />
-<img width="500" alt="5" src="https://github.com/user-attachments/assets/45e2bc97-e3ed-4d43-833f-5647a01668a5" />
-
 
 ---
 
