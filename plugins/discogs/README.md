@@ -2,7 +2,7 @@
 
 The official Discogs Data Provider plugin for TropoAtlas.
 
-It implements the generic `CollectionProvider` interface expected by TropoDisc, handling:
+It implements the generic `CollectionProvider` interface expected by TropoMusic, handling:
 
 - Discogs API authentication and proxying
 - Data fetching with pagination

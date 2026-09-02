@@ -1,7 +1,7 @@
 {
-  "keyAboutMessage": "TropoDisc est un gestionnaire de collection musicale sous licence libre. Synchronisez vos albums (<ProviderLink>{{provider}}</ProviderLink>), personnalisez vos métadonnées et localisez instantanément vos vinyles et CDs sur vos étagères grâce à des rubans LED connectés.",
+  "keyAboutMessage": "TropoMusic est un gestionnaire de collection musicale sous licence libre. Synchronisez vos albums (<ProviderLink>{{provider}}</ProviderLink>), personnalisez vos métadonnées et localisez instantanément vos vinyles et CDs sur vos étagères grâce à des rubans LED connectés.",
   "About": "À propos",
-  "About TropoDisc v{{version}}": "À propos de TropoDisc v{{version}}",
+  "About TropoMusic v{{version}}": "À propos de TropoMusic v{{version}}",
   "A music collection manager": "Un gestionnaire de collection musicale",
   "An error occurred while using the {{provider}} API!": "Une erreur est survenue durant l'utilisation de l'API de {{provider}}",
   "albums": "albums",

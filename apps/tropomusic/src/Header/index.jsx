@@ -183,7 +183,12 @@ const Header = () => {
               style={{ cursor: "pointer" }}
               onClick={() => setShowAbout(true)}
             >
-              <img src="/icon-180.png" height="36" width="36" alt="TropoDisc" />
+              <img
+                src="/icon-180.png"
+                height="36"
+                width="36"
+                alt="TropoMusic"
+              />
             </Navbar.Brand>
             <Navbar.Toggle
               className="flex-shrink-0 me-2"

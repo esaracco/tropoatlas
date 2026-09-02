@@ -40,7 +40,7 @@ const About = () => {
   return (
     <>
       <InfoModal
-        title={t("About TropoDisc v{{version}}", {
+        title={t("About TropoMusic v{{version}}", {
           version: appVersion,
         })}
         show={showAbout}

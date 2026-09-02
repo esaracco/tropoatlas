@@ -1,7 +1,7 @@
 # TropoAtlas Data Providers
 
 This folder contains the plugins that act as data providers for TropoAtlas applications.
-TropoAtlas is decoupled from any specific music database (like Discogs). The `tropodisc` app interacts with the user's collection through a unified interface.
+TropoAtlas is decoupled from any specific music database (like Discogs). The `tropomusic` app interacts with the user's collection through a unified interface.
 
 ## Creating a new Provider Plugin
 
@@ -50,4 +50,4 @@ export class DummyPlugin extends BasePlugin {
 
 ### Integration
 
-Once your plugin is ready, it is dynamically instantiated in `apps/tropodisc/src/provider/index.js` based on the `VITE_DATA_PROVIDER` environment variable.
+Once your plugin is ready, it is dynamically instantiated in `apps/tropomusic/src/provider/index.js` based on the `VITE_DATA_PROVIDER` environment variable.

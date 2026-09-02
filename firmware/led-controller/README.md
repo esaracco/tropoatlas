@@ -2,7 +2,7 @@
 
 Firmware for the **ESP32-S3 Mini** used by **TropoAtlas** to control addressable LED strips.
 
-Once flashed, the board connects to your Wi-Fi network and exposes a simple HTTP API on port **80**. The TropoDisc web application (in TropoAtlas) uses this API to illuminate the LEDs corresponding to the physical location of an album in your collection.
+Once flashed, the board connects to your Wi-Fi network and exposes a simple HTTP API on port **80**. The TropoMusic web application (in TropoAtlas) uses this API to illuminate the LEDs corresponding to the physical location of an album in your collection.
 
 ---
 
@@ -118,7 +118,7 @@ GET /ruler?reset=1
 ## Example workflow
 
 ```
-TropoDisc
+TropoMusic
       │
       │ HTTP
       ▼

@@ -7,27 +7,27 @@ This file defines the rules and conventions that the AI agent must follow when w
 - **Comments Language**: All code comments and documentation within the codebase MUST be written in **English**.
 - **Comment Placement**: Do NOT place comments at the end of a line of code (inline comments). Always place comments on the line(s) directly ABOVE the code they describe.
 - **Comment Line Length**: Code comments MUST NOT exceed 80 characters per line (including leading indentation and comment prefixes like `//`). Break long comments into multiple single-line comments directly above the code.
-- **Commit Messages**: All git commit messages MUST be written in **English** (using Conventional Commits format). Use precise component/subsystem scopes (e.g., `header`, `navbar`, `search`, `leds`, `settings`, `agents`) rather than generic app scopes like `tropodisc`.
+- **Commit Messages**: All git commit messages MUST be written in **English** (using Conventional Commits format). Use precise component/subsystem scopes (e.g., `header`, `navbar`, `search`, `leds`, `settings`, `agents`) rather than generic app scopes like `tropomusic`.
 - **Package Manager**: Use `npm`. Do not use `yarn`, `pnpm`, or `bun`.
 - **Workspaces**: This is an npm workspace monorepo.
-  - `apps/*`: Main applications (e.g., `tropodisc`).
+  - `apps/*`: Main applications (e.g., `tropomusic`).
   - `packages/*`: Shared libraries and components (e.g., `core`, `react`, `leds`).
   - `plugins/*`: Plugins (e.g., `discogs`).
 - **Rule Abstraction**: Do NOT hardcode specific numeric raw values (e.g. pixel widths, arbitrary z-indices) in rule or documentation files. Document abstract design principles, responsive layout intentions, and architectural invariants instead. Exact numbers belong in code tokens and constants.
 - **Code Sobriety & Single Access Path**: Avoid speculative code bloat for non-existent future requirements (KISS/YAGNI). Every class, utility method, or constant MUST have a single canonical export and access path. Avoid creating duplicate top-level function wrappers or redundant aliases for methods and constants that belong to a class or module.
 
 ## Architecture & Data Providers
-- **Decoupling**: TropoAtlas uses a generic, plugin-based architecture. The main application (`apps/tropodisc`) MUST remain completely agnostic and MUST NOT contain code specific to a data provider (like Discogs).
+- **Decoupling**: TropoAtlas uses a generic, plugin-based architecture. The main application (`apps/tropomusic`) MUST remain completely agnostic and MUST NOT contain code specific to a data provider (like Discogs).
 - **Plugins**: Data fetching and API logic MUST be encapsulated in a plugin inside the `plugins/` directory (e.g., `plugins/discogs`).
 - **Configuration**: The application selects the active provider via the `VITE_DATA_PROVIDER` environment variable. Plugin-specific variables (like `VITE_DISCOGS_USER`) must only be parsed and validated by their respective plugin.
 - **Feature Ignorance**: Plugins MUST remain completely ignorant of app-level features (e.g., IoT LEDs). Any validation logic combining app settings (like `VITE_SET_LEDS`) with provider capabilities MUST be handled by the main application.
 - **Terminology**: Use generic terms in the main application state and logic (e.g., `creator`, `categories`) rather than provider-specific terms (e.g., `artist`, `styles`).
 - **Development Mode Image Isolation**: In development mode (`devMode`), data provider plugins MUST NOT assign or fetch remote cover artwork URLs. This prevents API/CDN rate-limit exhaustion and unnecessary network traffic during local development.
 
-## Presentation Site (`apps/tropodisc/docs/`)
-- **Location**: Static presentation site files are located in `apps/tropodisc/docs/` (`index.html` for English, `index-fr.html` for French).
+## Presentation Site (`apps/tropomusic/docs/`)
+- **Location**: Static presentation site files are located in `apps/tropomusic/docs/` (`index.html` for English, `index-fr.html` for French).
 - **Bilingual Parity**: Any content or structure updates to the presentation site MUST be applied to both language versions (`index.html` and `index-fr.html`) to maintain 1-to-1 parity.
-- **Styles**: All CSS styles MUST be placed in `apps/tropodisc/docs/index.css`. Do NOT use inline `style="..."` attributes.
+- **Styles**: All CSS styles MUST be placed in `apps/tropomusic/docs/index.css`. Do NOT use inline `style="..."` attributes.
 - **Zero External Dependencies**: Pages MUST be 100% self-contained and MUST NOT make external network requests (use native system font stacks instead of third-party font services).
 
 ## LEDs Behavior
