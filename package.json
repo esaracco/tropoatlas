@@ -6,7 +6,7 @@
   "workspaces": [
     "apps/*",
     "packages/*",
-    "plugins/*"
+    "plugins/*/*"
   ],
   "author": "Emmanuel Saracco",
   "license": "GPL-3.0-or-later",

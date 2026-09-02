@@ -1,11 +1,16 @@
 # TropoAtlas Data Providers
 
 This folder contains the plugins that act as data providers for TropoAtlas applications.
-TropoAtlas is decoupled from any specific music database (like Discogs). The `tropomusic` app interacts with the user's collection through a unified interface.
+TropoAtlas is decoupled from any specific media database (like Discogs or TMDB). Applications interact with the user's collection through a unified interface.
+
+Plugins are categorized by media domain:
+- `plugins/music/*`: Music providers (e.g. `plugins/music/discogs`)
+- `plugins/film/*`: Film and TV providers (e.g. `plugins/film/tmdb`)
+- `plugins/book/*`: Book and comic providers (e.g. `plugins/book/openlibrary`)
 
 ## Creating a new Provider Plugin
 
-To create a new provider (e.g., `musicbrainz`), you must create a new package inside this `plugins/` directory that exports a class extending `BasePlugin` (from `@tropo/core`).
+To create a new provider (e.g., `musicbrainz`), you must create a new package inside the corresponding domain directory (`plugins/<domain>/<provider>`) that exports a class extending `BasePlugin` (from `@tropo/core`).
 
 ### Implementing the BasePlugin Interface
 

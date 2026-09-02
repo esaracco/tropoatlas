@@ -5,7 +5,7 @@ export default defineConfig({
     projects: [
       'apps/*',
       'packages/*',
-      'plugins/*'
+      'plugins/*/*'
     ]
   }
 });
