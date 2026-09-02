@@ -44,11 +44,12 @@ tropoatlas/
 
 ## TropoMusic Screenshots
 
-<img width="500" alt="1" src="https://github.com/user-attachments/assets/f74e2c37-86cc-4db1-8281-1e88297f7387" />
-<img width="500" alt="2" src="https://github.com/user-attachments/assets/e73f3c7c-f3e2-4bf5-9ec3-8e0399199a41" />
-<img width="500" alt="3" src="https://github.com/user-attachments/assets/fdee05b8-104e-475e-9bf0-88dcd323b508" />
-<img width="500" alt="4" src="https://github.com/user-attachments/assets/efe24956-5fc0-4763-b929-13fc54ae652c" />
-<img width="500" alt="5" src="https://github.com/user-attachments/assets/acfe0993-05a6-43a4-a836-ea52aad920b8" />
+<img width="500" alt="1" src="https://github.com/user-attachments/assets/4e72ed74-d19e-4c26-9747-c1493bd2922f" />
+<img width="500" alt="2" src="https://github.com/user-attachments/assets/9cd1bbe9-da27-42a2-b0be-f8187db370ea" />
+<img width="500" alt="3" src="https://github.com/user-attachments/assets/8f6ef975-7895-4317-aa44-f66397b7d29f" />
+<img width="500" alt="4" src="https://github.com/user-attachments/assets/804d0a05-7b21-459a-a8c5-ca349fb6b7b1" />
+<img width="500" alt="5" src="https://github.com/user-attachments/assets/45e2bc97-e3ed-4d43-833f-5647a01668a5" />
+
 
 ---
 
