@@ -38,6 +38,7 @@ html {
 
 body {
   overflow-x: hidden;
+  overflow-x: clip;
 }
 
 a {
@@ -76,9 +77,7 @@ p {
   position: sticky;
   top: 0;
   z-index: 100;
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+  background: var(--bg);
   border-bottom: 1px solid var(--border);
   height: 64px;
 }
@@ -276,6 +275,7 @@ p {
     rgba(217, 119, 6, 0) 70%
   );
   filter: blur(40px);
+  will-change: filter;
   z-index: 0;
   pointer-events: none;
 }
@@ -757,6 +757,10 @@ p {
   .hero-showcase {
     margin-top: 2rem;
     max-width: 100%;
+  }
+
+  .hero-showcase::before {
+    display: none;
   }
 
   .gallery-viewport {
