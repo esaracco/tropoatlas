@@ -6,9 +6,10 @@ export const STORAGE_SCHEMA_VERSION = 5
 
 export const SETTINGS_STORE_KEY = "settings-v1"
 
-export const buildCacheKey = (name) => {
+export const buildCacheKey = (...parts) => {
   const appName = import.meta.env.VITE_APP_NAME || "tropoatlas"
-  return name.startsWith(appName) ? name : appName + "-" + name
+  const name = parts.filter(Boolean).join("-")
+  return name.startsWith(appName) ? name : `${appName}-${name}`
 }
 
 export const setLargeItem = async (name, value) => {

@@ -1,0 +1,11 @@
+{
+  "name": "@tropo/tmdb",
+  "version": "1.0.0",
+  "description": "TMDB data provider plugin for TropoCine (a cinema collection manager)",
+  "main": "src/index.js",
+  "type": "module",
+  "dependencies": {
+    "sleep-promise": "^9.1.0",
+    "@tropo/core": "*"
+  }
+}

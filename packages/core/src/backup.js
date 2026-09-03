@@ -45,6 +45,7 @@ const getCachedImageBlob = async (
   coversCache,
   allowNetwork = true,
   throttledFetch = null,
+  getImageProxyUrl = null,
 ) => {
   if (!url) return null
 
@@ -84,14 +85,18 @@ const getCachedImageBlob = async (
   // Fetch via local image proxy if available
   if (isProxyAvailable) {
     try {
-      // Route Discogs CDN artwork URLs through dedicated proxy
-      let proxyUrl
-      if (url.startsWith("/api/")) {
-        proxyUrl = url
-      } else if (url.startsWith("https://i.discogs.com/")) {
-        proxyUrl = `/api/discogs-image/${url.replace("https://i.discogs.com/", "")}`
-      } else {
-        proxyUrl = `/api/proxy-image?url=${encodeURIComponent(url)}`
+      let proxyUrl =
+        typeof getImageProxyUrl === "function" ? getImageProxyUrl(url) : null
+
+      // Fallback for providers that don't pass an explicit resolver
+      if (!proxyUrl || proxyUrl === url) {
+        if (url.startsWith("/api/")) {
+          proxyUrl = url
+        } else if (url.startsWith("https://i.discogs.com/")) {
+          proxyUrl = `/api/discogs-image/${url.replace("https://i.discogs.com/", "")}`
+        } else {
+          proxyUrl = `/api/proxy-image?url=${encodeURIComponent(url)}`
+        }
       }
 
       const doFetch = () => fetch(proxyUrl)
@@ -100,6 +105,15 @@ const getCachedImageBlob = async (
         : await doFetch()
 
       if (response.ok) {
+        // Enforce image content type to reject SPA HTML error fallbacks
+        const contentType = response.headers.get("content-type") || ""
+        if (!contentType.startsWith("image/")) {
+          console.warn(
+            `[backup] Expected image content-type but received "${contentType}" for ${proxyUrl}`,
+          )
+          return null
+        }
+
         const blob = await response.blob()
         if (blob && blob.size > 0) {
           // Cache valid response for subsequent operations
@@ -108,7 +122,7 @@ const getCachedImageBlob = async (
               await coversCache.put(
                 url,
                 new Response(blob, {
-                  headers: { "Content-Type": blob.type || "image/jpeg" },
+                  headers: { "Content-Type": blob.type || contentType },
                 }),
               )
             } catch (e) {
@@ -217,9 +231,12 @@ export const estimateExportBackupDuration = async ({
   }
 
   const totalNetworkCalls = apiCalls + missingCoversCount
+  const requestedLimit = maxRequestsPerMinute || 60
   const effectiveLimit = Math.max(
     1,
-    Math.min(maxRequestsPerMinute || 60, 60) - 5,
+    requestedLimit > 100
+      ? Math.floor(requestedLimit * 0.9)
+      : requestedLimit - 5,
   )
   const effectiveApiLimit = effectiveLimit
   const effectiveImageLimit = effectiveLimit
@@ -293,6 +310,7 @@ export const exportCollectionBackupZIP = async (optionsOrProgress) => {
     enrichMissing = false,
     getItemDetails = null,
     getItemImage = null,
+    getImageProxyUrl = null,
     maxRequestsPerMinute = 60,
     signal = null,
   } = options
@@ -317,9 +335,12 @@ export const exportCollectionBackupZIP = async (optionsOrProgress) => {
   }
 
   // Independent rate limiters for API requests and image proxy downloads
+  const requestedLimit = maxRequestsPerMinute || 60
   const effectiveLimit = Math.max(
     1,
-    Math.min(maxRequestsPerMinute || 60, 60) - 5,
+    requestedLimit > 100
+      ? Math.floor(requestedLimit * 0.9)
+      : requestedLimit - 5,
   )
   const effectiveApiLimit = effectiveLimit
   const effectiveImageLimit = effectiveLimit
@@ -451,6 +472,7 @@ export const exportCollectionBackupZIP = async (optionsOrProgress) => {
             coversCache,
             enrichMissing,
             enrichMissing ? imageThrottler : null,
+            getImageProxyUrl,
           )
 
           if (!isCached && enrichMissing) {

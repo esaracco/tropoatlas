@@ -15,7 +15,7 @@ TropoAtlas provides dedicated, tailored collection managers for different physic
 | Application | Status | Focus / Formats | Documentation |
 | :--- | :--- | :--- | :--- |
 | 🎵 **[TropoAudio](apps/tropoaudio)** | **Active** | Vinyl records, CDs, Cassettes, Discogs sync, audio library LED locator | [apps/tropoaudio/README.md](apps/tropoaudio/README.md) · [Website](https://tropoaudio.esaracco.fr) |
-| 🎬 **TropoCine** (`apps/tropocine`) | *Planned* | DVDs, Blu-Rays, 4K UHD discs, TV series, movie shelves LED locator | — |
+| 🎬 **[TropoCine](apps/tropocine)** | **Active** | Movies, series, TMDB list sync, directors & actors exploration | [apps/tropocine/README.md](apps/tropocine/README.md) · [Website](https://tropocine.esaracco.fr) |
 | 📚 **TropoBiblio** (`apps/tropobiblio`) | *Planned* | Books, comics, mangas, home library shelves LED locator | — |
 
 ---
@@ -27,14 +27,17 @@ TropoAtlas is built on an **NPM Monorepo** architecture separating presentation 
 ```text
 tropoatlas/
 ├── apps/
-│   └── tropoaudio/          # React frontend for audio collections
+│   ├── tropoaudio/          # React frontend for audio collections
+│   └── tropocine/           # React frontend for film collections
 ├── packages/
 │   ├── core/                # Core domain, storage abstraction, backup/export, Zustand state (@tropo/core)
 │   ├── react/               # Shared React components, modal dialogs, design tokens (@tropo/react)
 │   └── leds/                # Standalone HTTP client for ESP32 LED strip controllers (@tropo/leds)
 ├── plugins/
-│   └── audio/
-│       └── discogs/         # Discogs API data provider plugin (@tropo/discogs)
+│   ├── audio/
+│   │   └── discogs/         # Discogs API data provider plugin (@tropo/discogs)
+│   └── cine/
+│       └── tmdb/            # TMDB API data provider plugin (@tropo/tmdb)
 └── firmware/
     └── led-controller/      # ESP32-S3 Mini firmware for WS2812B addressable LED shelves
 ```
@@ -51,19 +54,27 @@ cd tropoatlas
 npm install
 ```
 
-2. Configure your application environment (example for TropoAudio):
+2. Configure your application environment:
 
 ```bash
+# For TropoAudio:
 cp apps/tropoaudio/.env.sample apps/tropoaudio/.env
+
+# Or for TropoCine:
+cp apps/tropocine/.env.sample apps/tropocine/.env
 ```
 
 3. Start the development server:
 
 ```bash
-npm run dev
+# For TropoAudio:
+npm run dev:audio
+
+# Or for TropoCine:
+npm run dev:cine
 ```
 
-Open `http://localhost:3000` in your browser.
+Open `http://localhost:3000` (TropoAudio) or `http://localhost:3001` (TropoCine) in your browser.
 
 ---
 

@@ -1,0 +1,303 @@
+/* ── Offcanvas ────────────────────────────────────────────── */
+@media (max-width: 575.98px) {
+  .header-offcanvas.show,
+  .header-offcanvas.offcanvas-toggling {
+    width: 160px !important;
+  }
+
+  .header-offcanvas.offcanvas-end {
+    background-color: var(--tropo-surface) !important;
+    border-left: 1px solid var(--tropo-border) !important;
+  }
+
+  .header-offcanvas.show .offcanvas-body,
+  .header-offcanvas.offcanvas-toggling .offcanvas-body {
+    padding-top: 8px !important;
+  }
+
+  .header-offcanvas.show .ThemeSelector,
+  .header-offcanvas.offcanvas-toggling .ThemeSelector {
+    justify-content: center;
+    padding: 6px 0;
+  }
+
+  .header-offcanvas .HeaderButton {
+    width: 100%;
+    margin-bottom: 4px;
+  }
+}
+
+@media (min-width: 576px) {
+  .header-offcanvas-sm.offcanvas-toggling {
+    display: none !important;
+  }
+
+  .header-offcanvas-sm {
+    flex-grow: 0 !important;
+  }
+}
+
+/* ── Navbar ───────────────────────────────────────────────── */
+.Header {
+  flex-shrink: 0;
+  position: relative;
+  z-index: 1030;
+}
+
+.navbar.bg-dark {
+  position: relative;
+  z-index: 1040;
+  background-color: var(--tropo-surface) !important;
+  border-bottom: 1px solid var(--tropo-border) !important;
+  height: 53px;
+  min-height: 53px;
+  max-height: 53px;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+  transition: background-color 0.3s;
+}
+
+.navbar.bg-dark > .container-fluid {
+  height: 100%;
+}
+
+@media (max-width: 1000px) {
+  .navbar.bg-dark .HeaderButton,
+  .header-offcanvas .HeaderButton,
+  .search-toggle-btn,
+  .search-close-btn,
+  .navbar-toggler {
+    font-size: 1rem !important;
+    padding: 10px 14px !important;
+    border-radius: 8px !important;
+  }
+}
+
+/* ── Hamburger toggle ─────────────────────────────────────── */
+.navbar-toggler {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 6px !important;
+  border: 1px solid var(--tropo-border) !important;
+  border-radius: 6px;
+  padding: 4px 10px;
+  transition: background 0.2s;
+  position: relative;
+}
+
+.navbar-toggler:hover {
+  background: var(--tropo-accent-subtle) !important;
+}
+
+.navbar-toggler-icon {
+  filter: invert(calc(1 - var(--tropo-invert, 1)));
+}
+
+/* Active-filter dot on hamburger */
+.Header .badge {
+  padding: 0 !important;
+}
+
+.Header .badge .selected-mark {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  background: var(--tropo-dot);
+  height: 6px;
+  width: 6px;
+  border-radius: 50%;
+  border: 1px solid var(--tropo-surface);
+  animation: pulse-dot 2s ease-in-out infinite;
+}
+
+@keyframes pulse-dot {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.3);
+  }
+}
+
+/* ── In-place Navbar Search ───────────────────────────────── */
+.search-toggle-btn {
+  margin-left: 0;
+}
+
+.header-search-container {
+  max-width: 600px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.header-search-container .Search {
+  position: static;
+}
+
+/* ── Options Menu Dropdown ────────────────────────────────── */
+.options-menu-dropdown {
+  position: relative;
+  z-index: 1050;
+}
+
+.options-menu-popover {
+  background-color: var(--tropo-surface-2, #1e293b) !important;
+  border: 1px solid var(--tropo-surface-3, rgba(255, 255, 255, 0.15)) !important;
+  border-radius: 10px;
+  min-width: 190px;
+  max-height: calc(100vh - 65px);
+  max-height: calc(100dvh - 65px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: var(--tropo-surface-3) transparent;
+  z-index: 1060 !important;
+  box-shadow:
+    0 10px 30px -5px rgba(0, 0, 0, 0.5),
+    0 4px 12px -2px rgba(0, 0, 0, 0.3) !important;
+}
+
+[data-theme="light"] .options-menu-popover {
+  background-color: var(--tropo-surface, #ffffff) !important;
+  border-color: rgba(0, 0, 0, 0.14) !important;
+  box-shadow:
+    0 10px 30px -5px rgba(0, 0, 0, 0.15),
+    0 4px 12px -2px rgba(0, 0, 0, 0.08) !important;
+}
+
+.options-menu-popover .dropdown-item {
+  color: var(--tropo-text, inherit) !important;
+  font-size: 0.9rem;
+  transition:
+    background-color 0.2s,
+    color 0.2s;
+  border-radius: 6px;
+  margin: 2px 4px;
+  width: calc(100% - 8px);
+}
+
+.options-menu-popover .dropdown-item:hover,
+.options-menu-popover .dropdown-item:focus {
+  background-color: var(
+    --tropo-accent-subtle,
+    rgba(255, 255, 255, 0.1)
+  ) !important;
+}
+
+.options-menu-popover .dropdown-divider {
+  border-top: 1px solid var(--tropo-surface-3, rgba(255, 255, 255, 0.15)) !important;
+  margin: 6px 0;
+  opacity: 0.8;
+}
+
+[data-theme="light"] .options-menu-popover .dropdown-divider {
+  border-top-color: rgba(0, 0, 0, 0.12) !important;
+}
+
+.options-menu-popover .options-menu-icon {
+  color: var(--tropo-text) !important;
+  opacity: 0.85;
+  width: 16px;
+}
+
+.options-menu-popover .options-menu-theme-label,
+.options-menu-popover .options-menu-language-label {
+  color: var(--tropo-text) !important;
+  font-size: 0.9rem;
+}
+
+/* Transparent Buttons for Options Menu, Search Toggle & Close */
+.options-menu-dropdown .dropdown-toggle,
+.options-menu-dropdown .dropdown-toggle.btn-secondary,
+.search-toggle-btn,
+.search-toggle-btn.btn-secondary,
+.search-close-btn,
+.search-close-btn.btn-secondary {
+  background-color: transparent !important;
+  border-color: transparent !important;
+  color: var(--tropo-text) !important;
+  box-shadow: none !important;
+  transition:
+    background-color 0.2s,
+    color 0.2s;
+}
+
+.options-menu-dropdown .dropdown-toggle:hover,
+.options-menu-dropdown .dropdown-toggle:focus-visible,
+.options-menu-dropdown .dropdown-toggle.show,
+.search-toggle-btn:hover,
+.search-toggle-btn:focus-visible,
+.search-close-btn:hover,
+.search-close-btn:focus-visible {
+  background-color: var(
+    --tropo-accent-subtle,
+    rgba(255, 255, 255, 0.1)
+  ) !important;
+  color: var(--tropo-text) !important;
+}
+
+.options-menu-dropdown .dropdown-toggle:focus:not(:focus-visible),
+.search-toggle-btn:focus:not(:focus-visible),
+.search-close-btn:focus:not(:focus-visible) {
+  background-color: transparent !important;
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+/* Export Modal Estimation & Progress Styling */
+.export-estimation-box {
+  background-color: var(--tropo-surface-2, rgba(255, 255, 255, 0.05));
+  border: 1px solid var(--tropo-border, rgba(255, 255, 255, 0.1));
+  color: var(--tropo-text, #e2e8f0);
+  border-radius: 6px;
+  padding: 0.65rem 0.85rem;
+}
+
+.export-estimation-box .estimation-label {
+  color: var(--tropo-text, #e2e8f0);
+}
+
+.export-estimation-box .estimation-value {
+  color: var(--tropo-accent-hover, var(--tropo-accent, #38bdf8));
+  font-weight: 600;
+}
+
+.export-estimation-box .estimation-icon {
+  color: var(--tropo-accent, #0ea5e9);
+  font-size: 1.1rem;
+}
+
+.export-progress-time {
+  color: var(--tropo-text, #e2e8f0);
+  font-size: 0.95rem;
+}
+
+.export-progress-time .time-value {
+  color: var(--tropo-accent-hover, var(--tropo-accent, #38bdf8));
+  font-weight: 600;
+}
+
+.export-progressbar-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.export-progressbar-wrapper .progress {
+  height: 1.4rem;
+  background-color: var(--tropo-surface-3, rgba(255, 255, 255, 0.1));
+}
+
+.export-progressbar-label {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-weight: 600;
+  font-size: 0.85rem;
+  color: var(--tropo-text, #ffffff);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
+  pointer-events: none;
+  z-index: 2;
+}

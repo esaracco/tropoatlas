@@ -23,7 +23,10 @@ Your plugin class must implement the following methods:
 - **`getItemDetails(item)`**: Fetches additional detailed data (tracklist, full notes, etc.) for a specific item.
 - **`getItemImage(item)`**: Fetches the artwork image `{ cover }` for an item.
 - **`updateItem(item, changes)`**: Updates user-specific data on the remote service (e.g. rating, location/place, price, custom categories).
-- **`getCategories(items)`**: Extracts and sorts all unique categories from the given collection of items.
+- **`getCategories(items)`**: Extracts and sorts all unique categories (genres, styles) from the given collection of items.
+- **`getCreators(items)`**: Extracts and sorts all unique creators (artists, directors, cast members) from the given collection of items.
+- **`getSettingsSchema()`**: Returns a declarative JSON array of field definitions for rendering dynamic settings forms.
+- **`getImageProxyUrl(url)`**: Translates external image URLs into server-proxied endpoints (for CORS compliance during client-side ZIP exports). Defaults to returning the input `url`.
 - **`getMaxRequestsPerMinute()`**: Returns the maximum allowed API requests per minute (defaults to `60` if omitted or higher).
 
 ### Example Plugin Skeleton
@@ -55,4 +58,4 @@ export class DummyPlugin extends BasePlugin {
 
 ### Integration
 
-Once your plugin is ready, it is dynamically instantiated in `apps/tropoaudio/src/provider/index.js` based on the `VITE_DATA_PROVIDER` environment variable.
+Once your plugin is ready, it is dynamically instantiated in `apps/<app>/src/provider/index.js` (e.g. in `apps/tropoaudio` or `apps/tropocine`) based on the `VITE_DATA_PROVIDER` environment variable.

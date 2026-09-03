@@ -1,0 +1,82 @@
+.Album {
+  position: relative;
+  float: left;
+  border-radius: 8px;
+  overflow: hidden;
+  cursor: pointer;
+  background: var(--tropo-item-card);
+  border: 1px solid var(--tropo-border-light);
+  box-sizing: border-box;
+  transition:
+    transform 0.2s ease-out,
+    box-shadow 0.2s ease-out,
+    border-color 0.2s;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .Album:hover {
+    transform: translateY(-4px) scale(1.02);
+    box-shadow: 0 10px 20px -4px rgba(0, 0, 0, 0.5);
+    border-color: var(--tropo-border);
+    z-index: 10;
+  }
+}
+
+.Album .artist {
+  font-size: 0.8em;
+  padding: 8px;
+  font-weight: 500;
+  background: var(--tropo-item-footer);
+  color: var(--tropo-text-muted);
+  border-top: 1px solid var(--tropo-border-light);
+}
+
+.Album .format-badge {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  background: var(--tropo-accent);
+  color: var(--tropo-bg);
+  padding: 2px 6px;
+  border-radius: 12px;
+  font-size: 0.7em;
+  font-weight: 600;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  pointer-events: none;
+  z-index: 2;
+}
+
+.Album.is-loading img {
+  opacity: 0.75;
+  filter: brightness(0.85);
+  transition:
+    opacity 0.2s,
+    filter 0.2s;
+}
+
+.Album .card-loader-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--tropo-accent, #dc3545) 50%,
+    transparent 100%
+  );
+  background-size: 200% 100%;
+  animation: cardShimmer 1.2s infinite linear;
+  z-index: 5;
+  box-shadow: 0 1px 4px var(--tropo-accent, #dc3545);
+}
+
+@keyframes cardShimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}

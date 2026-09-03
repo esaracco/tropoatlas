@@ -93,6 +93,9 @@ export const useSettingsStore = create(
           fieldStyles: import.meta.env.VITE_DISCOGS_FIELD_STYLES || "",
           fieldsRequired: import.meta.env.VITE_DISCOGS_FIELDS_REQUIRED || "",
         },
+        tmdb: {
+          listId: import.meta.env.VITE_TMDB_LIST_ID || "",
+        },
       },
       setGeneral: (updates) =>
         set((state) => ({ general: { ...state.general, ...updates } })),

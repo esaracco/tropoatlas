@@ -69,9 +69,10 @@ export class BasePlugin {
   /**
    * Fetches the entire collection of the user.
    * @param {function} onProgress - Callback to notify progress (0 to 100).
+   * @param {Object} [options={}] - Additional sync options (e.g. { forceRefresh: false }).
    * @returns {Promise<Object>} Map of collection items.
    */
-  async getCollection(onProgress) {
+  async getCollection(onProgress, options = {}) {
     throw new Error("getCollection() must be implemented by the plugin.")
   }
 
@@ -94,6 +95,16 @@ export class BasePlugin {
   }
 
   /**
+   * Return local proxy URL for a remote artwork/image URL to bypass CORS.
+   * Defaults to identity (no transformation).
+   * @param {string} url
+   * @returns {string}
+   */
+  getImageProxyUrl(url) {
+    return url
+  }
+
+  /**
    * Updates user-specific data (custom fields, rating) for an item on the provider.
    * @param {Object} item
    * @param {Object} changes - The fields to update (rating, place, price, categories).
@@ -110,6 +121,19 @@ export class BasePlugin {
    */
   getCategories(items) {
     throw new Error("getCategories() must be implemented by the plugin.")
+  }
+
+  /**
+   * Extracts unique creators/artists/people from a map of items.
+   * @param {Object} items - Map of collection items.
+   * @returns {string[]} Sorted array of creator strings.
+   */
+  getCreators(items = {}) {
+    const set = new Set()
+    for (const item of Object.values(items)) {
+      if (item.creator) set.add(item.creator)
+    }
+    return Array.from(set).sort()
   }
 
   /**

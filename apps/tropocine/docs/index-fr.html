@@ -1,0 +1,908 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Primary SEO Meta Tags -->
+    <title>TropoCine — Gestionnaire Universel de Collection Cinéma</title>
+    <meta
+      name="title"
+      content="TropoCine — Gestionnaire Universel de Collection Cinéma"
+    />
+    <meta
+      name="description"
+      content="TropoCine est un gestionnaire de collection de films sous licence libre. Synchronisez vos films (TMDB), explorez réalisateurs et acteurs, personnalisez vos métadonnées et parcourez votre vidéothèque."
+    />
+    <meta
+      name="keywords"
+      content="TropoCine, TropoAtlas, gestionnaire de films, TMDB, collection cinéma, vidéothèque, liste de films, réalisateurs, acteurs, monorepo React"
+    />
+    <meta name="author" content="Emmanuel Saracco" />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://tropocine.esaracco.fr/index-fr.html" />
+    <link
+      rel="alternate"
+      hreflang="fr"
+      href="https://tropocine.esaracco.fr/index-fr.html"
+    />
+    <link
+      rel="alternate"
+      hreflang="en"
+      href="https://tropocine.esaracco.fr/index.html"
+    />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta
+      property="og:url"
+      content="https://tropocine.esaracco.fr/index-fr.html"
+    />
+    <meta
+      property="og:title"
+      content="TropoCine — Gestionnaire Universel de Collection Cinéma"
+    />
+    <meta
+      property="og:description"
+      content="TropoCine est un gestionnaire de collection de films sous licence libre. Synchronisez vos films (TMDB), explorez réalisateurs et acteurs, personnalisez vos métadonnées et parcourez votre vidéothèque."
+    />
+    <meta property="og:image" content="./icon-512.png" />
+    <meta property="og:site_name" content="TropoCine" />
+
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta
+      name="twitter:url"
+      content="https://tropocine.esaracco.fr/index-fr.html"
+    />
+    <meta
+      name="twitter:title"
+      content="TropoCine — Gestionnaire Universel de Collection Cinéma"
+    />
+    <meta
+      name="twitter:description"
+      content="TropoCine est un gestionnaire de collection de films sous licence libre. Synchronisez vos films (TMDB), explorez réalisateurs et acteurs, personnalisez vos métadonnées et parcourez votre vidéothèque."
+    />
+    <meta name="twitter:image" content="./icon-512.png" />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="./favicon.ico" />
+    <link rel="icon" type="image/png" sizes="180x180" href="./icon-180.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="./icon-180.png" />
+
+    <!-- Structured Data (Schema.org) for SEO -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "TropoCine",
+        "applicationCategory": "MultimediaApplication",
+        "operatingSystem": "Web, Docker, Linux, macOS, Windows",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "EUR"
+        },
+        "description": "TropoCine est un gestionnaire de collection de films sous licence libre. Synchronisez vos films (TMDB), explorez réalisateurs et acteurs, personnalisez vos métadonnées et parcourez votre vidéothèque.",
+        "license": "https://www.gnu.org/licenses/gpl-3.0.html",
+        "image": "https://tropocine.esaracco.fr/icon-512.png"
+      }
+    </script>
+
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="./index.css" />
+  </head>
+  <body>
+    <!-- Navigation Bar -->
+    <nav class="navbar" aria-label="Navigation principale">
+      <div class="container navbar-container">
+        <a href="#top" class="brand" id="nav-brand">
+          <img
+            src="./icon-180.png"
+            alt="TropoCine Logo"
+            class="brand-logo"
+            width="32"
+            height="32"
+          />
+          <span>Tropo<span class="brand-text-cine">Cine</span></span>
+        </a>
+
+        <ul class="nav-links">
+          <li>
+            <a href="#features" class="nav-link" id="nav-features"
+              >Fonctionnalités</a
+            >
+          </li>
+          <li>
+            <a href="#gallery" class="nav-link" id="nav-gallery">Interface</a>
+          </li>
+          <li>
+            <a href="#people" class="nav-link" id="nav-people">Personnes</a>
+          </li>
+          <li>
+            <a href="#architecture" class="nav-link" id="nav-architecture"
+              >Architecture</a
+            >
+          </li>
+          <li>
+            <a href="#quickstart" class="nav-link" id="nav-quickstart"
+              >Démarrage rapide</a
+            >
+          </li>
+        </ul>
+
+        <div class="nav-actions">
+          <a
+            href="./index.html"
+            class="btn btn-secondary"
+            id="lang-switch-en"
+            title="English version"
+          >
+            EN
+          </a>
+          <a
+            href="https://github.com/esaracco/tropoatlas"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="btn btn-secondary"
+            id="btn-github-nav"
+          >
+            GitHub
+          </a>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Header / Hero Section -->
+    <header class="hero" id="top">
+      <div class="container">
+        <h1 class="hero-title">
+          Organisez, explorez et redécouvrez votre
+          <span class="brand-text-cine">collection de films</span>
+        </h1>
+
+        <p class="hero-subtitle">
+          Tropo<span class="brand-text-cine">Cine</span> est un gestionnaire de
+          collection cinématographique sous licence libre. Synchronisez vos
+          films depuis TMDB, explorez réalisateurs et acteurs, et parcourez
+          votre vidéothèque en toute simplicité.
+        </p>
+
+        <div class="hero-cta">
+          <a href="#quickstart" class="btn btn-primary" id="btn-hero-start"
+            >Déployer TropoCine</a
+          >
+          <a href="#features" class="btn btn-secondary" id="btn-hero-features"
+            >Découvrir les fonctionnalités</a
+          >
+        </div>
+
+        <div class="hero-showcase">
+          <div class="mockup-window">
+            <div class="mockup-header">
+              <div class="mockup-dots" aria-hidden="true">
+                <span class="mockup-dot dot-red"></span>
+                <span class="mockup-dot dot-yellow"></span>
+                <span class="mockup-dot dot-green"></span>
+              </div>
+              <div class="mockup-title">TropoCine — Collection</div>
+              <div class="mockup-spacer" aria-hidden="true"></div>
+            </div>
+            <div class="mockup-body">
+              <img
+                src="./img/1.png"
+                alt="Aperçu de l'interface TropoCine"
+                class="mockup-img"
+                width="803"
+                height="1037"
+                loading="eager"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+      <!-- Section Features -->
+      <section class="section" id="features">
+        <div class="container">
+          <div class="section-header">
+            <span class="section-tag">Fonctionnalités</span>
+            <h2 class="section-title">Conçu pour les passionnés de cinéma</h2>
+            <p class="section-description">
+              Un gestionnaire réactif et modulaire adapté aux cinéphiles et aux
+              grandes vidéothèques.
+            </p>
+          </div>
+
+          <div class="features-grid">
+            <article class="feature-card" id="card-search">
+              <h3 class="feature-title">Recherche & Filtres Instantanés</h3>
+              <p class="feature-desc">
+                Filtrez et triez votre collection en temps réel par réalisateur,
+                acteur, genre, année de sortie, note ou date d'ajout.
+              </p>
+            </article>
+
+            <article class="feature-card" id="card-tmdb">
+              <h3 class="feature-title">Synchronisation TMDB</h3>
+              <p class="feature-desc">
+                Synchronisez listes publiques et personnelles depuis The Movie
+                Database avec affiches officielles, arrière-plans, casting et
+                synopsis.
+              </p>
+            </article>
+
+            <article class="feature-card" id="card-people">
+              <h3 class="feature-title">Découverte par Personnes</h3>
+              <p class="feature-desc">
+                Explorez naturellement vos films par réalisateurs et acteurs de
+                la distribution avec étiquettes interactives et recherche
+                croisée.
+              </p>
+            </article>
+
+            <article class="feature-card" id="card-security">
+              <h3 class="feature-title">Sécurité & Proxy d'API</h3>
+              <p class="feature-desc">
+                Architecture reverse proxy avec Apache/Nginx. Les jetons d'accès
+                personnels à l'API TMDB restent protégés côté serveur.
+              </p>
+            </article>
+
+            <article class="feature-card" id="card-monorepo">
+              <h3 class="feature-title">Architecture Découplée</h3>
+              <p class="feature-desc">
+                Un monorepo NPM workspace propre séparant l'interface
+                utilisateur, la gestion d'état, le cache et les plugins de
+                données.
+              </p>
+            </article>
+
+            <article class="feature-card" id="card-backup">
+              <h3 class="feature-title">Sauvegardes Portables</h3>
+              <p class="feature-desc">
+                Exportez et restaurez des archives complètes de votre collection
+                avec métadonnées et affiches dans des fichiers ZIP portables.
+              </p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- Gallery / Screenshots Section -->
+      <section class="section" id="gallery">
+        <div class="container">
+          <div class="section-header">
+            <span class="section-tag">Interface</span>
+            <h2 class="section-title">Explorez l'interface</h2>
+            <p class="section-description">
+              Une interface fluide, tactile et moderne pour mettre votre
+              vidéothèque à portée de main.
+            </p>
+          </div>
+
+          <div class="gallery-layout">
+            <div
+              class="gallery-tabs"
+              role="tablist"
+              aria-label="Captures d'écran"
+            >
+              <button
+                type="button"
+                class="gallery-tab active"
+                role="tab"
+                aria-selected="true"
+                aria-controls="panel-1"
+                id="tab-1"
+                data-target="panel-1"
+              >
+                <div class="tab-index">01</div>
+                <div class="tab-text">
+                  <span class="tab-title">Collection</span>
+                  <span class="tab-desc"
+                    >Navigation en grille virtuelle avec accès rapide à la
+                    recherche, la synchronisation et les thèmes.</span
+                  >
+                </div>
+              </button>
+
+              <button
+                type="button"
+                class="gallery-tab"
+                role="tab"
+                aria-selected="false"
+                aria-controls="panel-2"
+                id="tab-2"
+                data-target="panel-2"
+              >
+                <div class="tab-index">02</div>
+                <div class="tab-text">
+                  <span class="tab-title">Fiche Film</span>
+                  <span class="tab-desc"
+                    >Galerie d'affiches, réalisateur, casting cliquable, genres
+                    et synopsis.</span
+                  >
+                </div>
+              </button>
+
+              <button
+                type="button"
+                class="gallery-tab"
+                role="tab"
+                aria-selected="false"
+                aria-controls="panel-3"
+                id="tab-3"
+                data-target="panel-3"
+              >
+                <div class="tab-index">03</div>
+                <div class="tab-text">
+                  <span class="tab-title">Filtres</span>
+                  <span class="tab-desc"
+                    >Filtrage multicritère instantané par réalisateurs et
+                    acteurs.</span
+                  >
+                </div>
+              </button>
+
+              <button
+                type="button"
+                class="gallery-tab"
+                role="tab"
+                aria-selected="false"
+                aria-controls="panel-4"
+                id="tab-4"
+                data-target="panel-4"
+              >
+                <div class="tab-index">04</div>
+                <div class="tab-text">
+                  <span class="tab-title">Paramètres</span>
+                  <span class="tab-desc">ID liste personnelle TMDB</span>
+                </div>
+              </button>
+
+              <button
+                type="button"
+                class="gallery-tab"
+                role="tab"
+                aria-selected="false"
+                aria-controls="panel-5"
+                id="tab-5"
+                data-target="panel-5"
+              >
+                <div class="tab-index">05</div>
+                <div class="tab-text">
+                  <span class="tab-title">À propos</span>
+                  <span class="tab-desc"
+                    >Informations de version, liens vers le code source et
+                    licence libre.</span
+                  >
+                </div>
+              </button>
+            </div>
+
+            <div class="gallery-viewport">
+              <div
+                class="gallery-panel active"
+                id="panel-1"
+                role="tabpanel"
+                aria-labelledby="tab-1"
+              >
+                <div class="mockup-window">
+                  <div class="mockup-header">
+                    <div class="mockup-dots" aria-hidden="true">
+                      <span class="mockup-dot dot-red"></span>
+                      <span class="mockup-dot dot-yellow"></span>
+                      <span class="mockup-dot dot-green"></span>
+                    </div>
+                    <div class="mockup-title">Collection & Options</div>
+                    <div class="mockup-spacer" aria-hidden="true"></div>
+                  </div>
+                  <div class="mockup-body">
+                    <img
+                      src="./img/1.png"
+                      alt="Collection et menu d'options"
+                      class="mockup-img"
+                      width="803"
+                      height="1037"
+                      loading="lazy"
+                    />
+                  </div>
+                </div>
+                <p class="gallery-caption">
+                  Navigation en grille virtuelle avec accès rapide à la
+                  recherche, la synchronisation et les thèmes.
+                </p>
+              </div>
+
+              <div
+                class="gallery-panel"
+                id="panel-2"
+                role="tabpanel"
+                aria-labelledby="tab-2"
+                hidden
+              >
+                <div class="mockup-window">
+                  <div class="mockup-header">
+                    <div class="mockup-dots" aria-hidden="true">
+                      <span class="mockup-dot dot-red"></span>
+                      <span class="mockup-dot dot-yellow"></span>
+                      <span class="mockup-dot dot-green"></span>
+                    </div>
+                    <div class="mockup-title">Fiche Film</div>
+                    <div class="mockup-spacer" aria-hidden="true"></div>
+                  </div>
+                  <div class="mockup-body">
+                    <img
+                      src="./img/2.png"
+                      alt="Modale de détail du film"
+                      class="mockup-img"
+                      width="803"
+                      height="1037"
+                      loading="lazy"
+                    />
+                  </div>
+                </div>
+                <p class="gallery-caption">
+                  Galerie d'affiches, réalisateur, casting cliquable, genres et
+                  synopsis.
+                </p>
+              </div>
+
+              <div
+                class="gallery-panel"
+                id="panel-3"
+                role="tabpanel"
+                aria-labelledby="tab-3"
+                hidden
+              >
+                <div class="mockup-window">
+                  <div class="mockup-header">
+                    <div class="mockup-dots" aria-hidden="true">
+                      <span class="mockup-dot dot-red"></span>
+                      <span class="mockup-dot dot-yellow"></span>
+                      <span class="mockup-dot dot-green"></span>
+                    </div>
+                    <div class="mockup-title">Filtre Personnes</div>
+                    <div class="mockup-spacer" aria-hidden="true"></div>
+                  </div>
+                  <div class="mockup-body">
+                    <img
+                      src="./img/3.png"
+                      alt="Modale de filtre par personnes"
+                      class="mockup-img"
+                      width="803"
+                      height="1037"
+                      loading="lazy"
+                    />
+                  </div>
+                </div>
+                <p class="gallery-caption">
+                  Filtrage multicritère instantané par réalisateurs et acteurs.
+                </p>
+              </div>
+
+              <div
+                class="gallery-panel"
+                id="panel-4"
+                role="tabpanel"
+                aria-labelledby="tab-4"
+                hidden
+              >
+                <div class="mockup-window">
+                  <div class="mockup-header">
+                    <div class="mockup-dots" aria-hidden="true">
+                      <span class="mockup-dot dot-red"></span>
+                      <span class="mockup-dot dot-yellow"></span>
+                      <span class="mockup-dot dot-green"></span>
+                    </div>
+                    <div class="mockup-title">Filtre Genres</div>
+                    <div class="mockup-spacer" aria-hidden="true"></div>
+                  </div>
+                  <div class="mockup-body">
+                    <img
+                      src="./img/4.png"
+                      alt="Modale de filtre par genres"
+                      class="mockup-img"
+                      width="803"
+                      height="1037"
+                      loading="lazy"
+                    />
+                  </div>
+                </div>
+                <p class="gallery-caption">
+                  Filtrage direct de votre collection par genres
+                  cinématographiques.
+                </p>
+              </div>
+
+              <div
+                class="gallery-panel"
+                id="panel-5"
+                role="tabpanel"
+                aria-labelledby="tab-5"
+                hidden
+              >
+                <div class="mockup-window">
+                  <div class="mockup-header">
+                    <div class="mockup-dots" aria-hidden="true">
+                      <span class="mockup-dot dot-red"></span>
+                      <span class="mockup-dot dot-yellow"></span>
+                      <span class="mockup-dot dot-green"></span>
+                    </div>
+                    <div class="mockup-title">À propos de TropoCine</div>
+                    <div class="mockup-spacer" aria-hidden="true"></div>
+                  </div>
+                  <div class="mockup-body">
+                    <img
+                      src="./img/5.png"
+                      alt="À propos de TropoCine"
+                      class="mockup-img"
+                      width="806"
+                      height="1045"
+                      loading="lazy"
+                    />
+                  </div>
+                </div>
+                <p class="gallery-caption">
+                  Informations de version, liens vers le code source et licence
+                  libre.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- People & Discovery Spotlight Section -->
+      <section class="section" id="people">
+        <div class="container">
+          <div class="discovery-section">
+            <div>
+              <span class="section-tag">Casting & Réalisateurs</span>
+              <h2 class="section-title">
+                Explorez vos films à travers les personnalités qui les créent
+              </h2>
+              <p class="section-description">
+                Laissez Tropo<span class="brand-text-cine">Cine</span> relier
+                votre collection de films à leurs réalisateurs et acteurs !
+              </p>
+              <ul class="discovery-list">
+                <li class="discovery-list-item">
+                  Exploration unifiée englobant à la fois les réalisateurs et
+                  les acteurs principaux.
+                </li>
+                <li class="discovery-list-item">
+                  Étiquettes de distribution interactives dans les fiches de
+                  films pour filtrer votre collection en un clic.
+                </li>
+                <li class="discovery-list-item">
+                  Filtrage croisé recalculant dynamiquement les genres et
+                  personnes disponibles en temps réel.
+                </li>
+              </ul>
+            </div>
+
+            <!-- Film Details Modal Demo -->
+            <div class="film-modal-demo">
+              <div class="film-modal-header">
+                <span class="film-modal-close" aria-hidden="true">&times;</span>
+                <div class="film-modal-header-content">
+                  <div class="film-modal-poster">
+                    <svg
+                      viewBox="0 0 100 150"
+                      class="film-poster-svg"
+                      role="img"
+                      aria-label="Affiche Pulp Fiction"
+                    >
+                      <rect width="100" height="150" rx="4" fill="#0d1117" />
+                      <rect
+                        x="3"
+                        y="3"
+                        width="94"
+                        height="144"
+                        rx="3"
+                        fill="#161b22"
+                        stroke="#30363d"
+                        stroke-width="1"
+                      />
+                      <circle
+                        cx="50"
+                        cy="50"
+                        r="22"
+                        fill="none"
+                        stroke="#0284c7"
+                        stroke-width="2.5"
+                        stroke-dasharray="5 3"
+                      />
+                      <circle
+                        cx="50"
+                        cy="50"
+                        r="8"
+                        fill="#0284c7"
+                        opacity="0.35"
+                      />
+                      <circle cx="50" cy="50" r="3.5" fill="#38bdf8" />
+                      <rect
+                        x="10"
+                        y="86"
+                        width="80"
+                        height="16"
+                        rx="3"
+                        fill="rgba(2, 132, 199, 0.25)"
+                      />
+                      <text
+                        x="50"
+                        y="97"
+                        text-anchor="middle"
+                        fill="#f8fafc"
+                        font-size="7.5"
+                        font-weight="800"
+                        font-family="system-ui, sans-serif"
+                        letter-spacing="1"
+                      >
+                        PULP FICTION
+                      </text>
+                      <text
+                        x="50"
+                        y="114"
+                        text-anchor="middle"
+                        fill="#94a3b8"
+                        font-size="6.5"
+                        font-family="monospace"
+                      >
+                        1994 &bull; 154 MIN
+                      </text>
+                      <text
+                        x="50"
+                        y="128"
+                        text-anchor="middle"
+                        fill="#f59e0b"
+                        font-size="8"
+                      >
+                        &starf;&starf;&starf;&starf;&starf;
+                      </text>
+                    </svg>
+                  </div>
+                  <div class="film-modal-header-info">
+                    <div class="film-director-name">Quentin Tarantino</div>
+                    <div class="film-title-row">
+                      1994 &ndash; <strong>Pulp Fiction</strong>
+                    </div>
+                    <div class="film-creator-count">
+                      <a href="#people" class="film-count-link">
+                        <svg
+                          class="icon-user"
+                          viewBox="0 0 448 512"
+                          width="11"
+                          height="11"
+                          fill="currentColor"
+                          aria-hidden="true"
+                        >
+                          <path
+                            d="M224 256A128 128 0 1 0 224 0a128 128 0 1 0 0 256zm-45.7 48C79.8 304 0 383.8 0 482.3 0 498.7 13.3 512 29.7 512h388.6c16.4 0 29.7-13.3 29.7-29.7 0-98.5-79.8-178.3-178.3h-91.4z"
+                          />
+                        </svg>
+                        <b>3</b> <span class="count-unit">films</span>
+                      </a>
+                    </div>
+                    <div class="film-stars" aria-label="5 étoiles">
+                      &starf;&starf;&starf;&starf;&starf;
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="film-modal-body">
+                <table class="film-modal-table">
+                  <tbody>
+                    <tr>
+                      <th>Genres</th>
+                      <td>
+                        <div class="film-tags-wrap">
+                          <span class="genre-tag active">Crime</span>
+                          <span class="genre-tag">Thriller</span>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <th>Durée</th>
+                      <td class="film-runtime-val">154 min</td>
+                    </tr>
+                    <tr>
+                      <th>Distribution</th>
+                      <td>
+                        <div class="film-tags-wrap">
+                          <span class="genre-tag">John Travolta</span>
+                          <span class="genre-tag active"
+                            >Samuel L. Jackson</span
+                          >
+                          <span class="genre-tag">Uma Thurman</span>
+                          <span class="genre-tag">Bruce Willis</span>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+
+                <div class="film-modal-tabs">
+                  <div class="film-tab-nav">
+                    <span class="film-tab-item active">Infos</span>
+                  </div>
+                  <div class="film-tab-content">
+                    Les vies de deux hommes de main de la pègre, d'un boxeur, de
+                    la femme d'un gangster et de deux braqueurs de restaurant
+                    s'entremêlent dans quatre récits de violence et de
+                    rédemption.
+                  </div>
+                </div>
+              </div>
+
+              <div class="film-modal-footer">
+                <span class="film-btn-provider"
+                  >The Movie Database &#x2197;</span
+                >
+                <span class="film-btn-close">Fermer</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Architecture Section -->
+      <section class="section" id="architecture">
+        <div class="container">
+          <div class="section-header">
+            <span class="section-tag">Paquets du Monorepo</span>
+            <h2 class="section-title">Structure propre & découplée</h2>
+            <p class="section-description">
+              Composants modulaires organisés en paquets NPM indépendants et
+              plugins de données.
+            </p>
+          </div>
+
+          <div class="arch-cards">
+            <div class="arch-card">
+              <span class="arch-tag">apps/tropocine</span>
+              <h3>Application React</h3>
+              <p>
+                Application cliente principale pour explorer votre vidéothèque.
+              </p>
+            </div>
+            <div class="arch-card">
+              <span class="arch-tag">packages/core</span>
+              <h3>@tropo/core</h3>
+              <p>
+                Gestion d'état avec Zustand, système de cache et normaliseurs.
+              </p>
+            </div>
+            <div class="arch-card">
+              <span class="arch-tag">packages/react</span>
+              <h3>@tropo/react</h3>
+              <p>
+                Composants d'interface utilisateur réutilisables et design
+                tokens.
+              </p>
+            </div>
+            <div class="arch-card">
+              <span class="arch-tag">plugins/cine/tmdb</span>
+              <h3>@tropo/tmdb</h3>
+              <p>Plugin d'intégration de l'API The Movie Database.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Quick Start & Deployment Section -->
+      <section class="section" id="quickstart">
+        <div class="container">
+          <div class="section-header">
+            <span class="section-tag">Déploiement</span>
+            <h2 class="section-title">Démarrage rapide</h2>
+            <p class="section-description">
+              Lancez Tropo<span class="brand-text-cine">Cine</span> en local ou
+              déployez-le derrière un reverse proxy Apache/Nginx.
+            </p>
+          </div>
+
+          <div class="code-box">
+            <div class="code-header">
+              <span>Configuration en développement local</span>
+              <span>Bash</span>
+            </div>
+            <div class="code-content">
+              <span class="code-comment"
+                ># 1. Cloner le dépôt et installer les dépendances</span
+              ><br />
+              git clone https://github.com/esaracco/tropoatlas.git<br />
+              cd tropoatlas<br />
+              npm install<br /><br />
+              <span class="code-comment"
+                ># 2. Configurer les variables d'environnement</span
+              ><br />
+              cp apps/tropocine/.env.sample apps/tropocine/.env<br /><br />
+              <span class="code-comment"
+                ># 3. Lancer le serveur de développement</span
+              ><br />
+              npm run dev:cine
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="container">
+        <div class="footer-bottom">
+          <span class="copyleft" aria-label="Copyleft">&copy;</span> 2026
+          <a
+            href="https://www.esaracco.fr"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="link"
+          >
+            Emmanuel Saracco</a
+          >
+          — Licence
+          <a
+            href="https://www.gnu.org/licenses/gpl-3.0.html"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="link"
+            >GNU GPL v3</a
+          >
+        </div>
+      </div>
+    </footer>
+
+    <!-- Interactive Gallery Script -->
+    <script>
+      ;(function () {
+        var tabButtons = document.querySelectorAll(".gallery-tab")
+        var panels = document.querySelectorAll(".gallery-panel")
+
+        tabButtons.forEach(function (button) {
+          button.addEventListener("click", function () {
+            var targetId = button.getAttribute("data-target")
+
+            tabButtons.forEach(function (btn) {
+              btn.classList.remove("active")
+              btn.setAttribute("aria-selected", "false")
+            })
+
+            panels.forEach(function (panel) {
+              panel.classList.remove("active")
+              panel.setAttribute("hidden", "")
+            })
+
+            button.classList.add("active")
+            button.setAttribute("aria-selected", "true")
+            button.scrollIntoView({
+              behavior: "smooth",
+              inline: "center",
+              block: "nearest",
+            })
+
+            var activePanel = document.getElementById(targetId)
+            if (activePanel) {
+              activePanel.classList.remove("active")
+              void activePanel.offsetWidth
+              activePanel.classList.add("active")
+              activePanel.removeAttribute("hidden")
+            }
+          })
+        })
+
+        var demoTags = document.querySelectorAll(".film-modal-demo .genre-tag")
+        demoTags.forEach(function (tag) {
+          tag.addEventListener("click", function () {
+            tag.classList.toggle("active")
+          })
+        })
+      })()
+    </script>
+  </body>
+</html>
