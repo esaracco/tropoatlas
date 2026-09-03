@@ -80,7 +80,21 @@ Open `http://localhost:3001` in your browser.
 
 TropoCine builds as a static Single Page Application in production. API calls to `/api/tmdb/` are proxied through your web server to inject your private TMDB Bearer token on the fly.
 
-### Apache Reverse Proxy Configuration
+### Option 1: Docker (Recommended)
+
+Build and run using Docker Compose or standalone Docker from the repository root:
+
+```bash
+# Using Docker Compose
+docker compose up tropocine
+
+# Or using standalone Docker
+docker build --build-arg APP_NAME=tropocine --build-arg PORT=3001 -t tropocine:prod .
+docker run --rm -it -p 3001:3001 -e TMDB_TOKEN="your_personal_token" tropocine:prod
+```
+
+### Option 2: Apache Reverse Proxy
+
 
 1. Enable the required Apache modules:
 

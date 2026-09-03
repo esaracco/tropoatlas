@@ -82,12 +82,27 @@ Open `http://localhost:3000` (TropoAudio) or `http://localhost:3001` (TropoCine)
 
 All TropoAtlas frontends build into purely static web bundles. API calls and tokens are proxied securely through web servers (Apache or Nginx) without exposing secret credentials to client browsers.
 
-- **Docker**: Build and run pre-packaged Nginx containers directly from root:
+- **Docker Compose**: Run applications concurrently or individually from repository root:
   ```bash
-  docker build -t tropoaudio:prod .
-  docker run --rm -it -p 3000:3000 -e DISCOGS_TOKEN="your_personal_token" tropoaudio:prod
+  # Run both applications (TropoAudio on :3000, TropoCine on :3001)
+  docker compose up
+
+  # Or run a single application
+  docker compose up tropoaudio
+  docker compose up tropocine
   ```
-- **Apache / Reverse Proxy**: Complete production configurations and proxy setup guides are detailed in each app's documentation (e.g. [apps/tropoaudio/README.md](apps/tropoaudio/README.md)).
+- **Docker (Standalone)**: Build and run individual containers with build arguments:
+  ```bash
+  # TropoAudio (port 3000)
+  docker build --build-arg APP_NAME=tropoaudio --build-arg PORT=3000 -t tropoaudio:prod .
+  docker run --rm -it -p 3000:3000 -e DISCOGS_TOKEN="your_personal_token" tropoaudio:prod
+
+  # TropoCine (port 3001)
+  docker build --build-arg APP_NAME=tropocine --build-arg PORT=3001 -t tropocine:prod .
+  docker run --rm -it -p 3001:3001 -e TMDB_TOKEN="your_personal_token" tropocine:prod
+  ```
+- **Apache / Reverse Proxy**: Complete production configurations and proxy setup guides are detailed in each app's documentation (e.g. [apps/tropoaudio/README.md](apps/tropoaudio/README.md) and [apps/tropocine/README.md](apps/tropocine/README.md)).
+
 
 ---
 

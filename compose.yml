@@ -1,0 +1,28 @@
+services:
+  tropoaudio:
+    build:
+      context: .
+      args:
+        APP_NAME: tropoaudio
+        PORT: 3000
+    ports:
+      - "${TROPOAUDIO_PORT:-3000}:3000"
+    environment:
+      - DISCOGS_TOKEN=${DISCOGS_TOKEN}
+    env_file:
+      - path: apps/tropoaudio/.env
+        required: false
+
+  tropocine:
+    build:
+      context: .
+      args:
+        APP_NAME: tropocine
+        PORT: 3001
+    ports:
+      - "${TROPOCINE_PORT:-3001}:3001"
+    environment:
+      - TMDB_TOKEN=${TMDB_TOKEN}
+    env_file:
+      - path: apps/tropocine/.env
+        required: false

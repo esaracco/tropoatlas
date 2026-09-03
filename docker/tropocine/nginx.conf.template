@@ -1,0 +1,76 @@
+server {
+    listen 3001;
+    server_name localhost;
+
+    root /usr/share/nginx/html;
+    index index.html;
+
+    # React Single Page Application Fallback
+    location / {
+        try_files $uri $uri/ /index.html;
+    }
+
+    # Do not cache service-worker.js to ensure updates are detected
+    location = /service-worker.js {
+        expires off;
+        add_header Cache-Control "no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0";
+        access_log off;
+    }
+
+    # Do not cache index.html to ensure the latest assets are loaded
+    location = /index.html {
+        expires off;
+        add_header Cache-Control "no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0";
+    }
+
+    # API TMDB Secure Proxy
+    location /api/tmdb/ {
+        # IMPORTANT: Envsubst will replace ${TMDB_TOKEN} with your env var
+        proxy_set_header Authorization "Bearer ${TMDB_TOKEN}";
+        proxy_set_header User-Agent "__USER_AGENT__";
+
+        # Configuration SSL strict for TMDB
+        proxy_set_header Host api.themoviedb.org;
+        proxy_ssl_server_name on;
+        proxy_ssl_protocols TLSv1.2 TLSv1.3;
+
+        # Strip upstream Set-Cookie to prevent cookie leakage/errors
+        proxy_hide_header Set-Cookie;
+
+        proxy_pass https://api.themoviedb.org/;
+    }
+
+    # TMDB Artwork CDN Proxy (CORS bypass for client-side ZIP export)
+    location /api/tmdb-image/ {
+        proxy_set_header Host image.tmdb.org;
+        proxy_set_header User-Agent "__USER_AGENT__";
+        proxy_ssl_server_name on;
+        proxy_ssl_protocols TLSv1.2 TLSv1.3;
+
+        proxy_hide_header Set-Cookie;
+
+        add_header Access-Control-Allow-Origin *;
+        add_header Access-Control-Allow-Methods "GET, OPTIONS";
+
+        proxy_pass https://image.tmdb.org/;
+    }
+
+    # Image Proxy for external artwork (CORS enabled for client-side ZIP export)
+    location /api/proxy-image {
+        if ($arg_url ~* "^https?://([^/]+)(/.*)$") {
+            set $image_host $1;
+            set $image_path $2;
+        }
+
+        resolver 8.8.8.8 1.1.1.1 valid=300s;
+        proxy_set_header Host $image_host;
+        proxy_set_header User-Agent "__USER_AGENT__";
+        proxy_ssl_server_name on;
+        proxy_ssl_protocols TLSv1.2 TLSv1.3;
+
+        add_header Access-Control-Allow-Origin *;
+        add_header Access-Control-Allow-Methods "GET, OPTIONS";
+
+        proxy_pass https://$image_host$image_path;
+    }
+}
