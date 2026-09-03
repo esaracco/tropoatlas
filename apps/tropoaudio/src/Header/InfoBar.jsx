@@ -44,7 +44,7 @@ const InfoBar = () => {
             label = t("Artist")
             break
           case "rating":
-            label = t("Note")
+            label = t("My rating")
             break
           case "year":
             label = t("Year")

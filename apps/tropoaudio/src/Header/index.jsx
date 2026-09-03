@@ -318,7 +318,7 @@ const Header = () => {
         content={{
           added: t("Date added"),
           artist: t("Artist"),
-          rating: t("Note"),
+          rating: t("My rating"),
           year: t("Year"),
           ...(customFields.supportsPlace && {
             place: t("Location"),
