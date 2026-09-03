@@ -13,8 +13,8 @@ RUN npm run build
 
 # Inject dynamic User-Agent from package.json into Nginx template
 RUN node -e '\
-  const pkg = JSON.parse(require("fs").readFileSync("./apps/tropomusic/package.json", "utf8")); \
-  const name = pkg.name === "tropomusic" ? "TropoMusic" : pkg.name; \
+  const pkg = JSON.parse(require("fs").readFileSync("./apps/tropoaudio/package.json", "utf8")); \
+  const name = pkg.name === "tropoaudio" ? "TropoAudio" : pkg.name; \
   const ua = `${name}/${pkg.version} (${pkg.homepage})`; \
   const tpl = require("fs").readFileSync("./docker/nginx.conf.template", "utf8"); \
   require("fs").writeFileSync("/tmp/default.conf.template", tpl.replaceAll("__USER_AGENT__", ua)); \
@@ -24,7 +24,7 @@ RUN node -e '\
 FROM nginx:alpine
 
 # Copy the built React app from the builder stage
-COPY --from=builder /app/apps/tropomusic/build /usr/share/nginx/html
+COPY --from=builder /app/apps/tropoaudio/build /usr/share/nginx/html
 
 # Copy our custom Nginx configuration template with injected User-Agent
 # Nginx entrypoint replaces ${DISCOGS_TOKEN} with the environment variable

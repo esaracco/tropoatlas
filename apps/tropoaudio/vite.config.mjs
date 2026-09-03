@@ -10,7 +10,7 @@ export default defineConfig(({ mode }) => {
 
   // Derive User-Agent string dynamically from package metadata
   const appName =
-    packageJson.name === "tropomusic" ? "TropoMusic" : packageJson.name
+    packageJson.name === "tropoaudio" ? "TropoAudio" : packageJson.name
   const userAgent = `${appName}/${packageJson.version} (${packageJson.homepage})`
 
   const proxy = {}
@@ -220,13 +220,13 @@ export default defineConfig(({ mode }) => {
         filename: "service-worker.js",
         manifest: {
           lang: "en",
-          short_name: "TropoMusic",
-          name: "TropoMusic – A universal music collection manager",
+          short_name: "TropoAudio",
+          name: "TropoAudio – A universal audio collection manager",
           description:
             "Organize your collection, enrich it with your own metadata, and locate albums instantly using LED strips",
           translations: {
             fr: {
-              name: "TropoMusic – Un gestionnaire universel de collection musicale",
+              name: "TropoAudio – Un gestionnaire universel de collection audio",
               description:
                 "Organisez votre collection, enrichissez-la avec vos propres métadonnées, et localisez instantanément vos albums grâce à des bandes LED.",
             },

@@ -1,12 +1,12 @@
-# TropoMusic
+# TropoAudio
 
 [![GPL License](https://img.shields.io/badge/license-GPLv3-blue.svg)](../../LICENSE) [![Discogs API](https://img.shields.io/badge/Powered%20by-Discogs-orange.svg)](https://www.discogs.com/developers/) [![Made with React](https://img.shields.io/badge/React-18-61DAFB.svg)](https://reactjs.org/) [![Vite](https://img.shields.io/badge/Vite-B73BFE.svg)](https://vitejs.dev/)
 
-**TropoMusic is a free software music collection manager within the [TropoAtlas](../../README.md) ecosystem. Synchronize your albums (Discogs), customize your metadata, and instantly locate your vinyl records and CDs on your shelves using connected LED strips.**
+**TropoAudio is a free software audio collection manager within the [TropoAtlas](../../README.md) ecosystem. Synchronize your albums (Discogs), customize your metadata, and instantly locate your vinyl records and CDs on your shelves using connected LED strips.**
 
-_TropoMusic is the direct successor to the original [TropoDisc repository](https://github.com/esaracco/tropodisc), which has been archived and remains available for historical reference._
+_TropoAudio is the direct successor to the original [TropoDisc repository](https://github.com/esaracco/tropodisc), which has been archived and remains available for historical reference._
 
-<div align="center"><img src="public/icon-180.png" alt="TropoMusic logo" /></div>
+<div align="center"><img src="public/icon-180.png" alt="TropoAudio logo" /></div>
 
 ---
 
@@ -53,7 +53,7 @@ cp .env.sample .env
 
 | Variable                       | Description                                                                       | Default        |
 | :----------------------------- | :-------------------------------------------------------------------------------- | :------------- |
-| `VITE_APP_NAME`                | Application identifier (do not change)                                            | `"tropomusic"` |
+| `VITE_APP_NAME`                | Application identifier (do not change)                                            | `"tropoaudio"` |
 | `VITE_DATA_PROVIDER`           | Active data provider plugin                                                       | `"discogs"`    |
 | `VITE_CURRENCY`                | Currency symbol displayed for prices                                              | `€`            |
 | `VITE_DISCOGS_USER`            | Your Discogs username                                                             | _(Required)_   |
@@ -63,7 +63,7 @@ cp .env.sample .env
 
 ### Custom Fields Mapping (Discogs)
 
-TropoMusic can map to three optional custom fields defined in your Discogs collection:
+TropoAudio can map to three optional custom fields defined in your Discogs collection:
 
 - **`VITE_DISCOGS_FIELD_PLACE`**: Name of the field storing the physical shelf location (numeric value if LEDs are enabled).
 - **`VITE_DISCOGS_FIELD_PRICE`**: Name of the field storing the purchase price.
@@ -85,7 +85,7 @@ From the repository root:
 
 ```bash
 # Start development server
-npm run dev -w apps/tropomusic
+npm run dev -w apps/tropoaudio
 
 # Or start directly with the root shortcut:
 npm run dev
@@ -97,7 +97,7 @@ Open `http://localhost:3000` in your browser.
 
 ## Production Deployment
 
-TropoMusic is purely static in production: API requests are securely proxied through your web server (Apache or Nginx) to inject your secret Discogs token on the fly without exposing it to the browser.
+TropoAudio is purely static in production: API requests are securely proxied through your web server (Apache or Nginx) to inject your secret Discogs token on the fly without exposing it to the browser.
 
 ### Option 1: Docker (Recommended)
 
@@ -105,10 +105,10 @@ Build and run the production container from the repository root:
 
 ```bash
 # Build the Docker image
-docker build -t tropomusic:prod .
+docker build -t tropoaudio:prod .
 
 # Run the container
-docker run --rm -it -p 3000:3000 -e DISCOGS_TOKEN="your_personal_token" tropomusic:prod
+docker run --rm -it -p 3000:3000 -e DISCOGS_TOKEN="your_personal_token" tropoaudio:prod
 ```
 
 ### Option 2: Apache Reverse Proxy
@@ -126,19 +126,19 @@ sudo systemctl restart apache2
 npm run build
 ```
 
-_(Generates static assets in `apps/tropomusic/build`, along with `.htaccess` and `headers.conf`)._
+_(Generates static assets in `apps/tropoaudio/build`, along with `.htaccess` and `headers.conf`)._
 
 3. Configure Apache VirtualHost:
 
 ```apache
 <VirtualHost *:443>
     ServerName disques.yourdomain.com
-    DocumentRoot /var/www/tropoatlas/apps/tropomusic/build
+    DocumentRoot /var/www/tropoatlas/apps/tropoaudio/build
 
     SSLProxyEngine On
 
     # Static files and .htaccess support
-    <Directory /var/www/tropoatlas/apps/tropomusic/build>
+    <Directory /var/www/tropoatlas/apps/tropoaudio/build>
         Options Indexes FollowSymLinks
         AllowOverride All
         Require all granted
@@ -147,7 +147,7 @@ _(Generates static assets in `apps/tropomusic/build`, along with `.htaccess` and
     # Secure Discogs API Proxy (Token Injection)
     <Location /api/discogs/>
         RequestHeader set Authorization "Discogs token=YOUR_SECRET_TOKEN"
-        IncludeOptional /var/www/tropoatlas/apps/tropomusic/build/headers.conf
+        IncludeOptional /var/www/tropoatlas/apps/tropoaudio/build/headers.conf
         ProxyPreserveHost Off
         ProxyPass https://api.discogs.com/
         ProxyPassReverse https://api.discogs.com/
@@ -155,7 +155,7 @@ _(Generates static assets in `apps/tropomusic/build`, along with `.htaccess` and
 
     # Discogs Artwork Image Proxy (CORS bypass for client-side ZIP export)
     <Location /api/discogs-image/>
-        IncludeOptional /var/www/tropoatlas/apps/tropomusic/build/headers.conf
+        IncludeOptional /var/www/tropoatlas/apps/tropoaudio/build/headers.conf
         Header set Access-Control-Allow-Origin "*"
         ProxyPreserveHost Off
         ProxyPass https://i.discogs.com/
@@ -180,10 +180,10 @@ sudo systemctl reload apache2
 
 ## Static Presentation Site
 
-The static presentation site for TropoMusic is located in `apps/tropomusic/docs/` and available online at [https://tropomusic.esaracco.fr](https://tropomusic.esaracco.fr).
+The static presentation site for TropoAudio is located in `apps/tropoaudio/docs/` and available online at [https://tropoaudio.esaracco.fr](https://tropoaudio.esaracco.fr).
 
 ---
 
 ## License
 
-TropoMusic is part of the [TropoAtlas](../../README.md) project and is released under the GNU GPL v3 License. See [LICENSE](../../LICENSE) for details.
+TropoAudio is part of the [TropoAtlas](../../README.md) project and is released under the GNU GPL v3 License. See [LICENSE](../../LICENSE) for details.

@@ -2,7 +2,7 @@
   "name": "tropoatlas",
   "version": "2.0.0",
   "description": "TropoAtlas Ecosystem Workspace",
-  "homepage": "https://tropomusic.esaracco.fr",
+  "homepage": "https://tropoaudio.esaracco.fr",
   "workspaces": [
     "apps/*",
     "packages/*",
@@ -12,13 +12,13 @@
   "license": "GPL-3.0-or-later",
   "scripts": {
     "audit": "npm audit --omit=dev --audit-level=high",
-    "dev": "npm run dev -w apps/tropomusic",
+    "dev": "npm run dev -w apps/tropoaudio",
     "build": "npm run build --workspaces --if-present",
     "test": "vitest run",
     "lint": "./node_modules/.bin/eslint apps/ packages/ plugins/",
     "lint-fix": "./node_modules/.bin/eslint --fix apps/ packages/ plugins/",
     "format": "./node_modules/.bin/prettier --write apps/ packages/ plugins/",
-    "i18n:check": "npm run i18n:check -w apps/tropomusic",
+    "i18n:check": "npm run i18n:check -w apps/tropoaudio",
     "pre-commit": "npm run lint && npm run format && npm run test && npm run i18n:check",
     "prepare": "husky"
   },

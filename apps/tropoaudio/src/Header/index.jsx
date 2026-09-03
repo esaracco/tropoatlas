@@ -187,7 +187,7 @@ const Header = () => {
                 src="/icon-180.png"
                 height="36"
                 width="36"
-                alt="TropoMusic"
+                alt="TropoAudio"
               />
             </Navbar.Brand>
             <Navbar.Toggle

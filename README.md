@@ -4,7 +4,7 @@
 
 **TropoAtlas is a free software monorepo ecosystem designed to organize, enrich, and physically locate media collections (music, movies, books) on your shelves using connected IoT LED strips.**
 
-> _Note: TropoMusic (the music collection application within this ecosystem) is the direct successor to the original [TropoDisc repository](https://github.com/esaracco/tropodisc), which has been archived and remains available for historical reference._
+> _Note: TropoAudio (the audio collection application within this ecosystem) is the direct successor to the original [TropoDisc repository](https://github.com/esaracco/tropodisc), which has been archived and remains available for historical reference._
 
 ---
 
@@ -14,9 +14,9 @@ TropoAtlas provides dedicated, tailored collection managers for different physic
 
 | Application | Status | Focus / Formats | Documentation |
 | :--- | :--- | :--- | :--- |
-| 🎵 **[TropoMusic](apps/tropomusic)** | **Active** | Vinyl records, CDs, Cassettes, Discogs sync, audio library LED locator | [apps/tropomusic/README.md](apps/tropomusic/README.md) · [Website](https://tropomusic.esaracco.fr) |
-| 🎬 **TropoFilm** (`apps/tropofilm`) | *Planned* | DVDs, Blu-Rays, 4K UHD discs, TV series, movie shelves LED locator | — |
-| 📚 **TropoBook** (`apps/tropobook`) | *Planned* | Books, comics, mangas, home library shelves LED locator | — |
+| 🎵 **[TropoAudio](apps/tropoaudio)** | **Active** | Vinyl records, CDs, Cassettes, Discogs sync, audio library LED locator | [apps/tropoaudio/README.md](apps/tropoaudio/README.md) · [Website](https://tropoaudio.esaracco.fr) |
+| 🎬 **TropoCine** (`apps/tropocine`) | *Planned* | DVDs, Blu-Rays, 4K UHD discs, TV series, movie shelves LED locator | — |
+| 📚 **TropoBiblio** (`apps/tropobiblio`) | *Planned* | Books, comics, mangas, home library shelves LED locator | — |
 
 ---
 
@@ -27,7 +27,7 @@ TropoAtlas is built on an **NPM Monorepo** architecture separating presentation 
 ```text
 tropoatlas/
 ├── apps/
-│   └── tropomusic/          # React frontend for music collections
+│   └── tropoaudio/          # React frontend for audio collections
 ├── packages/
 │   ├── core/                # Core domain, storage abstraction, backup/export, Zustand state (@tropo/core)
 │   ├── react/               # Shared React components, modal dialogs, design tokens (@tropo/react)
@@ -51,10 +51,10 @@ cd tropoatlas
 npm install
 ```
 
-2. Configure your application environment (example for TropoMusic):
+2. Configure your application environment (example for TropoAudio):
 
 ```bash
-cp apps/tropomusic/.env.sample apps/tropomusic/.env
+cp apps/tropoaudio/.env.sample apps/tropoaudio/.env
 ```
 
 3. Start the development server:
@@ -73,10 +73,10 @@ All TropoAtlas frontends build into purely static web bundles. API calls and tok
 
 - **Docker**: Build and run pre-packaged Nginx containers directly from root:
   ```bash
-  docker build -t tropomusic:prod .
-  docker run --rm -it -p 3000:3000 -e DISCOGS_TOKEN="your_personal_token" tropomusic:prod
+  docker build -t tropoaudio:prod .
+  docker run --rm -it -p 3000:3000 -e DISCOGS_TOKEN="your_personal_token" tropoaudio:prod
   ```
-- **Apache / Reverse Proxy**: Complete production configurations and proxy setup guides are detailed in each app's documentation (e.g. [apps/tropomusic/README.md](apps/tropomusic/README.md)).
+- **Apache / Reverse Proxy**: Complete production configurations and proxy setup guides are detailed in each app's documentation (e.g. [apps/tropoaudio/README.md](apps/tropoaudio/README.md)).
 
 ---
 
