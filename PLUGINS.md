@@ -4,9 +4,9 @@ This folder contains the plugins that act as data providers for TropoAtlas appli
 TropoAtlas is decoupled from any specific media database (like Discogs or TMDB). Applications interact with the user's collection through a unified interface.
 
 Plugins are categorized by media domain:
-- `plugins/music/*`: Music providers (e.g. `plugins/music/discogs`)
-- `plugins/film/*`: Film and TV providers (e.g. `plugins/film/tmdb`)
-- `plugins/book/*`: Book and comic providers (e.g. `plugins/book/openlibrary`)
+- `plugins/audio/*`: Audio providers (e.g. `plugins/audio/discogs`)
+- `plugins/cine/*`: Film and TV providers (e.g. `plugins/cine/tmdb`)
+- `plugins/biblio/*`: Book and comic providers (e.g. `plugins/biblio/openlibrary`)
 
 ## Creating a new Provider Plugin
 

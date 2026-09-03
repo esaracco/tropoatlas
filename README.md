@@ -33,7 +33,7 @@ tropoatlas/
 │   ├── react/               # Shared React components, modal dialogs, design tokens (@tropo/react)
 │   └── leds/                # Standalone HTTP client for ESP32 LED strip controllers (@tropo/leds)
 ├── plugins/
-│   └── music/
+│   └── audio/
 │       └── discogs/         # Discogs API data provider plugin (@tropo/discogs)
 └── firmware/
     └── led-controller/      # ESP32-S3 Mini firmware for WS2812B addressable LED shelves
