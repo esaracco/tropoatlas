@@ -292,7 +292,7 @@
               >
                 <div class="tab-index">01</div>
                 <div class="tab-text">
-                  <span class="tab-title">Collection & Quick Menu</span>
+                  <span class="tab-title">Collection</span>
                   <span class="tab-desc"
                     >Instant grid browsing with quick access to sync, backup,
                     LEDs, and themes.</span
@@ -311,9 +311,7 @@
               >
                 <div class="tab-index">02</div>
                 <div class="tab-text">
-                  <span class="tab-title"
-                    >Album Details & Physical Location</span
-                  >
+                  <span class="tab-title">Album Details</span>
                   <span class="tab-desc"
                     >Shelf location index, purchase price, custom styles, and
                     tracklist.</span
@@ -332,7 +330,7 @@
               >
                 <div class="tab-index">03</div>
                 <div class="tab-text">
-                  <span class="tab-title">Multi-Criteria Filtering</span>
+                  <span class="tab-title">Filtering</span>
                   <span class="tab-desc"
                     >Live filtering by custom styles, artists, formats, and
                     rating.</span
@@ -351,7 +349,7 @@
               >
                 <div class="tab-index">04</div>
                 <div class="tab-text">
-                  <span class="tab-title">Modular Settings & Mapping</span>
+                  <span class="tab-title">Settings</span>
                   <span class="tab-desc"
                     >Discogs field mapping, formats filter, and LED hardware
                     options.</span
@@ -370,7 +368,7 @@
               >
                 <div class="tab-index">05</div>
                 <div class="tab-text">
-                  <span class="tab-title">About & TropoAtlas Suite</span>
+                  <span class="tab-title">About</span>
                   <span class="tab-desc"
                     >Version information, source links, and open-source
                     licensing.</span
@@ -750,42 +748,42 @@
 
     <!-- Interactive Gallery Script -->
     <script>
-      (function () {
-        var tabButtons = document.querySelectorAll(".gallery-tab");
-        var panels = document.querySelectorAll(".gallery-panel");
+      ;(function () {
+        var tabButtons = document.querySelectorAll(".gallery-tab")
+        var panels = document.querySelectorAll(".gallery-panel")
 
         tabButtons.forEach(function (button) {
           button.addEventListener("click", function () {
-            var targetId = button.getAttribute("data-target");
+            var targetId = button.getAttribute("data-target")
 
             tabButtons.forEach(function (btn) {
-              btn.classList.remove("active");
-              btn.setAttribute("aria-selected", "false");
-            });
+              btn.classList.remove("active")
+              btn.setAttribute("aria-selected", "false")
+            })
 
             panels.forEach(function (panel) {
-              panel.classList.remove("active");
-              panel.setAttribute("hidden", "");
-            });
+              panel.classList.remove("active")
+              panel.setAttribute("hidden", "")
+            })
 
-            button.classList.add("active");
-            button.setAttribute("aria-selected", "true");
+            button.classList.add("active")
+            button.setAttribute("aria-selected", "true")
             button.scrollIntoView({
               behavior: "smooth",
               inline: "center",
               block: "nearest",
-            });
+            })
 
-            var activePanel = document.getElementById(targetId);
+            var activePanel = document.getElementById(targetId)
             if (activePanel) {
-              activePanel.classList.remove("active");
-              void activePanel.offsetWidth;
-              activePanel.classList.add("active");
-              activePanel.removeAttribute("hidden");
+              activePanel.classList.remove("active")
+              void activePanel.offsetWidth
+              activePanel.classList.add("active")
+              activePanel.removeAttribute("hidden")
             }
-          });
-        });
-      })();
+          })
+        })
+      })()
     </script>
   </body>
 </html>

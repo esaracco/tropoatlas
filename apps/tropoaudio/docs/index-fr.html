@@ -284,7 +284,11 @@
           </div>
 
           <div class="gallery-layout">
-            <div class="gallery-tabs" role="tablist" aria-label="Captures d'écran">
+            <div
+              class="gallery-tabs"
+              role="tablist"
+              aria-label="Captures d'écran"
+            >
               <button
                 type="button"
                 class="gallery-tab active"
@@ -296,9 +300,10 @@
               >
                 <div class="tab-index">01</div>
                 <div class="tab-text">
-                  <span class="tab-title">Collection & Menu rapide</span>
+                  <span class="tab-title">Collection</span>
                   <span class="tab-desc"
-                    >Navigation par pochettes avec accès direct à la synchronisation, sauvegarde et thèmes.</span
+                    >Navigation par pochettes avec accès direct à la
+                    synchronisation, sauvegarde et thèmes.</span
                   >
                 </div>
               </button>
@@ -314,9 +319,7 @@
               >
                 <div class="tab-index">02</div>
                 <div class="tab-text">
-                  <span class="tab-title"
-                    >Fiche Album & Emplacement</span
-                  >
+                  <span class="tab-title">Fiche Album</span>
                   <span class="tab-desc"
                     >Numéro d'étagère, prix d'achat, styles personnalisés et
                     liste des pistes.</span
@@ -335,7 +338,7 @@
               >
                 <div class="tab-index">03</div>
                 <div class="tab-text">
-                  <span class="tab-title">Filtres Multi-Critères</span>
+                  <span class="tab-title">Filtres</span>
                   <span class="tab-desc"
                     >Filtrage en temps réel par styles, artistes, formats et
                     notes.</span
@@ -354,7 +357,7 @@
               >
                 <div class="tab-index">04</div>
                 <div class="tab-text">
-                  <span class="tab-title">Paramètres & Mapping</span>
+                  <span class="tab-title">Paramètres</span>
                   <span class="tab-desc"
                     >Mapping des champs Discogs (emplacement, prix, styles) et
                     options LED.</span
@@ -373,7 +376,7 @@
               >
                 <div class="tab-index">05</div>
                 <div class="tab-text">
-                  <span class="tab-title">À Propos & Écosystème</span>
+                  <span class="tab-title">À Propos</span>
                   <span class="tab-desc"
                     >Informations de version, liens vers le code source et
                     licence open-source.</span
@@ -759,42 +762,42 @@
 
     <!-- Interactive Gallery Script -->
     <script>
-      (function () {
-        var tabButtons = document.querySelectorAll(".gallery-tab");
-        var panels = document.querySelectorAll(".gallery-panel");
+      ;(function () {
+        var tabButtons = document.querySelectorAll(".gallery-tab")
+        var panels = document.querySelectorAll(".gallery-panel")
 
         tabButtons.forEach(function (button) {
           button.addEventListener("click", function () {
-            var targetId = button.getAttribute("data-target");
+            var targetId = button.getAttribute("data-target")
 
             tabButtons.forEach(function (btn) {
-              btn.classList.remove("active");
-              btn.setAttribute("aria-selected", "false");
-            });
+              btn.classList.remove("active")
+              btn.setAttribute("aria-selected", "false")
+            })
 
             panels.forEach(function (panel) {
-              panel.classList.remove("active");
-              panel.setAttribute("hidden", "");
-            });
+              panel.classList.remove("active")
+              panel.setAttribute("hidden", "")
+            })
 
-            button.classList.add("active");
-            button.setAttribute("aria-selected", "true");
+            button.classList.add("active")
+            button.setAttribute("aria-selected", "true")
             button.scrollIntoView({
               behavior: "smooth",
               inline: "center",
               block: "nearest",
-            });
+            })
 
-            var activePanel = document.getElementById(targetId);
+            var activePanel = document.getElementById(targetId)
             if (activePanel) {
-              activePanel.classList.remove("active");
-              void activePanel.offsetWidth;
-              activePanel.classList.add("active");
-              activePanel.removeAttribute("hidden");
+              activePanel.classList.remove("active")
+              void activePanel.offsetWidth
+              activePanel.classList.add("active")
+              activePanel.removeAttribute("hidden")
             }
-          });
-        });
-      })();
+          })
+        })
+      })()
     </script>
   </body>
 </html>
