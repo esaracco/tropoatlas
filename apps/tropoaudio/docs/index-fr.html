@@ -256,7 +256,7 @@
               <h3 class="feature-title">Architecture modulaire</h3>
               <p class="feature-desc">
                 Monorepo NPM clair séparant composants d'interface, gestion
-                d'état, pilotes matériels et plugins de données.
+                d'état, cache, pilotes matériels, et plugins de données.
               </p>
             </article>
 
@@ -338,7 +338,7 @@
               >
                 <div class="tab-index">03</div>
                 <div class="tab-text">
-                  <span class="tab-title">Filtres</span>
+                  <span class="tab-title">Filtrage</span>
                   <span class="tab-desc"
                     >Filtrage en temps réel par styles, artistes, formats et
                     notes.</span
@@ -399,7 +399,7 @@
                       <span class="mockup-dot dot-yellow"></span>
                       <span class="mockup-dot dot-green"></span>
                     </div>
-                    <div class="mockup-title">Collection & Options</div>
+                    <div class="mockup-title">Collection</div>
                     <div class="mockup-spacer" aria-hidden="true"></div>
                   </div>
                   <div class="mockup-body">
@@ -467,13 +467,13 @@
                       <span class="mockup-dot dot-yellow"></span>
                       <span class="mockup-dot dot-green"></span>
                     </div>
-                    <div class="mockup-title">Filtre Styles</div>
+                    <div class="mockup-title">Filtrage</div>
                     <div class="mockup-spacer" aria-hidden="true"></div>
                   </div>
                   <div class="mockup-body">
                     <img
                       src="./img/3.png"
-                      alt="Modale de filtrage par styles"
+                      alt="Modale de filtrage"
                       class="mockup-img"
                       width="803"
                       height="1037"
@@ -500,13 +500,13 @@
                       <span class="mockup-dot dot-yellow"></span>
                       <span class="mockup-dot dot-green"></span>
                     </div>
-                    <div class="mockup-title">Paramètres & Champs</div>
+                    <div class="mockup-title">Paramètres</div>
                     <div class="mockup-spacer" aria-hidden="true"></div>
                   </div>
                   <div class="mockup-body">
                     <img
                       src="./img/4.png"
-                      alt="Paramètres et correspondance des champs personnalisés"
+                      alt="Paramètres"
                       class="mockup-img"
                       width="803"
                       height="1037"
@@ -668,7 +668,8 @@
               <span class="arch-tag">apps/tropoaudio</span>
               <h3>Application React</h3>
               <p>
-                Application cliente principale pour explorer votre collection.
+                Application cliente principale pour explorer votre collection
+                d'albums.
               </p>
             </div>
             <div class="arch-card">
@@ -705,7 +706,8 @@
             <h2 class="section-title">Démarrage rapide</h2>
             <p class="section-description">
               Lancez Tropo<span class="brand-text-audio">Audio</span> en local
-              ou déployez-le avec Docker.
+              ou avec Docker, et déployez-le derrière un reverse proxy
+              Apache/Nginx.
             </p>
           </div>
 
@@ -728,7 +730,7 @@
               <span class="code-comment"
                 ># 3. Lancer le serveur de développement</span
               ><br />
-              npm run dev
+              npm run dev:audio
             </div>
           </div>
         </div>

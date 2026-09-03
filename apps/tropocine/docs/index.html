@@ -210,7 +210,7 @@
             <h2 class="section-title">Designed for passionate cinephiles</h2>
             <p class="section-description">
               A responsive, modular manager built for movie lovers and large
-              film libraries.
+              film collections.
             </p>
           </div>
 
@@ -223,27 +223,11 @@
               </p>
             </article>
 
-            <article class="feature-card" id="card-tmdb">
-              <h3 class="feature-title">TMDB Synchronization</h3>
-              <p class="feature-desc">
-                Synchronize public and personal lists from The Movie Database
-                with official posters, backdrops, cast, and synopses.
-              </p>
-            </article>
-
-            <article class="feature-card" id="card-people">
-              <h3 class="feature-title">People Discovery</h3>
-              <p class="feature-desc">
-                Seamlessly discover films through both directors and cast actors
-                with interactive filter pills and instant cross-search.
-              </p>
-            </article>
-
             <article class="feature-card" id="card-security">
               <h3 class="feature-title">Security & API Proxy</h3>
               <p class="feature-desc">
-                Reverse proxy architecture with Apache/Nginx. Personal TMDB API
-                tokens are securely injected on the server side.
+                Proxy architecture with Apache/Nginx. Personal API tokens and
+                credentials are never exposed to client browsers.
               </p>
             </article>
 
@@ -251,15 +235,15 @@
               <h3 class="feature-title">Decoupled Architecture</h3>
               <p class="feature-desc">
                 A clean NPM workspace monorepo separating UI components, state
-                management, caching, and data plugins.
+                management, cache, and data plugins.
               </p>
             </article>
 
             <article class="feature-card" id="card-backup">
               <h3 class="feature-title">Portable Backups</h3>
               <p class="feature-desc">
-                Export and restore complete collection archives with metadata
-                and cover posters in portable ZIP packages.
+                Export and restore full collection archives with metadata and
+                cover artwork in portable ZIP packages.
               </p>
             </article>
           </div>
@@ -329,7 +313,7 @@
               >
                 <div class="tab-index">03</div>
                 <div class="tab-text">
-                  <span class="tab-title">Filters</span>
+                  <span class="tab-title">Filtering</span>
                   <span class="tab-desc"
                     >Live multi-criteria filtering by directors, cast members,
                     and genres.</span
@@ -387,7 +371,7 @@
                       <span class="mockup-dot dot-yellow"></span>
                       <span class="mockup-dot dot-green"></span>
                     </div>
-                    <div class="mockup-title">Collection & Options</div>
+                    <div class="mockup-title">Collection</div>
                     <div class="mockup-spacer" aria-hidden="true"></div>
                   </div>
                   <div class="mockup-body">
@@ -455,7 +439,7 @@
                       <span class="mockup-dot dot-yellow"></span>
                       <span class="mockup-dot dot-green"></span>
                     </div>
-                    <div class="mockup-title">People Filter</div>
+                    <div class="mockup-title">Filtering</div>
                     <div class="mockup-spacer" aria-hidden="true"></div>
                   </div>
                   <div class="mockup-body">
@@ -488,7 +472,7 @@
                       <span class="mockup-dot dot-yellow"></span>
                       <span class="mockup-dot dot-green"></span>
                     </div>
-                    <div class="mockup-title">Genres Filter</div>
+                    <div class="mockup-title">Settings</div>
                     <div class="mockup-spacer" aria-hidden="true"></div>
                   </div>
                   <div class="mockup-body">
@@ -764,7 +748,7 @@
             <div class="arch-card">
               <span class="arch-tag">packages/react</span>
               <h3>@tropo/react</h3>
-              <p>Reusable UI components and design tokens.</p>
+              <p>Reusable UI components.</p>
             </div>
             <div class="arch-card">
               <span class="arch-tag">plugins/cine/tmdb</span>
@@ -782,8 +766,8 @@
             <span class="section-tag">Deployment</span>
             <h2 class="section-title">Quick Start</h2>
             <p class="section-description">
-              Run Tropo<span class="brand-text-cine">Cine</span> locally or
-              deploy behind an Apache/Nginx reverse proxy.
+              Run Tropo<span class="brand-text-cine">Cine</span> locally or with
+              Docker, and deploy it behind an Apache/Nginx reverse proxy.
             </p>
           </div>
 

@@ -252,7 +252,7 @@
               <h3 class="feature-title">Decoupled Architecture</h3>
               <p class="feature-desc">
                 A clean NPM workspace monorepo separating UI components, state
-                management, hardware drivers, and data plugins.
+                management, cache, hardware drivers, and data plugins.
               </p>
             </article>
 
@@ -391,7 +391,7 @@
                       <span class="mockup-dot dot-yellow"></span>
                       <span class="mockup-dot dot-green"></span>
                     </div>
-                    <div class="mockup-title">Collection & Options</div>
+                    <div class="mockup-title">Collection</div>
                     <div class="mockup-spacer" aria-hidden="true"></div>
                   </div>
                   <div class="mockup-body">
@@ -459,7 +459,7 @@
                       <span class="mockup-dot dot-yellow"></span>
                       <span class="mockup-dot dot-green"></span>
                     </div>
-                    <div class="mockup-title">Styles Filter</div>
+                    <div class="mockup-title">Filtering</div>
                     <div class="mockup-spacer" aria-hidden="true"></div>
                   </div>
                   <div class="mockup-body">
@@ -492,7 +492,7 @@
                       <span class="mockup-dot dot-yellow"></span>
                       <span class="mockup-dot dot-green"></span>
                     </div>
-                    <div class="mockup-title">Settings & Custom Fields</div>
+                    <div class="mockup-title">Settings</div>
                     <div class="mockup-spacer" aria-hidden="true"></div>
                   </div>
                   <div class="mockup-body">
@@ -658,7 +658,9 @@
             <div class="arch-card">
               <span class="arch-tag">apps/tropoaudio</span>
               <h3>React Application</h3>
-              <p>Primary client application for collection browsing.</p>
+              <p>
+                Primary client application for browsing a collection of albums.
+              </p>
             </div>
             <div class="arch-card">
               <span class="arch-tag">packages/core</span>
@@ -692,7 +694,7 @@
             <h2 class="section-title">Quick Start</h2>
             <p class="section-description">
               Run Tropo<span class="brand-text-audio">Audio</span> locally or
-              deploy via Docker.
+              with Docker, and deploy it behind an Apache/Nginx reverse proxy.
             </p>
           </div>
 
@@ -714,7 +716,7 @@
               cp apps/tropoaudio/.env.sample apps/tropoaudio/.env<br /><br />
               <span class="code-comment"># 3. Launch development server</span
               ><br />
-              npm run dev
+              npm run dev:audio
             </div>
           </div>
         </div>

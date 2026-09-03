@@ -226,38 +226,19 @@
               </p>
             </article>
 
-            <article class="feature-card" id="card-tmdb">
-              <h3 class="feature-title">Synchronisation TMDB</h3>
-              <p class="feature-desc">
-                Synchronisez listes publiques et personnelles depuis The Movie
-                Database avec affiches officielles, arrière-plans, casting et
-                synopsis.
-              </p>
-            </article>
-
-            <article class="feature-card" id="card-people">
-              <h3 class="feature-title">Découverte par Personnes</h3>
-              <p class="feature-desc">
-                Explorez naturellement vos films par réalisateurs et acteurs de
-                la distribution avec étiquettes interactives et recherche
-                croisée.
-              </p>
-            </article>
-
             <article class="feature-card" id="card-security">
               <h3 class="feature-title">Sécurité & Proxy d'API</h3>
               <p class="feature-desc">
-                Architecture reverse proxy avec Apache/Nginx. Les jetons d'accès
-                personnels à l'API TMDB restent protégés côté serveur.
+                Architecture avec proxy sécurisé (Apache/Nginx). Vos jetons
+                d'API et identifiants ne sont jamais exposés côté navigateur.
               </p>
             </article>
 
             <article class="feature-card" id="card-monorepo">
               <h3 class="feature-title">Architecture Découplée</h3>
               <p class="feature-desc">
-                Un monorepo NPM workspace propre séparant l'interface
-                utilisateur, la gestion d'état, le cache et les plugins de
-                données.
+                Monorepo NPM clair séparant composants d'interface, gestion
+                d'état, cache, et plugins de données.
               </p>
             </article>
 
@@ -339,10 +320,10 @@
               >
                 <div class="tab-index">03</div>
                 <div class="tab-text">
-                  <span class="tab-title">Filtres</span>
+                  <span class="tab-title">Filtrage</span>
                   <span class="tab-desc"
-                    >Filtrage multicritère instantané par réalisateurs et
-                    acteurs.</span
+                    >Filtrage multicritère instantané par genres, réalisateurs
+                    et acteurs.</span
                   >
                 </div>
               </button>
@@ -397,7 +378,7 @@
                       <span class="mockup-dot dot-yellow"></span>
                       <span class="mockup-dot dot-green"></span>
                     </div>
-                    <div class="mockup-title">Collection & Options</div>
+                    <div class="mockup-title">Collection</div>
                     <div class="mockup-spacer" aria-hidden="true"></div>
                   </div>
                   <div class="mockup-body">
@@ -465,13 +446,13 @@
                       <span class="mockup-dot dot-yellow"></span>
                       <span class="mockup-dot dot-green"></span>
                     </div>
-                    <div class="mockup-title">Filtre Personnes</div>
+                    <div class="mockup-title">Filtrage</div>
                     <div class="mockup-spacer" aria-hidden="true"></div>
                   </div>
                   <div class="mockup-body">
                     <img
                       src="./img/3.png"
-                      alt="Modale de filtre par personnes"
+                      alt="Modale des filtres"
                       class="mockup-img"
                       width="803"
                       height="1037"
@@ -480,7 +461,8 @@
                   </div>
                 </div>
                 <p class="gallery-caption">
-                  Filtrage multicritère instantané par réalisateurs et acteurs.
+                  Filtrage multicritère instantané par genres, réalisateurs et
+                  acteurs.
                 </p>
               </div>
 
@@ -498,13 +480,13 @@
                       <span class="mockup-dot dot-yellow"></span>
                       <span class="mockup-dot dot-green"></span>
                     </div>
-                    <div class="mockup-title">Filtre Genres</div>
+                    <div class="mockup-title">Paramètres</div>
                     <div class="mockup-spacer" aria-hidden="true"></div>
                   </div>
                   <div class="mockup-body">
                     <img
                       src="./img/4.png"
-                      alt="Modale de filtre par genres"
+                      alt="Modale des paramètres"
                       class="mockup-img"
                       width="803"
                       height="1037"
@@ -514,7 +496,7 @@
                 </div>
                 <p class="gallery-caption">
                   Filtrage direct de votre collection par genres
-                  cinématographiques.
+                  cinématographiques, réalisateurs et acteurs.
                 </p>
               </div>
 
@@ -781,10 +763,7 @@
             <div class="arch-card">
               <span class="arch-tag">packages/react</span>
               <h3>@tropo/react</h3>
-              <p>
-                Composants d'interface utilisateur réutilisables et design
-                tokens.
-              </p>
+              <p>Composants d'interface réutilisables.</p>
             </div>
             <div class="arch-card">
               <span class="arch-tag">plugins/cine/tmdb</span>
@@ -803,7 +782,8 @@
             <h2 class="section-title">Démarrage rapide</h2>
             <p class="section-description">
               Lancez Tropo<span class="brand-text-cine">Cine</span> en local ou
-              déployez-le derrière un reverse proxy Apache/Nginx.
+              avec Docker, et déployez-le derrière un reverse proxy
+              Apache/Nginx.
             </p>
           </div>
 
