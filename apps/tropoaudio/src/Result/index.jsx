@@ -344,7 +344,6 @@ const Result = () => {
             overflowX: "hidden",
           }}
           totalCount={result.length}
-          overscan={200}
           components={GRID_COMPONENTS}
           itemContent={(index) => {
             const item = result[index]
