@@ -28,6 +28,16 @@
 
 ---
 
+## Screenshots
+
+<img width="500" alt="1" src="https://github.com/user-attachments/assets/4572502f-4faf-4f97-9ce4-0f8d3ba61998" />
+<img width="500" alt="2" src="https://github.com/user-attachments/assets/03bb997a-aa89-4b4f-9302-61ef417eb617" />
+<img width="500" alt="3" src="https://github.com/user-attachments/assets/80051219-a039-4aab-b51a-c41e3ec92c80" />
+<img width="500" alt="4" src="https://github.com/user-attachments/assets/f6383c04-50d4-4d46-b316-84fd9197f49b" />
+<img width="500" alt="5" src="https://github.com/user-attachments/assets/25dd37f3-a9ea-4203-bb95-962b8f3bc742" />
+
+---
+
 ## Requirements
 
 - A [TMDB (The Movie Database)](https://www.themoviedb.org/) account
