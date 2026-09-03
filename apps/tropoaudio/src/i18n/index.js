@@ -1,6 +1,7 @@
 import i18n from "i18next"
 import LanguageDetector from "i18next-browser-languagedetector"
 import { initReactI18next } from "react-i18next"
+import { commonFR } from "@tropo/react"
 import FR from "./fr.json"
 import EN from "./en.json"
 
@@ -13,7 +14,10 @@ export const fixFrenchPunctuation = (str) =>
 
 // Pre-process French translations dictionary to add non-breaking spaces
 const processedFR = Object.fromEntries(
-  Object.entries(FR).map(([k, v]) => [k, fixFrenchPunctuation(v)]),
+  Object.entries({ ...commonFR, ...FR }).map(([k, v]) => [
+    k,
+    fixFrenchPunctuation(v),
+  ]),
 )
 
 i18n

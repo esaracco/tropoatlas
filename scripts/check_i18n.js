@@ -111,7 +111,17 @@ const appDirs = fs.existsSync(appsBaseDir)
       )
   : []
 
+const commonFrPath = path.join(
+  workspaceRoot,
+  "packages/react/src/i18n/fr.json",
+)
+const commonFr = fs.existsSync(commonFrPath)
+  ? JSON.parse(fs.readFileSync(commonFrPath, "utf8"))
+  : {}
+const commonKeys = Object.keys(commonFr)
+
 let totalErrors = 0
+const allWorkspaceKeysUsed = new Set()
 
 for (const appDir of appDirs) {
   const appFullDir = path.join(appsBaseDir, appDir)
@@ -120,6 +130,7 @@ for (const appDir of appDirs) {
   const frJsonPath = path.join(appFullDir, "src/i18n/fr.json")
   const frJson = JSON.parse(fs.readFileSync(frJsonPath, "utf8"))
   const keys = Object.keys(frJson)
+  const combinedFr = { ...commonFr, ...frJson }
 
   // Scan the app itself and all its declared workspace dependencies
   const scanDirs = [appFullDir]
@@ -145,28 +156,41 @@ for (const appDir of appDirs) {
     let match
     while ((match = translationRegex.exec(cleanContent)) !== null) {
       const key = match[2] || match[4]
-      if (key) keysUsedInCode.add(key)
+      if (key) {
+        keysUsedInCode.add(key)
+        allWorkspaceKeysUsed.add(key)
+      }
     }
   })
 
   const unusedKeys = []
   const missingKeys = []
+  const redundantKeys = []
 
-  // Check for orphaned keys in dictionary
+  // Check for orphaned keys in app dictionary
   for (const key of keys) {
     if (!keysUsedInCode.has(key) && !DYNAMIC_KEYS.has(key)) {
       unusedKeys.push(key)
     }
   }
 
-  // Check for missing keys in dictionary
+  // Check for missing keys in combined dictionary
   for (const key of keysUsedInCode) {
-    if (!Object.hasOwn(frJson, key)) {
+    if (!Object.hasOwn(combinedFr, key)) {
       missingKeys.push(key)
     }
   }
 
-  console.log(`\n=== Checking ${appDir} (${keys.length} keys in fr.json, ${sourceFiles.length} files scanned) ===`)
+  // Check for redundant keys that already exist identically in commonFr
+  for (const key of keys) {
+    if (Object.hasOwn(commonFr, key) && commonFr[key] === frJson[key]) {
+      redundantKeys.push(key)
+    }
+  }
+
+  console.log(
+    `\n=== Checking ${appDir} (${keys.length} app keys, ${sourceFiles.length} files scanned) ===`,
+  )
 
   if (unusedKeys.length > 0) {
     console.log("⚠️  Orphaned keys (in fr.json but unused in code):")
@@ -175,14 +199,40 @@ for (const appDir of appDirs) {
   }
 
   if (missingKeys.length > 0) {
-    console.log("❌  Missing translations (in code but absent from fr.json):")
+    console.log("❌  Missing translations (in code but absent from dictionaries):")
     console.log(JSON.stringify(missingKeys, null, 2))
     totalErrors++
   }
 
-  if (unusedKeys.length === 0 && missingKeys.length === 0) {
-    console.log(`✅  ${appDir}: No orphaned keys and no missing translations.`)
+  if (redundantKeys.length > 0) {
+    console.log("⚠️  Redundant keys (already provided identically by @tropo/react):")
+    console.log(JSON.stringify(redundantKeys, null, 2))
+    totalErrors++
   }
+
+  if (
+    unusedKeys.length === 0 &&
+    missingKeys.length === 0 &&
+    redundantKeys.length === 0
+  ) {
+    console.log(`✅  ${appDir}: All checks passed.`)
+  }
+}
+
+console.log(
+  `\n=== Checking shared @tropo/react (${commonKeys.length} common keys) ===`,
+)
+const orphanedCommonKeys = commonKeys.filter(
+  (k) => !allWorkspaceKeysUsed.has(k) && !DYNAMIC_KEYS.has(k),
+)
+if (orphanedCommonKeys.length > 0) {
+  console.log(
+    "⚠️  Orphaned keys in @tropo/react (unused anywhere in workspace):",
+  )
+  console.log(JSON.stringify(orphanedCommonKeys, null, 2))
+  totalErrors++
+} else {
+  console.log("✅  @tropo/react: All shared keys are actively used.")
 }
 
 if (totalErrors > 0) {
@@ -191,3 +241,4 @@ if (totalErrors > 0) {
   console.log("\n🎉  All applications i18n checks passed successfully!\n")
   process.exit(0)
 }
+

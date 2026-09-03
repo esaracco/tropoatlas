@@ -9,9 +9,14 @@ const __dirname = path.dirname(__filename)
 const projectRoot = path.resolve(__dirname, "..")
 const workspaceRoot = path.resolve(projectRoot, "../..")
 const frJsonPath = path.join(projectRoot, "src/i18n/fr.json")
+const commonFrPath = path.join(workspaceRoot, "packages/react/src/i18n/fr.json")
 
 console.log("Reading file:", frJsonPath)
 const frJson = JSON.parse(fs.readFileSync(frJsonPath, "utf8"))
+const commonFr = fs.existsSync(commonFrPath)
+  ? JSON.parse(fs.readFileSync(commonFrPath, "utf8"))
+  : {}
+const combinedFr = { ...commonFr, ...frJson }
 const keys = Object.keys(frJson)
 
 const IGNORE_DIRS = new Set([
@@ -101,9 +106,9 @@ for (const key of keys) {
   }
 }
 
-// 2. Find missing keys (in code but not in fr.json)
+// 2. Find missing keys (in code but not in combinedFr)
 for (const key of keysUsedInCode) {
-  if (!Object.hasOwn(frJson, key)) {
+  if (!Object.hasOwn(combinedFr, key)) {
     missingKeys.push(key)
   }
 }
