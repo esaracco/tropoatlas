@@ -221,12 +221,12 @@ export default defineConfig(({ mode }) => {
         manifest: {
           lang: "en",
           short_name: "TropoAudio",
-          name: "TropoAudio – A universal audio collection manager",
+          name: "TropoAudio – A universal album collection manager",
           description:
             "Organize your collection, enrich it with your own metadata, and locate albums instantly using LED strips",
           translations: {
             fr: {
-              name: "TropoAudio – Un gestionnaire universel de collection audio",
+              name: "TropoAudio – Un gestionnaire universel de collection d'albums",
               description:
                 "Organisez votre collection, enrichissez-la avec vos propres métadonnées, et localisez instantanément vos albums grâce à des bandes LED.",
             },

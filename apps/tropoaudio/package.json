@@ -1,6 +1,6 @@
 {
   "name": "tropoaudio",
-  "description": "TropoAudio is a universal audio collection manager",
+  "description": "TropoAudio is a universal album collection manager",
   "version": "2.0.0",
   "homepage": "https://tropoaudio.esaracco.fr",
   "type": "module",

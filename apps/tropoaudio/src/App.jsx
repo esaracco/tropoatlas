@@ -75,7 +75,7 @@ const App = () => {
             "Organize your collection, enrich it with your own metadata, and locate albums instantly using LED strips",
           ),
         )
-      document.title = `TropoAudio – ${t("An audio collection manager")}`
+      document.title = `TropoAudio – ${t("An album collection manager")}`
     }
   }, [t])
 

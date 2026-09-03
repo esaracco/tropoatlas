@@ -1,7 +1,7 @@
 {
   "name": "@tropo/discogs",
   "version": "1.0.0",
-  "description": "Discogs plugin for TropoAudio (an audio collection manager)",
+  "description": "Discogs plugin for TropoAudio (an album collection manager)",
   "main": "src/index.js",
   "type": "module",
   "dependencies": {

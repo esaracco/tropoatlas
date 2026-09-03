@@ -1,7 +1,7 @@
 {
-  "keyAboutMessage": "TropoAudio est un gestionnaire de collection audio sous licence libre. Synchronisez vos albums (<ProviderLink>{{provider}}</ProviderLink>), personnalisez vos métadonnées et localisez instantanément vos vinyles et CDs sur vos étagères grâce à des rubans LED connectés.",
+  "keyAboutMessage": "TropoAudio est un gestionnaire de collection d'albums sous licence libre. Synchronisez vos albums (<ProviderLink>{{provider}}</ProviderLink>), personnalisez vos métadonnées et localisez instantanément vos vinyles et CDs sur vos étagères grâce à des rubans LED connectés.",
   "About TropoAudio v{{version}}": "À propos de TropoAudio v{{version}}",
-  "An audio collection manager": "Un gestionnaire de collection audio",
+  "An album collection manager": "Un gestionnaire de collection d'albums",
   "albums": "albums",
   "Artist": "Artiste",
   "artist, album...": "artiste, album...",

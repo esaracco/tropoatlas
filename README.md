@@ -4,7 +4,7 @@
 
 **TropoAtlas is a free software monorepo ecosystem designed to organize, enrich, and physically locate media collections (music, movies, books) on your shelves using connected IoT LED strips.**
 
-> _Note: TropoAudio (the audio collection application within this ecosystem) is the direct successor to the original [TropoDisc repository](https://github.com/esaracco/tropodisc), which has been archived and remains available for historical reference._
+> _Note: TropoAudio (the album collection application within this ecosystem) is the direct successor to the original [TropoDisc repository](https://github.com/esaracco/tropodisc), which has been archived and remains available for historical reference._
 
 ---
 
@@ -27,7 +27,7 @@ TropoAtlas is built on an **NPM Monorepo** architecture separating presentation 
 ```text
 tropoatlas/
 ├── apps/
-│   ├── tropoaudio/          # React frontend for audio collections
+│   ├── tropoaudio/          # React frontend for album collections
 │   └── tropocine/           # React frontend for film collections
 ├── packages/
 │   ├── core/                # Core domain, storage abstraction, backup/export, Zustand state (@tropo/core)
