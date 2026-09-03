@@ -29,7 +29,7 @@ _TropoAudio is the direct successor to the original [TropoDisc repository](https
 <img width="500" alt="2" src="https://github.com/user-attachments/assets/9cd1bbe9-da27-42a2-b0be-f8187db370ea" />
 <img width="500" alt="3" src="https://github.com/user-attachments/assets/8f6ef975-7895-4317-aa44-f66397b7d29f" />
 <img width="500" alt="4" src="https://github.com/user-attachments/assets/804d0a05-7b21-459a-a8c5-ca349fb6b7b1" />
-<img width="500" alt="5" src="https://github.com/user-attachments/assets/45e2bc97-e3ed-4d43-833f-5647a01668a5" />
+<img width="500" alt="5" src="https://github.com/user-attachments/assets/bfd252d2-3aed-430e-b3c9-38c89420154e" />
 
 ---
 
