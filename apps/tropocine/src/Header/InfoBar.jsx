@@ -40,7 +40,7 @@ const InfoBar = () => {
             label = t("Director")
             break
           case "title":
-            label = t("Movie")
+            label = t("Title")
             break
           case "rating":
             label = t("Rating")

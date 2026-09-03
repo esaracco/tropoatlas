@@ -267,7 +267,7 @@ const Header = () => {
         content={{
           added: t("Date added"),
           year: t("Year"),
-          title: t("Movie"),
+          title: t("Title"),
           creator: t("Director"),
           rating: t("Rating"),
         }}
