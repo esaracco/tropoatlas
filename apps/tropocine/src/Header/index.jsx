@@ -265,6 +265,7 @@ const Header = () => {
         label={t("Sort")}
         type="radio"
         content={{
+          added: t("Date added"),
           year: t("Year"),
           title: t("Movie"),
           creator: t("Director"),

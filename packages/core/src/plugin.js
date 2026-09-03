@@ -143,4 +143,12 @@ export class BasePlugin {
   getMaxRequestsPerMinute() {
     return 60
   }
+
+  /**
+   * Return the default sort criteria for the provider.
+   * @returns {string}
+   */
+  getDefaultSort() {
+    return "added_desc"
+  }
 }

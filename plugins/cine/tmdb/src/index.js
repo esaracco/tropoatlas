@@ -230,7 +230,8 @@ export class TMDBPlugin extends BasePlugin {
     const progressStep = 80 / total
     let currentProgress = 20
 
-    for (const movie of rawMovies) {
+    for (let i = 0; i < rawMovies.length; i++) {
+      const movie = rawMovies[i]
       if (!movie || !movie.id) continue
 
       const cacheKey = buildCacheKey("tmdb-movie", String(movie.id))
@@ -292,6 +293,7 @@ export class TMDBPlugin extends BasePlugin {
         overview,
         cast,
         searchIndex,
+        added: i,
       }
 
       currentProgress += progressStep
@@ -361,5 +363,9 @@ export class TMDBPlugin extends BasePlugin {
 
   getMaxRequestsPerMinute() {
     return 1200
+  }
+
+  getDefaultSort() {
+    return "added_desc"
   }
 }

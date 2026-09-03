@@ -58,9 +58,9 @@ registerRoute(
 registerRoute(
   // Add in any other file extensions or routing criteria as needed.
   ({ url }) =>
-    url.origin === self.location.origin && url.pathname.endsWith(".png"), // Customize this strategy as needed, e.g., by changing to CacheFirst.
+    url.origin === self.location.origin && url.pathname.endsWith(".png"),
   new StaleWhileRevalidate({
-    cacheName: "images",
+    cacheName: buildCacheKey("images"),
     plugins: [
       // Ensure that once this runtime cache reaches a maximum size the
       // least-recently used images are removed.
@@ -85,8 +85,9 @@ registerRoute(
 )
 
 // Background Sync for offline provider updates
-const bgSyncPlugin = new BackgroundSyncPlugin("provider-queue", {
-  maxRetentionTime: 24 * 60, // Retry for max of 24 Hours
+const bgSyncPlugin = new BackgroundSyncPlugin(buildCacheKey("provider-queue"), {
+  // Retry for max of 24 Hours
+  maxRetentionTime: 24 * 60,
 })
 
 registerRoute(

@@ -72,18 +72,13 @@ const Result = () => {
     const fCreators = new Set()
 
     // sort
-    const [sortField, sortDir] = (sort || "year_desc").split("_")
+    const [sortField, sortDir] = (sort || "added_desc").split("_")
     const mul = sortDir === "desc" ? -1 : 1
 
     switch (sortField) {
       case "added":
         keys.sort(
-          (a, b) =>
-            (releases[a].added < releases[b].added
-              ? -1
-              : releases[a].added > releases[b].added
-                ? 1
-                : 0) * mul,
+          (a, b) => ((releases[a].added || 0) - (releases[b].added || 0)) * mul,
         )
         break
       case "rating":
@@ -108,13 +103,17 @@ const Result = () => {
         )
         break
       case "year":
-        keys.sort(
-          (a, b) => ((releases[a].year || 0) - (releases[b].year || 0)) * mul,
-        )
+        keys.sort((a, b) => {
+          const diff = ((releases[a].year || 0) - (releases[b].year || 0)) * mul
+          if (diff !== 0) return diff
+          return (releases[a].title || "").localeCompare(
+            releases[b].title || "",
+          )
+        })
         break
       default:
         keys.sort(
-          (a, b) => ((releases[a].year || 0) - (releases[b].year || 0)) * mul,
+          (a, b) => ((releases[a].added || 0) - (releases[b].added || 0)) * mul,
         )
     }
 

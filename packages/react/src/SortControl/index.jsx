@@ -3,10 +3,11 @@ import React from "react"
 import "./SortControl.css"
 
 // COMPONENT SortControl
-const SortControl = ({ items, sort, onSortChange }) => {
+const SortControl = ({ items = {}, sort, onSortChange }) => {
   const lastIndex = sort ? sort.lastIndexOf("_") : -1
-  const sortBy =
-    lastIndex !== -1 ? sort.substring(0, lastIndex) : Object.keys(items)[0]
+  const rawSortBy = lastIndex !== -1 ? sort.substring(0, lastIndex) : ""
+  const validKeys = Object.keys(items)
+  const sortBy = validKeys.includes(rawSortBy) ? rawSortBy : validKeys[0] || ""
   const sortDirection =
     lastIndex !== -1 ? sort.substring(lastIndex + 1) : "desc"
 

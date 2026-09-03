@@ -506,4 +506,8 @@ export class DiscogsPlugin extends BasePlugin {
   getMaxRequestsPerMinute() {
     return 60
   }
+
+  getDefaultSort() {
+    return "added_desc"
+  }
 }

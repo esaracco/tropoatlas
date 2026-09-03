@@ -95,7 +95,6 @@ docker run --rm -it -p 3001:3001 -e TMDB_TOKEN="your_personal_token" tropocine:p
 
 ### Option 2: Apache Reverse Proxy
 
-
 1. Enable the required Apache modules:
 
 ```bash

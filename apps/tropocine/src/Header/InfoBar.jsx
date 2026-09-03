@@ -30,7 +30,7 @@ const InfoBar = () => {
       setInfo(t("Synchronization in progress..."))
     } else if (displayCount > 0) {
       const getSortLabel = (s) => {
-        const [field, dir] = (s || "year_desc").split("_")
+        const [field, dir] = (s || "added_desc").split("_")
         let label = ""
         switch (field) {
           case "added":
@@ -49,6 +49,8 @@ const InfoBar = () => {
             label = t("Year")
             break
           default:
+            label = t("Date added")
+            break
         }
         return (
           <>

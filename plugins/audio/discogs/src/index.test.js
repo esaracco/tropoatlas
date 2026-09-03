@@ -1,5 +1,12 @@
 import { describe, it, expect } from "vitest"
-import { getArtistName } from "./index.js"
+import { DiscogsPlugin, getArtistName } from "./index.js"
+
+describe("DiscogsPlugin - getDefaultSort", () => {
+  it("should return default sort order added_desc", () => {
+    const plugin = new DiscogsPlugin()
+    expect(plugin.getDefaultSort()).toBe("added_desc")
+  })
+})
 
 describe("DiscogsPlugin - getArtistName", () => {
   it("should return name when no ANV is provided", () => {

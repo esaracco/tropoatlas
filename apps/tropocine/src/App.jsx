@@ -84,6 +84,15 @@ const App = () => {
         localStorage.setItem(schemaVersionKey, currentSchemaVersion)
       }
 
+      // Ensure sort order is supported by current provider
+      const defaultSort = plugin.getDefaultSort?.() || "added_desc"
+      const currentSort = useCollectionStore.getState().sort
+      const [sortField] = (currentSort || "").split("_")
+      const validSortFields = ["added", "year", "title", "creator", "rating"]
+      if (!validSortFields.includes(sortField)) {
+        useCollectionStore.getState().setSort(defaultSort)
+      }
+
       const setItems = useCollectionStore.getState().setItems
       const setCategories = useCollectionStore.getState().setCategories
       const setCreators = useCollectionStore.getState().setCreators

@@ -39,6 +39,10 @@ describe("TMDBPlugin - metadata and categories", () => {
     expect(plugin.getMaxRequestsPerMinute()).toBe(1200)
   })
 
+  it("should return default sort order added_desc", () => {
+    expect(plugin.getDefaultSort()).toBe("added_desc")
+  })
+
   it("should extract unique sorted categories from items map", () => {
     const items = {
       1: { categories: ["Action", "Science-Fiction"] },

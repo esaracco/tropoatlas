@@ -41,7 +41,7 @@ registerRoute(
   ({ url }) =>
     url.origin === self.location.origin && url.pathname.endsWith(".png"),
   new StaleWhileRevalidate({
-    cacheName: "images",
+    cacheName: buildCacheKey("images"),
     plugins: [new ExpirationPlugin({ maxEntries: 50 })],
   }),
 )
@@ -62,7 +62,7 @@ registerRoute(
 )
 
 // Background Sync for offline provider updates
-const bgSyncPlugin = new BackgroundSyncPlugin("provider-queue", {
+const bgSyncPlugin = new BackgroundSyncPlugin(buildCacheKey("provider-queue"), {
   maxRetentionTime: 24 * 60,
 })
 
