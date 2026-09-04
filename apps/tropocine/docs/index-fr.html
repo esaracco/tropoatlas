@@ -156,6 +156,19 @@
     <!-- Header / Hero Section -->
     <header class="hero" id="top">
       <div class="container">
+        <div class="hero-brand-lockup">
+          <img
+            src="./icon-180.png"
+            alt="Logo TropoCine"
+            class="hero-brand-icon"
+            width="56"
+            height="56"
+          />
+          <span class="hero-brand-name"
+            >Tropo<span class="brand-text-cine">Cine</span></span
+          >
+        </div>
+
         <h1 class="hero-title">
           Organisez, explorez et redécouvrez votre
           <span class="brand-text-cine">collection de films</span>
@@ -882,6 +895,30 @@
             tag.classList.toggle("active")
           })
         })
+      })()
+
+      /* Navbar brand scroll-reveal */
+      ;(function () {
+        var brand = document.querySelector(".brand")
+        var heroLockup = document.querySelector(".hero-brand-lockup")
+        if (!brand || !heroLockup || !("IntersectionObserver" in window)) {
+          return
+        }
+
+        document.body.classList.add("has-scroll-reveal")
+        var observer = new IntersectionObserver(
+          function (entries) {
+            entries.forEach(function (entry) {
+              if (entry.isIntersecting) {
+                brand.classList.remove("visible")
+              } else {
+                brand.classList.add("visible")
+              }
+            })
+          },
+          { threshold: 0.1 },
+        )
+        observer.observe(heroLockup)
       })()
     </script>
   </body>

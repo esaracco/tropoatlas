@@ -136,6 +136,22 @@ p {
   gap: 0.65rem;
   font-size: 1.2rem;
   font-weight: 700;
+  transition:
+    opacity 0.25s ease,
+    transform 0.25s ease;
+}
+
+/* Progressive enhancement: hide navbar brand at top if JS is available */
+.has-scroll-reveal .brand {
+  opacity: 0;
+  transform: translateY(-4px);
+  pointer-events: none;
+}
+
+.has-scroll-reveal .brand.visible {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
 }
 
 .brand-logo {
@@ -329,7 +345,7 @@ p {
 
 /* ── Hero Section ────────────────────────────────────────────────────────── */
 .hero {
-  padding: 5rem 0 3.5rem;
+  padding: 2.75rem 0 3.5rem;
   text-align: center;
   background: radial-gradient(
     circle at top center,
@@ -339,8 +355,49 @@ p {
   border-bottom: 1px solid var(--border);
 }
 
+/* Hero brand lockup */
+.hero-brand-lockup {
+  display: flex;
+  width: fit-content;
+  margin: 0 auto 1.25rem;
+  align-items: center;
+  justify-content: center;
+  gap: 0.85rem;
+}
+
+.hero-brand-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 14px;
+  box-shadow:
+    0 8px 20px -4px rgba(99, 102, 241, 0.28),
+    0 4px 10px -2px rgba(0, 0, 0, 0.1),
+    0 0 0 1px rgba(0, 0, 0, 0.05);
+  transition:
+    transform 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  user-select: none;
+}
+
+.hero-brand-lockup:hover .hero-brand-icon {
+  transform: translateY(-2px) scale(1.04);
+  box-shadow:
+    0 12px 24px -4px rgba(99, 102, 241, 0.35),
+    0 6px 14px -3px rgba(0, 0, 0, 0.15);
+}
+
+.hero-brand-name {
+  font-size: 1.85rem;
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  color: var(--text);
+  line-height: 1;
+}
+
 .hero-pill {
-  display: inline-flex;
+  display: flex;
+  width: fit-content;
+  margin: 0 auto 1.5rem;
   align-items: center;
   gap: 0.5rem;
   padding: 0.35rem 0.9rem;
@@ -350,7 +407,6 @@ p {
   font-size: 0.82rem;
   font-weight: 500;
   color: var(--text-muted);
-  margin-bottom: 1.5rem;
 }
 
 .hero-pill-dot {
@@ -1094,7 +1150,26 @@ p {
   }
 
   .hero {
-    padding: 3.5rem 0 2.5rem;
+    padding: 2rem 0 2.5rem;
+  }
+
+  .hero-brand-lockup {
+    margin: 0 auto 0.85rem;
+    gap: 0.65rem;
+  }
+
+  .hero-pill {
+    margin: 0 auto 1.25rem;
+  }
+
+  .hero-brand-icon {
+    width: 46px;
+    height: 46px;
+    border-radius: 12px;
+  }
+
+  .hero-brand-name {
+    font-size: 1.5rem;
   }
 
   .section {
