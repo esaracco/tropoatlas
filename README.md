@@ -2,11 +2,11 @@
 
 [![GPL License](https://img.shields.io/badge/license-GPLv3-blue.svg)](LICENSE) [![Website](https://img.shields.io/badge/website-tropoatlas.esaracco.fr-indigo.svg)](https://tropoatlas.esaracco.fr) [![Made with React](https://img.shields.io/badge/React-18-61DAFB.svg)](https://reactjs.org/) [![Vite](https://img.shields.io/badge/Vite-B73BFE.svg)](https://vitejs.dev/)
 
-**TropoAtlas is a free software monorepo ecosystem designed to organize, enrich, and physically locate media collections (music, movies, books) on your shelves using connected IoT LED strips.**
+**TropoAtlas is a suite of free software applications designed to organize, enrich, and physically locate media collections (music, movies, books) on your shelves using connected IoT LED strips.**
 
 > _Visit the official presentation portal: [tropoatlas.esaracco.fr](https://tropoatlas.esaracco.fr)_
 >
-> _Note: TropoAudio (the album collection application within this ecosystem) is the direct successor to the original [TropoDisc repository](https://github.com/esaracco/tropodisc), which has been archived and remains available for historical reference._
+> _Note: TropoAudio (the album collection application in TropoAtlas) is the direct successor to the original [TropoDisc repository](https://github.com/esaracco/tropodisc), which has been archived and remains available for historical reference._
 
 <div align="center"><img src="docs/icon-180.png" alt="TropoAtlas logo" /></div>
 

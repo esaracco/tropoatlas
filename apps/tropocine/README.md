@@ -2,7 +2,7 @@
 
 [![GPL License](https://img.shields.io/badge/license-GPLv3-blue.svg)](../../LICENSE) [![TMDB API](https://img.shields.io/badge/Powered%20by-TMDB-01b4e4.svg)](https://developer.themoviedb.org/) [![Made with React](https://img.shields.io/badge/React-18-61DAFB.svg)](https://reactjs.org/) [![Vite](https://img.shields.io/badge/Vite-B73BFE.svg)](https://vitejs.dev/)
 
-**TropoCine is a free software film collection manager within the [TropoAtlas](../../README.md) ecosystem. Synchronize your movie lists from The Movie Database (TMDB), explore directors and cast members, customize your metadata, and navigate your film library.**
+**TropoCine is a free software film collection manager, part of the [TropoAtlas](../../README.md) suite. Synchronize your movie lists from The Movie Database (TMDB), explore directors and cast members, customize your metadata, and navigate your film library.**
 
 <div align="center"><img src="public/icon-180.png" alt="TropoCine logo" /></div>
 

@@ -1,7 +1,7 @@
 {
   "name": "tropoatlas",
   "version": "2.0.0",
-  "description": "TropoAtlas Ecosystem Workspace",
+  "description": "TropoAtlas Workspace",
   "homepage": "https://tropoatlas.esaracco.fr",
   "workspaces": [
     "apps/*",

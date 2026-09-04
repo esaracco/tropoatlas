@@ -2,7 +2,7 @@
 
 [![GPL License](https://img.shields.io/badge/license-GPLv3-blue.svg)](../../LICENSE) [![Discogs API](https://img.shields.io/badge/Powered%20by-Discogs-orange.svg)](https://www.discogs.com/developers/) [![Made with React](https://img.shields.io/badge/React-18-61DAFB.svg)](https://reactjs.org/) [![Vite](https://img.shields.io/badge/Vite-B73BFE.svg)](https://vitejs.dev/)
 
-**TropoAudio is a free software album collection manager within the [TropoAtlas](../../README.md) ecosystem. Synchronize your albums (Discogs), customize your metadata, and instantly locate your vinyl records and CDs on your shelves using connected LED strips.**
+**TropoAudio is a free software album collection manager, part of the [TropoAtlas](../../README.md) suite. Synchronize your albums (Discogs), customize your metadata, and instantly locate your vinyl records and CDs on your shelves using connected LED strips.**
 
 _TropoAudio is the direct successor to the original [TropoDisc repository](https://github.com/esaracco/tropodisc), which has been archived and remains available for historical reference._
 

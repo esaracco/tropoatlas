@@ -1,6 +1,6 @@
 # @tropo/react
 
-A collection of generic, reusable React components, design tokens, and UI hooks used across the TropoAtlas ecosystem.
+A collection of generic, reusable React components, design tokens, and UI hooks used across TropoAtlas applications.
 
 ## Shared Features
 
