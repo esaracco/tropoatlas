@@ -75,6 +75,10 @@ p {
   color: var(--accent);
 }
 
+.brand-text-atlas {
+  color: #6366f1;
+}
+
 /* ── Navigation Bar ──────────────────────────────────────────────────────── */
 .navbar {
   position: sticky;
@@ -224,6 +228,39 @@ p {
   letter-spacing: -0.025em;
   color: var(--text);
   line-height: 1;
+}
+
+.hero-pill {
+  display: inline-flex;
+  width: fit-content;
+  margin: 0 auto 1.5rem;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.35rem 0.9rem;
+  background: #f1f5f9;
+  border: 1px solid var(--border);
+  border-radius: 9999px;
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  text-decoration: none;
+  transition:
+    border-color 0.15s ease,
+    color 0.15s ease,
+    background-color 0.15s ease;
+}
+
+.hero-pill:hover {
+  border-color: var(--accent);
+  color: var(--text);
+  background: #e2e8f0;
+}
+
+.hero-pill-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent);
 }
 
 .hero-title {
@@ -831,9 +868,46 @@ p {
 
 /* ── Footer ──────────────────────────────────────────────────────────────── */
 .footer {
-  padding: 2.5rem 0;
+  padding: 3rem 0 2.5rem;
   background: var(--bg-subtle);
   border-top: 1px solid var(--border);
+}
+
+.footer-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.footer-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  font-size: 1.15rem;
+  font-weight: 700;
+}
+
+.footer-nav {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem 1.5rem;
+  flex-wrap: wrap;
+  list-style: none;
+}
+
+.footer-nav-link {
+  font-size: 0.88rem;
+  color: var(--text-muted);
+  transition: color 0.15s ease;
+}
+
+.footer-nav-link:hover {
+  color: var(--text);
 }
 
 .footer-bottom {
@@ -869,6 +943,10 @@ p {
   .hero-brand-lockup {
     margin: 0 auto 1.25rem;
     gap: 0.65rem;
+  }
+
+  .hero-pill {
+    margin: 0 auto 1.25rem;
   }
 
   .hero-brand-icon {
