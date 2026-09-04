@@ -1,0 +1,721 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Primary SEO Meta Tags -->
+    <title>TropoAtlas — Gestionnaire de collections multimédias et étagères connectées</title>
+    <meta
+      name="title"
+      content="TropoAtlas — Gestionnaire de collections multimédias et étagères connectées"
+    />
+    <meta
+      name="description"
+      content="TropoAtlas est un écosystème de logiciels libres conçu pour organiser, enrichir et localiser physiquement vos collections multimédias (musique, cinéma, livres) sur vos étagères grâce à des bandeaux LED connectés."
+    />
+    <meta
+      name="keywords"
+      content="TropoAtlas, TropoAudio, TropoCine, TropoBiblio, gestionnaire de collection, vinyles, collection de films, livres, étagères connectées, ESP32, WS2812B, repérage bandeau LED, Discogs, TMDB, monorepo React, logiciel libre, GPLv3"
+    />
+    <meta name="author" content="Emmanuel Saracco" />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://tropoatlas.esaracco.fr/index-fr.html" />
+    <link
+      rel="alternate"
+      hreflang="fr"
+      href="https://tropoatlas.esaracco.fr/index-fr.html"
+    />
+    <link
+      rel="alternate"
+      hreflang="en"
+      href="https://tropoatlas.esaracco.fr/index.html"
+    />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://tropoatlas.esaracco.fr/index-fr.html" />
+    <meta
+      property="og:title"
+      content="TropoAtlas — Gestionnaire de collections multimédias et étagères connectées"
+    />
+    <meta
+      property="og:description"
+      content="Écosystème de logiciels libres pour organiser, enrichir et localiser physiquement vos collections multimédias (musique, cinéma, livres) sur vos étagères grâce à des bandeaux LED connectés."
+    />
+    <meta property="og:image" content="./icon-512.png" />
+    <meta property="og:site_name" content="TropoAtlas" />
+
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content="https://tropoatlas.esaracco.fr/index-fr.html" />
+    <meta
+      name="twitter:title"
+      content="TropoAtlas — Gestionnaire de collections multimédias et étagères connectées"
+    />
+    <meta
+      name="twitter:description"
+      content="Écosystème de logiciels libres pour organiser, enrichir et localiser physiquement vos collections multimédias (musique, cinéma, livres) sur vos étagères grâce à des bandeaux LED connectés."
+    />
+    <meta name="twitter:image" content="./icon-512.png" />
+
+    <!-- Favicons -->
+    <link rel="icon" type="image/x-icon" href="./favicon.ico" />
+    <link rel="icon" type="image/png" sizes="180x180" href="./icon-180.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="./icon-180.png" />
+
+    <!-- Schema.org JSON-LD -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "TropoAtlas",
+        "operatingSystem": "Web",
+        "applicationCategory": "MultimediaApplication",
+        "license": "https://www.gnu.org/licenses/gpl-3.0.html",
+        "description": "Écosystème de logiciels libres conçu pour organiser, enrichir et localiser physiquement vos collections multimédias (musique, cinéma, livres) sur vos étagères grâce à des bandeaux LED connectés.",
+        "author": {
+          "@type": "Person",
+          "name": "Emmanuel Saracco"
+        },
+        "url": "https://tropoatlas.esaracco.fr",
+        "image": "https://tropoatlas.esaracco.fr/icon-512.png"
+      }
+    </script>
+
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="./index.css" />
+  </head>
+  <body>
+    <!-- Navigation Bar -->
+    <nav class="navbar" aria-label="Navigation principale">
+      <div class="container navbar-container">
+        <a href="#top" class="brand" id="nav-brand">
+          <img
+            src="./icon-180.png"
+            alt="Logo TropoAtlas"
+            class="brand-logo"
+            width="32"
+            height="32"
+          />
+          <span>Tropo<span class="brand-text-atlas">Atlas</span></span>
+        </a>
+
+        <ul class="nav-links">
+          <li>
+            <a href="#apps" class="nav-link" id="nav-apps">Applications</a>
+          </li>
+          <li>
+            <a href="#hardware" class="nav-link" id="nav-hardware">Étagères connectées</a>
+          </li>
+          <li>
+            <a href="#architecture" class="nav-link" id="nav-architecture">Architecture</a>
+          </li>
+          <li>
+            <a href="#quickstart" class="nav-link" id="nav-quickstart">Démarrage rapide</a>
+          </li>
+        </ul>
+
+        <div class="nav-actions">
+          <a
+            href="./index.html"
+            class="btn btn-secondary btn-sm"
+            id="lang-switch-en"
+            title="English version"
+          >
+            EN
+          </a>
+          <a
+            href="https://github.com/esaracco/tropoatlas"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="btn btn-secondary btn-sm"
+            id="btn-github-nav"
+          >
+            GitHub
+          </a>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Header / Hero Section -->
+    <header class="hero" id="top">
+      <div class="container">
+        <div class="hero-pill">
+          <span class="hero-pill-dot"></span>
+          <span>Écosystème libre en monorepo · GPLv3</span>
+        </div>
+
+        <h1 class="hero-title">
+          Organisez, explorez et
+          <span class="brand-text-atlas">illuminez</span> vos collections
+        </h1>
+
+        <p class="hero-subtitle">
+          Tropo<span class="brand-text-atlas">Atlas</span> crée le pont entre votre catalogue numérique
+          et vos rayonnages réels. Gérez votre musique, vos films et vos livres via des applications dédiées,
+          et localisez instantanément vos œuvres sur vos étagères grâce à des bandeaux LED connectés.
+        </p>
+
+        <div class="hero-cta">
+          <a href="#apps" class="btn btn-primary" id="btn-hero-apps">
+            Découvrir les applications
+          </a>
+          <a href="#hardware" class="btn btn-secondary" id="btn-hero-hardware">
+            Étagères connectées (IoT)
+          </a>
+        </div>
+
+        <!-- Dual Application Showcase -->
+        <div class="hero-showcase">
+          <div class="showcase-grid">
+            <div class="mockup-window">
+              <div class="mockup-header">
+                <div class="mockup-dots" aria-hidden="true">
+                  <span class="mockup-dot dot-red"></span>
+                  <span class="mockup-dot dot-yellow"></span>
+                  <span class="mockup-dot dot-green"></span>
+                </div>
+                <div class="mockup-title">TropoAudio — Collection musicale</div>
+                <div class="mockup-spacer" aria-hidden="true"></div>
+              </div>
+              <div class="mockup-body">
+                <img
+                  src="./img/tropoaudio-preview.png"
+                  alt="Aperçu de l'interface TropoAudio"
+                  class="mockup-img"
+                  width="803"
+                  height="1037"
+                  loading="eager"
+                />
+              </div>
+            </div>
+
+            <div class="mockup-window">
+              <div class="mockup-header">
+                <div class="mockup-dots" aria-hidden="true">
+                  <span class="mockup-dot dot-red"></span>
+                  <span class="mockup-dot dot-yellow"></span>
+                  <span class="mockup-dot dot-green"></span>
+                </div>
+                <div class="mockup-title">TropoCine — Cinémathèque</div>
+                <div class="mockup-spacer" aria-hidden="true"></div>
+              </div>
+              <div class="mockup-body">
+                <img
+                  src="./img/tropocine-preview.png"
+                  alt="Aperçu de l'interface TropoCine"
+                  class="mockup-img"
+                  width="803"
+                  height="1037"
+                  loading="eager"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+      <!-- Section: Applications Suite -->
+      <section class="section" id="apps">
+        <div class="container">
+          <div class="section-header">
+            <span class="section-tag">Suite d'Applications</span>
+            <h2 class="section-title">Des gestionnaires conçus sur-mesure pour chaque média</h2>
+            <p class="section-description">
+              Chaque application de la suite Tropo<span class="brand-text-atlas">Atlas</span> est spécifiquement adaptée aux nuances
+              de son support, tout en partageant le même cœur robuste, design system et pilotes matériels.
+            </p>
+          </div>
+
+          <div class="apps-grid">
+            <!-- TropoAudio Card -->
+            <article class="app-card app-card-audio" id="card-tropoaudio">
+              <div class="app-header">
+                <div class="app-brand-wrapper">
+                  <span class="app-icon" aria-hidden="true">🎵</span>
+                  <h3 class="app-title">Tropo<span class="brand-text-audio">Audio</span></h3>
+                </div>
+                <span class="badge badge-active">Actif</span>
+              </div>
+
+              <div class="app-badges">
+                <span class="badge badge-audio">Synchro Discogs</span>
+                <span class="badge badge-audio">Vinyles & CD</span>
+                <span class="badge badge-active">Repérage LED actif</span>
+              </div>
+
+              <div class="app-preview-box">
+                <img
+                  src="./img/tropoaudio-preview.png"
+                  alt="Capture de l'interface TropoAudio"
+                  class="app-preview-img"
+                  loading="lazy"
+                />
+              </div>
+
+              <p class="app-description">
+                Gestionnaire de collection d'albums pour mélomanes. Synchronisez vos vinyles, CD
+                et cassettes depuis Discogs, personnalisez l'emplacement physique et illuminez vos albums
+                en temps réel sur vos étagères.
+              </p>
+
+              <ul class="app-features-list">
+                <li class="app-feature-item app-feature-item-audio">
+                  Recherche instantanée, tris et filtres multicritères par artistes et styles
+                </li>
+                <li class="app-feature-item app-feature-item-audio">
+                  Métadonnées personnalisées : coordonnées d'étagère exactes, styles personnalisés et notes
+                </li>
+                <li class="app-feature-item app-feature-item-audio">
+                  Repérage physique par LED ESP32 en temps réel avec intensités et effet clignotant
+                </li>
+              </ul>
+
+              <div class="app-card-actions">
+                <a
+                  href="https://tropoaudio.esaracco.fr"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="btn btn-audio"
+                  id="btn-visit-tropoaudio"
+                >
+                  Visiter le site
+                </a>
+                <a
+                  href="https://github.com/esaracco/tropoatlas/tree/main/apps/tropoaudio#readme"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="btn btn-secondary"
+                  id="btn-readme-tropoaudio"
+                >
+                  Docs
+                </a>
+              </div>
+            </article>
+
+            <!-- TropoCine Card -->
+            <article class="app-card app-card-cine" id="card-tropocine">
+              <div class="app-header">
+                <div class="app-brand-wrapper">
+                  <span class="app-icon" aria-hidden="true">🎬</span>
+                  <h3 class="app-title">Tropo<span class="brand-text-cine">Cine</span></h3>
+                </div>
+                <span class="badge badge-active">Actif</span>
+              </div>
+
+              <div class="app-badges">
+                <span class="badge badge-cine">Synchro TMDB</span>
+                <span class="badge badge-cine">Films & Séries</span>
+                <span class="badge badge-roadmap">Repérage LED prévu</span>
+              </div>
+
+              <div class="app-preview-box">
+                <img
+                  src="./img/tropocine-preview.png"
+                  alt="Capture de l'interface TropoCine"
+                  class="app-preview-img"
+                  loading="lazy"
+                />
+              </div>
+
+              <p class="app-description">
+                Gestionnaire universel de films pour cinéphiles passionnés. Synchronisez vos films
+                et listes depuis TMDB, naviguez parmi les réalisateurs et le casting complet, et explorez votre cinémathèque.
+              </p>
+
+              <ul class="app-features-list">
+                <li class="app-feature-item app-feature-item-cine">
+                  Synchronisation fluide des listes TMDB avec proxy d'API sécurisé
+                </li>
+                <li class="app-feature-item app-feature-item-cine">
+                  Exploration approfondie des réalisateurs, acteurs et filmographies complètes
+                </li>
+                <li class="app-feature-item app-feature-item-cine">
+                  Repérage d'étagères par LED pour supports physiques (DVD/Blu-ray) prévu sur la roadmap
+                </li>
+              </ul>
+
+              <div class="app-card-actions">
+                <a
+                  href="https://tropocine.esaracco.fr"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="btn btn-cine"
+                  id="btn-visit-tropocine"
+                >
+                  Visiter le site
+                </a>
+                <a
+                  href="https://github.com/esaracco/tropoatlas/tree/main/apps/tropocine#readme"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="btn btn-secondary"
+                  id="btn-readme-tropocine"
+                >
+                  Docs
+                </a>
+              </div>
+            </article>
+
+            <!-- TropoBiblio Card (Roadmap) -->
+            <article class="app-card app-card-biblio" id="card-tropobiblio">
+              <div class="app-header">
+                <div class="app-brand-wrapper">
+                  <span class="app-icon" aria-hidden="true">📚</span>
+                  <h3 class="app-title">Tropo<span class="brand-text-biblio">Biblio</span></h3>
+                </div>
+                <span class="badge badge-roadmap">En conception</span>
+              </div>
+
+              <div class="app-badges">
+                <span class="badge badge-biblio">Livres & Mangas</span>
+                <span class="badge badge-biblio">Bibliothèque</span>
+                <span class="badge badge-roadmap">Repérage LED prévu</span>
+              </div>
+
+              <div class="app-preview-box app-preview-placeholder">
+                <span class="placeholder-icon">📚</span>
+                <span class="placeholder-label">TropoBiblio · Aperçu du concept</span>
+              </div>
+
+              <p class="app-description">
+                Gestionnaire dédié pour livres, bandes dessinées et mangas.
+                Organisez les rayonnages de votre bibliothèque personnelle, suivez vos lectures,
+                et retrouvez vos ouvrages sur vos étagères réelles par guidage LED.
+              </p>
+
+              <ul class="app-features-list">
+                <li class="app-feature-item app-feature-item-biblio">
+                  Catalogage d'ouvrages, séries d'auteurs et listes d'envies de lecture
+                </li>
+                <li class="app-feature-item app-feature-item-biblio">
+                  Cartographie physique des rayonnages et emplacement sur les étagères
+                </li>
+                <li class="app-feature-item app-feature-item-biblio">
+                  Intégration native avec le contrôleur matériel LED ESP32 partagé de Tropo<span class="brand-text-atlas">Atlas</span>
+                </li>
+              </ul>
+
+              <div class="app-card-actions">
+                <a
+                  href="https://github.com/esaracco/tropoatlas"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="btn btn-secondary btn-full"
+                  id="btn-repo-tropobiblio"
+                >
+                  Suivre sur GitHub
+                </a>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section: Connected Shelves (IoT Hardware) -->
+      <section class="section section-subtle" id="hardware">
+        <div class="container">
+          <div class="section-header">
+            <span class="section-tag">Matériel IoT</span>
+            <h2 class="section-title">Repérage physique sur vos étagères par LEDs connectées</h2>
+            <p class="section-description">
+              L'innovation maîtresse de Tropo<span class="brand-text-atlas">Atlas</span> réside dans le lien direct et tangible entre vos données
+              logicielles et votre espace de vie réel.
+            </p>
+          </div>
+
+          <div class="hardware-grid">
+            <div class="hardware-info">
+              <h3 class="hardware-title">Retrouvez vos œuvres en un clin d'œil</h3>
+              <p class="hardware-desc">
+                Des bandeaux LED adressables fixés le long de vos étagères illuminent l'emplacement exact
+                correspondant aux albums sélectionnés ou aux filtres actifs. Fini les recherches fastidieuses sur les tranches.
+              </p>
+
+              <ul class="hardware-list">
+                <li class="hardware-list-item">
+                  <span class="hardware-bullet">1</span>
+                  <span><strong>Firmware ESP32-S3 Mini :</strong> Firmware C++ ultra-léger (<code class="code-inline">firmware/led-controller</code>) pilotant les bandeaux LED WS2812B via des requêtes HTTP locales.</span>
+                </li>
+                <li class="hardware-list-item">
+                  <span class="hardware-bullet">2</span>
+                  <span><strong>Pilote matériel centralisé :</strong> Package partagé autonome (<code class="code-inline">@tropo/leds</code>) orchestrant les couleurs, luminosités et effets de clignotement.</span>
+                </li>
+                <li class="hardware-list-item">
+                  <span class="hardware-bullet">3</span>
+                  <span><strong>État actuel :</strong> Actif et pleinement opérationnel dans <strong>TropoAudio</strong> pour les vinyles et CD, et conçu pour s'étendre aux supports physiques de films (TropoCine) et livres (TropoBiblio).</span>
+                </li>
+              </ul>
+
+              <div class="hardware-note">
+                <p>
+                  💡 <strong>Conçu pour les Makers :</strong> L'ensemble du code source du firmware et les schémas de câblage sont libres et inclus dans le dépôt, prêts à être téléversés sur un microcontrôleur ESP32 accessible.
+                </p>
+                <div class="hardware-note-link">
+                  <a
+                    href="./img/wiring-diagram.svg"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="btn btn-secondary btn-sm"
+                    id="btn-wiring-diagram"
+                  >
+                    🔌 Consulter le schéma de câblage (SVG)
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <!-- Pure CSS Interactive Shelf Simulator -->
+            <div class="shelf-simulator">
+              <div class="shelf-simulator-header">
+                <span>SIMULATEUR D'ÉTAGÈRE CONNECTÉE</span>
+                <span class="shelf-status-live">
+                  <span class="pulse-dot"></span>
+                  <span>ESP32 EN LIGNE</span>
+                </span>
+              </div>
+
+              <div class="shelf-cabinet">
+                <div class="shelf-items-row">
+                  <div class="shelf-slot">
+                    <div class="media-spine spine-audio">Ferré · Et... Basta&nbsp;!</div>
+                    <div class="led-strip-container">
+                      <div class="led-node"></div>
+                    </div>
+                  </div>
+
+                  <div class="shelf-slot">
+                    <div class="media-spine spine-audio active">Maiden · Powerslave</div>
+                    <div class="led-strip-container">
+                      <div class="led-node active-amber"></div>
+                    </div>
+                  </div>
+
+                  <div class="shelf-slot">
+                    <div class="media-spine spine-cine">Anspach · Queen of Montreuil</div>
+                    <div class="led-strip-container">
+                      <div class="led-node"></div>
+                    </div>
+                  </div>
+
+                  <div class="shelf-slot">
+                    <div class="media-spine spine-cine">Dupieux · Yannick</div>
+                    <div class="led-strip-container">
+                      <div class="led-node active-cyan"></div>
+                    </div>
+                  </div>
+
+                  <div class="shelf-slot">
+                    <div class="media-spine spine-biblio">Kropotkine · L'Entraide</div>
+                    <div class="led-strip-container">
+                      <div class="led-node"></div>
+                    </div>
+                  </div>
+
+                  <div class="shelf-slot">
+                    <div class="media-spine spine-biblio">Perec · Un homme qui dort</div>
+                    <div class="led-strip-container">
+                      <div class="led-node active-emerald"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+
+              <div class="shelf-simulator-footer">
+                <span>Signal : HTTP POST /leds</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section: Architecture & Pillars -->
+      <section class="section" id="architecture">
+        <div class="container">
+          <div class="section-header">
+            <span class="section-tag">Architecture & Valeurs</span>
+            <h2 class="section-title">Conçu sur des principes logiciels rigoureux</h2>
+            <p class="section-description">
+              Tropo<span class="brand-text-atlas">Atlas</span> est structuré sous la forme d'un monorepo découplé et propre, garantissant
+              respect de la vie privée, extensibilité et confort de développement.
+            </p>
+          </div>
+
+          <div class="pillars-grid">
+            <article class="pillar-card" id="pillar-privacy">
+              <span class="pillar-icon">🔒</span>
+              <h3 class="pillar-title">Vie privée & Local-First</h3>
+              <p class="pillar-desc">
+                Aucun pistage, aucune télémétrie, aucun compte requis. Vos collections restent
+                strictement sur votre machine ou votre serveur privé.
+              </p>
+            </article>
+
+            <article class="pillar-card" id="pillar-monorepo">
+              <span class="pillar-icon">📦</span>
+              <h3 class="pillar-title">Monorepo NPM modulaire</h3>
+              <p class="pillar-desc">
+                Gestion d'état partagée (<code class="code-inline">@tropo/core</code>), composants et tokens d'interface
+                (<code class="code-inline">@tropo/react</code>), et pilotes matériels (<code class="code-inline">@tropo/leds</code>).
+              </p>
+            </article>
+
+            <article class="pillar-card" id="pillar-plugins">
+              <span class="pillar-icon">🔌</span>
+              <h3 class="pillar-title">Architecture de plugins</h3>
+              <p class="pillar-desc">
+                Les fournisseurs de données (Discogs, TMDB) sont isolés dans des plugins de domaine,
+                préservant l'indépendance totale des interfaces.
+              </p>
+            </article>
+          </div>
+
+          <!-- Monorepo Directory Tree -->
+          <div class="tree-box">
+            <div class="tree-header">
+              <span>ARCHITECTURE DE L'ÉCOSYSTÈME MONOREPO</span>
+              <span>NPM WORKSPACES</span>
+            </div>
+            <pre class="tree-content"><code>tropoatlas/
+├── <span class="tree-highlight">apps/</span>
+│   ├── <span class="tree-highlight">tropoaudio/</span>          <span class="tree-comment"># Gestionnaire de musique (Discogs, repérage étagères LED)</span>
+│   └── <span class="tree-highlight">tropocine/</span>           <span class="tree-comment"># Gestionnaire de films (TMDB, casting & réalisateurs)</span>
+├── <span class="tree-highlight">packages/</span>
+│   ├── <span class="tree-highlight">core/</span>                <span class="tree-comment"># Abstraction stockage, store Zustand, export/sauvegarde</span>
+│   ├── <span class="tree-highlight">react/</span>               <span class="tree-comment"># Modales partagées, design tokens, composants UI</span>
+│   └── <span class="tree-highlight">leds/</span>                <span class="tree-comment"># Client HTTP autonome pour bandeaux LED adressables ESP32</span>
+├── <span class="tree-highlight">plugins/</span>
+│   ├── audio/discogs/       <span class="tree-comment"># Fournisseur de données API Discogs (@tropo/discogs)</span>
+│   └── cine/tmdb/           <span class="tree-comment"># Fournisseur de données API TMDB (@tropo/tmdb)</span>
+└── <span class="tree-highlight">firmware/</span>
+    └── led-controller/      <span class="tree-comment"># Firmware C++ ESP32-S3 Mini pour bandeaux LED WS2812B</span></code></pre>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section: Quick Start & Deployment -->
+      <section class="section section-subtle" id="quickstart">
+        <div class="container">
+          <div class="section-header">
+            <span class="section-tag">Démarrage Rapide</span>
+            <h2 class="section-title">Lancement local ou déploiement en production</h2>
+            <p class="section-description">
+              Toutes les applications de Tropo<span class="brand-text-atlas">Atlas</span> se compilent en bundles statiques ultra-performants et légers.
+            </p>
+          </div>
+
+          <div class="deploy-grid">
+            <!-- Docker Compose Card -->
+            <div class="deploy-card" id="card-docker">
+              <h3>Lancement via Docker Compose</h3>
+              <p>
+                Démarrez simultanément TropoAudio (port 3000) et TropoCine (port 3001) avec une seule commande :
+              </p>
+              <div class="code-box">
+                <div class="code-header">
+                  <span>TERMINAL</span>
+                  <span>BASH</span>
+                </div>
+                <pre class="code-content"><code><span class="code-comment"># Lancer toutes les applications</span>
+docker compose up
+
+<span class="code-comment"># Ou lancer une seule application</span>
+docker compose up tropoaudio
+docker compose up tropocine</code></pre>
+              </div>
+            </div>
+
+            <!-- Development Monorepo Card -->
+            <div class="deploy-card" id="card-dev">
+              <h3>Développement local dans le monorepo</h3>
+              <p>
+                Clonez le dépôt, installez les dépendances du monorepo et lancez les serveurs de développement Vite :
+              </p>
+              <div class="code-box">
+                <div class="code-header">
+                  <span>TERMINAL</span>
+                  <span>BASH</span>
+                </div>
+                <pre class="code-content"><code>git clone https://github.com/esaracco/tropoatlas.git
+cd tropoatlas
+npm install
+
+<span class="code-comment"># Lancer les serveurs de développement</span>
+npm run dev:audio   <span class="code-comment"># http://localhost:3000</span>
+npm run dev:cine    <span class="code-comment"># http://localhost:3001</span></code></pre>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="container">
+        <div class="footer-top">
+          <div class="footer-brand">
+            <img
+              src="./icon-180.png"
+              alt="Logo TropoAtlas"
+              class="brand-logo"
+              width="28"
+              height="28"
+            />
+            <span>Tropo<span class="brand-text-atlas">Atlas</span></span>
+          </div>
+
+          <ul class="footer-nav">
+            <li>
+              <a href="https://tropoaudio.esaracco.fr" class="footer-nav-link">TropoAudio</a>
+            </li>
+            <li>
+              <a href="https://tropocine.esaracco.fr" class="footer-nav-link">TropoCine</a>
+            </li>
+            <li>
+              <a
+                href="https://github.com/esaracco/tropoatlas"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="footer-nav-link"
+              >
+                Dépôt GitHub
+              </a>
+            </li>
+            <li>
+              <a
+                href="https://github.com/esaracco/tropoatlas/issues"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="footer-nav-link"
+              >
+                Tickets & Support
+              </a>
+            </li>
+          </ul>
+        </div>
+
+        <div class="footer-bottom">
+          <p>
+            <span class="copyleft" aria-hidden="true">&copy;</span> 2026
+            <strong>Emmanuel Saracco</strong> · Publié sous licence
+            <a
+              href="https://www.gnu.org/licenses/gpl-3.0.html"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="link"
+            >
+              GNU GPL v3
+            </a>
+            · Écosystème de Logiciels Libres
+          </p>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

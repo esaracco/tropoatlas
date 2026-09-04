@@ -77,6 +77,9 @@ TropoAudio can map to three optional custom fields defined in your Discogs colle
 - **`VITE_LEDS_STYLES_COLOR`**: RGB color for styles filter layer (default: `0,150,0`).
 - **`VITE_LEDS_ALBUM_COLOR`**: RGB color for focused album modal (default: `255,0,0`).
 
+> 💡 **Hardware Setup & Wiring**:
+> To assemble, flash, and connect your physical shelf LED controller, see the [ESP32 LED Controller Firmware Guide](../../firmware/led-controller/README.md) and the [Official Wiring Diagram (SVG)](../../firmware/led-controller/wiring-diagram.svg).
+
 ---
 
 ## Development
