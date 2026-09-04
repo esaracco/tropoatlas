@@ -21,8 +21,9 @@
     "lint": "./node_modules/.bin/eslint apps/ packages/ plugins/",
     "lint-fix": "./node_modules/.bin/eslint --fix apps/ packages/ plugins/",
     "format": "./node_modules/.bin/prettier --write apps/ packages/ plugins/",
+    "format:check": "./node_modules/.bin/prettier --check apps/ packages/ plugins/",
     "i18n:check": "node scripts/check_i18n.js",
-    "pre-commit": "npm run lint && npm run format && npm run test && npm run i18n:check",
+    "pre-commit": "npm run lint && npm run format:check && npm run test && npm run i18n:check",
     "prepare": "husky"
   },
   "devDependencies": {
