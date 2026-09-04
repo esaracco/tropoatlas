@@ -8,6 +8,8 @@
 >
 > _Note: TropoAudio (the album collection application within this ecosystem) is the direct successor to the original [TropoDisc repository](https://github.com/esaracco/tropodisc), which has been archived and remains available for historical reference._
 
+<div align="center"><img src="docs/icon-180.png" alt="TropoAtlas logo" /></div>
+
 ---
 
 ## Applications Suite
