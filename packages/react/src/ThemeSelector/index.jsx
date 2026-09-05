@@ -5,13 +5,21 @@ import "./ThemeSelector.css"
 // COMPONENT ThemeSelector
 const ThemeSelector = ({
   themes = ["dark", "light", "orange", "blue", "purple", "green"],
+  defaultTheme,
   storageKey = "tropo-theme",
   title = "Theme",
   ariaLabel = "Change theme",
 }) => {
-  const [theme, setTheme] = useState(
-    () => localStorage.getItem(storageKey) || themes[0],
-  )
+  const [theme, setTheme] = useState(() => {
+    const saved = localStorage.getItem(storageKey)
+    if (saved) return saved
+    if (defaultTheme) return defaultTheme
+    if (typeof document !== "undefined") {
+      const docTheme = document.documentElement.getAttribute("data-theme")
+      if (docTheme) return docTheme
+    }
+    return themes[0]
+  })
 
   useEffect(() => {
     document.documentElement.setAttribute("data-theme", theme)

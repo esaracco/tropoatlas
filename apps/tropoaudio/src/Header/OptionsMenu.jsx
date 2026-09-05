@@ -155,6 +155,7 @@ const OptionsMenu = ({ onOpenSettings }) => {
             </span>
             <ThemeSelector
               storageKey="tropoaudio-theme"
+              defaultTheme="orange"
               title={t("Theme")}
               ariaLabel={t("Change theme")}
             />

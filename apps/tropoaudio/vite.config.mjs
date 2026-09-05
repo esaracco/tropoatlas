@@ -178,8 +178,7 @@ export default defineConfig(({ mode }) => {
     import.meta.url,
   )
   const themesCss = fs.readFileSync(themesCssPath, "utf8")
-  const surfaceMatch = themesCss.match(/--tropo-surface:\s*(#[0-9a-f]{3,8})/i)
-  const defaultThemeColor = surfaceMatch ? surfaceMatch[1] : "#111827"
+  const defaultTheme = "orange"
 
   const themeColors = {}
   const themeBlockRegex = /(?:\[data-theme="([^"]+)"\]|:root)[^{]*\{([^}]+)\}/g
@@ -193,6 +192,8 @@ export default defineConfig(({ mode }) => {
       themeColors[themeName] = colorMatch[1]
     }
   }
+
+  const defaultThemeColor = themeColors[defaultTheme] || "#121212"
 
   // Inject theme surface colors into index.html
   const themeColorPlugin = {

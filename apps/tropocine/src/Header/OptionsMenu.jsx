@@ -185,6 +185,7 @@ const OptionsMenu = ({ onOpenSettings }) => {
             </span>
             <ThemeSelector
               storageKey="tropocine-theme"
+              defaultTheme="blue"
               title={t("Theme")}
               ariaLabel={t("Change theme")}
             />
