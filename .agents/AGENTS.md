@@ -10,9 +10,9 @@ This file defines the rules and conventions that the AI agent must follow when w
 - **Commit Messages**: All git commit messages MUST be written in **English** (using Conventional Commits format). Use precise component/subsystem scopes (e.g., `header`, `navbar`, `search`, `leds`, `settings`, `agents`) rather than generic app scopes like `tropoaudio`.
 - **Package Manager**: Use `npm`. Do not use `yarn`, `pnpm`, or `bun`.
 - **Workspaces**: This is an npm workspace monorepo.
-  - `apps/*`: Main applications (e.g., `tropoaudio`).
+  - `apps/*`: Main applications (e.g., `tropoaudio`, `tropocine`).
   - `packages/*`: Shared libraries and components (e.g., `core`, `react`, `leds`).
-  - `plugins/*/*`: Plugins organized by domain (e.g., `plugins/audio/discogs`).
+  - `plugins/*/*`: Plugins organized by domain (e.g., `plugins/audio/discogs`, `plugins/cine/tmdb`).
 - **Rule Abstraction**: Do NOT hardcode specific numeric raw values (e.g. pixel widths, arbitrary z-indices) in rule or documentation files. Document abstract design principles, responsive layout intentions, and architectural invariants instead. Exact numbers belong in code tokens and constants.
 - **Code Sobriety & Single Access Path**: Avoid speculative code bloat for non-existent future requirements (KISS/YAGNI). Every class, utility method, or constant MUST have a single canonical export and access path. Avoid creating duplicate top-level function wrappers or redundant aliases for methods and constants that belong to a class or module.
 
@@ -24,6 +24,7 @@ This file defines the rules and conventions that the AI agent must follow when w
 - **Feature Ignorance**: Plugins MUST remain completely ignorant of app-level features (e.g., IoT LEDs). Any validation logic combining app settings (like `VITE_SET_LEDS`) with provider capabilities MUST be handled by the main application.
 - **Terminology**: Use generic terms in the main application state and logic (e.g., `creator`, `categories`) rather than provider-specific terms (e.g., `artist`, `styles`).
 - **Development Mode Image Isolation**: In development mode (`devMode`), data provider plugins MUST NOT assign or fetch remote cover artwork URLs. This prevents API/CDN rate-limit exhaustion and unnecessary network traffic during local development.
+- **Artwork & Network Agnosticism**: Application Service Workers and image cache layers MUST use generic routes and storage identifiers (e.g., `item-covers`, image proxy routes) without coupling cache names or request matching to specific third-party provider hostnames or endpoints.
 
 ## Presentation Sites (`apps/*/docs/`)
 - **Location**: Static presentation site files are located in `apps/*/docs/` (`index.html` for English, `index-fr.html` for French).
@@ -32,8 +33,8 @@ This file defines the rules and conventions that the AI agent must follow when w
 - **Zero External Dependencies**: Pages MUST be 100% self-contained and MUST NOT make external network requests (use native system font stacks instead of third-party font services).
 
 ## LEDs Behavior
-- **Centralized Logic**: All LED orchestration MUST be handled centrally by a single watcher (currently in `Result/index.jsx`). Individual components (like `Album` or Modals) MUST NOT call the `Leds` API directly.
-- **Filters**: LEDs are only controlled by the **Categories (Styles)** and **Creators (Artists)** filters, and the **Album Modal** (focus mode). Text searches and the **Formats** filter do NOT interact with or modify LEDs.
+- **Centralized Logic**: All LED orchestration MUST be handled centrally by a single watcher (currently in `Result/index.jsx`). Individual components (like item cards or Modals) MUST NOT call the `Leds` API directly.
+- **Filters**: LEDs are only controlled by the **Categories** and **Creators** filters, and the **Item Modal** (focus mode). Text searches and secondary filters (e.g., formats) do NOT interact with or modify LEDs.
 - **Intensity and Draw Priority**: When multiple layers are active, both intensity and draw order follow a fixed semantic priority:
   - 1. **Categories**: Lowest priority, drawn first, background intensity.
   - 2. **Creators**: Medium priority, drawn second, medium intensity.
@@ -48,14 +49,14 @@ This file defines the rules and conventions that the AI agent must follow when w
 - **Application Storage Autonomy**: Each application independently governs its own local storage schema and data lifecycle. Schema versioning is strictly application-scoped so that structural migrations or cache invalidations in one application never cascade to other applications in the monorepo.
 - **Interchange Format Decoupling**: Portable backup and export archive formats represent transport specifications and MUST remain completely decoupled from internal, transient local storage schemas.
 - **Decoupled Settings UI**: Application settings modals (`SettingsModal.jsx`) dynamically render plugin-specific settings forms based on a declarative JSON schema. Plugins must implement `getSettingsSchema()` returning a vanilla JS array of field definitions, and MUST NOT export React components. Plugins are responsible for updating their own isolated section of the store (`pluginsConfig`).
-- **Build-Time Variables**: Environment variables that affect the Vite proxy or server build (such as `VITE_SET_LEDS` and `VITE_AUDIOLIBRARY_URL`) must remain in `.env` as they are required at build/serve time. They serve as default fallback values for the settings store on initial hydration.
+- **Build-Time Variables**: Environment variables that configure the Vite server, proxy targets, or host hardware build parameters must remain in `.env` as they are required at build/serve time. They serve as default fallback values for the settings store on initial hydration.
 
 ## UI & i18n Considerations
 - **i18n in Non-UI Packages & Plugins**: Since non-UI packages (e.g., `@tropo/core`, `@tropo/leds`) and plugins are UI-agnostic and do not import `react-i18next`, any user-facing strings or error messages requiring translation MUST be wrapped in a dummy marker function (`const t = (s) => s`). This allows the static analyzer (`npm run i18n:check`) to detect the keys, while the main application applies the actual translation (`t(...)`) at render time.
 - **Offcanvas and Modals (Mobile UI)**: Stacking Bootstrap Modals over an open Offcanvas menu can cause backdrop conflicts when the modal is closed. 
   - If a button opens a global root-level Modal (e.g., `SettingsModal`), the Offcanvas MUST be explicitly closed before opening the modal.
-  - If a button opens an inline Modal (e.g., `ConfirmModal` inside `SynchroButton`), the Offcanvas MUST NOT be closed, otherwise the modal will be instantly unmounted.
-  - Interactive dropdowns (Styles, Artists) MUST NOT close the Offcanvas, allowing users to select multiple options without reopening the menu.
+  - If a button opens an inline Modal declared within a sub-component, the Offcanvas MUST NOT be closed, otherwise the modal will be instantly unmounted.
+  - Interactive filter dropdowns (e.g., categories, creators) MUST NOT close the Offcanvas, allowing users to select multiple options without reopening the menu.
 
 ## Lifecycle & Header Navigation Architecture
 - **Unreliable Page Unload Events**: Do NOT rely on browser window unload events (`pagehide`, `beforeunload`, `unload`) to execute critical I/O operations or network requests (e.g., turning off hardware LEDs or clearing storage). Hardware teardown and session cleanup must rely on explicit user actions or server/firmware TTL timeouts.
