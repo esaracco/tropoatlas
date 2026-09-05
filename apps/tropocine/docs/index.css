@@ -931,7 +931,7 @@ p {
 }
 
 /* ── Responsive Rules ────────────────────────────────────────────────────── */
-@media (max-width: 890px) {
+@media (max-width: 720px) {
   .nav-links {
     display: none;
   }

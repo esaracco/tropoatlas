@@ -1165,7 +1165,7 @@ p {
 }
 
 /* ── Responsive Media Queries ────────────────────────────────────────────── */
-@media (max-width: 960px) {
+@media (max-width: 775px) {
   .nav-links {
     display: none;
   }
