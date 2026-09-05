@@ -56,7 +56,9 @@ export const clearAllCaches = async (keysToPreserve = []) => {
   const prefix = `${appName}-`
 
   const preservedKeys = new Set(
-    [...DEFAULT_PRESERVED_KEYS, ...keysToPreserve].map(buildCacheKey),
+    [...DEFAULT_PRESERVED_KEYS, ...keysToPreserve].map((key) =>
+      buildCacheKey(key),
+    ),
   )
 
   // 1. Caches API
