@@ -83,6 +83,13 @@
       }
     </script>
 
+    <!-- Prevent navbar brand flash before scroll-reveal initializes -->
+    <script>
+      if ("IntersectionObserver" in window) {
+        document.documentElement.classList.add("has-scroll-reveal")
+      }
+    </script>
+
     <!-- Stylesheet -->
     <link rel="stylesheet" href="./index.css" />
   </head>
@@ -758,10 +765,10 @@
         var brand = document.querySelector(".brand")
         var heroLockup = document.querySelector(".hero-brand-lockup")
         if (!brand || !heroLockup || !("IntersectionObserver" in window)) {
+          document.documentElement.classList.remove("has-scroll-reveal")
           return
         }
 
-        document.body.classList.add("has-scroll-reveal")
         var observer = new IntersectionObserver(
           function (entries) {
             entries.forEach(function (entry) {
@@ -772,7 +779,7 @@
               }
             })
           },
-          { threshold: 0.1 }
+          { threshold: 0.1 },
         )
         observer.observe(heroLockup)
       })()
