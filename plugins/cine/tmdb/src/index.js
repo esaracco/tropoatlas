@@ -269,7 +269,7 @@ export class TMDBPlugin extends BasePlugin {
 
       const hasValidCover = !this.devMode && movie.poster_path
       const coverUrl = hasValidCover
-        ? `/api/tmdb-image/t/p/w500${movie.poster_path}`
+        ? `/api/tmdb-image/t/p/w342${movie.poster_path}`
         : null
 
       const hasValidBackdrop = !this.devMode && backdropPath
@@ -332,7 +332,7 @@ export class TMDBPlugin extends BasePlugin {
     try {
       const data = await this.#request(`3/movie/${item.id}`)
       if (data && data.poster_path) {
-        return { cover: `/api/tmdb-image/t/p/w500${data.poster_path}` }
+        return { cover: `/api/tmdb-image/t/p/w342${data.poster_path}` }
       }
     } catch {
       return null

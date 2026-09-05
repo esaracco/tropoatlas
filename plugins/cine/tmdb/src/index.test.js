@@ -64,13 +64,13 @@ describe("TMDBPlugin - image proxying and devMode", () => {
 
   it("should rewrite remote TMDB image URLs to local proxy endpoint", () => {
     expect(
-      plugin.getImageProxyUrl("https://image.tmdb.org/t/p/w500/sample.jpg"),
-    ).toBe("/api/tmdb-image/t/p/w500/sample.jpg")
+      plugin.getImageProxyUrl("https://image.tmdb.org/t/p/w342/sample.jpg"),
+    ).toBe("/api/tmdb-image/t/p/w342/sample.jpg")
   })
 
   it("should return already proxied URLs unchanged", () => {
-    expect(plugin.getImageProxyUrl("/api/tmdb-image/t/p/w500/sample.jpg")).toBe(
-      "/api/tmdb-image/t/p/w500/sample.jpg",
+    expect(plugin.getImageProxyUrl("/api/tmdb-image/t/p/w342/sample.jpg")).toBe(
+      "/api/tmdb-image/t/p/w342/sample.jpg",
     )
   })
 
