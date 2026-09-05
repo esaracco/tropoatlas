@@ -72,8 +72,7 @@ registerRoute(
 // Cache album covers and artwork images using CacheFirst strategy
 registerRoute(
   ({ url }) =>
-    url.pathname.startsWith("/api/discogs-image/") ||
-    url.origin.includes("discogs") ||
+    url.pathname.startsWith("/api/proxy-image") ||
     /\.(jpe?g|png|webp)($|\?)/i.test(url.pathname),
   new CacheFirst({
     cacheName: buildCacheKey("item-covers"),
