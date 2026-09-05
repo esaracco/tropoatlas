@@ -267,12 +267,14 @@ export class TMDBPlugin extends BasePlugin {
         ? parseInt(movie.release_date.slice(0, 4), 10)
         : null
 
-      const coverUrl = movie.poster_path
-        ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
+      const hasValidCover = !this.devMode && movie.poster_path
+      const coverUrl = hasValidCover
+        ? `/api/tmdb-image/t/p/w500${movie.poster_path}`
         : null
 
-      const backdropUrl = backdropPath
-        ? `https://image.tmdb.org/t/p/w1280${backdropPath}`
+      const hasValidBackdrop = !this.devMode && backdropPath
+      const backdropUrl = hasValidBackdrop
+        ? `/api/tmdb-image/t/p/w1280${backdropPath}`
         : null
 
       const cleanTitle = movie.title || ""
@@ -318,13 +320,23 @@ export class TMDBPlugin extends BasePlugin {
       cast: details.cast,
       runtime: details.runtime,
       overview: details.overview || item.overview,
-      backdrop: details.backdrop
-        ? `https://image.tmdb.org/t/p/w1280${details.backdrop}`
-        : item.backdrop,
+      backdrop:
+        !this.devMode && details.backdrop
+          ? `/api/tmdb-image/t/p/w1280${details.backdrop}`
+          : item.backdrop,
     }
   }
 
   async getItemImage(item) {
+    if (this.devMode || !item?.id) return null
+    try {
+      const data = await this.#request(`3/movie/${item.id}`)
+      if (data && data.poster_path) {
+        return { cover: `/api/tmdb-image/t/p/w500${data.poster_path}` }
+      }
+    } catch {
+      return null
+    }
     return { cover: item?.cover || null }
   }
 

@@ -49,7 +49,6 @@ registerRoute(
 // Cache movie posters and artwork images using CacheFirst strategy
 registerRoute(
   ({ url }) =>
-    url.origin.includes("tmdb") ||
     url.pathname.startsWith("/api/proxy-image") ||
     /\.(jpe?g|png|webp)($|\?)/i.test(url.pathname),
   new CacheFirst({

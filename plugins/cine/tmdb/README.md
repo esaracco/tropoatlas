@@ -8,7 +8,7 @@ This plugin integrates **The Movie Database (TMDB)** API with **TropoCine**, all
 - **Enriched Metadata**: Automatically extracts directors, main cast members, runtime, synopsis, posters, backdrops, and genres.
 - **Unified Creators**: Extracts all unique directors and cast members (`getCreators`) for interactive people discovery and multi-criteria filtering.
 - **Smart Incremental Refresh**: Skips already cached movies in IndexedDB for fast syncs, with full re-synchronization on demand.
-- **Image Proxying**: Provides `/api/tmdb-image/` URL resolution (`getImageProxyUrl`) to bypass CORS restrictions during client-side ZIP exports.
+- **Image Proxying**: Routes all poster and backdrop artwork through `/api/tmdb-image/` to prevent CORS issues, support offline PWA caching, and enable instant client-side ZIP exports.
 - **Rate-Limiting Protection**: Safe paced queries (1200 requests/minute) with automatic backoff on HTTP 429 status.
 
 ## Configuration

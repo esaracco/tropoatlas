@@ -57,3 +57,25 @@ describe("TMDBPlugin - metadata and categories", () => {
     ])
   })
 })
+
+describe("TMDBPlugin - image proxying and devMode", () => {
+  const plugin = new TMDBPlugin()
+  const devPlugin = new TMDBPlugin({ devMode: true })
+
+  it("should rewrite remote TMDB image URLs to local proxy endpoint", () => {
+    expect(
+      plugin.getImageProxyUrl("https://image.tmdb.org/t/p/w500/sample.jpg"),
+    ).toBe("/api/tmdb-image/t/p/w500/sample.jpg")
+  })
+
+  it("should return already proxied URLs unchanged", () => {
+    expect(plugin.getImageProxyUrl("/api/tmdb-image/t/p/w500/sample.jpg")).toBe(
+      "/api/tmdb-image/t/p/w500/sample.jpg",
+    )
+  })
+
+  it("should return null for getItemImage in devMode", async () => {
+    const result = await devPlugin.getItemImage({ id: 123 })
+    expect(result).toBeNull()
+  })
+})
