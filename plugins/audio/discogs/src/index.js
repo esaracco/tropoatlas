@@ -115,6 +115,10 @@ export class DiscogsPlugin extends BasePlugin {
     ]
   }
 
+  getPreservedKeys() {
+    return ["customFieldsInfo"]
+  }
+
   getDraftCapabilities(config) {
     return {
       supportsPlace: !!config.fieldPlace,

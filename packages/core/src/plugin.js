@@ -37,6 +37,15 @@ export class BasePlugin {
   }
 
   /**
+   * Return storage keys specific to this provider that should be preserved
+   * across cache clears.
+   * @returns {string[]}
+   */
+  getPreservedKeys() {
+    return []
+  }
+
+  /**
    * Validates the configuration/environment variables for the plugin.
    * @param {function} onConfigError - Callback to trigger on error.
    */

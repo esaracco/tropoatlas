@@ -6,12 +6,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faSync } from "@fortawesome/free-solid-svg-icons"
 
 import { ConfirmModal } from "@tropo/react"
-
-import { clearAllCaches } from "@tropo/core"
+import { useAppStore } from "@tropo/core"
+import { clearAllCaches } from "../utils/storage"
 
 import "./styles/SynchroButton.css"
-
-import { useAppStore } from "@tropo/core"
 
 // COMPONENT SynchroButton
 const SynchroButton = () => {

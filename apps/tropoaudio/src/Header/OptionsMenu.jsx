@@ -14,7 +14,8 @@ import {
   faUpload,
 } from "@fortawesome/free-solid-svg-icons"
 import { ConfirmModal, ThemeSelector, LanguageSelector } from "@tropo/react"
-import { useAppStore, clearAllCaches } from "@tropo/core"
+import { useAppStore } from "@tropo/core"
+import { clearAllCaches } from "../utils/storage"
 import * as Settings from "../utils/settings"
 import ExportBackupModal from "./ExportBackupModal"
 import ImportBackupModal from "./ImportBackupModal"

@@ -17,10 +17,10 @@ import {
   setLargeItem,
   getItem,
   setItem,
-  clearAllCaches,
   buildCacheKey,
   STORAGE_SCHEMA_VERSION,
 } from "@tropo/core"
+import { clearAllCaches } from "./utils/storage"
 import { plugin, getProviderInfo, validateProviderSettings } from "./provider"
 
 import "react-toastify/dist/ReactToastify.css"

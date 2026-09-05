@@ -8,6 +8,13 @@ describe("DiscogsPlugin - getDefaultSort", () => {
   })
 })
 
+describe("DiscogsPlugin - getPreservedKeys", () => {
+  it("should return customFieldsInfo", () => {
+    const plugin = new DiscogsPlugin()
+    expect(plugin.getPreservedKeys()).toEqual(["customFieldsInfo"])
+  })
+})
+
 describe("DiscogsPlugin - getArtistName", () => {
   it("should return name when no ANV is provided", () => {
     expect(getArtistName({ name: "Pink Floyd" })).toBe("Pink Floyd")

@@ -53,8 +53,6 @@ export const DEFAULT_PRESERVED_KEYS = [
   "theme",
   "ui-storage-v2",
   "schemaVersion",
-  "customFieldsInfo",
-  "syncedListId",
 ]
 
 export const clearAllCaches = async (keysToPreserve = []) => {

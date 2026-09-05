@@ -61,6 +61,10 @@ export class TMDBPlugin extends BasePlugin {
     ]
   }
 
+  getPreservedKeys() {
+    return ["syncedListId"]
+  }
+
   validateSettings(onConfigError) {
     const id = this.cleanListId(this.activeListId)
     if (!id) {
