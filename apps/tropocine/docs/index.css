@@ -188,6 +188,11 @@ p {
 .hero {
   padding: 2.75rem 0 3.5rem;
   text-align: center;
+  background: radial-gradient(
+    circle at top center,
+    rgba(2, 132, 199, 0.08) 0%,
+    rgba(255, 255, 255, 0) 65%
+  );
   border-bottom: 1px solid var(--border);
 }
 
