@@ -1,6 +1,5 @@
 import JSZip from "jszip"
 import {
-  STORAGE_SCHEMA_VERSION,
   buildCacheKey,
   getLargeItem,
   setLargeItem,
@@ -8,6 +7,9 @@ import {
   setItem,
 } from "./storage.js"
 import { useCollectionStore } from "./index.js"
+
+// Current version of the portable collection backup ZIP archive format
+export const BACKUP_FORMAT_VERSION = 1
 
 // Dummy marker function allowing static analyzer to extract i18n keys.
 const t = (s) => s
@@ -539,7 +541,7 @@ export const exportCollectionBackupZIP = async (optionsOrProgress) => {
   }
 
   const collectionJson = {
-    version: STORAGE_SCHEMA_VERSION,
+    version: BACKUP_FORMAT_VERSION,
     app: import.meta.env.VITE_APP_NAME || "tropoatlas",
     exportDate: new Date().toISOString(),
     provider: import.meta.env.VITE_DATA_PROVIDER || "discogs",
