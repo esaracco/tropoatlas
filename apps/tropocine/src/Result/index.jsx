@@ -82,10 +82,21 @@ const Result = () => {
         )
         break
       case "rating":
-        keys.sort(
-          (a, b) =>
-            ((releases[a].rating || 0) - (releases[b].rating || 0)) * mul,
-        )
+        keys.sort((a, b) => {
+          const rA = releases[a].rating || 0
+          const rB = releases[b].rating || 0
+          const diff = (rA - rB) * mul
+          if (diff !== 0) return diff
+          const titleDiff =
+            (releases[a].title || "").localeCompare(releases[b].title || "") *
+            mul
+          if (titleDiff !== 0) return titleDiff
+          return (
+            (releases[a].creator || "").localeCompare(
+              releases[b].creator || "",
+            ) * mul
+          )
+        })
         break
       case "creator":
         keys.sort(
