@@ -419,6 +419,33 @@ p {
   height: auto;
 }
 
+/* ── Hero Showcase ───────────────────────────────────────────────────────── */
+.hero-showcase {
+  margin: 3rem auto 0;
+  max-width: 620px;
+  position: relative;
+}
+
+.hero-showcase::before {
+  content: "";
+  position: absolute;
+  inset: 10% 5% -5% 5%;
+  background: radial-gradient(
+    circle,
+    rgba(22, 163, 74, 0.18) 0%,
+    rgba(22, 163, 74, 0) 70%
+  );
+  filter: blur(40px);
+  will-change: filter;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.hero-showcase .mockup-window {
+  position: relative;
+  z-index: 1;
+}
+
 /* ── Gallery Section ─────────────────────────────────────────────────────── */
 .gallery-layout {
   display: grid;
@@ -883,6 +910,15 @@ p {
     color: var(--text-muted);
     line-height: 1.45;
     padding: 0 0.5rem;
+  }
+
+  .hero-showcase {
+    margin-top: 2rem;
+    max-width: 100%;
+  }
+
+  .hero-showcase::before {
+    display: none;
   }
 
   .gallery-viewport {
