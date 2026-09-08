@@ -553,16 +553,38 @@
                   Direct HTTP integration with lightweight ESP32 firmware.
                 </li>
               </ul>
+
+              <div class="hardware-note">
+                <p>
+                  💡 <strong>Maker-Friendly:</strong> All firmware source code
+                  and wiring schematics are free software and included in the
+                  repository, ready to flash onto an affordable ESP32
+                  microcontroller.
+                </p>
+                <div class="hardware-note-link">
+                  <a
+                    href="./img/wiring-diagram.svg"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="btn btn-secondary btn-sm"
+                    id="btn-wiring-diagram"
+                  >
+                    🔌 View Wiring Diagram (SVG)
+                  </a>
+                </div>
+              </div>
             </div>
 
             <!-- Interactive LED simulation -->
             <div class="shelf-demo">
               <div class="shelf-header">
                 <span>Shelf</span>
-                <span class="shelf-led-active">Active LED: 310, 314</span>
+                <span class="shelf-led-active" id="shelf-status"
+                  >Active LED: 310</span
+                >
               </div>
               <div class="shelf-row">
-                <div class="shelf-col">
+                <div class="shelf-col" data-index="309">
                   <div class="album-spine">
                     <span class="spine-artist">Iron Maiden</span>
                     <span class="spine-title">Powerslave</span>
@@ -570,15 +592,15 @@
                   <div class="led-bulb"></div>
                 </div>
 
-                <div class="shelf-col">
-                  <div class="album-spine highlighted">
+                <div class="shelf-col" data-index="310">
+                  <div class="album-spine">
                     <span class="spine-artist">Metallica</span>
                     <span class="spine-title">Master Of Puppets</span>
                   </div>
                   <div class="led-bulb active"></div>
                 </div>
 
-                <div class="shelf-col">
+                <div class="shelf-col" data-index="311">
                   <div class="album-spine">
                     <span class="spine-artist">Emilie Simon</span>
                     <span class="spine-title">Mue</span>
@@ -586,7 +608,7 @@
                   <div class="led-bulb"></div>
                 </div>
 
-                <div class="shelf-col">
+                <div class="shelf-col" data-index="312">
                   <div class="album-spine">
                     <span class="spine-artist">Léo Ferré</span>
                     <span class="spine-title">Et... Basta!</span>
@@ -594,7 +616,7 @@
                   <div class="led-bulb"></div>
                 </div>
 
-                <div class="shelf-col">
+                <div class="shelf-col" data-index="313">
                   <div class="album-spine">
                     <span class="spine-artist">Ratt</span>
                     <span class="spine-title">Out Of The Cellar</span>
@@ -602,15 +624,15 @@
                   <div class="led-bulb"></div>
                 </div>
 
-                <div class="shelf-col">
-                  <div class="album-spine highlighted">
+                <div class="shelf-col" data-index="314">
+                  <div class="album-spine">
                     <span class="spine-artist">Agar Agar</span>
                     <span class="spine-title">Cardan</span>
                   </div>
-                  <div class="led-bulb active"></div>
+                  <div class="led-bulb"></div>
                 </div>
 
-                <div class="shelf-col">
+                <div class="shelf-col" data-index="315">
                   <div class="album-spine">
                     <span class="spine-artist">Magma</span>
                     <span class="spine-title">Köhntarkösz</span>
@@ -618,7 +640,9 @@
                   <div class="led-bulb"></div>
                 </div>
               </div>
-              <p class="shelf-caption">LED-based location simulation</p>
+              <p class="shelf-caption">
+                Interactive simulation (click any album)
+              </p>
             </div>
           </div>
         </div>
@@ -853,6 +877,29 @@
           { threshold: 0.1 },
         )
         observer.observe(heroLockup)
+      })()
+
+      /* Shelf interactive simulation */
+      ;(function () {
+        var cols = document.querySelectorAll(".shelf-col")
+        var status = document.getElementById("shelf-status")
+
+        cols.forEach(function (col) {
+          col.addEventListener("click", function () {
+            cols.forEach(function (c) {
+              var bulb = c.querySelector(".led-bulb")
+              if (bulb) bulb.classList.remove("active")
+            })
+
+            var bulb = col.querySelector(".led-bulb")
+            if (bulb) bulb.classList.add("active")
+
+            var idx = col.getAttribute("data-index")
+            if (status && idx) {
+              status.textContent = "Active LED: " + idx
+            }
+          })
+        })
       })()
     </script>
   </body>

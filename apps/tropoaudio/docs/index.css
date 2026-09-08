@@ -181,6 +181,11 @@ p {
   background: var(--border);
 }
 
+.btn-sm {
+  padding: 0.4rem 0.85rem;
+  font-size: 0.82rem;
+}
+
 /* ── Hero Section ────────────────────────────────────────────────────────── */
 .hero {
   padding: 2.75rem 0 3.5rem;
@@ -574,6 +579,21 @@ p {
   color: var(--text);
 }
 
+.hardware-note {
+  margin-top: 1.5rem;
+  padding: 0.85rem 1rem;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--accent);
+  border-radius: 4px;
+  font-size: 0.86rem;
+  color: var(--text-muted);
+}
+
+.hardware-note-link {
+  margin-top: 0.75rem;
+}
+
 .shelf-demo {
   background: #0f172a;
   border-radius: var(--radius);
@@ -648,10 +668,7 @@ p {
   cursor: default;
   overflow: hidden;
   user-select: none;
-}
-
-.album-spine.highlighted {
-  background: var(--led-active);
+  transition: background 0.2s ease;
 }
 
 .spine-artist {
