@@ -595,7 +595,7 @@
 
               <div class="hardware-note">
                 <p>
-                  💡 <strong>Conçu pour les Makers :</strong> L'ensemble du code source du firmware et les schémas de câblage sont libres et inclus dans le dépôt, prêts à être téléversés sur un microcontrôleur ESP32 accessible.
+                  💡 <strong>Conçu pour les Makers :</strong> L'ensemble du code source du firmware et les schémas de câblage sont libres et inclus dans le dépôt, prêts à être téléversés sur un microcontrôleur ESP32 bon marché.
                 </p>
                 <div class="hardware-note-link">
                   <a
@@ -611,66 +611,66 @@
               </div>
             </div>
 
-            <!-- Pure CSS Interactive Shelf Simulator -->
-            <div class="shelf-simulator">
-              <div class="shelf-simulator-header">
-                <span>SIMULATEUR D'ÉTAGÈRE CONNECTÉE</span>
-                <span class="shelf-status-live">
-                  <span class="pulse-dot"></span>
-                  <span>ESP32 EN LIGNE</span>
-                </span>
+            <!-- Interactive shelf simulation -->
+            <div class="shelf-demo">
+              <div class="shelf-header">
+                <span>Étagère</span>
+                <span class="shelf-led-active" id="shelf-status" data-app="audio"
+                  >LED active&nbsp;: 12</span
+                >
               </div>
-
-              <div class="shelf-cabinet">
-                <div class="shelf-items-row">
-                  <div class="shelf-slot">
-                    <div class="media-spine spine-audio">Ferré · Et... Basta&nbsp;!</div>
-                    <div class="led-strip-container">
-                      <div class="led-node"></div>
-                    </div>
+              <div class="shelf-row">
+                <div class="shelf-col" data-index="11" data-app="audio">
+                  <div class="media-spine spine-audio">
+                    <span class="spine-author">Ferré</span>
+                    <span class="spine-title">Et... Basta&nbsp;!</span>
                   </div>
+                  <div class="led-bulb"></div>
+                </div>
 
-                  <div class="shelf-slot">
-                    <div class="media-spine spine-audio active">Maiden · Powerslave</div>
-                    <div class="led-strip-container">
-                      <div class="led-node active-amber"></div>
-                    </div>
+                <div class="shelf-col" data-index="12" data-app="audio">
+                  <div class="media-spine spine-audio">
+                    <span class="spine-author">Maiden</span>
+                    <span class="spine-title">Powerslave</span>
                   </div>
+                  <div class="led-bulb active"></div>
+                </div>
 
-                  <div class="shelf-slot">
-                    <div class="media-spine spine-cine">Anspach · Queen of Montreuil</div>
-                    <div class="led-strip-container">
-                      <div class="led-node"></div>
-                    </div>
+                <div class="shelf-col" data-index="13" data-app="cine">
+                  <div class="media-spine spine-cine">
+                    <span class="spine-author">Anspach</span>
+                    <span class="spine-title">Queen of Montreuil</span>
                   </div>
+                  <div class="led-bulb"></div>
+                </div>
 
-                  <div class="shelf-slot">
-                    <div class="media-spine spine-cine">Dupieux · Yannick</div>
-                    <div class="led-strip-container">
-                      <div class="led-node active-cyan"></div>
-                    </div>
+                <div class="shelf-col" data-index="14" data-app="cine">
+                  <div class="media-spine spine-cine">
+                    <span class="spine-author">Dupieux</span>
+                    <span class="spine-title">Yannick</span>
                   </div>
+                  <div class="led-bulb"></div>
+                </div>
 
-                  <div class="shelf-slot">
-                    <div class="media-spine spine-biblio">Kropotkine · L'Entraide</div>
-                    <div class="led-strip-container">
-                      <div class="led-node"></div>
-                    </div>
+                <div class="shelf-col" data-index="15" data-app="biblio">
+                  <div class="media-spine spine-biblio">
+                    <span class="spine-author">Kropotkine</span>
+                    <span class="spine-title">L'Entraide</span>
                   </div>
+                  <div class="led-bulb"></div>
+                </div>
 
-                  <div class="shelf-slot">
-                    <div class="media-spine spine-biblio">Perec · Un homme qui dort</div>
-                    <div class="led-strip-container">
-                      <div class="led-node active-emerald"></div>
-                    </div>
+                <div class="shelf-col" data-index="16" data-app="biblio">
+                  <div class="media-spine spine-biblio">
+                    <span class="spine-author">Perec</span>
+                    <span class="spine-title">Un homme qui dort</span>
                   </div>
+                  <div class="led-bulb"></div>
                 </div>
               </div>
-
-
-              <div class="shelf-simulator-footer">
-                <span>Signal : HTTP POST /leds</span>
-              </div>
+              <p class="shelf-caption">
+                Simulation interactive (cliquez sur un élément)
+              </p>
             </div>
           </div>
         </div>
@@ -892,6 +892,31 @@
           { threshold: 0.1 },
         )
         observer.observe(heroLockup)
+      })()
+
+      /* Shelf interactive simulation */
+      ;(function () {
+        var cols = document.querySelectorAll(".shelf-col")
+        var status = document.getElementById("shelf-status")
+
+        cols.forEach(function (col) {
+          col.addEventListener("click", function () {
+            cols.forEach(function (c) {
+              var bulb = c.querySelector(".led-bulb")
+              if (bulb) bulb.classList.remove("active")
+            })
+
+            var bulb = col.querySelector(".led-bulb")
+            if (bulb) bulb.classList.add("active")
+
+            var idx = col.getAttribute("data-index")
+            var app = col.getAttribute("data-app")
+            if (status && idx) {
+              status.textContent = "LED active\u00a0: " + idx
+              if (app) status.setAttribute("data-app", app)
+            }
+          })
+        })
       })()
     </script>
   </body>

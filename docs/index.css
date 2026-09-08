@@ -4,7 +4,6 @@
   --bg-subtle: #f8fafc;
   --bg-card: #ffffff;
   --border: #e2e8f0;
-  --border-subtle: #cbd5e1;
   --text: #0f172a;
   --text-muted: #475569;
 
@@ -12,7 +11,6 @@
   --accent: #4f46e5;
   --accent-hover: #4338ca;
   --accent-light: #eef2ff;
-  --accent-gradient: linear-gradient(135deg, #6366f1, #a855f7);
 
   /* Ecosystem app specific accents */
   --audio-accent: #d97706;
@@ -27,8 +25,7 @@
   --biblio-bg: #d1fae5;
   --biblio-border: #a7f3d0;
 
-  /* Hardware indicator accent */
-  --led-active: #e11d48;
+  /* Hardware indicator accents */
   --led-amber: #f59e0b;
   --led-cyan: #06b6d4;
   --led-emerald: #10b981;
@@ -81,8 +78,7 @@ a {
 
 h1,
 h2,
-h3,
-h4 {
+h3 {
   color: var(--text);
   font-weight: 700;
   line-height: 1.25;
@@ -768,10 +764,6 @@ p {
   flex: 1;
 }
 
-.app-card-actions .btn-full {
-  width: 100%;
-}
-
 /* ── Hardware Section (LED Shelf Simulation) ─────────────────────────────── */
 .hardware-grid {
   display: grid;
@@ -834,106 +826,104 @@ p {
   margin-top: 0.75rem;
 }
 
-/* ── Pure CSS Interactive Shelf Simulator ────────────────────────────────── */
-.shelf-simulator {
-  background: #1e293b;
-  border-radius: 12px;
-  padding: 1.5rem;
-  box-shadow: var(--shadow-lg);
-  border: 1px solid #334155;
-}
-
-.shelf-simulator-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 1.25rem;
-  font-family: var(--font-code);
-  font-size: 0.8rem;
-  color: #94a3b8;
-  border-bottom: 1px solid #334155;
-  padding-bottom: 0.65rem;
-}
-
-.shelf-status-live {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  color: #34d399;
-}
-
-.pulse-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: #10b981;
-  box-shadow: 0 0 8px #10b981;
-  animation: pulse 2s infinite;
-}
-
-@keyframes pulse {
-  0% {
-    transform: scale(0.95);
-    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
-  }
-  70% {
-    transform: scale(1);
-    box-shadow: 0 0 0 7px rgba(16, 185, 129, 0);
-  }
-  100% {
-    transform: scale(0.95);
-    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
-  }
-}
-
-.shelf-cabinet {
+/* ── Interactive Shelf Simulator ─────────────────────────────────────────── */
+.shelf-demo {
   background: #0f172a;
-  border-radius: 8px;
-  border: 3px solid #475569;
-  padding: 1rem 0.5rem 0.5rem;
-  position: relative;
-}
-
-.shelf-items-row {
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-around;
-  gap: 8px;
-  height: 205px;
-  padding-bottom: 0.5rem;
-  border-bottom: 6px solid #334155;
-}
-
-.shelf-slot {
+  border-radius: var(--radius);
+  padding: 1.5rem;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-end;
-  height: 100%;
-  flex: 1;
+  width: fit-content;
+  max-width: 100%;
+  margin: 0 auto;
+}
+
+.shelf-header {
+  width: 100%;
+  font-size: 0.8rem;
+  color: #94a3b8;
+  margin-bottom: 0.75rem;
+  display: flex;
+  justify-content: space-between;
+}
+
+.shelf-led-active {
+  color: var(--led-amber);
+  font-weight: 600;
+  transition: color 0.2s ease;
+}
+
+.shelf-led-active[data-app="audio"] {
+  color: var(--led-amber);
+}
+
+.shelf-led-active[data-app="cine"] {
+  color: var(--led-cyan);
+}
+
+.shelf-led-active[data-app="biblio"] {
+  color: var(--led-emerald);
+}
+
+.shelf-row {
+  display: flex;
+  gap: 10px;
+  padding: 0.85rem;
+  background: #1e293b;
+  border-radius: 6px;
+  margin-bottom: 0.75rem;
+  width: fit-content;
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+.shelf-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.led-bulb {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #475569;
+  transition: all 0.2s ease;
+}
+
+.shelf-col[data-app="audio"] .led-bulb.active {
+  background: var(--led-amber);
+  box-shadow: 0 0 8px var(--led-amber);
+}
+
+.shelf-col[data-app="cine"] .led-bulb.active {
+  background: var(--led-cyan);
+  box-shadow: 0 0 8px var(--led-cyan);
+}
+
+.shelf-col[data-app="biblio"] .led-bulb.active {
+  background: var(--led-emerald);
+  box-shadow: 0 0 8px var(--led-emerald);
 }
 
 .media-spine {
-  width: 36px;
-  height: 175px;
+  flex: none;
+  width: 22px;
+  min-width: 22px;
+  height: 150px;
+  min-height: 150px;
   border-radius: 3px;
   display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   align-items: center;
-  justify-content: center;
-  writing-mode: vertical-rl;
-  text-orientation: mixed;
-  transform: rotate(180deg);
-  padding: 0.6rem 0.2rem;
-  font-size: 0.60rem;
-  letter-spacing: -0.2px;
-  white-space: nowrap;
-  font-family: var(--font-code);
-  font-weight: 600;
-  user-select: none;
+  padding: 8px 2px;
   cursor: default;
-  transition:
-    border-color 0.2s ease,
-    box-shadow 0.2s ease;
+  overflow: hidden;
+  user-select: none;
+  transition: background 0.2s ease;
 }
 
 .spine-audio {
@@ -954,57 +944,33 @@ p {
   border: 1px solid #15803d;
 }
 
-.media-spine.active {
-  box-shadow:
-    0 0 16px rgba(245, 158, 11, 0.5),
-    inset 0 0 8px rgba(245, 158, 11, 0.2);
-  border-color: var(--led-amber);
+.spine-author {
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  font-size: 0.62rem;
+  font-weight: 700;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: center;
 }
 
-.led-strip-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  padding: 0.5rem 0 0.1rem;
+.spine-title {
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  font-size: 0.58rem;
+  font-weight: 400;
+  opacity: 0.85;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: center;
 }
 
-.led-node {
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  background: #334155;
-  transition: all 0.3s ease;
-}
-
-.led-node.active-amber {
-  background: var(--led-amber);
-  box-shadow:
-    0 0 10px var(--led-amber),
-    0 0 20px var(--led-amber);
-}
-
-.led-node.active-cyan {
-  background: var(--led-cyan);
-  box-shadow:
-    0 0 10px var(--led-cyan),
-    0 0 20px var(--led-cyan);
-}
-
-.led-node.active-emerald {
-  background: var(--led-emerald);
-  box-shadow:
-    0 0 10px var(--led-emerald),
-    0 0 20px var(--led-emerald);
-}
-
-.shelf-simulator-footer {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  margin-top: 1rem;
-  font-size: 0.78rem;
-  color: #94a3b8;
+.shelf-caption {
+  font-size: 0.75rem;
+  color: #64748b;
+  text-align: center;
 }
 
 /* ── Architecture Section ────────────────────────────────────────────────── */
