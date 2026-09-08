@@ -213,7 +213,7 @@
             >Déployer TropoBiblio</a
           >
           <a href="#leds" class="btn btn-secondary" id="btn-hero-leds"
-            >Découvrir le localisateur LED</a
+            >Découvrir la localisation LED</a
           >
         </div>
 
@@ -560,6 +560,26 @@
                   Intégration HTTP directe avec un petit firmware ESP32.
                 </li>
               </ul>
+
+              <div class="hardware-note">
+                <p>
+                  💡 <strong>Conçu pour les Makers :</strong> L'ensemble du code
+                  source du firmware et les schémas de câblage sont libres et
+                  inclus dans le dépôt, prêts à être téléversés sur un
+                  microcontrôleur ESP32 bon marché.
+                </p>
+                <div class="hardware-note-link">
+                  <a
+                    href="./img/wiring-diagram.svg"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="btn btn-secondary btn-sm"
+                    id="btn-wiring-diagram"
+                  >
+                    🔌 Consulter le schéma de câblage (SVG)
+                  </a>
+                </div>
+              </div>
             </div>
 
             <!-- Interactive shelf simulation -->
@@ -580,7 +600,7 @@
                 </div>
 
                 <div class="shelf-col" data-index="42">
-                  <div class="book-spine highlighted">
+                  <div class="book-spine">
                     <span class="spine-author">George Orwell</span>
                     <span class="spine-title">1984</span>
                   </div>
@@ -590,7 +610,7 @@
                 <div class="shelf-col" data-index="43">
                   <div class="book-spine">
                     <span class="spine-author">Perec</span>
-                    <span class="spine-title">Une homme qui dort</span>
+                    <span class="spine-title">Un homme qui dort</span>
                   </div>
                   <div class="led-bulb"></div>
                 </div>
@@ -614,14 +634,13 @@
                 <div class="shelf-col" data-index="46">
                   <div class="book-spine">
                     <span class="spine-author">Deleuze</span>
-                    <span class="spine-title">Différence et répétition</span>
+                    <span class="spine-title">L'Anti-Œdipe</span>
                   </div>
                   <div class="led-bulb"></div>
                 </div>
               </div>
               <p class="shelf-caption">
-                Simulation interactive de ruban LED adressable (cliquez sur un
-                volume)
+                Simulation interactive (cliquez sur un volume)
               </p>
             </div>
           </div>
@@ -842,13 +861,11 @@
             cols.forEach(function (c) {
               var spine = c.querySelector(".book-spine")
               var bulb = c.querySelector(".led-bulb")
-              if (spine) spine.classList.remove("highlighted")
               if (bulb) bulb.classList.remove("active")
             })
 
             var spine = col.querySelector(".book-spine")
             var bulb = col.querySelector(".led-bulb")
-            if (spine) spine.classList.add("highlighted")
             if (bulb) bulb.classList.add("active")
 
             var idx = col.getAttribute("data-index")

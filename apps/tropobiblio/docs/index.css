@@ -8,11 +8,7 @@
 
   --accent: #16a34a;
   --accent-hover: #15803d;
-  --accent-gradient: linear-gradient(135deg, #10b981, #22c55e);
   --led-active: #22c55e;
-  --tag-bg: #dcfce7;
-  --tag-text: #15803d;
-  --tag-border: #bbf7d0;
 
   --font-main:
     system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
@@ -183,6 +179,11 @@ p {
 
 .btn-secondary:hover {
   background: var(--border);
+}
+
+.btn-sm {
+  padding: 0.4rem 0.85rem;
+  font-size: 0.82rem;
 }
 
 /* ── Hero Section ────────────────────────────────────────────────────────── */
@@ -578,6 +579,21 @@ p {
   color: var(--text);
 }
 
+.hardware-note {
+  margin-top: 1.5rem;
+  padding: 0.85rem 1rem;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--accent);
+  border-radius: 4px;
+  font-size: 0.86rem;
+  color: var(--text-muted);
+}
+
+.hardware-note-link {
+  margin-top: 0.75rem;
+}
+
 .shelf-demo {
   background: #0f172a;
   border-radius: var(--radius);
@@ -653,10 +669,6 @@ p {
   overflow: hidden;
   user-select: none;
   transition: background 0.2s ease;
-}
-
-.book-spine.highlighted {
-  background: var(--accent);
 }
 
 .spine-author {

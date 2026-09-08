@@ -548,6 +548,26 @@
                   Direct HTTP integration with lightweight ESP32 firmware.
                 </li>
               </ul>
+
+              <div class="hardware-note">
+                <p>
+                  💡 <strong>Maker-Friendly:</strong> All firmware source code
+                  and wiring schematics are free software and included in the
+                  repository, ready to flash onto an affordable ESP32
+                  microcontroller.
+                </p>
+                <div class="hardware-note-link">
+                  <a
+                    href="./img/wiring-diagram.svg"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="btn btn-secondary btn-sm"
+                    id="btn-wiring-diagram"
+                  >
+                    🔌 View Wiring Diagram (SVG)
+                  </a>
+                </div>
+              </div>
             </div>
 
             <!-- Interactive LED simulation -->
@@ -561,14 +581,14 @@
               <div class="shelf-row">
                 <div class="shelf-col" data-index="41">
                   <div class="book-spine">
-                    <span class="spine-author">Frank Herbert</span>
-                    <span class="spine-title">Dune</span>
+                    <span class="spine-author">Kropotkine</span>
+                    <span class="spine-title">L'Entraide</span>
                   </div>
                   <div class="led-bulb"></div>
                 </div>
 
                 <div class="shelf-col" data-index="42">
-                  <div class="book-spine highlighted">
+                  <div class="book-spine">
                     <span class="spine-author">George Orwell</span>
                     <span class="spine-title">1984</span>
                   </div>
@@ -577,38 +597,38 @@
 
                 <div class="shelf-col" data-index="43">
                   <div class="book-spine">
-                    <span class="spine-author">Philip K. Dick</span>
-                    <span class="spine-title">Ubik</span>
+                    <span class="spine-author">Perec</span>
+                    <span class="spine-title">Un homme qui dort</span>
                   </div>
                   <div class="led-bulb"></div>
                 </div>
 
                 <div class="shelf-col" data-index="44">
                   <div class="book-spine">
-                    <span class="spine-author">Isaac Asimov</span>
-                    <span class="spine-title">Foundation</span>
+                    <span class="spine-author">Sartre</span>
+                    <span class="spine-title">L'Être et le Néant</span>
                   </div>
                   <div class="led-bulb"></div>
                 </div>
 
                 <div class="shelf-col" data-index="45">
                   <div class="book-spine">
-                    <span class="spine-author">Arthur C. Clarke</span>
-                    <span class="spine-title">2001</span>
+                    <span class="spine-author">Husserl</span>
+                    <span class="spine-title">Ideen I</span>
                   </div>
                   <div class="led-bulb"></div>
                 </div>
 
                 <div class="shelf-col" data-index="46">
                   <div class="book-spine">
-                    <span class="spine-author">Ursula K. Le Guin</span>
-                    <span class="spine-title">Dispossessed</span>
+                    <span class="spine-author">Deleuze</span>
+                    <span class="spine-title">L'Anti-Œdipe</span>
                   </div>
                   <div class="led-bulb"></div>
                 </div>
               </div>
               <p class="shelf-caption">
-                Interactive addressable LED strip simulation (click any volume)
+                Interactive simulation (click any volume)
               </p>
             </div>
           </div>
@@ -824,13 +844,11 @@
             cols.forEach(function (c) {
               var spine = c.querySelector(".book-spine")
               var bulb = c.querySelector(".led-bulb")
-              if (spine) spine.classList.remove("highlighted")
               if (bulb) bulb.classList.remove("active")
             })
 
             var spine = col.querySelector(".book-spine")
             var bulb = col.querySelector(".led-bulb")
-            if (spine) spine.classList.add("highlighted")
             if (bulb) bulb.classList.add("active")
 
             var idx = col.getAttribute("data-index")
