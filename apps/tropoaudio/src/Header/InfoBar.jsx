@@ -16,7 +16,7 @@ const InfoBar = () => {
   const [info, setInfo] = useState("")
   const [noResult, setNoResult] = useState(false)
   const sort = useCollectionStore((s) => s.sort)
-  const styles = useCollectionStore((s) => s.categories)
+  const categories = useCollectionStore((s) => s.categories)
   const creators = useCollectionStore((s) => s.creators)
   const selected = useCollectionStore((s) => s.selected)
   const items = useCollectionStore((s) => s.items)
@@ -40,7 +40,7 @@ const InfoBar = () => {
           case "added":
             label = t("Date added")
             break
-          case "artist":
+          case "creator":
             label = t("Artist")
             break
           case "rating":
@@ -66,7 +66,7 @@ const InfoBar = () => {
       }
 
       const effectiveCategories = selected.categories.filter((c) =>
-        styles.includes(c),
+        categories.includes(c),
       )
       const effectiveCreators = selected.creators.filter((c) =>
         creators.includes(c),
@@ -74,7 +74,7 @@ const InfoBar = () => {
 
       setInfo(
         <>
-          <b>{displayCount}</b> {t(displayCount > 1 ? "albums" : "album")}{" "}
+          <b>{displayCount}</b> {displayCount > 1 ? t("albums") : t("album")}{" "}
           <b>{effectiveCategories.join(", ")}</b>{" "}
           {effectiveCreators.length ? (
             <>
@@ -99,7 +99,7 @@ const InfoBar = () => {
     selected.creators,
     selected.categories,
     sort,
-    styles,
+    categories,
     items,
     creators,
     t,

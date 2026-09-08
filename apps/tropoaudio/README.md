@@ -73,9 +73,9 @@ TropoAudio can map to three optional custom fields defined in your Discogs colle
 
 - **`VITE_SET_LEDS`**: Set to `"yes"` to enable IoT LED communication.
 - **`VITE_AUDIOLIBRARY_URL`**: HTTP URL of your microcontroller LED controller (e.g., `http://192.168.1.113`).
-- **`VITE_LEDS_ARTISTS_COLOR`**: RGB color for artists filter layer (default: `0,0,130`).
-- **`VITE_LEDS_STYLES_COLOR`**: RGB color for styles filter layer (default: `0,150,0`).
-- **`VITE_LEDS_ALBUM_COLOR`**: RGB color for focused album modal (default: `255,0,0`).
+- **`VITE_LEDS_CREATORS_COLOR`**: RGB color for artists filter layer (default: `0,0,130`).
+- **`VITE_LEDS_CATEGORIES_COLOR`**: RGB color for styles filter layer (default: `0,150,0`).
+- **`VITE_LEDS_WORK_COLOR`**: RGB color for focused album modal (default: `255,0,0`).
 
 > 💡 **Hardware Setup & Wiring**:
 > To assemble, flash, and connect your physical shelf LED controller, see the [ESP32 LED Controller Firmware Guide](../../firmware/led-controller/README.md) and the [Official Wiring Diagram (SVG)](../../firmware/led-controller/wiring-diagram.svg).

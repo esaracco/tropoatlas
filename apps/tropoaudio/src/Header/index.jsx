@@ -317,7 +317,7 @@ const Header = () => {
         type="radio"
         content={{
           added: t("Date added"),
-          artist: t("Artist"),
+          creator: t("Artist"),
           rating: t("My rating"),
           year: t("Year"),
           ...(customFields.supportsPlace && {

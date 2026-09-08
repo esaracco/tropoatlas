@@ -7,7 +7,7 @@ import { LazyLoadImage } from "react-lazy-load-image-component"
 import { getItemDetails, getItemImage, getProviderInfo } from "../../provider"
 import { buildCacheKey, setLargeItem } from "@tropo/core"
 
-import "./styles/Album.css"
+import "./styles/Work.css"
 
 // Queue to fetch missing years progressively in the background (max 1 req / 2s)
 const backgroundQueue = {
@@ -36,13 +36,6 @@ const backgroundQueue = {
 
     this.processing = false
   },
-}
-
-// Track latest clicked album instance ID to prevent stale async responses
-let latestClickedInstanceId = null
-
-export const setLatestClickedInstanceId = (id) => {
-  latestClickedInstanceId = id
 }
 
 // Module-level cache of image URLs already loaded during this session
@@ -82,13 +75,13 @@ const addCacheBuster = (url) => {
   return `${url}${sep}t=${timestamp}`
 }
 
-// COMPONENT Album
-const Album = ({
+// COMPONENT Work
+const Work = ({
   setActiveInstanceId,
   cardWidth,
   instanceid,
   img,
-  artist,
+  creator,
   year,
   title,
   format,
@@ -104,77 +97,31 @@ const Album = ({
     if (!year || year === 0) {
       backgroundQueue.add(instanceid, async () => {
         // Fetch only if still missing
-        const currentAlbum = useCollectionStore.getState().items[instanceid]
+        const currentWork = useCollectionStore.getState().items[instanceid]
         if (
-          currentAlbum &&
-          currentAlbum.master === undefined &&
-          (!currentAlbum.year || currentAlbum.year === 0)
+          currentWork &&
+          currentWork.master === undefined &&
+          (!currentWork.year || currentWork.year === 0)
         ) {
-          // Unmount safe state update inside getReleaseData isn't strictly
-          //  guaranteed, but state updates on unmounted components don't
-          // throw warnings in React 18 and we only care about updating the
-          // store anyway.
-          await getReleaseData(instanceid, false)
+          try {
+            const work = await getItemDetails(currentWork)
+            const items = useCollectionStore.getState().items
+            const newItems = { ...items, [instanceid]: work }
+            setItems(newItems)
+            setLargeItem("items", newItems)
+          } catch (err) {
+            console.warn("Background fetch year error:", err.message)
+          }
         }
       })
     }
   }, [year, instanceid])
 
-  // METHOD getReleaseData()
-  const getReleaseData = async (e, showLoader = true) => {
-    const instanceId =
-      e && e.currentTarget ? e.currentTarget.dataset.instanceid : e
-    let album = useCollectionStore.getState().items[instanceId]
-
-    // Get remote data if not yet in cache
-    if (album.tracklist === undefined) {
-      if (showLoader) setLoader(true)
-
-      try {
-        album = await getItemDetails(album)
-
-        const items = useCollectionStore.getState().items
-        const newItems = { ...items, [instanceId]: album }
-        setItems(newItems)
-        setLargeItem("items", newItems)
-      } finally {
-        if (showLoader) setLoader(false)
-      }
-    }
-
-    return album
-  }
-
   // METHOD onClick()
   const onClick = (e) => {
     const targetInstanceId =
       e && e.currentTarget ? e.currentTarget.dataset.instanceid : instanceid
-    setLatestClickedInstanceId(targetInstanceId)
-
-    getReleaseData(e)
-      .then((r) => {
-        // Discard stale async responses if user clicked another album
-        if (
-          latestClickedInstanceId !== null &&
-          String(latestClickedInstanceId) !== String(r.id)
-        ) {
-          return
-        }
-        setActiveInstanceId(r.id)
-      })
-      .catch((e) => {
-        if (!navigator.onLine) {
-          toast.warning(t("You are offline!"), { toastId: "offline" })
-        } else {
-          console.error(e.message)
-          toast.error(
-            t(e.message) ||
-              t("An error occurred while using the {{provider}} API!", {
-                provider: getProviderInfo().name,
-              }),
-          )
-        }
-      })
+    setActiveInstanceId(targetInstanceId)
   }
 
   const retryImageLoad = async () => {
@@ -182,18 +129,18 @@ const Album = ({
     setLoader(true)
     try {
       const items = useCollectionStore.getState().items
-      const album = items[instanceid]
-      if (album) {
+      const work = items[instanceid]
+      if (work) {
         // Purge previous image URL from browser cache
-        await purgeImageCache(album.cover)
+        await purgeImageCache(work.cover)
 
-        const images = await getItemImage(album)
+        const images = await getItemImage(work)
         if (images && images.cover) {
           const cover = addCacheBuster(images.cover)
 
           const releasesClone = { ...items }
           releasesClone[instanceid] = {
-            ...album,
+            ...work,
             cover,
           }
           setItems(releasesClone)
@@ -236,7 +183,7 @@ const Album = ({
   // RENDER
   return (
     <div
-      className={`Album${loader ? " is-loading" : ""}`}
+      className={`Work${loader ? " is-loading" : ""}`}
       onClick={onClick}
       style={{ width: cardWidth }}
       data-instanceid={instanceid}
@@ -256,8 +203,8 @@ const Album = ({
       {getProviderInfo().multipleFormats && format && (
         <div className="format-badge">{format}</div>
       )}
-      <div className="artist text-truncate" style={{ width: cardWidth }}>
-        {artist}
+      <div className="creator text-truncate" style={{ width: cardWidth }}>
+        {creator}
         <br />
         {year ? `${year} - ` : ""}
         {title}
@@ -266,4 +213,4 @@ const Album = ({
   )
 }
 
-export default Album
+export default Work

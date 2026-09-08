@@ -1,4 +1,4 @@
-.AlbumStyleButtons {
+.WorkCategoryButtons {
   --tag-bg: var(--tropo-tag-bg);
   --tag-text: var(--tropo-tag-text);
   --tag-hover: var(--tropo-tag-hover);
@@ -6,14 +6,17 @@
   --tag-remove-btn-bg--hover: var(--tropo-accent);
   --tags-focus-border-color: var(--tropo-accent);
   --tag-pad: 0.3em 0.5em;
+  --placeholder-color: var(--tropo-text-muted);
+  --placeholder-color-focus: var(--tropo-text-muted);
+  --input-color: var(--tropo-text);
 }
 
-.AlbumStyleButtons .tagify__tag,
-.AlbumStyleButtons .tagify__input {
+.WorkCategoryButtons .tagify__tag,
+.WorkCategoryButtons .tagify__input {
   margin: 1px 0 1px 1px;
 }
 
-.AlbumStyleButtons .tagify__tag__removeBtn {
+.WorkCategoryButtons .tagify__tag__removeBtn {
   margin-left: -6px;
   margin-right: 0;
 }
@@ -32,20 +35,39 @@
   background: var(--tropo-surface-2) !important;
 }
 
-/* Style InputGroup container and addon styling */
-.style-input-group {
+/* Ensure placeholder text is visible across all themes */
+.WorkCategoryButtons .tagify__input::before {
+  color: var(--tropo-text-muted);
+}
+
+.WorkCategoryButtons .tagify__input:empty::before {
+  opacity: 1;
+}
+
+.WorkCategoryButtons .tagify__input:focus:empty::before {
+  color: var(--tropo-text-muted);
+  opacity: 1;
+}
+
+/* Hide placeholder when input is read-only */
+.WorkCategoryButtons[readonly] .tagify__input::before {
+  display: none;
+}
+
+/* Category InputGroup container and addon styling */
+.category-input-group {
   display: flex !important;
   flex-wrap: nowrap !important;
   align-items: stretch !important;
 }
 
-.style-input-group .style-icon-addon {
+.category-input-group .category-icon-addon {
   opacity: 0.7;
   height: auto !important;
 }
 
 /* Connect Tagify container seamlessly to the edit icon addon */
-.style-input-group .style-icon-addon ~ .tagify {
+.category-input-group .category-icon-addon ~ .tagify {
   width: auto !important;
   flex: 1 1 auto !important;
   border-radius: 0 5px 5px 0 !important;

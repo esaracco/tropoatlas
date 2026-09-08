@@ -1,14 +1,14 @@
-.AlbumModal a {
+.WorkModal a {
   color: var(--tropo-link);
 }
 
-.AlbumModal .modal-header {
+.WorkModal .modal-header {
   position: relative;
   align-items: flex-start;
 }
 
-.AlbumModal .modal-header .btn-close,
-.AlbumModal .modal-header .close {
+.WorkModal .modal-header .btn-close,
+.WorkModal .modal-header .close {
   position: absolute;
   top: 12px;
   right: 12px;
@@ -16,50 +16,50 @@
   z-index: 10;
 }
 
-.AlbumModal .modal-title {
+.WorkModal .modal-title {
   width: 100%;
   padding-right: 25px;
 }
 
-.AlbumModal .artist-name {
+.WorkModal .creator-name {
   font-size: 1.1rem;
   font-weight: 700;
   color: var(--tropo-text);
   line-height: 1.25;
 }
 
-.AlbumModal .album-details {
+.WorkModal .work-details {
   font-size: 0.9rem;
   color: var(--tropo-text-muted);
   font-weight: 400;
   margin-top: 2px;
 }
 
-.AlbumModal .modal-header-content {
+.WorkModal .modal-header-content {
   display: flex;
   align-items: flex-start;
   gap: 16px;
 }
 
-.AlbumModal .modal-icon {
+.WorkModal .modal-icon {
   width: 120px;
   flex-shrink: 0;
   text-align: center;
 }
 
-.AlbumModal .modal-header-info {
+.WorkModal .modal-header-info {
   flex: 1;
   min-width: 0;
   vertical-align: top;
 }
 
-.AlbumModal .album-tracks ul {
+.WorkModal .work-tracks ul {
   list-style-type: none;
   padding-left: 0;
   margin-bottom: 0;
 }
 
-.AlbumModal .album-tracks .heading {
+.WorkModal .work-tracks .heading {
   margin: 12px 0 6px 0;
   padding-bottom: 4px;
   border-bottom: 1px solid var(--tropo-border);
@@ -69,17 +69,17 @@
   letter-spacing: 0.5px;
 }
 
-.AlbumModal .album-tracks .track-item {
+.WorkModal .work-tracks .track-item {
   padding: 4px 6px;
   border-radius: 4px;
   transition: background-color 0.15s ease-in-out;
 }
 
-.AlbumModal .album-tracks .track-item:hover {
+.WorkModal .work-tracks .track-item:hover {
   background-color: var(--tropo-surface-2);
 }
 
-.AlbumModal .album-tracks .track-position {
+.WorkModal .work-tracks .track-position {
   font-family: monospace;
   font-size: 0.85em;
   min-width: 30px;
@@ -87,23 +87,23 @@
   font-weight: 600;
 }
 
-.AlbumModal .album-tracks .track-title {
+.WorkModal .work-tracks .track-title {
   color: var(--tropo-text);
 }
 
-.AlbumModal .album-tracks .track-duration {
+.WorkModal .work-tracks .track-duration {
   color: var(--tropo-text-muted);
   font-size: 0.85em;
   font-family: monospace;
 }
 
-.AlbumModal .modal-body {
+.WorkModal .modal-body {
   font-size: 0.8rem;
   background: var(--tropo-surface);
 }
 
-.AlbumModal .modal-body .master,
-.AlbumModal .modal-body .release {
+.WorkModal .modal-body .master,
+.WorkModal .modal-body .release {
   background: var(--tropo-surface-2);
   border: 1px solid var(--tropo-border);
   border-radius: 6px;
@@ -111,21 +111,21 @@
   margin-left: 10px;
 }
 
-.AlbumModal .modal-body .release {
+.WorkModal .modal-body .release {
   margin-bottom: 10px;
 }
 
-.AlbumModal .tab-pane {
+.WorkModal .tab-pane {
   padding: 10px;
 }
 
-.AlbumModal .table {
+.WorkModal .table {
   width: auto;
   margin-left: auto;
   margin-right: auto;
 }
 
-.AlbumModal .table th {
+.WorkModal .table th {
   background: var(--tropo-surface) !important;
   font-weight: bold;
   text-align: right;
@@ -134,54 +134,54 @@
 }
 
 /* Ultra-compact InputGroup styling for place and price fields (24px) */
-.AlbumModal .input-group .input-group-text,
-.AlbumModal .input-group .form-control,
-.AlbumModal .form-control {
+.WorkModal .input-group .input-group-text,
+.WorkModal .input-group .form-control,
+.WorkModal .form-control {
   height: 24px;
   padding: 0.1rem 0.35rem;
   font-size: 0.75rem;
   line-height: 1;
 }
 
-.AlbumModal .input-group-text {
+.WorkModal .input-group-text {
   background-color: var(--tropo-surface-2);
   border-color: var(--tropo-border);
   color: var(--tropo-text-muted);
   border: none;
 }
 
-.AlbumModal .place-icon-addon,
-.AlbumModal .price-icon-addon {
+.WorkModal .place-icon-addon,
+.WorkModal .price-icon-addon {
   font-size: 0.7rem;
   opacity: 0.7;
 }
 
-.AlbumModal .price-control {
+.WorkModal .price-control {
   text-align: right;
 }
 
-.AlbumModal .form-control,
-.AlbumModal .input-group .form-control {
+.WorkModal .form-control,
+.WorkModal .input-group .form-control {
   background-color: var(--tropo-surface-2);
   border-color: var(--tropo-border);
   color: var(--tropo-text);
   border: none;
 }
 
-.AlbumModal .input-group .form-control:focus {
+.WorkModal .input-group .form-control:focus {
   background-color: var(--tropo-surface-2);
   border-color: var(--tropo-focus-ring, #0d6efd);
   color: var(--tropo-text);
   box-shadow: none;
 }
 
-.AlbumModal .form-control {
+.WorkModal .form-control {
   background-color: var(--tropo-surface-2);
   border-color: var(--tropo-border);
   color: var(--tropo-text);
 }
 
-.AlbumModal .reset {
+.WorkModal .reset {
   cursor: pointer;
   float: right;
   margin-top: 3px;
@@ -189,12 +189,12 @@
 }
 
 /* Image gallery dark override */
-.AlbumModal .image-gallery-slide img {
+.WorkModal .image-gallery-slide img {
   border-radius: 4px;
 }
 
 /* Generic Provider logo styling in footer */
-.AlbumModal .provider-link-btn {
+.WorkModal .provider-link-btn {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
@@ -205,12 +205,12 @@
   background-color: var(--tropo-surface);
 }
 
-.AlbumModal .provider-link-btn:hover {
+.WorkModal .provider-link-btn:hover {
   background-color: var(--tropo-surface-2);
   border-color: var(--tropo-text-muted);
 }
 
-.AlbumModal .provider-logo-wrapper {
+.WorkModal .provider-logo-wrapper {
   background-color: #ffffff;
   border-radius: 3px;
   padding: 2px 6px;
@@ -220,7 +220,7 @@
   height: 22px;
 }
 
-.AlbumModal .provider-logo {
+.WorkModal .provider-logo {
   height: 16px;
   max-width: 80px;
   object-fit: contain;
@@ -228,14 +228,34 @@
   filter: none;
 }
 
-.AlbumModal .provider-link-icon {
+.WorkModal .provider-link-icon {
   font-size: 0.9em;
   font-weight: bold;
   opacity: 0.8;
 }
 
+/* Tracks asynchronous loading indicator */
+.WorkModal .description-loading {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin: 0.75rem 0;
+  padding: 0.45rem 0.75rem;
+  border-radius: 6px;
+  background: var(--tropo-surface-2);
+  border: 1px solid var(--tropo-border);
+  color: var(--tropo-text);
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.WorkModal .description-loading .spinner-border {
+  color: var(--tropo-accent, #0ea5e9);
+  flex-shrink: 0;
+}
+
 @media (max-width: 576px) {
-  .AlbumModal .modal-icon {
+  .WorkModal .modal-icon {
     width: 90px;
   }
 }

@@ -126,21 +126,21 @@ const SettingsModal = ({ show, onHide }) => {
 
   const handleClose = () => {
     const corrections = {}
-    if (!LedsClient.isValidColor(hardware.ledsArtistsColor)) {
-      const envVal = import.meta.env.VITE_LEDS_ARTISTS_COLOR
-      corrections.ledsArtistsColor = LedsClient.isValidColor(envVal)
+    if (!LedsClient.isValidColor(hardware.ledsCreatorsColor)) {
+      const envVal = import.meta.env.VITE_LEDS_CREATORS_COLOR
+      corrections.ledsCreatorsColor = LedsClient.isValidColor(envVal)
         ? envVal
         : "0,0,130"
     }
-    if (!LedsClient.isValidColor(hardware.ledsStylesColor)) {
-      const envVal = import.meta.env.VITE_LEDS_STYLES_COLOR
-      corrections.ledsStylesColor = LedsClient.isValidColor(envVal)
+    if (!LedsClient.isValidColor(hardware.ledsCategoriesColor)) {
+      const envVal = import.meta.env.VITE_LEDS_CATEGORIES_COLOR
+      corrections.ledsCategoriesColor = LedsClient.isValidColor(envVal)
         ? envVal
         : "0,150,0"
     }
-    if (!LedsClient.isValidColor(hardware.ledsAlbumColor)) {
-      const envVal = import.meta.env.VITE_LEDS_ALBUM_COLOR
-      corrections.ledsAlbumColor = LedsClient.isValidColor(envVal)
+    if (!LedsClient.isValidColor(hardware.ledsWorkColor)) {
+      const envVal = import.meta.env.VITE_LEDS_WORK_COLOR
+      corrections.ledsWorkColor = LedsClient.isValidColor(envVal)
         ? envVal
         : "255,0,0"
     }
@@ -197,12 +197,12 @@ const SettingsModal = ({ show, onHide }) => {
                   <Form.Label>{t("Artists Color (RGB)")}</Form.Label>
                   <Form.Control
                     type="text"
-                    value={hardware.ledsArtistsColor}
+                    value={hardware.ledsCreatorsColor}
                     isInvalid={
-                      !LedsClient.isValidColor(hardware.ledsArtistsColor)
+                      !LedsClient.isValidColor(hardware.ledsCreatorsColor)
                     }
                     onChange={(e) =>
-                      setHardware({ ledsArtistsColor: e.target.value })
+                      setHardware({ ledsCreatorsColor: e.target.value })
                     }
                   />
                   <ColorFeedback />
@@ -211,12 +211,12 @@ const SettingsModal = ({ show, onHide }) => {
                   <Form.Label>{t("Styles Color (RGB)")}</Form.Label>
                   <Form.Control
                     type="text"
-                    value={hardware.ledsStylesColor}
+                    value={hardware.ledsCategoriesColor}
                     isInvalid={
-                      !LedsClient.isValidColor(hardware.ledsStylesColor)
+                      !LedsClient.isValidColor(hardware.ledsCategoriesColor)
                     }
                     onChange={(e) =>
-                      setHardware({ ledsStylesColor: e.target.value })
+                      setHardware({ ledsCategoriesColor: e.target.value })
                     }
                   />
                   <ColorFeedback />
@@ -225,12 +225,10 @@ const SettingsModal = ({ show, onHide }) => {
                   <Form.Label>{t("Album Color (RGB)")}</Form.Label>
                   <Form.Control
                     type="text"
-                    value={hardware.ledsAlbumColor}
-                    isInvalid={
-                      !LedsClient.isValidColor(hardware.ledsAlbumColor)
-                    }
+                    value={hardware.ledsWorkColor}
+                    isInvalid={!LedsClient.isValidColor(hardware.ledsWorkColor)}
                     onChange={(e) =>
-                      setHardware({ ledsAlbumColor: e.target.value })
+                      setHardware({ ledsWorkColor: e.target.value })
                     }
                   />
                   <ColorFeedback />

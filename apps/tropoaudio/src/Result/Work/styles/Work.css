@@ -1,4 +1,4 @@
-.Album {
+.Work {
   position: relative;
   float: left;
   border-radius: 8px;
@@ -14,7 +14,7 @@
 }
 
 @media (hover: hover) and (pointer: fine) {
-  .Album:hover {
+  .Work:hover {
     transform: translateY(-4px) scale(1.02);
     box-shadow: 0 10px 20px -4px rgba(0, 0, 0, 0.5);
     border-color: var(--tropo-border);
@@ -22,7 +22,7 @@
   }
 }
 
-.Album .artist {
+.Work .creator {
   font-size: 0.8em;
   padding: 8px;
   font-weight: 500;
@@ -31,7 +31,7 @@
   border-top: 1px solid var(--tropo-border-light);
 }
 
-.Album .format-badge {
+.Work .format-badge {
   position: absolute;
   top: 6px;
   right: 6px;
@@ -46,7 +46,7 @@
   z-index: 2;
 }
 
-.Album.is-loading img {
+.Work.is-loading img {
   opacity: 0.75;
   filter: brightness(0.85);
   transition:
@@ -54,7 +54,7 @@
     filter 0.2s;
 }
 
-.Album .card-loader-bar {
+.Work .card-loader-bar {
   position: absolute;
   top: 0;
   left: 0;

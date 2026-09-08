@@ -69,7 +69,7 @@ registerRoute(
   }),
 )
 
-// Cache album covers and artwork images using CacheFirst strategy
+// Cache work covers and artwork images using CacheFirst strategy
 registerRoute(
   ({ url }) =>
     url.pathname.startsWith("/api/proxy-image") ||

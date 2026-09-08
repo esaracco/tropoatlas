@@ -10,12 +10,12 @@ import Tagify from "@yaireo/tagify"
 import { getItem } from "@tropo/core"
 
 import "@yaireo/tagify/dist/tagify.css"
-import "./styles/AlbumStyleButtons.css"
+import "./styles/WorkCategoryButtons.css"
 
-// COMPONENT AlbumStyleButtons
-const AlbumStyleButtons = ({ categories, closeModal }) => {
+// COMPONENT WorkCategoryButtons
+const WorkCategoryButtons = ({ categories, closeModal }) => {
   const setFilter = useCollectionStore((s) => s.setFilter)
-  const availableCategories = useCollectionStore((s) => s.categories)
+  const allCategories = getItem("categories") || []
   const { t } = useTranslation()
   const tags = useRef(null)
   const customFields = getItem("customFieldsInfo") || {}
@@ -23,16 +23,26 @@ const AlbumStyleButtons = ({ categories, closeModal }) => {
   // EFFECT
   useEffect(() => {
     if (!tags.current) {
-      tags.current = new Tagify(document.querySelector(".AlbumStyleButtons"), {
-        whitelist: availableCategories,
-        callbacks: {
-          click: (e) => {
-            setFilter("creators", [])
-            setFilter("categories", [e.detail.data.value])
-            closeModal()
+      tags.current = new Tagify(
+        document.querySelector(".WorkCategoryButtons"),
+        {
+          whitelist: allCategories,
+          // Capitalize first letter of any created or edited category tag
+          transformTag: (tagData) => {
+            if (tagData.value) {
+              tagData.value =
+                tagData.value.charAt(0).toUpperCase() + tagData.value.slice(1)
+            }
+          },
+          callbacks: {
+            click: (e) => {
+              setFilter("creators", [])
+              setFilter("categories", [e.detail.data.value])
+              closeModal()
+            },
           },
         },
-      })
+      )
     }
 
     // Destroy Tagify instance on unmount
@@ -48,14 +58,14 @@ const AlbumStyleButtons = ({ categories, closeModal }) => {
 
   // RENDER
   return (
-    <InputGroup size="sm" className="style-input-group">
+    <InputGroup size="sm" className="category-input-group">
       {customFields.supportsCategories && (
-        <InputGroup.Text className="style-icon-addon">
+        <InputGroup.Text className="category-icon-addon">
           <FontAwesomeIcon icon={faPen} />
         </InputGroup.Text>
       )}
       <input
-        className="AlbumStyleButtons"
+        className="WorkCategoryButtons"
         readOnly={!customFields.supportsCategories}
         placeholder={t("New style...")}
         defaultValue={JSON.stringify(initialValues)}
@@ -64,4 +74,4 @@ const AlbumStyleButtons = ({ categories, closeModal }) => {
   )
 }
 
-export default AlbumStyleButtons
+export default WorkCategoryButtons

@@ -6,8 +6,8 @@ import { VirtuosoGrid } from "react-virtuoso"
 import * as Settings from "../utils/settings"
 import { ledsClient } from "../utils/leds"
 
-import Album from "./Album"
-import AlbumModal from "./Album/AlbumModal"
+import Work from "./Work"
+import WorkModal from "./Work/WorkModal"
 import { normalize } from "@tropo/core"
 import { useScrollbarWidth, useWindowWidth, ScrollButton } from "@tropo/react"
 import { useAppStore } from "@tropo/core"
@@ -76,25 +76,25 @@ const Result = () => {
   // MEMOIZED FILTERING
   const {
     result,
-    placesStyles,
-    placesArtists,
+    placesCategories,
+    placesCreators,
     availableCategories,
-    availableArtists,
+    availableCreators,
     availableFormats,
   } = useMemo(() => {
     const keys = Object.keys(releases)
     const result = []
     const search = normalize(searchStr)
 
-    const sStylesLen = selected.categories.length
-    const sArtistsLen = selected.creators.length
+    const sCategoriesLen = selected.categories.length
+    const sCreatorsLen = selected.creators.length
     const sFormatsLen = selected.formats.length
 
     const fCategories = new Set()
     const fCreators = new Set()
     const fFormats = new Set()
-    const placesStyles = new Set()
-    const placesArtists = new Set()
+    const placesCategories = new Set()
+    const placesCreators = new Set()
 
     // sort
     const [sortField, sortDir] = sort.split("_")
@@ -128,7 +128,7 @@ const Result = () => {
           )
         })
         break
-      case "artist":
+      case "creator":
         keys.sort(
           (a, b) =>
             releases[a].creator.localeCompare(releases[b].creator) * mul,
@@ -156,11 +156,11 @@ const Result = () => {
       const matchSearch = search === "" || r.searchIndex.indexOf(search) > -1
       if (!matchSearch) continue
 
-      const matchStyle =
-        sStylesLen === 0 ||
+      const matchCategory =
+        sCategoriesLen === 0 ||
         selected.categories.some((item) => r.categories.includes(item))
-      const matchArtist =
-        sArtistsLen === 0 || selected.creators.includes(r.creator)
+      const matchCreator =
+        sCreatorsLen === 0 || selected.creators.includes(r.creator)
       const matchFormat =
         sFormatsLen === 0 || selected.formats.includes(r.format)
 
@@ -168,59 +168,59 @@ const Result = () => {
 
       // Collect available options (an option is available if the release
       // matches ALL OTHER filters)
-      if (matchArtist && matchFormat) {
+      if (matchCreator && matchFormat) {
         r.categories.forEach((c) => fCategories.add(c))
       }
 
-      if (matchStyle && matchFormat) {
+      if (matchCategory && matchFormat) {
         fCreators.add(r.creator)
       }
 
-      if (matchStyle && matchArtist) {
+      if (matchCategory && matchCreator) {
         fFormats.add(r.format)
       }
 
-      if (matchStyle && matchArtist && matchFormat) {
+      if (matchCategory && matchCreator && matchFormat) {
         result.push(r)
       }
 
       if (hasPlace) {
         if (
-          sStylesLen > 0 &&
+          sCategoriesLen > 0 &&
           selected.categories.some((item) => r.categories.includes(item))
         ) {
-          placesStyles.add(r.place)
+          placesCategories.add(r.place)
         }
-        if (sArtistsLen > 0 && selected.creators.includes(r.creator)) {
-          placesArtists.add(r.place)
+        if (sCreatorsLen > 0 && selected.creators.includes(r.creator)) {
+          placesCreators.add(r.place)
         }
       }
     }
 
     return {
       result,
-      placesStyles: Array.from(placesStyles),
-      placesArtists: Array.from(placesArtists),
+      placesCategories: Array.from(placesCategories),
+      placesCreators: Array.from(placesCreators),
       availableCategories: Array.from(fCategories).sort(),
-      availableArtists: Array.from(fCreators).sort(),
+      availableCreators: Array.from(fCreators).sort(),
       availableFormats: Array.from(fFormats).sort(),
     }
   }, [searchStr, releases, selected, sort])
 
-  const placesStylesStr = placesStyles.join(",")
-  const placesArtistsStr = placesArtists.join(",")
+  const placesCategoriesStr = placesCategories.join(",")
+  const placesCreatorsStr = placesCreators.join(",")
 
   // EFFECT: Update store state
   useEffect(() => {
     setCategories(availableCategories)
     setFormats(availableFormats)
-    setCreators(availableArtists)
+    setCreators(availableCreators)
     setDisplayCount(result.length)
   }, [
     result.length,
     availableCategories,
     availableFormats,
-    availableArtists,
+    availableCreators,
     setDisplayCount,
     setCategories,
     setFormats,
@@ -232,11 +232,11 @@ const Result = () => {
     if (!_setLeds) return
 
     const manageLeds = async () => {
-      const hasCategories = placesStyles.length > 0
-      const hasCreators = placesArtists.length > 0
-      const activeAlbum = activeInstanceId ? releases[activeInstanceId] : null
+      const hasCategories = placesCategories.length > 0
+      const hasCreators = placesCreators.length > 0
+      const activeWork = activeInstanceId ? releases[activeInstanceId] : null
       const hasModal = Boolean(
-        activeInstanceId && activeAlbum && activeAlbum.place,
+        activeInstanceId && activeWork && activeWork.place,
       )
 
       if (hasCategories || hasCreators || hasModal) {
@@ -247,8 +247,8 @@ const Result = () => {
         // 1. Categories (Background / Lowest intensity)
         if (hasCategories) {
           ledCommands.push({
-            place: placesStyles,
-            color: Settings.getLedsStylesColor(),
+            place: placesCategories,
+            color: Settings.getLedsCategoriesColor(),
             intensity: 0.05,
             noreset: hasLit,
           })
@@ -258,8 +258,8 @@ const Result = () => {
         // 2. Creators (Middle layer / Medium intensity)
         if (hasCreators) {
           ledCommands.push({
-            place: placesArtists,
-            color: Settings.getLedsArtistsColor(),
+            place: placesCreators,
+            color: Settings.getLedsCreatorsColor(),
             intensity: 0.5,
             noreset: hasLit,
           })
@@ -269,8 +269,8 @@ const Result = () => {
         // 3. Modal (Focus layer / Highest priority / Full intensity)
         if (hasModal) {
           ledCommands.push({
-            place: activeAlbum.place,
-            color: Settings.getLedsAlbumColor(),
+            place: activeWork.place,
+            color: Settings.getLedsWorkColor(),
             intensity: 0.1,
             blink: true,
             noreset: hasLit,
@@ -301,8 +301,8 @@ const Result = () => {
 
     manageLeds()
   }, [
-    placesStylesStr,
-    placesArtistsStr,
+    placesCategoriesStr,
+    placesCreatorsStr,
     fromRuler,
     setFromRuler,
     activeInstanceId,
@@ -315,7 +315,7 @@ const Result = () => {
   return (
     <>
       {activeInstanceId && (
-        <AlbumModal
+        <WorkModal
           key={activeInstanceId}
           instanceId={activeInstanceId}
           onClose={() => setActiveInstanceId(null)}
@@ -362,13 +362,13 @@ const Result = () => {
           itemContent={(index) => {
             const item = result[index]
             return (
-              <Album
+              <Work
                 key={item.id}
                 setActiveInstanceId={setActiveInstanceId}
                 instanceid={item.id}
                 img={item.cover || vinylImg}
                 cardWidth={cardWidth}
-                artist={item.creator}
+                creator={item.creator}
                 year={item.year}
                 title={item.title}
                 format={item.format}

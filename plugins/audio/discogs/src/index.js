@@ -2,6 +2,7 @@ import sleep from "sleep-promise"
 import {
   hasLatinLetter,
   hasNonLatinLetter,
+  cleanText,
   normalize,
   BasePlugin,
   useSettingsStore,
@@ -59,8 +60,8 @@ export class DiscogsPlugin extends BasePlugin {
     return this.config.fieldPrice
   }
 
-  get stylesField() {
-    return this.config.fieldStyles
+  get categoriesField() {
+    return this.config.fieldCategories
   }
 
   get fieldsRequired() {
@@ -101,7 +102,7 @@ export class DiscogsPlugin extends BasePlugin {
         requiresResync: true,
       },
       {
-        key: "fieldStyles",
+        key: "fieldCategories",
         label: t("Styles Field (e.g., `styles`)"),
         type: "text",
         requiresResync: true,
@@ -123,7 +124,7 @@ export class DiscogsPlugin extends BasePlugin {
     return {
       supportsPlace: !!config.fieldPlace,
       supportsPrice: !!config.fieldPrice,
-      supportsCategories: !!config.fieldStyles,
+      supportsCategories: !!config.fieldCategories,
     }
   }
 
@@ -135,16 +136,16 @@ export class DiscogsPlugin extends BasePlugin {
     }
     if (
       this.fieldsRequired === "yes" &&
-      !(this.placeField || this.priceField || this.stylesField) &&
+      !(this.placeField || this.priceField || this.categoriesField) &&
       onConfigError
     ) {
       onConfigError(
-        'With the {{required}} environment variable set to "yes" you must at least set one of the following variables: {{place}}, {{price}} or {{styles}}!',
+        'With the {{required}} environment variable set to "yes" you must at least set one of the following variables: {{place}}, {{price}} or {{categories}}!',
         {
           required: "VITE_DISCOGS_FIELDS_REQUIRED",
           place: "VITE_DISCOGS_FIELD_PLACE",
           price: "VITE_DISCOGS_FIELD_PRICE",
-          styles: "VITE_DISCOGS_FIELD_STYLES",
+          categories: "VITE_DISCOGS_FIELD_STYLES",
         },
       )
     }
@@ -207,13 +208,13 @@ export class DiscogsPlugin extends BasePlugin {
   }
 
   async getFieldsId() {
-    if (!this.placeField && !this.priceField && !this.stylesField) return {}
+    if (!this.placeField && !this.priceField && !this.categoriesField) return {}
     if (Object.keys(this.fieldsId).length > 0) return this.fieldsId
 
     const conf = Object.entries({
       placeId: this.placeField,
       priceId: this.priceField,
-      stylesId: this.stylesField,
+      categoriesId: this.categoriesField,
     })
 
     const r = await this.#request("GET", `users/${this.user}/collection/fields`)
@@ -230,18 +231,18 @@ export class DiscogsPlugin extends BasePlugin {
     return {
       supportsPlace: !!this.fieldsId.placeId,
       supportsPrice: !!this.fieldsId.priceId,
-      supportsCategories: !!this.fieldsId.stylesId,
+      supportsCategories: !!this.fieldsId.categoriesId,
     }
   }
 
   #getFieldsValue(data) {
     const fields = {}
     if (data && Object.keys(this.fieldsId).length) {
-      const { placeId, priceId, stylesId } = this.fieldsId
+      const { placeId, priceId, categoriesId } = this.fieldsId
       for (const item of data) {
         if (item.field_id === placeId) fields.place = item.value
         else if (item.field_id === priceId) fields.price = item.value
-        else if (item.field_id === stylesId) fields.styles = item.value
+        else if (item.field_id === categoriesId) fields.categories = item.value
       }
     }
     return fields
@@ -285,25 +286,28 @@ export class DiscogsPlugin extends BasePlugin {
         const format = info.formats[0].name
 
         if (!_formats || _formats.has(format.toLowerCase())) {
-          let { place, price, styles } = this.#getFieldsValue(release.notes)
-          const haveFields = !!(place || price || styles)
+          let { place, price, categories } = this.#getFieldsValue(release.notes)
+          const haveFields = !!(place || price || categories)
 
           if (this.fieldsRequired === "yes" && !haveFields) continue
 
-          if (styles) {
-            styles = styles.trim().split(/\s*,\s*/)
+          if (categories) {
+            categories = categories.trim().split(/\s*,\s*/)
           } else {
-            styles = info.styles?.length
+            //FIXME really?
+            categories = info.styles?.length
               ? info.styles
               : info.genres?.length
                 ? info.genres
                 : []
           }
 
-          styles.sort() // SORT CATEGORIES to match legacy behavior
+          categories.sort() // SORT CATEGORIES to match legacy behavior
 
-          const artist = getArtistName(info.artists[0]).replace(/\(.*/, "")
-          const searchIndex = `${artist.replace(/\s/g, "-")}_${info.title.replace(/\s/g, "-")}_${normalize(artist)}_${normalize(info.title)}`
+          const rawArtist = getArtistName(info.artists[0]).replace(/\(.*/, "")
+          const artist = cleanText(rawArtist)
+          const title = cleanText(info.title || "")
+          const searchIndex = `${artist.replace(/\s/g, "-")}_${title.replace(/\s/g, "-")}_${normalize(artist)}_${normalize(title)}`
 
           const hasValidCover =
             !this.devMode &&
@@ -327,11 +331,11 @@ export class DiscogsPlugin extends BasePlugin {
             added: release.date_added,
             creator: artist,
             year: info.year,
-            title: info.title,
+            title,
             cover: coverUrl,
             place,
             price,
-            categories: styles,
+            categories,
             rating: release.rating,
           }
         }
@@ -465,7 +469,7 @@ export class DiscogsPlugin extends BasePlugin {
     const base = `users/${this.user}/collection/folders/${folderid}/releases/${releaseid}/instances/${actualInstanceId}`
 
     await this.getFieldsId()
-    const { placeId, priceId, stylesId } = this.fieldsId
+    const { placeId, priceId, categoriesId } = this.fieldsId
 
     const requests = []
 
@@ -486,9 +490,9 @@ export class DiscogsPlugin extends BasePlugin {
         }),
       )
     }
-    if (categories !== undefined && stylesId) {
+    if (categories !== undefined && categoriesId) {
       requests.push(
-        this.#request("POST", `${base}/fields/${stylesId}`, {
+        this.#request("POST", `${base}/fields/${categoriesId}`, {
           value: categories.join(","),
         }),
       )
@@ -498,12 +502,12 @@ export class DiscogsPlugin extends BasePlugin {
   }
 
   getCategories(releases) {
-    const styles = new Set()
+    const categories = new Set()
     Object.values(releases).forEach((r) => {
       const cats = r.categories || []
-      cats.forEach((s) => styles.add(s))
+      cats.forEach((s) => categories.add(s))
     })
-    return Array.from(styles).sort()
+    return Array.from(categories).sort()
   }
 
   // Discogs API rate limit is 60 requests per minute

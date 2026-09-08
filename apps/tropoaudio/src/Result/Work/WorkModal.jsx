@@ -9,6 +9,7 @@ import {
   Tabs,
   Form,
   InputGroup,
+  Spinner,
 } from "react-bootstrap"
 import { toast } from "react-toastify"
 import processString from "react-process-string"
@@ -17,20 +18,23 @@ import ImageGallery from "react-image-gallery"
 import "react-image-gallery/styles/image-gallery.css"
 import { Rating } from "react-simple-star-rating"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faPen } from "@fortawesome/free-solid-svg-icons"
-import { faUser } from "@fortawesome/free-solid-svg-icons"
+import { faInfoCircle, faPen, faUser } from "@fortawesome/free-solid-svg-icons"
 
 import { ConfirmModal } from "@tropo/react"
-import AlbumStyleButtons from "./AlbumStyleButtons"
-import { setLatestClickedInstanceId } from "./index"
+import WorkCategoryButtons from "./WorkCategoryButtons"
 
 import { getItem, setLargeItem, setItem } from "@tropo/core"
-import { updateItem, getCategories, getProviderInfo } from "../../provider"
+import {
+  updateItem,
+  getCategories,
+  getItemDetails,
+  getProviderInfo,
+} from "../../provider"
 import * as Settings from "../../utils/settings"
 
 import vinylImg from "../../assets/vinyl.png"
 
-import "./styles/AlbumModal.css"
+import "./styles/WorkModal.css"
 
 // METHOD getTracks()
 const getTracks = (tracklist, prefix = "track") => {
@@ -72,8 +76,8 @@ const getTracks = (tracklist, prefix = "track") => {
   return elements.length > 0 ? elements : null
 }
 
-// COMPONENT AlbumModal
-const AlbumModal = ({ instanceId, onClose }) => {
+// COMPONENT WorkModal
+const WorkModal = ({ instanceId, onClose }) => {
   const setItems = useCollectionStore((s) => s.setItems)
   const setCategories = useCollectionStore((s) => s.setCategories)
   const setFilter = useCollectionStore((s) => s.setFilter)
@@ -83,12 +87,51 @@ const AlbumModal = ({ instanceId, onClose }) => {
 
   const release = releases ? releases[instanceId] : null
 
+  const [loadingDetails, setLoadingDetails] = useState(
+    Boolean(release && release.tracklist === undefined),
+  )
+
   const [showConfirm, setShowConfirm] = useState(false)
   const [formState, setFormState] = useState({
     rating: release?.rating ?? 0,
     place: release?.place ?? "",
     price: release?.price ?? "",
   })
+
+  // Enrich item details in background when modal opens
+  useEffect(() => {
+    if (!release || release.tracklist !== undefined) {
+      setLoadingDetails(false)
+      return
+    }
+
+    let isMounted = true
+    setLoadingDetails(true)
+
+    getItemDetails(release)
+      .then((updatedRelease) => {
+        if (!isMounted || !updatedRelease) return
+        const currentItems = useCollectionStore.getState().items
+        const newItems = {
+          ...currentItems,
+          [instanceId]: { ...currentItems[instanceId], ...updatedRelease },
+        }
+        setItems(newItems)
+        setLargeItem("items", newItems)
+      })
+      .catch((err) => {
+        console.warn("Could not enrich release details:", err)
+      })
+      .finally(() => {
+        if (isMounted) {
+          setLoadingDetails(false)
+        }
+      })
+
+    return () => {
+      isMounted = false
+    }
+  }, [instanceId, release?.tracklist])
 
   const { t } = useTranslation()
   const refIG = useRef(null)
@@ -122,7 +165,7 @@ const AlbumModal = ({ instanceId, onClose }) => {
   // METHOD getSaveActionInfo()
   const getSaveActionInfo = () => {
     const categories = Array.from(
-      document.querySelectorAll(".AlbumStyleButtons tag .tagify__tag-text"),
+      document.querySelectorAll(".WorkCategoryButtons tag .tagify__tag-text"),
       (t) => t.textContent,
     ).sort()
     const releasesClone = { ...releases }
@@ -221,7 +264,6 @@ const AlbumModal = ({ instanceId, onClose }) => {
 
   // METHOD onHideConfirm()
   const onHideConfirm = () => {
-    setLatestClickedInstanceId(null)
     setShowConfirm(false)
     onClose()
   }
@@ -315,7 +357,7 @@ const AlbumModal = ({ instanceId, onClose }) => {
       <Modal
         show={true}
         onHide={onHide}
-        className="AlbumModal"
+        className="WorkModal"
         scrollable
         fullscreen="sm-down"
       >
@@ -332,8 +374,8 @@ const AlbumModal = ({ instanceId, onClose }) => {
                 />
               </div>
               <div className="modal-header-info">
-                <div className="artist-name">{release.creator}</div>
-                <div className="album-details">
+                <div className="creator-name">{release.creator}</div>
+                <div className="work-details">
                   {release.year ? release.year + " – " : ""}
                   <strong>{release.title}</strong>
                   <br />
@@ -350,9 +392,9 @@ const AlbumModal = ({ instanceId, onClose }) => {
                           setFilter("creators", [release.creator])
                           onHide()
                         }}
-                        title={t("Show all {{count}} albums by {{artist}}", {
+                        title={t("Show all {{count}} albums by {{creator}}", {
                           count,
-                          artist: release.creator,
+                          creator: release.creator,
                         })}
                       >
                         <FontAwesomeIcon icon={faUser} /> <b>{count}</b>{" "}
@@ -420,9 +462,9 @@ const AlbumModal = ({ instanceId, onClose }) => {
               )}
               {customFields.supportsCategories && (
                 <tr>
-                  <th>{t("Style")}</th>
+                  <th>{t("Styles")}</th>
                   <td>
-                    <AlbumStyleButtons
+                    <WorkCategoryButtons
                       closeModal={onHide}
                       categories={release.categories}
                     />
@@ -432,36 +474,42 @@ const AlbumModal = ({ instanceId, onClose }) => {
             </tbody>
           </Table>
           {haveCustomFields && <hr />}
-          {(renderedNotes || renderedTracks) && (
-            <Tabs
-              defaultActiveKey={
-                renderedTracks
-                  ? "album-tracks"
-                  : renderedNotes
-                    ? "album-infos"
-                    : ""
-              }
+          <Tabs
+            defaultActiveKey={
+              renderedTracks || loadingDetails || !renderedNotes
+                ? "work-tracks"
+                : "work-infos"
+            }
+          >
+            {renderedNotes && (
+              <Tab
+                eventKey="work-infos"
+                title={t("Info")}
+                className="work-infos"
+              >
+                {renderedNotes}
+              </Tab>
+            )}
+            <Tab
+              eventKey="work-tracks"
+              title={t("Tracks")}
+              className="work-tracks"
             >
-              {renderedNotes && (
-                <Tab
-                  eventKey="album-infos"
-                  title={t("Info")}
-                  className="album-infos"
-                >
-                  {renderedNotes}
-                </Tab>
+              {loadingDetails && !renderedTracks && (
+                <div className="description-loading">
+                  <Spinner animation="border" size="sm" />
+                  <span>{t("Loading tracks...")}</span>
+                </div>
               )}
-              {renderedTracks && (
-                <Tab
-                  eventKey="album-tracks"
-                  title={t("Tracks")}
-                  className="album-tracks"
-                >
-                  <ul>{renderedTracks}</ul>
-                </Tab>
+              {!loadingDetails && !renderedTracks && (
+                <div className="description-empty">
+                  <FontAwesomeIcon icon={faInfoCircle} />
+                  <span>{t("No tracks available.")}</span>
+                </div>
               )}
-            </Tabs>
-          )}
+              {renderedTracks && <ul>{renderedTracks}</ul>}
+            </Tab>
+          </Tabs>
         </Modal.Body>
         <Modal.Footer className="d-flex justify-content-between align-items-center">
           {release.externalUrl && (
@@ -498,4 +546,4 @@ const AlbumModal = ({ instanceId, onClose }) => {
   )
 }
 
-export default AlbumModal
+export default WorkModal

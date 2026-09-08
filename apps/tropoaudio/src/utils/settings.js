@@ -13,14 +13,14 @@ export const setLeds = import.meta.env.VITE_SET_LEDS || "no"
 
 export const getCurrency = () => useSettingsStore.getState().general.currency
 
-export const getLedsArtistsColor = () =>
-  useSettingsStore.getState().hardware.ledsArtistsColor
+export const getLedsCreatorsColor = () =>
+  useSettingsStore.getState().hardware.ledsCreatorsColor
 
-export const getLedsStylesColor = () =>
-  useSettingsStore.getState().hardware.ledsStylesColor
+export const getLedsCategoriesColor = () =>
+  useSettingsStore.getState().hardware.ledsCategoriesColor
 
-export const getLedsAlbumColor = () =>
-  useSettingsStore.getState().hardware.ledsAlbumColor
+export const getLedsWorkColor = () =>
+  useSettingsStore.getState().hardware.ledsWorkColor
 
 // Function to validate settings, to be called from a React
 // component (e.g. App.jsx)

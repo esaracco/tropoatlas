@@ -14,13 +14,12 @@ import {
   useAppStore,
   useCollectionStore,
   getLargeItem,
-  setLargeItem,
   getItem,
-  setItem,
   buildCacheKey,
 } from "@tropo/core"
 import { clearAllCaches, STORAGE_SCHEMA_VERSION } from "./utils/storage"
-import { plugin, getProviderInfo, validateProviderSettings } from "./provider"
+import { syncCollection } from "./utils/sync"
+import { plugin, validateProviderSettings } from "./provider"
 
 import "react-toastify/dist/ReactToastify.css"
 import "@tropo/react/src/global.css"
@@ -37,8 +36,6 @@ const App = () => {
   const { t } = useTranslation()
   const setIsOnline = useAppStore((s) => s.setIsOnline)
   const setLoading = useAppStore((s) => s.setLoading)
-  const setIsSyncing = useAppStore((s) => s.setIsSyncing)
-  const setProgress = useAppStore((s) => s.setProgress)
   const setDisplayCount = useAppStore((s) => s.setDisplayCount)
 
   // EFFECT 1
@@ -97,6 +94,23 @@ const App = () => {
         localStorage.setItem(schemaVersionKey, currentSchemaVersion)
       }
 
+      // Ensure sort order is supported by current provider
+      const defaultSort = plugin.getDefaultSort?.() || "added_desc"
+      const currentSort = useCollectionStore.getState().sort
+      const [sortField] = (currentSort || "").split("_")
+      const validSortFields = [
+        "added",
+        "year",
+        "title",
+        "creator",
+        "place",
+        "price",
+        "rating",
+      ]
+      if (!validSortFields.includes(sortField)) {
+        useCollectionStore.getState().setSort(defaultSort)
+      }
+
       const setItems = useCollectionStore.getState().setItems
       const setCategories = useCollectionStore.getState().setCategories
 
@@ -105,7 +119,7 @@ const App = () => {
           getLargeItem("items"),
           Promise.resolve(getItem("categories")),
         ])
-        if (cachedCategories && cachedCategories.length) {
+        if (cachedCategories && cachedCategories.length && cachedItems) {
           // Restore from cache
           const itemsObj = cachedItems || {}
           const categoriesArr = cachedCategories || []
@@ -113,55 +127,16 @@ const App = () => {
           // Populate Zustand store
           const mappedItems = {}
           Object.values(itemsObj).forEach((r) => {
-            mappedItems[r.instanceid || r.id] = {
-              ...r,
-              creator: r.artist || r.creator,
-              categories: r.styles || r.categories,
-              id: r.instanceid || r.id,
-            }
+            mappedItems[r.id] = r
           })
           setItems(mappedItems)
           setCategories(categoriesArr)
           setDisplayCount(Object.keys(mappedItems).length)
           setLoading(false)
         } else {
-          // Fetch from provider
-          setIsSyncing(true)
-          plugin
-            .getCollection((prog) => setProgress(prog))
-            .then((items) => {
-              setItems(items)
-              setDisplayCount(Object.keys(items).length)
-
-              const categories = new Set()
-
-              Object.values(items).forEach((item) => {
-                item.categories.forEach((c) => categories.add(c))
-              })
-
-              const categoriesArray = Array.from(categories).sort()
-              setCategories(categoriesArray)
-
-              // Save to cache
-              setLargeItem("items", items)
-              setItem("categories", categoriesArray)
-            })
-            .catch((e) => {
-              console.error(e.message)
-              toast.error(
-                t(e.message) ||
-                  t("An error occurred while using the {{provider}} API!", {
-                    provider: getProviderInfo().name,
-                  }),
-                {
-                  autoClose: false,
-                },
-              )
-            })
-            .finally(() => {
-              setLoading(false)
-              setIsSyncing(false)
-            })
+          // First load or schema changed: trigger synchronization
+          await syncCollection()
+          setLoading(false)
         }
       } catch (e) {
         console.error("Error loading cache", e)

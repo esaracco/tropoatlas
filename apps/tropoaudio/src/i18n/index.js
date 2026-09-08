@@ -31,6 +31,10 @@ i18n
     fallbackLng: "en",
     debug: false,
 
+    interpolation: {
+      escapeValue: false,
+    },
+
     // Have a common namespace used around the full app
     ns: ["translations"],
     defaultNS: "translations",
