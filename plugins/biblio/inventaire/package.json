@@ -1,0 +1,11 @@
+{
+  "name": "@tropo/inventaire",
+  "version": "1.0.0",
+  "description": "Inventaire.io data provider plugin for TropoBiblio (a book collection manager)",
+  "main": "src/index.js",
+  "type": "module",
+  "dependencies": {
+    "@tropo/core": "*",
+    "sleep-promise": "^9.1.0"
+  }
+}
