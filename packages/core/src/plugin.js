@@ -124,7 +124,7 @@ export class BasePlugin {
   }
 
   /**
-   * Extracts unique categories/styles from a map of items.
+   * Extracts unique categories from a map of items.
    * @param {Object} items - Map of collection items.
    * @returns {string[]} Sorted array of category strings.
    */
@@ -133,7 +133,7 @@ export class BasePlugin {
   }
 
   /**
-   * Extracts unique creators/artists/people from a map of items.
+   * Extracts unique creators from a map of items.
    * @param {Object} items - Map of collection items.
    * @returns {string[]} Sorted array of creator strings.
    */

@@ -180,6 +180,7 @@ export const estimateExportBackupDuration = async ({
   items = null,
   coversCache = null,
   maxRequestsPerMinute = 60,
+  isItemDetailed = null,
 } = {}) => {
   const collection = items || (await getLargeItem("items")) || {}
   const entries = Object.values(collection)
@@ -206,8 +207,11 @@ export const estimateExportBackupDuration = async ({
   let missingCoversCount = 0
 
   for (const item of entries) {
-    // Check missing details (tracklist / notes)
-    if (item.tracklist === undefined) {
+    // Check missing details (tracklist / notes / generic details)
+    const isDetailed = isItemDetailed
+      ? isItemDetailed(item)
+      : item.tracklist !== undefined || item.hasDetails === true
+    if (!isDetailed) {
       missingDetailsCount++
       apiCalls += item.masterid ? 2 : 1
     }
@@ -313,6 +317,7 @@ export const exportCollectionBackupZIP = async (optionsOrProgress) => {
     getItemDetails = null,
     getItemImage = null,
     getImageProxyUrl = null,
+    isItemDetailed = null,
     maxRequestsPerMinute = 60,
     signal = null,
   } = options
@@ -359,7 +364,10 @@ export const exportCollectionBackupZIP = async (optionsOrProgress) => {
 
   if (enrichMissing) {
     for (const [, rawItem] of entries) {
-      if (rawItem.tracklist === undefined) {
+      const isDetailed = isItemDetailed
+        ? isItemDetailed(rawItem)
+        : rawItem.tracklist !== undefined || rawItem.hasDetails === true
+      if (!isDetailed) {
         remainingApiCalls += rawItem.masterid ? 2 : 1
       }
       if (rawItem.cover && !rawItem.cover.startsWith("data:")) {
@@ -409,15 +417,14 @@ export const exportCollectionBackupZIP = async (optionsOrProgress) => {
 
       // Parallel execution of details fetching (API) and cover download (Image)
       const detailTask = async () => {
-        if (
-          enrichMissing &&
-          getItemDetails &&
-          localItem.tracklist === undefined
-        ) {
+        const isDetailed = isItemDetailed
+          ? isItemDetailed(localItem)
+          : localItem.tracklist !== undefined || localItem.hasDetails === true
+        if (enrichMissing && getItemDetails && !isDetailed) {
           try {
             const detailed = await apiThrottler(() => getItemDetails(localItem))
             if (detailed) {
-              localItem = { ...localItem, ...detailed }
+              localItem = { ...localItem, ...detailed, hasDetails: true }
               hasUpdatedItems = true
             }
           } catch (err) {

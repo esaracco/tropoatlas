@@ -36,16 +36,16 @@ export class LedsClient {
     const hardware = useSettingsStore.getState().hardware || {}
     const colorFields = [
       {
-        envKey: "VITE_LEDS_ARTISTS_COLOR",
-        storeKey: "ledsArtistsColor",
+        envKey: "VITE_LEDS_CREATORS_COLOR",
+        storeKey: "ledsCreatorsColor",
       },
       {
-        envKey: "VITE_LEDS_STYLES_COLOR",
-        storeKey: "ledsStylesColor",
+        envKey: "VITE_LEDS_CATEGORIES_COLOR",
+        storeKey: "ledsCategoriesColor",
       },
       {
-        envKey: "VITE_LEDS_ALBUM_COLOR",
-        storeKey: "ledsAlbumColor",
+        envKey: "VITE_LEDS_WORK_COLOR",
+        storeKey: "ledsWorkColor",
       },
     ]
 

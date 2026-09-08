@@ -113,8 +113,22 @@ const normalizeToken = (value) => {
   return normalized
 }
 
-export const normalize = (value) =>
-  value.replace(/\S+/g, normalizeToken).replace(RE_REPLACE_SPACES, "_")
+// Cleans typographical glitches: normalizes apostrophes and collapses spaces
+export const cleanText = (value) => {
+  if (typeof value !== "string") return value
+  return value
+    .replace(/[’´`]/g, "'")
+    .replace(/'\s+/g, "'")
+    .replace(/\s+/g, " ")
+    .trim()
+}
+
+export const normalize = (value) => {
+  if (typeof value !== "string") return ""
+  return cleanText(value)
+    .replace(/\S+/g, normalizeToken)
+    .replace(RE_REPLACE_SPACES, "_")
+}
 
 // Checks if the string contains at least one Latin letter
 export const hasLatinLetter = (value) =>

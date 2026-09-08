@@ -62,10 +62,19 @@ export const clearAllCaches = async (keysToPreserve = []) => {
   )
 
   // 1. Caches API
-  const cacheNames = await caches.keys()
-  for (const cname of cacheNames) {
-    if (cname.startsWith(prefix) || cname === buildCacheKey("item-covers")) {
-      await caches.delete(cname)
+  if (typeof caches !== "undefined") {
+    try {
+      const cacheNames = await caches.keys()
+      for (const cname of cacheNames) {
+        if (
+          cname.startsWith(prefix) ||
+          cname === buildCacheKey("item-covers")
+        ) {
+          await caches.delete(cname)
+        }
+      }
+    } catch (e) {
+      console.error("Error clearing caches API", e)
     }
   }
 

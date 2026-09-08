@@ -54,6 +54,29 @@ input.form-control-xs {
   hyphens: auto;
 }
 
+.text-muted {
+  color: var(--tropo-text-muted) !important;
+}
+
+.description-empty {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.6rem 0.85rem;
+  margin: 0.5rem 0;
+  border-radius: 6px;
+  background: var(--tropo-surface-2);
+  border: 1px dashed var(--tropo-border);
+  color: var(--tropo-text-muted);
+  font-size: 0.85rem;
+  font-style: italic;
+}
+
+.description-empty svg {
+  opacity: 0.8;
+  flex-shrink: 0;
+}
+
 /* ── Modals ───────────────────────────────────────────────── */
 .modal-content {
   background: var(--tropo-surface) !important;

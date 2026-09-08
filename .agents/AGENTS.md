@@ -53,6 +53,7 @@ This file defines the rules and conventions that the AI agent must follow when w
 
 ## UI & i18n Considerations
 - **i18n in Non-UI Packages & Plugins**: Since non-UI packages (e.g., `@tropo/core`, `@tropo/leds`) and plugins are UI-agnostic and do not import `react-i18next`, any user-facing strings or error messages requiring translation MUST be wrapped in a dummy marker function (`const t = (s) => s`). This allows the static analyzer (`npm run i18n:check`) to detect the keys, while the main application applies the actual translation (`t(...)`) at render time.
+- **Static Analysis & Pluralization in i18n**: The static analyzer (`scripts/check_i18n.js` / `npm run i18n:check`) extracts translation keys using regular expressions expecting string literals immediately following `t(` or `_(`. Never place dynamic expressions or ternary operators inside the translation function (e.g., avoid `t(count > 1 ? "items" : "item")`). Always place conditionals outside (e.g., `count > 1 ? t("items") : t("item")`) so both singular and plural keys are visible to static validation.
 - **Offcanvas and Modals (Mobile UI)**: Stacking Bootstrap Modals over an open Offcanvas menu can cause backdrop conflicts when the modal is closed. 
   - If a button opens a global root-level Modal (e.g., `SettingsModal`), the Offcanvas MUST be explicitly closed before opening the modal.
   - If a button opens an inline Modal declared within a sub-component, the Offcanvas MUST NOT be closed, otherwise the modal will be instantly unmounted.
