@@ -16,7 +16,7 @@
     />
     <meta
       name="keywords"
-      content="TropoAtlas, TropoAudio, TropoCine, TropoBiblio, gestionnaire de collection, vinyles, collection de films, livres, étagères connectées, ESP32, WS2812B, repérage bandeau LED, Discogs, TMDB, monorepo React, logiciel libre, GPLv3"
+      content="TropoAtlas, TropoAudio, TropoCine, TropoBiblio, gestionnaire de collection, vinyles, collection de films, livres, étagères connectées, ESP32, WS2812B, repérage bandeau LED, Discogs, TMDB, Inventaire, monorepo React, logiciel libre, GPLv3"
     />
     <meta name="author" content="Emmanuel Saracco" />
     <meta name="robots" content="index, follow" />
@@ -184,7 +184,7 @@
           </a>
         </div>
 
-        <!-- Dual Application Showcase -->
+        <!-- Triple Application Showcase -->
         <div class="hero-showcase">
           <div class="showcase-grid">
             <div class="mockup-window">
@@ -202,8 +202,8 @@
                   src="./img/tropoaudio-preview.png"
                   alt="Aperçu de l'interface TropoAudio"
                   class="mockup-img"
-                  width="803"
-                  height="1037"
+                  width="800"
+                  height="1040"
                   loading="eager"
                 />
               </div>
@@ -224,8 +224,30 @@
                   src="./img/tropocine-preview.png"
                   alt="Aperçu de l'interface TropoCine"
                   class="mockup-img"
-                  width="803"
-                  height="1037"
+                  width="800"
+                  height="1040"
+                  loading="eager"
+                />
+              </div>
+            </div>
+
+            <div class="mockup-window">
+              <div class="mockup-header">
+                <div class="mockup-dots" aria-hidden="true">
+                  <span class="mockup-dot dot-red"></span>
+                  <span class="mockup-dot dot-yellow"></span>
+                  <span class="mockup-dot dot-green"></span>
+                </div>
+                <div class="mockup-title">TropoBiblio — Bibliothèque</div>
+                <div class="mockup-spacer" aria-hidden="true"></div>
+              </div>
+              <div class="mockup-body">
+                <img
+                  src="./img/tropobiblio-preview.png"
+                  alt="Aperçu de l'interface TropoBiblio"
+                  class="mockup-img"
+                  width="800"
+                  height="1040"
                   loading="eager"
                 />
               </div>
@@ -293,10 +315,10 @@
                   Recherche instantanée, tris et filtres multicritères par artistes et styles
                 </li>
                 <li class="app-feature-item app-feature-item-audio">
-                  Métadonnées personnalisées : coordonnées d'étagère exactes, styles personnalisés et notes
+                  Métadonnées personnalisées (emplacement physique, styles, prix et notation)
                 </li>
                 <li class="app-feature-item app-feature-item-audio">
-                  Repérage physique par LED ESP32 en temps réel avec intensités et effet clignotant
+                  Repérage physique par LED en temps réel
                 </li>
               </ul>
 
@@ -357,19 +379,19 @@
               </div>
 
               <p class="app-description">
-                Gestionnaire universel de films pour cinéphiles passionnés. Synchronisez vos films
+                Gestionnaire de films pour cinéphiles passionnés. Synchronisez vos films
                 et listes depuis TMDB, naviguez parmi les réalisateurs et le casting complet, et explorez votre cinémathèque.
               </p>
 
               <ul class="app-features-list">
                 <li class="app-feature-item app-feature-item-cine">
-                  Synchronisation fluide des listes TMDB avec proxy d'API sécurisé
+		Recherche instantanée, tris et filtres multicritères par réalisateurs, acteurs et genres
                 </li>
                 <li class="app-feature-item app-feature-item-cine">
                   Exploration approfondie des réalisateurs, acteurs et filmographies complètes
                 </li>
                 <li class="app-feature-item app-feature-item-cine">
-                  Repérage d'étagères par LED pour supports physiques (DVD/Blu-ray) prévu sur la roadmap
+                  Repérage physique par LED en temps réel prévu sur la roadmap
                 </li>
               </ul>
 
@@ -395,59 +417,74 @@
               </div>
             </article>
 
-            <!-- TropoBiblio Card (Roadmap) -->
+            <!-- TropoBiblio Card -->
             <article class="app-card app-card-biblio" id="card-tropobiblio">
               <div class="app-header">
                 <div class="app-brand-wrapper">
-                  <div class="app-brand-placeholder" aria-hidden="true">
-                    📚
-                  </div>
+                  <img
+                    src="./img/tropobiblio-icon.png"
+                    alt="Logo TropoBiblio"
+                    class="app-brand-logo"
+                    width="40"
+                    height="40"
+                  />
                   <h3 class="app-title">
                     Tropo<span class="brand-text-biblio">Biblio</span>
                     <sup class="app-domain-emoji" aria-hidden="true">📚</sup>
                   </h3>
                 </div>
-                <span class="badge badge-roadmap">Prévu</span>
+                <span class="badge badge-active">Actif</span>
               </div>
 
               <div class="app-badges">
                 <span class="badge badge-biblio">Livres</span>
-                <span class="badge badge-biblio">Bibliothèque</span>
-                <span class="badge badge-roadmap">Repérage LED prévu</span>
+                <span class="badge badge-biblio">Synchro Inventaire</span>
+                <span class="badge badge-active">Repérage LED actif</span>
               </div>
 
-              <div class="app-preview-box app-preview-placeholder">
-                <span class="placeholder-icon">📚</span>
-                <span class="placeholder-label">TropoBiblio · Aperçu du concept</span>
+              <div class="app-preview-box">
+                <img
+                  src="./img/tropobiblio-preview.png"
+                  alt="Capture de l'interface TropoBiblio"
+                  class="app-preview-img"
+                  loading="lazy"
+                />
               </div>
 
               <p class="app-description">
-                Gestionnaire dédié pour livres.
-                Organisez les rayonnages de votre bibliothèque personnelle, suivez vos lectures,
-                et retrouvez vos ouvrages sur vos étagères réelles par guidage LED.
+                Gestionnaire de bibliothèque pour lecteurs passionnés. Synchronisez vos livres depuis Inventaire.io, explorez auteurs et genres, et localisez vos ouvrages en temps réel sur vos étagères.
               </p>
 
               <ul class="app-features-list">
                 <li class="app-feature-item app-feature-item-biblio">
-                  Catalogage d'ouvrages, séries d'auteurs et listes d'envies de lecture
+		Recherche instantanée, tris et filtres multicritères par auteurs et genres
                 </li>
                 <li class="app-feature-item app-feature-item-biblio">
-                  Cartographie physique des rayonnages et emplacement sur les étagères
+		Métadonnées personnalisées (emplacement physique, genres, prix et notation)
                 </li>
                 <li class="app-feature-item app-feature-item-biblio">
-                  Intégration native avec le contrôleur matériel LED ESP32 partagé de Tropo<span class="brand-text-atlas">Atlas</span>
+                  Repérage physique par LED en temps réel
                 </li>
               </ul>
 
               <div class="app-card-actions">
                 <a
-                  href="https://github.com/esaracco/tropoatlas"
+                  href="https://tropobiblio.esaracco.fr"
                   target="_blank"
                   rel="noopener noreferrer"
-                  class="btn btn-secondary btn-full"
-                  id="btn-repo-tropobiblio"
+                  class="btn btn-biblio"
+                  id="btn-visit-tropobiblio"
                 >
-                  Suivre sur GitHub
+                  Visiter le site
+                </a>
+                <a
+                  href="https://github.com/esaracco/tropoatlas/tree/main/apps/tropobiblio#readme"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="btn btn-secondary"
+                  id="btn-readme-tropobiblio"
+                >
+                  Docs
                 </a>
               </div>
             </article>
@@ -472,13 +509,13 @@
               <h3 class="hardware-title">Retrouvez vos œuvres en un clin d'œil</h3>
               <p class="hardware-desc">
                 Des bandeaux LED adressables fixés le long de vos étagères illuminent l'emplacement exact
-                correspondant aux albums sélectionnés ou aux filtres actifs. Fini les recherches fastidieuses sur les tranches&nbsp;!
+                correspondant aux oeuvres sélectionnées ou aux filtres actifs. Fini les recherches fastidieuses sur les tranches&nbsp;!
               </p>
 
               <ul class="hardware-list">
                 <li class="hardware-list-item">
                   <span class="hardware-bullet">1</span>
-                  <span><strong>Firmware ESP32-S3 Mini :</strong> Firmware C++ ultra-léger (<code class="code-inline">firmware/led-controller</code>) pilotant les bandeaux LED WS2812B via des requêtes HTTP locales.</span>
+                  <span><strong>Firmware ESP32-S3 Mini :</strong> Firmware C++ ultra-léger (<code class="code-inline">firmware/led-controller</code>) pilotant des bandeaux LED WS2812B via des requêtes HTTP locales.</span>
                 </li>
                 <li class="hardware-list-item">
                   <span class="hardware-bullet">2</span>
@@ -486,7 +523,7 @@
                 </li>
                 <li class="hardware-list-item">
                   <span class="hardware-bullet">3</span>
-                  <span><strong>État actuel :</strong> Actif et pleinement opérationnel dans <strong>TropoAudio</strong> pour les vinyles et CDs, et conçu pour s'étendre aux supports physiques de films (TropoCine) et livres (TropoBiblio).</span>
+                  <span><strong>État actuel :</strong> Actif et pleinement opérationnel dans <strong>TropoAudio</strong> (vinyles, CDs) et <strong>TropoBiblio</strong> (livres), et conçu pour s'étendre aux supports physiques de films (TropoCine).</span>
                 </li>
               </ul>
 
@@ -599,7 +636,7 @@
               <span class="pillar-icon">📦</span>
               <h3 class="pillar-title">Monorepo NPM modulaire</h3>
               <p class="pillar-desc">
-                Gestion d'état partagée (<code class="code-inline">@tropo/core</code>), composants et tokens d'interface
+                Gestion d'état partagée (<code class="code-inline">@tropo/core</code>), composants d'interface
                 (<code class="code-inline">@tropo/react</code>), et pilotes matériels (<code class="code-inline">@tropo/leds</code>).
               </p>
             </article>
@@ -608,7 +645,7 @@
               <span class="pillar-icon">🔌</span>
               <h3 class="pillar-title">Architecture de plugins</h3>
               <p class="pillar-desc">
-                Les fournisseurs de données (Discogs, TMDB) sont isolés dans des plugins de domaine,
+                Les fournisseurs de données (Discogs, TMDB, Inventaire) sont isolés dans des plugins de domaine,
                 préservant l'indépendance totale des interfaces.
               </p>
             </article>
@@ -623,14 +660,16 @@
             <pre class="tree-content"><code>tropoatlas/
 ├── <span class="tree-highlight">apps/</span>
 │   ├── <span class="tree-highlight">tropoaudio/</span>          <span class="tree-comment"># Gestionnaire de musique (Discogs, repérage étagères LED)</span>
-│   └── <span class="tree-highlight">tropocine/</span>           <span class="tree-comment"># Gestionnaire de films (TMDB, casting & réalisateurs)</span>
+│   ├── <span class="tree-highlight">tropocine/</span>           <span class="tree-comment"># Gestionnaire de films (TMDB, casting & réalisateurs)</span>
+│   └── <span class="tree-highlight">tropobiblio/</span>         <span class="tree-comment"># Gestionnaire de livres (Inventaire, repérage étagères LED)</span>
 ├── <span class="tree-highlight">packages/</span>
 │   ├── <span class="tree-highlight">core/</span>                <span class="tree-comment"># Abstraction stockage, store Zustand, export/sauvegarde</span>
 │   ├── <span class="tree-highlight">react/</span>               <span class="tree-comment"># Modales partagées, design tokens, composants UI</span>
 │   └── <span class="tree-highlight">leds/</span>                <span class="tree-comment"># Client HTTP autonome pour bandeaux LED adressables ESP32</span>
 ├── <span class="tree-highlight">plugins/</span>
 │   ├── audio/discogs/       <span class="tree-comment"># Fournisseur de données API Discogs (@tropo/discogs)</span>
-│   └── cine/tmdb/           <span class="tree-comment"># Fournisseur de données API TMDB (@tropo/tmdb)</span>
+│   ├── cine/tmdb/           <span class="tree-comment"># Fournisseur de données API TMDB (@tropo/tmdb)</span>
+│   └── biblio/inventaire/   <span class="tree-comment"># Fournisseur de données API Inventaire (@tropo/inventaire)</span>
 └── <span class="tree-highlight">firmware/</span>
     └── led-controller/      <span class="tree-comment"># Firmware C++ ESP32-S3 Mini pour bandeaux LED WS2812B</span></code></pre>
           </div>
@@ -653,7 +692,7 @@
             <div class="deploy-card" id="card-docker">
               <h3>Lancement via Docker Compose</h3>
               <p>
-                Démarrez simultanément TropoAudio (port 3000) et TropoCine (port 3001) avec une seule commande :
+                Démarrez simultanément TropoAudio (port 3000), TropoCine (port 3001) et TropoBiblio (port 3002) avec une seule commande :
               </p>
               <div class="code-box">
                 <div class="code-header">
@@ -665,7 +704,8 @@
                   docker compose up<br /><br />
                   <span class="code-comment"># Ou lancer une seule application</span><br />
                   docker compose up tropoaudio<br />
-                  docker compose up tropocine
+                  docker compose up tropocine<br />
+                  docker compose up tropobiblio
                 </div>
               </div>
             </div>
@@ -687,7 +727,8 @@
                   npm install<br /><br />
                   <span class="code-comment"># Lancer les serveurs de développement</span><br />
                   npm run dev:audio<br />
-                  npm run dev:cine
+                  npm run dev:cine<br />
+                  npm run dev:biblio
                 </div>
               </div>
             </div>
@@ -717,6 +758,9 @@
             </li>
             <li>
               <a href="https://tropocine.esaracco.fr" class="footer-nav-link">TropoCine</a>
+            </li>
+            <li>
+              <a href="https://tropobiblio.esaracco.fr" class="footer-nav-link">TropoBiblio</a>
             </li>
             <li>
               <a
