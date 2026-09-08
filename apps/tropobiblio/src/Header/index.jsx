@@ -8,7 +8,6 @@ import { Button, Container, Nav, Navbar, Offcanvas } from "react-bootstrap"
 
 import ClearFiltersButton from "./ClearFiltersButton"
 import OptionsMenu from "./OptionsMenu"
-import SettingsModal from "../Settings/SettingsModal"
 import provider from "../provider"
 import "./styles/Header.css"
 
@@ -26,7 +25,6 @@ const Header = () => {
   const [expanded, setExpanded] = useState(false)
   const [activeModal, setActiveModal] = useState(null)
   const [showSearch, setShowSearch] = useState(false)
-  const [showSettings, setShowSettings] = useState(false)
   const searchInputRef = useRef(null)
 
   // Manage search input focus and blur with in-place search visibility
@@ -62,17 +60,29 @@ const Header = () => {
   const allCategories = categories
   const allCreators = creators
 
-  const activeFilters = {
-    categories: selected.categories || [],
-    creators: selected.creators || [],
-  }
+  const activeFilters = [
+    selected.categories?.length > 0 && {
+      id: "categories",
+      label: t("Genres"),
+      onReset: () => setFilter("categories", []),
+    },
+    selected.creators?.length > 0 && {
+      id: "creators",
+      label: t("Authors"),
+      onReset: () => setFilter("creators", []),
+    },
+  ].filter(Boolean)
 
-  const getOnChangeSelection = (type) => (item) => {
-    const current = selected[type] || []
-    const updated = current.includes(item)
-      ? current.filter((i) => i !== item)
-      : [...current, item]
-    setFilter(type, updated)
+  const getOnChangeSelection = (stype) => (value, isChecked) => {
+    const current = selected[stype] || []
+    if (isChecked) {
+      setFilter(stype, [...current, value])
+    } else {
+      setFilter(
+        stype,
+        current.filter((v) => v !== value),
+      )
+    }
   }
 
   const expandBreakpoint = "sm"
@@ -201,12 +211,7 @@ const Header = () => {
               >
                 <FontAwesomeIcon icon={faSearch} />
               </Button>
-              <OptionsMenu
-                onOpenSettings={() => {
-                  setExpanded(false)
-                  setShowSettings(true)
-                }}
-              />
+              <OptionsMenu />
             </div>
           </Container>
         )}
@@ -246,10 +251,6 @@ const Header = () => {
         onSortChange={setSort}
         closeLabel={t("Close")}
         onHide={() => setActiveModal(null)}
-      />
-      <SettingsModal
-        show={showSettings}
-        onHide={() => setShowSettings(false)}
       />
     </div>
   )

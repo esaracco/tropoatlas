@@ -1,13 +1,22 @@
 import i18n from "../i18n"
 import { toast } from "react-toastify"
 
-import { useSettingsStore } from "@tropo/core"
+import { ledsClient } from "./leds"
 
 export const env = import.meta.env.MODE
 export const appName = import.meta.env.VITE_APP_NAME
+export const setLeds = import.meta.env.VITE_SET_LEDS || "no"
 
-export const getCurrency = () =>
-  useSettingsStore.getState().general.currency || "€"
+export const getCurrency = () => import.meta.env.VITE_CURRENCY || "€"
+
+export const getLedsCreatorsColor = () =>
+  import.meta.env.VITE_LEDS_CREATORS_COLOR || "0,0,130"
+
+export const getLedsCategoriesColor = () =>
+  import.meta.env.VITE_LEDS_CATEGORIES_COLOR || "0,150,0"
+
+export const getLedsWorkColor = () =>
+  import.meta.env.VITE_LEDS_WORK_COLOR || "255,0,0"
 
 export function validateSettings() {
   const missingFields = []
@@ -24,4 +33,10 @@ export function validateSettings() {
       { autoClose: false },
     ),
   )
+
+  if (setLeds === "yes") {
+    ledsClient.validateSettings((msg, params) =>
+      toast.error(i18n.t(msg, params), { autoClose: false }),
+    )
+  }
 }

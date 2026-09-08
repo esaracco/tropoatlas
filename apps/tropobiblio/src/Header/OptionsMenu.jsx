@@ -4,8 +4,8 @@ import { useTranslation } from "react-i18next"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import {
   faCog,
-  faSliders,
   faSync,
+  faLightbulb,
   faPalette,
   faInfoCircle,
   faLanguage,
@@ -13,12 +13,14 @@ import {
   faUpload,
 } from "@fortawesome/free-solid-svg-icons"
 import { ConfirmModal, ThemeSelector, LanguageSelector } from "@tropo/react"
-import { useAppStore, useSettingsStore, getItem } from "@tropo/core"
+import { useAppStore, getItem } from "@tropo/core"
 import { syncCollection } from "../utils/sync"
+import * as Settings from "../utils/settings"
 import ExportBackupModal from "./ExportBackupModal"
 import ImportBackupModal from "./ImportBackupModal"
+import LedsModal from "./LedsModal"
 
-const OptionsMenu = ({ onOpenSettings }) => {
+const OptionsMenu = () => {
   const { t } = useTranslation()
   const isOnline = useAppStore((s) => s.isOnline)
   const isSyncing = useAppStore((s) => s.isSyncing)
@@ -28,12 +30,10 @@ const OptionsMenu = ({ onOpenSettings }) => {
   const [showSyncModal, setShowSyncModal] = useState(false)
   const [showExportModal, setShowExportModal] = useState(false)
   const [showImportModal, setShowImportModal] = useState(false)
+  const [showLedsModal, setShowLedsModal] = useState(false)
   const [forceRefresh, setForceRefresh] = useState(false)
 
-  const inventaireUser = useSettingsStore(
-    (s) =>
-      s.pluginsConfig?.inventaire?.user ?? import.meta.env.VITE_INVENTAIRE_USER,
-  )
+  const inventaireUser = import.meta.env.VITE_INVENTAIRE_USER
   const previousUser =
     getItem("syncedInventoryUser") || import.meta.env.VITE_INVENTAIRE_USER
   const isUserChanged = Boolean(
@@ -109,6 +109,13 @@ const OptionsMenu = ({ onOpenSettings }) => {
         setIsBusy={setIsBackupBusy}
       />
 
+      {Settings.setLeds === "yes" && isOnline && (
+        <LedsModal
+          show={showLedsModal}
+          onHide={() => setShowLedsModal(false)}
+        />
+      )}
+
       <Dropdown align="end" className="options-menu-dropdown me-1">
         <Dropdown.Toggle
           variant="secondary"
@@ -135,13 +142,18 @@ const OptionsMenu = ({ onOpenSettings }) => {
             </Dropdown.Item>
           )}
 
-          <Dropdown.Item
-            onClick={onOpenSettings}
-            className="d-flex align-items-center gap-2 py-2"
-          >
-            <FontAwesomeIcon icon={faSliders} className="options-menu-icon" />
-            <span>{t("Settings")}</span>
-          </Dropdown.Item>
+          {Settings.setLeds === "yes" && isOnline && (
+            <Dropdown.Item
+              onClick={() => setShowLedsModal(true)}
+              className="d-flex align-items-center gap-2 py-2"
+            >
+              <FontAwesomeIcon
+                icon={faLightbulb}
+                className="options-menu-icon"
+              />
+              <span>{t("Leds control")}</span>
+            </Dropdown.Item>
+          )}
 
           <Dropdown.Item
             onClick={() => setShowAbout(true)}

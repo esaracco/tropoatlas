@@ -1,17 +1,13 @@
 import React, { useEffect, useState, useRef, useMemo } from "react"
-import {
-  useCollectionStore,
-  useAppStore,
-  useSettingsStore,
-  normalize,
-} from "@tropo/core"
+import { useCollectionStore, useAppStore, normalize } from "@tropo/core"
 import { ProgressBar } from "react-bootstrap"
 import { VirtuosoGrid } from "react-virtuoso"
 import { useScrollbarWidth, useWindowWidth, ScrollButton } from "@tropo/react"
 import { useTranslation } from "react-i18next"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faSync } from "@fortawesome/free-solid-svg-icons"
-import { LedsClient } from "@tropo/leds"
+import { ledsClient } from "../utils/leds"
+import * as Settings from "../utils/settings"
 
 import Work from "./Work"
 import WorkModal from "./Work/WorkModal"
@@ -43,6 +39,8 @@ const Result = () => {
   const isSyncing = useAppStore((s) => s.isSyncing)
   const progress = useAppStore((s) => s.progress)
   const setDisplayCount = useAppStore((s) => s.setDisplayCount)
+  const fromRuler = useAppStore((s) => s.fromRuler)
+  const setFromRuler = useAppStore((s) => s.setFromRuler)
   const scrollbarWidth = useScrollbarWidth()
   const virtuosoRef = useRef(null)
   const scrollerRef = useRef(null)
@@ -56,16 +54,8 @@ const Result = () => {
   const sort = useCollectionStore((s) => s.sort)
   const winWidth = useWindowWidth(0)
 
-  const _setLeds = import.meta.env.VITE_SET_LEDS === "yes"
-  const hardware = useSettingsStore((s) => s.hardware)
+  const _setLeds = Settings.setLeds === "yes"
   const turnOffLeds = useRef(false)
-
-  const ledsClient = useMemo(() => {
-    if (!_setLeds) return null
-    return new LedsClient({
-      target: hardware.ledTarget,
-    })
-  }, [_setLeds, hardware.ledTarget])
 
   // Calculate dynamic responsive card width for grid layout
   const calculateCardWidth = () => {
@@ -219,6 +209,9 @@ const Result = () => {
     }
   }, [_setLeds, searchStr, works, selected, sort])
 
+  const placesCategoriesStr = placesCategories.join(",")
+  const placesCreatorsStr = placesCreators.join(",")
+
   // Update store state
   useEffect(() => {
     setCategories(availableCategories)
@@ -235,7 +228,7 @@ const Result = () => {
 
   // Central LED orchestration watcher
   useEffect(() => {
-    if (!_setLeds || !ledsClient) return
+    if (!_setLeds) return
 
     const manageLeds = async () => {
       const hasCategories = placesCategories.length > 0
@@ -254,7 +247,7 @@ const Result = () => {
         if (hasCategories) {
           ledCommands.push({
             place: placesCategories,
-            color: hardware.ledsCategoriesColor || "0,150,0",
+            color: Settings.getLedsCategoriesColor(),
             intensity: 0.05,
             noreset: hasLit,
           })
@@ -265,7 +258,7 @@ const Result = () => {
         if (hasCreators) {
           ledCommands.push({
             place: placesCreators,
-            color: hardware.ledsCreatorsColor || "0,0,130",
+            color: Settings.getLedsCreatorsColor(),
             intensity: 0.5,
             noreset: hasLit,
           })
@@ -276,7 +269,7 @@ const Result = () => {
         if (hasModal) {
           ledCommands.push({
             place: activeWork.place,
-            color: hardware.ledsWorkColor || "255,0,0",
+            color: Settings.getLedsWorkColor(),
             intensity: 1.0,
             blink: true,
             noreset: hasLit,
@@ -288,15 +281,19 @@ const Result = () => {
           try {
             await ledsClient.setLeds(ledCommands)
           } catch {
-            // Error logged by client
+            // Handled by ledsClient.onError
           }
         }
       } else if (turnOffLeds.current) {
         turnOffLeds.current = false
-        try {
-          await ledsClient.clearLeds()
-        } catch {
-          // Error logged by client
+        if (!fromRuler) {
+          try {
+            await ledsClient.setLeds()
+          } catch {
+            // Handled by ledsClient.onError
+          }
+        } else {
+          setFromRuler(false)
         }
       }
     }
@@ -304,22 +301,25 @@ const Result = () => {
     manageLeds()
   }, [
     _setLeds,
-    ledsClient,
-    placesCategories,
-    placesCreators,
+    placesCategoriesStr,
+    placesCreatorsStr,
+    fromRuler,
+    setFromRuler,
     activeInstanceId,
     works,
-    hardware,
   ])
 
   const cardWidth = calculateCardWidth()
 
   return (
     <>
-      <WorkModal
-        instanceId={activeInstanceId}
-        onClose={() => setActiveInstanceId(null)}
-      />
+      {activeInstanceId && (
+        <WorkModal
+          key={activeInstanceId}
+          instanceId={activeInstanceId}
+          onClose={() => setActiveInstanceId(null)}
+        />
+      )}
       <div className="Result">
         {isSyncing && (
           <div className="sync-overlay">
