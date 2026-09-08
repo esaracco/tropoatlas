@@ -1,6 +1,6 @@
 # TropoCine
 
-[![GPL License](https://img.shields.io/badge/license-GPLv3-blue.svg)](../../LICENSE) [![TMDB API](https://img.shields.io/badge/Powered%20by-TMDB-01b4e4.svg)](https://developer.themoviedb.org/) [![Made with React](https://img.shields.io/badge/React-18-61DAFB.svg)](https://reactjs.org/) [![Vite](https://img.shields.io/badge/Vite-B73BFE.svg)](https://vitejs.dev/)
+[![GPL License](https://img.shields.io/badge/license-GPLv3-blue.svg)](../../LICENSE) [![TMDB API](https://img.shields.io/badge/Powered%20by-TMDB-01b4e4.svg)](https://developer.themoviedb.org/) [![Made with React](https://img.shields.io/badge/React-19-61DAFB.svg)](https://reactjs.org/) [![Vite](https://img.shields.io/badge/Vite-B73BFE.svg)](https://vitejs.dev/)
 
 **TropoCine is a free software film collection manager, part of the [TropoAtlas](../../README.md) suite. Synchronize your movie lists from The Movie Database (TMDB), explore directors and cast members, customize your metadata, and navigate your film library.**
 
@@ -30,11 +30,10 @@
 
 ## Screenshots
 
-<img width="500" alt="1" src="https://github.com/user-attachments/assets/4572502f-4faf-4f97-9ce4-0f8d3ba61998" />
-<img width="500" alt="2" src="https://github.com/user-attachments/assets/03bb997a-aa89-4b4f-9302-61ef417eb617" />
-<img width="500" alt="3" src="https://github.com/user-attachments/assets/80051219-a039-4aab-b51a-c41e3ec92c80" />
-<img width="500" alt="4" src="https://github.com/user-attachments/assets/f6383c04-50d4-4d46-b316-84fd9197f49b" />
-<img width="500" alt="5" src="https://github.com/user-attachments/assets/25dd37f3-a9ea-4203-bb95-962b8f3bc742" />
+<img width="500" alt="Collection Grid" src="docs/img/1.png" />
+<img width="500" alt="Film Details" src="docs/img/2.png" />
+<img width="500" alt="Multi-criteria Filter" src="docs/img/3.png" />
+<img width="500" alt="About and System Information" src="docs/img/4.png" />
 
 ---
 
@@ -78,7 +77,7 @@ From the repository root:
 # Start TropoCine development server
 npm run dev -w apps/tropocine
 
-# Or using the root shortcut:
+# Or start directly with the root shortcut:
 npm run dev:cine
 ```
 
@@ -115,7 +114,7 @@ sudo systemctl restart apache2
 2. Build the production bundle from the repository root:
 
 ```bash
-npm run build -w apps/tropocine
+npm run build:cine
 ```
 
 _(This generates optimized static files in `apps/tropocine/build/`, along with `.htaccess` and `headers.conf`)._
@@ -166,7 +165,7 @@ sudo systemctl reload apache2
 
 ## Static Presentation Site
 
-The static presentation site for TropoCine is located in `apps/tropocine/docs/` (bilingual English/French with zero external dependencies) and can be hosted independently or served via Apache.
+The static presentation site for TropoCine is located in `apps/tropocine/docs/` and available online at [https://tropocine.esaracco.fr](https://tropocine.esaracco.fr).
 
 ---
 

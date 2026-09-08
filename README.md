@@ -1,6 +1,6 @@
 # TropoAtlas
 
-[![GPL License](https://img.shields.io/badge/license-GPLv3-blue.svg)](LICENSE) [![Website](https://img.shields.io/badge/website-tropoatlas.esaracco.fr-indigo.svg)](https://tropoatlas.esaracco.fr) [![Made with React](https://img.shields.io/badge/React-18-61DAFB.svg)](https://reactjs.org/) [![Vite](https://img.shields.io/badge/Vite-B73BFE.svg)](https://vitejs.dev/)
+[![GPL License](https://img.shields.io/badge/license-GPLv3-blue.svg)](LICENSE) [![Website](https://img.shields.io/badge/website-tropoatlas.esaracco.fr-indigo.svg)](https://tropoatlas.esaracco.fr) [![Made with React](https://img.shields.io/badge/React-19-61DAFB.svg)](https://reactjs.org/) [![Vite](https://img.shields.io/badge/Vite-B73BFE.svg)](https://vitejs.dev/)
 
 **TropoAtlas is a suite of free software applications designed to organize, enrich, and physically locate media collections (music, movies, books) on your shelves using connected IoT LED strips.**
 
@@ -20,7 +20,7 @@ TropoAtlas provides dedicated, tailored collection managers for different physic
 | :--- | :--- | :--- | :--- |
 | 🎵 **[TropoAudio](apps/tropoaudio)** | **Active** | Vinyl records, CDs, Cassettes, Discogs sync, audio library LED locator | [apps/tropoaudio/README.md](apps/tropoaudio/README.md) · [Website](https://tropoaudio.esaracco.fr) |
 | 🎬 **[TropoCine](apps/tropocine)** | **Active** | Movies, series, TMDB list sync, directors & actors exploration | [apps/tropocine/README.md](apps/tropocine/README.md) · [Website](https://tropocine.esaracco.fr) |
-| 📚 **TropoBiblio** (`apps/tropobiblio`) | *Planned* | Books, comics, mangas, home library shelves LED locator | — |
+| 📚 **[TropoBiblio](apps/tropobiblio)** | **Active** | Books, comics, mangas, Inventaire.io sync, home library shelves LED locator | [apps/tropobiblio/README.md](apps/tropobiblio/README.md) · [Website](https://tropobiblio.esaracco.fr) |
 
 ---
 
@@ -32,7 +32,8 @@ TropoAtlas is built on an **NPM Monorepo** architecture separating presentation 
 tropoatlas/
 ├── apps/
 │   ├── tropoaudio/          # React frontend for album collections
-│   └── tropocine/           # React frontend for film collections
+│   ├── tropocine/           # React frontend for film collections
+│   └── tropobiblio/         # React frontend for book collections
 ├── packages/
 │   ├── core/                # Core domain, storage abstraction, backup/export, Zustand state (@tropo/core)
 │   ├── react/               # Shared React components, modal dialogs, design tokens (@tropo/react)
@@ -40,6 +41,8 @@ tropoatlas/
 ├── plugins/
 │   ├── audio/
 │   │   └── discogs/         # Discogs API data provider plugin (@tropo/discogs)
+│   ├── biblio/
+│   │   └── inventaire/      # Inventaire.io API data provider plugin (@tropo/inventaire)
 │   └── cine/
 │       └── tmdb/            # TMDB API data provider plugin (@tropo/tmdb)
 └── firmware/
@@ -66,6 +69,9 @@ cp apps/tropoaudio/.env.sample apps/tropoaudio/.env
 
 # Or for TropoCine:
 cp apps/tropocine/.env.sample apps/tropocine/.env
+
+# Or for TropoBiblio:
+cp apps/tropobiblio/.env.sample apps/tropobiblio/.env
 ```
 
 3. Start the development server:
@@ -76,9 +82,12 @@ npm run dev:audio
 
 # Or for TropoCine:
 npm run dev:cine
+
+# Or for TropoBiblio:
+npm run dev:biblio
 ```
 
-Open `http://localhost:3000` (TropoAudio) or `http://localhost:3001` (TropoCine) in your browser.
+Open `http://localhost:3000` (TropoAudio), `http://localhost:3001` (TropoCine), or `http://localhost:3002` (TropoBiblio) in your browser.
 
 ---
 
@@ -88,12 +97,13 @@ All TropoAtlas frontends build into purely static web bundles. API calls and tok
 
 - **Docker Compose**: Run applications concurrently or individually from repository root:
   ```bash
-  # Run both applications (TropoAudio on :3000, TropoCine on :3001)
+  # Run all applications (TropoAudio on :3000, TropoCine on :3001, TropoBiblio on :3002)
   docker compose up
 
   # Or run a single application
   docker compose up tropoaudio
   docker compose up tropocine
+  docker compose up tropobiblio
   ```
 - **Docker (Standalone)**: Build and run individual containers with build arguments:
   ```bash
@@ -104,8 +114,12 @@ All TropoAtlas frontends build into purely static web bundles. API calls and tok
   # TropoCine (port 3001)
   docker build --build-arg APP_NAME=tropocine --build-arg PORT=3001 -t tropocine:prod .
   docker run --rm -it -p 3001:3001 -e TMDB_TOKEN="your_personal_token" tropocine:prod
+
+  # TropoBiblio (port 3002)
+  docker build --build-arg APP_NAME=tropobiblio --build-arg PORT=3002 -t tropobiblio:prod .
+  docker run --rm -it -p 3002:3002 tropobiblio:prod
   ```
-- **Apache / Reverse Proxy**: Complete production configurations and proxy setup guides are detailed in each app's documentation (e.g. [apps/tropoaudio/README.md](apps/tropoaudio/README.md) and [apps/tropocine/README.md](apps/tropocine/README.md)).
+- **Apache / Reverse Proxy**: Complete production configurations and proxy setup guides are detailed in each app's documentation (e.g. [apps/tropoaudio/README.md](apps/tropoaudio/README.md), [apps/tropocine/README.md](apps/tropocine/README.md), and [apps/tropobiblio/README.md](apps/tropobiblio/README.md)).
 
 
 ---

@@ -1,6 +1,6 @@
 # TropoAudio
 
-[![GPL License](https://img.shields.io/badge/license-GPLv3-blue.svg)](../../LICENSE) [![Discogs API](https://img.shields.io/badge/Powered%20by-Discogs-orange.svg)](https://www.discogs.com/developers/) [![Made with React](https://img.shields.io/badge/React-18-61DAFB.svg)](https://reactjs.org/) [![Vite](https://img.shields.io/badge/Vite-B73BFE.svg)](https://vitejs.dev/)
+[![GPL License](https://img.shields.io/badge/license-GPLv3-blue.svg)](../../LICENSE) [![Discogs API](https://img.shields.io/badge/Powered%20by-Discogs-orange.svg)](https://www.discogs.com/developers/) [![Made with React](https://img.shields.io/badge/React-19-61DAFB.svg)](https://reactjs.org/) [![Vite](https://img.shields.io/badge/Vite-B73BFE.svg)](https://vitejs.dev/)
 
 **TropoAudio is a free software album collection manager, part of the [TropoAtlas](../../README.md) suite. Synchronize your albums (Discogs), customize your metadata, and instantly locate your vinyl records and CDs on your shelves using connected LED strips.**
 
@@ -14,22 +14,22 @@ _TropoAudio is the direct successor to the original [TropoDisc repository](https
 
 - 🔎 **Instant Search & Multi-criteria Filter**: Browse and filter your collection in real-time by artist, style/category, media format, year, rating, or physical shelf location.
 - 🏷️ **Custom Metadata**: Enrich album entries with custom fields: exact shelf position, purchase price, and custom styles.
-- 💡 **Physical LED Shelf Locator**: Select an album, styles, or artists, and the corresponding slots on your shelf light up instantly via connected LED strips.
+- 💡 **Physical LED Shelf Locator & Ruler**: Select an album, styles, or artists, and the corresponding slots on your shelf light up instantly via connected LED strips. Includes a dedicated physical ruler mode to illuminate whole shelves.
 - 📦 **Backup & Complete Collection Export**:
   - **Quick Export**: Exports all cached metadata and album covers into a portable ZIP archive.
   - **Full Extraction & Enrichment**: Proactively fetches missing album details and high-resolution cover artwork.
 - 📥 **Offline Import & Restore**: Restore or migrate your collection on another device by importing the ZIP backup without needing an internet connection.
+- 📱 **Progressive Web App (PWA)**: Full offline navigation support and responsive touch interface optimized for desktop, tablet, and mobile.
 - 🎨 **Multi-Theme Support**: Dark, Light, Orange, Blue, Purple, and Green themes with instant zero-flicker hydration.
 
 ---
 
 ## Screenshots
 
-<img width="500" alt="1" src="https://github.com/user-attachments/assets/4e72ed74-d19e-4c26-9747-c1493bd2922f" />
-<img width="500" alt="2" src="https://github.com/user-attachments/assets/9cd1bbe9-da27-42a2-b0be-f8187db370ea" />
-<img width="500" alt="3" src="https://github.com/user-attachments/assets/8f6ef975-7895-4317-aa44-f66397b7d29f" />
-<img width="500" alt="4" src="https://github.com/user-attachments/assets/804d0a05-7b21-459a-a8c5-ca349fb6b7b1" />
-<img width="500" alt="5" src="https://github.com/user-attachments/assets/bfd252d2-3aed-430e-b3c9-38c89420154e" />
+<img width="500" alt="Collection Grid" src="docs/img/1.png" />
+<img width="500" alt="Album Details" src="docs/img/2.png" />
+<img width="500" alt="Multi-criteria Filter" src="docs/img/3.png" />
+<img width="500" alt="About and System Information" src="docs/img/4.png" />
 
 ---
 
@@ -72,7 +72,7 @@ TropoAudio can map to three optional custom fields defined in your Discogs colle
 ### LED Strips Configuration
 
 - **`VITE_SET_LEDS`**: Set to `"yes"` to enable IoT LED communication.
-- **`VITE_LED_TARGET`**: HTTP URL of your microcontroller LED controller (e.g., `http://192.168.1.113:8000`).
+- **`VITE_LED_TARGET`**: HTTP URL of your microcontroller LED server (e.g., `http://127.0.0.1:8000`).
 - **`VITE_LEDS_CREATORS_COLOR`**: RGB color for artists filter layer (default: `0,0,130`).
 - **`VITE_LEDS_CATEGORIES_COLOR`**: RGB color for styles filter layer (default: `0,150,0`).
 - **`VITE_LEDS_WORK_COLOR`**: RGB color for focused album modal (default: `255,0,0`).
@@ -87,11 +87,11 @@ TropoAudio can map to three optional custom fields defined in your Discogs colle
 From the repository root:
 
 ```bash
-# Start development server
+# Start TropoAudio development server
 npm run dev -w apps/tropoaudio
 
 # Or start directly with the root shortcut:
-npm run dev
+npm run dev:audio
 ```
 
 Open `http://localhost:3000` in your browser.
@@ -108,7 +108,7 @@ Build and run the production container from the repository root:
 
 ```bash
 # Build the Docker image
-docker build -t tropoaudio:prod .
+docker build --build-arg APP_NAME=tropoaudio --build-arg PORT=3000 -t tropoaudio:prod .
 
 # Run the container
 docker run --rm -it -p 3000:3000 -e DISCOGS_TOKEN="your_personal_token" tropoaudio:prod
@@ -123,10 +123,10 @@ sudo a2enmod headers rewrite proxy proxy_http ssl
 sudo systemctl restart apache2
 ```
 
-2. Build the production bundle:
+2. Build the production bundle from the repository root:
 
 ```bash
-npm run build
+npm run build:audio
 ```
 
 _(Generates static assets in `apps/tropoaudio/build`, along with `.htaccess` and `headers.conf`)._
@@ -166,9 +166,17 @@ _(Generates static assets in `apps/tropoaudio/build`, along with `.htaccess` and
     </Location>
 
     # (Optional) LED Server Proxy
-    <Location /api>
-        ProxyPass http://127.0.0.1:10000
-        ProxyPassReverse http://127.0.0.1:10000
+    <Location /api/leds>
+        ProxyPass http://127.0.0.1:8000/leds
+        ProxyPassReverse http://127.0.0.1:8000/leds
+    </Location>
+    <Location /api/ruler>
+        ProxyPass http://127.0.0.1:8000/ruler
+        ProxyPassReverse http://127.0.0.1:8000/ruler
+    </Location>
+    <Location /api/ping>
+        ProxyPass http://127.0.0.1:8000/ping
+        ProxyPassReverse http://127.0.0.1:8000/ping
     </Location>
 </VirtualHost>
 ```
