@@ -26,3 +26,16 @@ services:
     env_file:
       - path: apps/tropocine/.env
         required: false
+
+  tropobiblio:
+    build:
+      context: .
+      args:
+        APP_NAME: tropobiblio
+        PORT: 3002
+    ports:
+      - "${TROPOBIBLIO_PORT:-3002}:3002"
+    env_file:
+      - path: apps/tropobiblio/.env
+        required: false
+

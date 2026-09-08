@@ -1,0 +1,88 @@
+server {
+    listen 3002;
+    server_name localhost;
+
+    root /usr/share/nginx/html;
+    index index.html;
+
+    # React Single Page Application Fallback
+    location / {
+        try_files $uri $uri/ /index.html;
+    }
+
+    # Do not cache service-worker.js to ensure updates are detected
+    location = /service-worker.js {
+        expires off;
+        add_header Cache-Control "no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0";
+        access_log off;
+    }
+
+    # Do not cache index.html to ensure the latest assets are loaded
+    location = /index.html {
+        expires off;
+        add_header Cache-Control "no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0";
+    }
+
+    # Inventaire.io API Proxy
+    location /api/inventaire/ {
+        proxy_set_header Host inventaire.io;
+        proxy_set_header User-Agent "__USER_AGENT__";
+        proxy_ssl_server_name on;
+        proxy_ssl_protocols TLSv1.2 TLSv1.3;
+
+        # Strip secure flag from cookie if running over HTTP
+        proxy_cookie_flags ~ nosecure;
+
+        add_header Access-Control-Allow-Origin *;
+        add_header Access-Control-Allow-Methods "GET, POST, PUT, DELETE, OPTIONS";
+
+        proxy_pass https://inventaire.io/;
+    }
+
+    # Inventaire.io Artwork CDN Proxy (CORS bypass for client-side ZIP export)
+    location /api/inventaire-image/ {
+        proxy_set_header Host inventaire.io;
+        proxy_set_header User-Agent "__USER_AGENT__";
+        proxy_ssl_server_name on;
+        proxy_ssl_protocols TLSv1.2 TLSv1.3;
+
+        proxy_hide_header Set-Cookie;
+
+        add_header Access-Control-Allow-Origin *;
+        add_header Access-Control-Allow-Methods "GET, OPTIONS";
+
+        rewrite ^/api/inventaire-image/img/entities/(?:300x300/)?(.*)$ /img/entities/300x300/$1 break;
+        rewrite ^/api/inventaire-image/(.*)$ /$1 break;
+        proxy_pass https://inventaire.io;
+    }
+
+    # Image Proxy for external artwork (CORS enabled for client-side ZIP export)
+    location /api/proxy-image {
+        if ($arg_url ~* "^https?://([^/]+)(/.*)$") {
+            set $image_host $1;
+            set $image_path $2;
+        }
+
+        resolver 8.8.8.8 1.1.1.1 valid=300s;
+        proxy_set_header Host $image_host;
+        proxy_set_header User-Agent "__USER_AGENT__";
+        proxy_ssl_server_name on;
+        proxy_ssl_protocols TLSv1.2 TLSv1.3;
+
+        add_header Access-Control-Allow-Origin *;
+        add_header Access-Control-Allow-Methods "GET, OPTIONS";
+
+        proxy_pass https://$image_host$image_path;
+    }
+
+    # (Optional) LED Server Proxy
+    location /api/leds {
+        proxy_pass http://127.0.0.1:8000/leds;
+    }
+    location /api/ruler {
+        proxy_pass http://127.0.0.1:8000/ruler;
+    }
+    location /api/ping {
+        proxy_pass http://127.0.0.1:8000/ping;
+    }
+}

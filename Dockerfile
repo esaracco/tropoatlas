@@ -18,7 +18,7 @@ RUN node -e '\
   const fs = require("fs"); \
   const app = process.argv[1]; \
   const pkg = JSON.parse(fs.readFileSync(`./apps/${app}/package.json`, "utf8")); \
-  const formattedName = app === "tropocine" ? "TropoCine" : (app === "tropoaudio" ? "TropoAudio" : pkg.name); \
+  const formattedName = app === "tropocine" ? "TropoCine" : (app === "tropoaudio" ? "TropoAudio" : (app === "tropobiblio" ? "TropoBiblio" : pkg.name)); \
   const ua = `${formattedName}/${pkg.version} (${pkg.homepage})`; \
   const tpl = fs.readFileSync(`./docker/${app}/nginx.conf.template`, "utf8"); \
   fs.writeFileSync("/tmp/default.conf.template", tpl.replaceAll("__USER_AGENT__", ua)); \
