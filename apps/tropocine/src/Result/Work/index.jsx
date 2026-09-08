@@ -4,16 +4,10 @@ import { toast } from "react-toastify"
 import { useTranslation } from "react-i18next"
 import { LazyLoadImage } from "react-lazy-load-image-component"
 
-import { getItemDetails, getItemImage, getProviderInfo } from "../../provider"
+import { getItemImage } from "../../provider"
 import { buildCacheKey, setLargeItem } from "@tropo/core"
 
-import "./styles/Album.css"
-
-let latestClickedInstanceId = null
-
-export const setLatestClickedInstanceId = (id) => {
-  latestClickedInstanceId = id
-}
+import "./styles/Work.css"
 
 const loadedImageUrls = new Set()
 
@@ -48,12 +42,12 @@ const addCacheBuster = (url) => {
   return `${url}${sep}t=${timestamp}`
 }
 
-const Album = ({
+const Work = ({
   setActiveInstanceId,
   cardWidth,
   instanceid,
   img,
-  artist,
+  creator,
   year,
   title,
 }) => {
@@ -62,58 +56,10 @@ const Album = ({
   const [loader, setLoader] = useState(false)
   const isCached = isImageCached(img)
 
-  const getReleaseData = async (e, showLoader = true) => {
-    const instanceId =
-      e && e.currentTarget ? e.currentTarget.dataset.instanceid : e
-    let album = useCollectionStore.getState().items[instanceId]
-
-    // Get remote data if not yet fully enriched
-    if (!album.cast || album.cast.length === 0) {
-      if (showLoader) setLoader(true)
-
-      try {
-        album = await getItemDetails(album)
-
-        const items = useCollectionStore.getState().items
-        const newItems = { ...items, [instanceId]: album }
-        setItems(newItems)
-        setLargeItem("items", newItems)
-      } finally {
-        if (showLoader) setLoader(false)
-      }
-    }
-
-    return album
-  }
-
   const onClick = (e) => {
     const targetInstanceId =
       e && e.currentTarget ? e.currentTarget.dataset.instanceid : instanceid
-    setLatestClickedInstanceId(targetInstanceId)
-
-    getReleaseData(e)
-      .then((r) => {
-        if (
-          latestClickedInstanceId !== null &&
-          String(latestClickedInstanceId) !== String(r.id)
-        ) {
-          return
-        }
-        setActiveInstanceId(r.id)
-      })
-      .catch((e) => {
-        if (!navigator.onLine) {
-          toast.warning(t("You are offline!"), { toastId: "offline" })
-        } else {
-          console.error(e.message)
-          toast.error(
-            t(e.message) ||
-              t("An error occurred while using the {{provider}} API!", {
-                provider: getProviderInfo().name,
-              }),
-          )
-        }
-      })
+    setActiveInstanceId(targetInstanceId)
   }
 
   const retryImageLoad = async () => {
@@ -121,16 +67,16 @@ const Album = ({
     setLoader(true)
     try {
       const items = useCollectionStore.getState().items
-      const album = items[instanceid]
-      if (album) {
-        await purgeImageCache(album.cover)
+      const work = items[instanceid]
+      if (work) {
+        await purgeImageCache(work.cover)
 
-        const images = await getItemImage(album)
+        const images = await getItemImage(work)
         if (images && images.cover) {
           const cover = addCacheBuster(images.cover)
           const releasesClone = { ...items }
           releasesClone[instanceid] = {
-            ...album,
+            ...work,
             cover,
           }
           setItems(releasesClone)
@@ -174,10 +120,17 @@ const Album = ({
 
   return (
     <div
-      className={`Album${loader ? " is-loading" : ""}`}
+      className={`Work${loader ? " is-loading" : ""}`}
       onClick={onClick}
       style={{ width: cardWidth }}
       data-instanceid={instanceid}
+      role="button"
+      tabIndex={0}
+      onKeyDown={(e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          onClick(e)
+        }
+      }}
     >
       {loader && <div className="card-loader-bar" />}
       <LazyLoadImage
@@ -191,8 +144,8 @@ const Album = ({
         height={posterHeight}
         width={cardWidth}
       />
-      <div className="artist text-truncate" style={{ width: cardWidth }}>
-        {artist}
+      <div className="creator text-truncate" style={{ width: cardWidth }}>
+        {creator}
         <br />
         {year ? `${year} - ` : ""}
         {title}
@@ -201,4 +154,4 @@ const Album = ({
   )
 }
 
-export default Album
+export default Work

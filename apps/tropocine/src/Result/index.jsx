@@ -7,9 +7,9 @@ import { useTranslation } from "react-i18next"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faSync } from "@fortawesome/free-solid-svg-icons"
 
-import Album from "./Album"
-import AlbumModal from "./Album/AlbumModal"
-import filmPlaceholder from "../assets/film.svg"
+import Work from "./Work"
+import WorkModal from "./Work/WorkModal"
+import workPlaceholder from "../assets/film.svg"
 import "./Result.css"
 
 const GridList = React.forwardRef(({ style, ...props }, ref) => (
@@ -60,13 +60,13 @@ const Result = () => {
   }
 
   // Memoized filtering and sorting
-  const { result, availableCategories, availableArtists } = useMemo(() => {
+  const { result, availableCategories, availableCreators } = useMemo(() => {
     const keys = Object.keys(releases || {})
     const result = []
     const search = normalize(searchStr)
 
-    const sStylesLen = (selected.categories || []).length
-    const sArtistsLen = (selected.creators || []).length
+    const sCategoriesLen = (selected.categories || []).length
+    const sCreatorsLen = (selected.creators || []).length
 
     const fCategories = new Set()
     const fCreators = new Set()
@@ -136,23 +136,23 @@ const Result = () => {
         search === "" || (r.searchIndex && r.searchIndex.indexOf(search) > -1)
       if (!matchSearch) continue
 
-      const matchStyle =
-        sStylesLen === 0 ||
+      const matchCategory =
+        sCategoriesLen === 0 ||
         selected.categories.some((item) => (r.categories || []).includes(item))
       const moviePeople = [r.creator, ...(r.cast || [])].filter(Boolean)
       const matchPeople =
-        sArtistsLen === 0 ||
+        sCreatorsLen === 0 ||
         selected.creators.some((person) => moviePeople.includes(person))
 
       if (matchPeople) {
         ;(r.categories || []).forEach((c) => fCategories.add(c))
       }
 
-      if (matchStyle) {
+      if (matchCategory) {
         moviePeople.forEach((p) => fCreators.add(p))
       }
 
-      if (matchStyle && matchPeople) {
+      if (matchCategory && matchPeople) {
         result.push(r)
       }
     }
@@ -160,19 +160,19 @@ const Result = () => {
     return {
       result,
       availableCategories: Array.from(fCategories).sort(),
-      availableArtists: Array.from(fCreators).sort(),
+      availableCreators: Array.from(fCreators).sort(),
     }
   }, [searchStr, releases, selected, sort])
 
   // Update store state
   useEffect(() => {
     setCategories(availableCategories)
-    setCreators(availableArtists)
+    setCreators(availableCreators)
     setDisplayCount(result.length)
   }, [
     result.length,
     availableCategories,
-    availableArtists,
+    availableCreators,
     setDisplayCount,
     setCategories,
     setCreators,
@@ -182,7 +182,7 @@ const Result = () => {
 
   return (
     <>
-      <AlbumModal
+      <WorkModal
         instanceId={activeInstanceId}
         onClose={() => setActiveInstanceId(null)}
       />
@@ -222,13 +222,13 @@ const Result = () => {
           itemContent={(index) => {
             const item = result[index]
             return (
-              <Album
+              <Work
                 key={item.id}
                 setActiveInstanceId={setActiveInstanceId}
                 instanceid={item.id}
-                img={item.cover || filmPlaceholder}
+                img={item.cover || workPlaceholder}
                 cardWidth={cardWidth}
-                artist={item.creator}
+                creator={item.creator}
                 year={item.year}
                 title={item.title}
               />

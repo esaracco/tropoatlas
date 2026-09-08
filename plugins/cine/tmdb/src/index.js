@@ -1,6 +1,7 @@
 import sleep from "sleep-promise"
 import {
   normalize,
+  cleanText,
   BasePlugin,
   useSettingsStore,
   getItem,
@@ -281,14 +282,15 @@ export class TMDBPlugin extends BasePlugin {
         ? `/api/tmdb-image/t/p/w1280${backdropPath}`
         : null
 
-      const cleanTitle = movie.title || ""
+      const cleanTitle = cleanText(movie.title || "")
+      const cleanDirector = cleanText(director)
       const castString = cast.join(" ")
-      const searchIndex = `${director.replace(/\s/g, "-")}_${cleanTitle.replace(/\s/g, "-")}_${normalize(director)}_${normalize(cleanTitle)}_${normalize(castString)}`
+      const searchIndex = `${cleanDirector.replace(/\s/g, "-")}_${cleanTitle.replace(/\s/g, "-")}_${normalize(cleanDirector)}_${normalize(cleanTitle)}_${normalize(castString)}`
 
       collection[movie.id] = {
         id: movie.id,
         title: cleanTitle,
-        creator: director,
+        creator: cleanDirector,
         year,
         cover: coverUrl,
         backdrop: backdropUrl,
@@ -310,25 +312,9 @@ export class TMDBPlugin extends BasePlugin {
     return collection
   }
 
+  // Detailed movie info is already fully populated during getCollection
   async getItemDetails(item) {
-    if (item && item.overview && item.cast && item.cast.length > 0) {
-      return item
-    }
-
-    const details = await this.#fetchMovieDetails(item.id)
-    if (!details) return item
-
-    return {
-      ...item,
-      creator: item.creator || details.director,
-      cast: details.cast,
-      runtime: details.runtime,
-      overview: details.overview || item.overview,
-      backdrop:
-        !this.devMode && details.backdrop
-          ? `/api/tmdb-image/t/p/w1280${details.backdrop}`
-          : item.backdrop,
-    }
+    return item
   }
 
   async getItemImage(item) {

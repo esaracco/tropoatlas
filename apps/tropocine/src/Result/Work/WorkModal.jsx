@@ -4,15 +4,15 @@ import { useTranslation } from "react-i18next"
 import { Modal, Button, Table, Tab, Tabs } from "react-bootstrap"
 import { Rating } from "react-simple-star-rating"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faUser } from "@fortawesome/free-solid-svg-icons"
+import { faInfoCircle, faUser } from "@fortawesome/free-solid-svg-icons"
 import ImageGallery from "react-image-gallery"
 import "react-image-gallery/styles/image-gallery.css"
 
 import { getProviderInfo } from "../../provider"
-import filmPlaceholder from "../../assets/film.svg"
-import "./styles/AlbumModal.css"
+import workPlaceholder from "../../assets/film.svg"
+import "./styles/WorkModal.css"
 
-const AlbumModal = ({ instanceId, onClose }) => {
+const WorkModal = ({ instanceId, onClose }) => {
   const setFilter = useCollectionStore((s) => s.setFilter)
   const releases = useCollectionStore((s) => s.items)
   const [count, setCount] = useState(0)
@@ -51,7 +51,7 @@ const AlbumModal = ({ instanceId, onClose }) => {
     <Modal
       show={Boolean(instanceId)}
       onHide={onClose}
-      className="AlbumModal"
+      className="WorkModal"
       scrollable
       fullscreen="sm-down"
     >
@@ -64,12 +64,12 @@ const AlbumModal = ({ instanceId, onClose }) => {
                 onClick={handleIGClick}
                 showPlayButton={false}
                 showThumbnails={false}
-                items={[{ original: release.cover || filmPlaceholder }]}
+                items={[{ original: release.cover || workPlaceholder }]}
               />
             </div>
             <div className="modal-header-info">
-              <div className="artist-name">{release.creator}</div>
-              <div className="album-details">
+              <div className="creator-name">{release.creator}</div>
+              <div className="work-details">
                 {release.year ? release.year + " – " : ""}
                 <strong>{release.title}</strong>
                 {count > 1 && (
@@ -81,9 +81,9 @@ const AlbumModal = ({ instanceId, onClose }) => {
                         setFilter("creators", [release.creator])
                         onClose()
                       }}
-                      title={t("Show all {{count}} movies by {{artist}}", {
+                      title={t("Show all {{count}} movies by {{creator}}", {
                         count,
-                        artist: release.creator,
+                        creator: release.creator,
                       })}
                     >
                       <FontAwesomeIcon icon={faUser} /> <b>{count}</b>{" "}
@@ -169,22 +169,21 @@ const AlbumModal = ({ instanceId, onClose }) => {
           </tbody>
         </Table>
 
-        {release.overview && (
-          <>
-            <hr />
-            <Tabs defaultActiveKey="album-infos">
-              <Tab
-                eventKey="album-infos"
-                title={t("Info")}
-                className="album-infos"
-              >
-                <div style={{ whiteSpace: "pre-wrap", lineHeight: 1.5 }}>
-                  {release.overview}
-                </div>
-              </Tab>
-            </Tabs>
-          </>
-        )}
+        <hr />
+        <Tabs defaultActiveKey="work-infos">
+          <Tab eventKey="work-infos" title={t("Info")} className="work-infos">
+            {release.overview ? (
+              <div style={{ whiteSpace: "pre-wrap", lineHeight: 1.5 }}>
+                {release.overview}
+              </div>
+            ) : (
+              <div className="description-empty">
+                <FontAwesomeIcon icon={faInfoCircle} />
+                <span>{t("No description available.")}</span>
+              </div>
+            )}
+          </Tab>
+        </Tabs>
       </Modal.Body>
       <Modal.Footer className="d-flex justify-content-between align-items-center">
         <Button
@@ -218,4 +217,4 @@ const AlbumModal = ({ instanceId, onClose }) => {
   )
 }
 
-export default AlbumModal
+export default WorkModal

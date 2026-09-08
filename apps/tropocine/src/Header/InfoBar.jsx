@@ -72,7 +72,7 @@ const InfoBar = () => {
 
       setInfo(
         <>
-          <b>{displayCount}</b> {t(displayCount > 1 ? "movies" : "movie")}{" "}
+          <b>{displayCount}</b> {displayCount > 1 ? t("movies") : t("movie")}{" "}
           <b>{effectiveCategories.join(", ")}</b>{" "}
           {effectiveCreators.length ? (
             <>
