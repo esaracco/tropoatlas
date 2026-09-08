@@ -1,6 +1,6 @@
 import { create } from "zustand"
 import { persist } from "zustand/middleware"
-import { buildCacheKey, SETTINGS_STORE_KEY } from "./storage"
+import { buildCacheKey } from "./storage"
 
 // Generic App UI Store
 export const useAppStore = create((set) => ({
@@ -67,60 +67,6 @@ export const useCollectionStore = create(
         sort: state.sort,
         selected: state.selected,
       }),
-    },
-  ),
-)
-// Settings Store
-export const useSettingsStore = create(
-  persist(
-    (set) => ({
-      general: {
-        currency: import.meta.env.VITE_CURRENCY || "€",
-      },
-      hardware: {
-        ledsCreatorsColor:
-          import.meta.env.VITE_LEDS_CREATORS_COLOR || "0,0,130",
-        ledsCategoriesColor:
-          import.meta.env.VITE_LEDS_CATEGORIES_COLOR || "0,150,0",
-        ledsWorkColor: import.meta.env.VITE_LEDS_WORK_COLOR || "255,0,0",
-      },
-      pluginsConfig: {
-        discogs: {
-          apiItemsPerRequest:
-            parseInt(import.meta.env.VITE_DISCOGS_API_ITEMS_PER_REQUEST, 10) ||
-            250,
-          formats: import.meta.env.VITE_DISCOGS_FORMATS || "vinyl",
-          fieldPlace: import.meta.env.VITE_DISCOGS_FIELD_PLACE || "",
-          fieldPrice: import.meta.env.VITE_DISCOGS_FIELD_PRICE || "",
-          fieldCategories: import.meta.env.VITE_DISCOGS_FIELD_STYLES || "",
-          fieldsRequired: import.meta.env.VITE_DISCOGS_FIELDS_REQUIRED || "",
-        },
-        tmdb: {
-          listId: import.meta.env.VITE_TMDB_LIST_ID || "",
-        },
-        inventaire: {
-          fieldPlace: import.meta.env.VITE_INVENTAIRE_FIELD_PLACE || "place",
-          fieldPrice: import.meta.env.VITE_INVENTAIRE_FIELD_PRICE || "price",
-          fieldCategories:
-            import.meta.env.VITE_INVENTAIRE_FIELD_GENRES || "genre",
-          fieldRating: import.meta.env.VITE_INVENTAIRE_FIELD_RATING || "rating",
-        },
-      },
-      setGeneral: (updates) =>
-        set((state) => ({ general: { ...state.general, ...updates } })),
-      setHardware: (updates) =>
-        set((state) => ({ hardware: { ...state.hardware, ...updates } })),
-      setPluginConfig: (pluginName, updates) =>
-        set((state) => ({
-          pluginsConfig: {
-            ...state.pluginsConfig,
-            [pluginName]: { ...state.pluginsConfig[pluginName], ...updates },
-          },
-        })),
-    }),
-    {
-      name: buildCacheKey(SETTINGS_STORE_KEY),
-      version: 2,
     },
   ),
 )

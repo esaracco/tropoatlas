@@ -25,7 +25,6 @@ Your plugin class must implement the following methods:
 - **`updateItem(item, changes)`**: Updates user-specific data on the remote service (e.g. rating, location/place, price, custom categories).
 - **`getCategories(items)`**: Extracts and sorts all unique categories (genres, styles) from the given collection of items.
 - **`getCreators(items)`**: Extracts and sorts all unique creators (artists, directors, cast members) from the given collection of items.
-- **`getSettingsSchema()`**: Returns a declarative JSON array of field definitions for rendering dynamic settings forms.
 - **`getImageProxyUrl(url)`**: Translates external image URLs into server-proxied endpoints (for CORS compliance during client-side ZIP exports). Defaults to returning the input `url`.
 - **`getMaxRequestsPerMinute()`**: Returns the maximum allowed API requests per minute (defaults to `60` if omitted or higher).
 

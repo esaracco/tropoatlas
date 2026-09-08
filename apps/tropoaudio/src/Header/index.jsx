@@ -10,7 +10,6 @@ import { Button, Container, Nav, Navbar, Offcanvas } from "react-bootstrap"
 
 import ClearFiltersButton from "./ClearFiltersButton"
 import OptionsMenu from "./OptionsMenu"
-import SettingsModal from "../Settings/SettingsModal"
 
 import { useAppStore } from "@tropo/core"
 import "./styles/Header.css"
@@ -31,7 +30,6 @@ const Header = () => {
   const setSort = useCollectionStore((s) => s.setSort)
   const { t } = useTranslation()
   const [expanded, setExpanded] = useState(false)
-  const [showSettings, setShowSettings] = useState(false)
   const [activeModal, setActiveModal] = useState(null)
   const [showSearch, setShowSearch] = useState(false)
   const searchInputRef = useRef(null)
@@ -265,7 +263,7 @@ const Header = () => {
               >
                 <FontAwesomeIcon icon={faSearch} />
               </Button>
-              <OptionsMenu onOpenSettings={() => setShowSettings(true)} />
+              <OptionsMenu />
             </div>
           </Container>
         )}
@@ -328,10 +326,6 @@ const Header = () => {
         onSortChange={setSort}
         closeLabel={t("Close")}
         onHide={() => setActiveModal(null)}
-      />
-      <SettingsModal
-        show={showSettings}
-        onHide={() => setShowSettings(false)}
       />
     </div>
   )

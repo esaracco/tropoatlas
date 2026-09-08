@@ -29,14 +29,6 @@ export class BasePlugin {
   }
 
   /**
-   * Return the plugin's configuration schema for dynamic UI generation.
-   * @returns {Array<Object>}
-   */
-  getSettingsSchema() {
-    return []
-  }
-
-  /**
    * Return storage keys specific to this provider that should be preserved
    * across cache clears.
    * @returns {string[]}
@@ -54,9 +46,9 @@ export class BasePlugin {
   }
 
   /**
-   * Return information about which custom fields the provider supports based on a draft configuration.
+   * Return information about which custom fields the provider supports.
    * This is a synchronous, offline check for UI reactivity.
-   * @param {Object} config - The plugin's draft configuration object.
+   * @param {Object} [config] - Optional configuration overrides.
    * @returns {CustomFieldsInfo}
    */
   getDraftCapabilities(config) {

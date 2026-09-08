@@ -5,12 +5,8 @@ import {
   cleanText,
   normalize,
   BasePlugin,
-  useSettingsStore,
 } from "@tropo/core"
 import logo from "./assets/logo.png"
-
-// Marker function for i18n static extraction
-const t = (s) => s
 
 export const getArtistName = ({ name, anv } = {}) => {
   if (!name) return anv || ""
@@ -36,36 +32,20 @@ export class DiscogsPlugin extends BasePlugin {
     this.user = env.VITE_DISCOGS_USER || config.user
     this.devMode = config.devMode || false
 
+    this.itemsPerRequest =
+      Number(
+        env.VITE_DISCOGS_API_ITEMS_PER_REQUEST || config.apiItemsPerRequest,
+      ) || 250
+    this.formats = env.VITE_DISCOGS_FORMATS || config.formats || "all"
+    this.placeField = env.VITE_DISCOGS_FIELD_PLACE || config.fieldPlace || ""
+    this.priceField = env.VITE_DISCOGS_FIELD_PRICE || config.fieldPrice || ""
+    this.categoriesField =
+      env.VITE_DISCOGS_FIELD_STYLES || config.fieldCategories || ""
+    this.fieldsRequired =
+      env.VITE_DISCOGS_FIELDS_REQUIRED || config.fieldsRequired || "no"
+
     this.fieldsId = {}
     this.apiBase = config.apiBase || "https://api.discogs.com"
-  }
-
-  get config() {
-    return useSettingsStore.getState().pluginsConfig.discogs || {}
-  }
-
-  get itemsPerRequest() {
-    return Number(this.config.apiItemsPerRequest) || 250
-  }
-
-  get formats() {
-    return this.config.formats || "all"
-  }
-
-  get placeField() {
-    return this.config.fieldPlace
-  }
-
-  get priceField() {
-    return this.config.fieldPrice
-  }
-
-  get categoriesField() {
-    return this.config.fieldCategories
-  }
-
-  get fieldsRequired() {
-    return this.config.fieldsRequired || "no"
   }
 
   getProviderInfo() {
@@ -80,51 +60,15 @@ export class DiscogsPlugin extends BasePlugin {
     }
   }
 
-  getSettingsSchema() {
-    return [
-      {
-        key: "formats",
-        label: t("Formats (comma separated, or `all`)"),
-        type: "text",
-        requiresResync: true,
-      },
-      { type: "header", label: t("Custom Fields Mapping") },
-      {
-        key: "fieldPlace",
-        label: t("Location Field (e.g., `place`)"),
-        type: "text",
-        requiresResync: true,
-      },
-      {
-        key: "fieldPrice",
-        label: t("Price Field (e.g., `price`)"),
-        type: "text",
-        requiresResync: true,
-      },
-      {
-        key: "fieldCategories",
-        label: t("Styles Field (e.g., `styles`)"),
-        type: "text",
-        requiresResync: true,
-      },
-      {
-        key: "fieldsRequired",
-        label: t("Only sync albums that have at least one custom field"),
-        type: "boolean",
-        requiresResync: true,
-      },
-    ]
-  }
-
   getPreservedKeys() {
     return ["customFieldsInfo"]
   }
 
-  getDraftCapabilities(config) {
+  getDraftCapabilities(config = {}) {
     return {
-      supportsPlace: !!config.fieldPlace,
-      supportsPrice: !!config.fieldPrice,
-      supportsCategories: !!config.fieldCategories,
+      supportsPlace: !!(config.fieldPlace ?? this.placeField),
+      supportsPrice: !!(config.fieldPrice ?? this.priceField),
+      supportsCategories: !!(config.fieldCategories ?? this.categoriesField),
     }
   }
 

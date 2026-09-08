@@ -3,7 +3,6 @@ import {
   normalize,
   cleanText,
   BasePlugin,
-  useSettingsStore,
   getItem,
   setItem,
   buildCacheKey,
@@ -26,14 +25,6 @@ export class TMDBPlugin extends BasePlugin {
     this.apiBase = config.apiBase || "/api/tmdb"
   }
 
-  get config() {
-    return useSettingsStore.getState().pluginsConfig.tmdb || {}
-  }
-
-  get activeListId() {
-    return this.config.listId || this.listId
-  }
-
   // Clean list ID extracting numeric prefix from slugs like 8691537-liste-perso
   cleanListId(input) {
     if (!input) return null
@@ -51,23 +42,12 @@ export class TMDBPlugin extends BasePlugin {
     }
   }
 
-  getSettingsSchema() {
-    return [
-      {
-        key: "listId",
-        label: t("TMDB List ID (e.g., 8691537 or 8691537-my-list)"),
-        type: "text",
-        requiresResync: true,
-      },
-    ]
-  }
-
   getPreservedKeys() {
     return ["syncedListId"]
   }
 
   validateSettings(onConfigError) {
-    const id = this.cleanListId(this.activeListId)
+    const id = this.cleanListId(this.listId)
     if (!id) {
       if (onConfigError) {
         onConfigError(
@@ -212,7 +192,7 @@ export class TMDBPlugin extends BasePlugin {
   }
 
   async getCollection(onProgress, { forceRefresh = false } = {}) {
-    const cleanId = this.cleanListId(this.activeListId)
+    const cleanId = this.cleanListId(this.listId)
     if (!cleanId) {
       throw new Error("No valid TMDB list ID configured.")
     }

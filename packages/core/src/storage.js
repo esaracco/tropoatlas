@@ -1,7 +1,5 @@
 import localforage from "localforage"
 
-export const SETTINGS_STORE_KEY = "settings-v1"
-
 export const buildCacheKey = (...parts) => {
   const appName = import.meta.env.VITE_APP_NAME || "tropoatlas"
   const name = parts.filter(Boolean).join("-")
@@ -45,7 +43,6 @@ export const removeItem = (name) => localStorage.removeItem(buildCacheKey(name))
 // Keys that must never be removed during cache clears (user preferences,
 // UI state, and structural schema version metadata).
 export const DEFAULT_PRESERVED_KEYS = [
-  SETTINGS_STORE_KEY,
   "theme",
   "ui-storage-v2",
   "schemaVersion",

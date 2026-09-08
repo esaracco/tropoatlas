@@ -429,7 +429,7 @@ const WorkModal = ({ instanceId, onClose }) => {
                       <Form.Control
                         type="text"
                         className="place-control"
-                        defaultValue={formState.place}
+                        value={formState.place ?? ""}
                         placeholder={t("storage place")}
                         data-field="place"
                         onChange={onChange}
@@ -449,7 +449,7 @@ const WorkModal = ({ instanceId, onClose }) => {
                       <Form.Control
                         type="text"
                         className="price-control"
-                        defaultValue={formState.price}
+                        value={formState.price ?? ""}
                         data-field="price"
                         onChange={onChange}
                       />

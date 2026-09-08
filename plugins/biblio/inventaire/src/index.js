@@ -1,5 +1,5 @@
 import sleep from "sleep-promise"
-import { normalize, cleanText, BasePlugin, useSettingsStore } from "@tropo/core"
+import { normalize, cleanText, BasePlugin } from "@tropo/core"
 import logo from "./assets/logo.svg"
 
 // Minimum length for a description to be considered complete.
@@ -115,10 +115,6 @@ export class InventairePlugin extends BasePlugin {
     this.apiBase = config.apiBase || "/api/inventaire"
   }
 
-  get config() {
-    return useSettingsStore.getState().pluginsConfig.inventaire || {}
-  }
-
   get activeUser() {
     return this.user
   }
@@ -128,19 +124,19 @@ export class InventairePlugin extends BasePlugin {
   }
 
   get activeFieldPlace() {
-    return this.config.fieldPlace || this.fieldPlace || "place"
+    return this.fieldPlace || "place"
   }
 
   get activeFieldPrice() {
-    return this.config.fieldPrice || this.fieldPrice || "price"
+    return this.fieldPrice || "price"
   }
 
   get activeFieldCategories() {
-    return this.config.fieldCategories || this.fieldCategories || "genre"
+    return this.fieldCategories || "genre"
   }
 
   get activeFieldRating() {
-    return this.config.fieldRating || this.fieldRating || "rating"
+    return this.fieldRating || "rating"
   }
 
   getCurrentConfig() {
@@ -161,45 +157,11 @@ export class InventairePlugin extends BasePlugin {
     }
   }
 
-  getSettingsSchema() {
-    return [
-      { type: "header", label: t("Private Notes Mapping") },
-      {
-        key: "fieldPlace",
-        label: t("Location Tag in Notes (e.g., `place`)"),
-        type: "text",
-        defaultValue: this.activeFieldPlace,
-        requiresResync: true,
-      },
-      {
-        key: "fieldPrice",
-        label: t("Price Tag in Notes (e.g., `price`)"),
-        type: "text",
-        defaultValue: this.activeFieldPrice,
-        requiresResync: true,
-      },
-      {
-        key: "fieldCategories",
-        label: t("Genre Tag in Notes (e.g., `genre`)"),
-        type: "text",
-        defaultValue: this.activeFieldCategories,
-        requiresResync: true,
-      },
-      {
-        key: "fieldRating",
-        label: t("Rating Tag in Notes (e.g., `rating`)"),
-        type: "text",
-        defaultValue: this.activeFieldRating,
-        requiresResync: true,
-      },
-    ]
-  }
-
   getPreservedKeys() {
     return ["syncedInventory", "customFieldsInfo"]
   }
 
-  getDraftCapabilities(config) {
+  getDraftCapabilities(config = {}) {
     return {
       supportsPlace: !!(config.fieldPlace || this.activeFieldPlace),
       supportsPrice: !!(config.fieldPrice || this.activeFieldPrice),

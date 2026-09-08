@@ -8,7 +8,6 @@ import { Button, Container, Nav, Navbar, Offcanvas } from "react-bootstrap"
 
 import ClearFiltersButton from "./ClearFiltersButton"
 import OptionsMenu from "./OptionsMenu"
-import SettingsModal from "../Settings/SettingsModal"
 import "./styles/Header.css"
 
 const Header = () => {
@@ -25,7 +24,6 @@ const Header = () => {
   const [expanded, setExpanded] = useState(false)
   const [activeModal, setActiveModal] = useState(null)
   const [showSearch, setShowSearch] = useState(false)
-  const [showSettings, setShowSettings] = useState(false)
   const searchInputRef = useRef(null)
 
   // Manage search input focus and blur with in-place search visibility
@@ -224,12 +222,7 @@ const Header = () => {
               >
                 <FontAwesomeIcon icon={faSearch} />
               </Button>
-              <OptionsMenu
-                onOpenSettings={() => {
-                  setExpanded(false)
-                  setShowSettings(true)
-                }}
-              />
+              <OptionsMenu />
             </div>
           </Container>
         )}
@@ -275,10 +268,6 @@ const Header = () => {
         onSortChange={setSort}
         closeLabel={t("Close")}
         onHide={() => setActiveModal(null)}
-      />
-      <SettingsModal
-        show={showSettings}
-        onHide={() => setShowSettings(false)}
       />
     </div>
   )

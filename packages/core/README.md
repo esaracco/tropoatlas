@@ -6,6 +6,6 @@ This package contains domain-agnostic logic shared across the React application 
 
 - Storage abstraction (IndexedDB / LocalStorage) with schema versioning and segmented cache keys
 - Rate-limited collection backup export (ZIP archive generation with binary artwork proxying, strict MIME validation, and metadata enrichment) and offline import
-- BasePlugin contract definition (declarative settings schema, creators extraction, categories extraction, and image proxy routing)
+- BasePlugin contract definition (creators extraction, categories extraction, and image proxy routing)
 - Dynamic duration estimation and parallel request sequencing
-- Settings store (Zustand) and reactive state management
+- Collection and application UI stores (Zustand) and reactive state management

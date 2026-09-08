@@ -4,7 +4,6 @@ import { useTranslation } from "react-i18next"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import {
   faCog,
-  faSliders,
   faSync,
   faLightbulb,
   faPalette,
@@ -21,7 +20,7 @@ import ExportBackupModal from "./ExportBackupModal"
 import ImportBackupModal from "./ImportBackupModal"
 import LedsModal from "./LedsModal"
 
-const OptionsMenu = ({ onOpenSettings }) => {
+const OptionsMenu = () => {
   const { t } = useTranslation()
   const isOnline = useAppStore((s) => s.isOnline)
   const isSyncing = useAppStore((s) => s.isSyncing)
@@ -134,14 +133,6 @@ const OptionsMenu = ({ onOpenSettings }) => {
               <span>{t("Sync collection")}</span>
             </Dropdown.Item>
           )}
-
-          <Dropdown.Item
-            onClick={onOpenSettings}
-            className="d-flex align-items-center gap-2 py-2"
-          >
-            <FontAwesomeIcon icon={faSliders} className="options-menu-icon" />
-            <span>{t("Settings")}</span>
-          </Dropdown.Item>
 
           {Settings.setLeds === "yes" && isOnline && (
             <Dropdown.Item

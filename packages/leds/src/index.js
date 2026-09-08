@@ -1,5 +1,3 @@
-import { useSettingsStore } from "@tropo/core"
-
 // Marker function for i18n static extraction
 const t = (s) => s
 
@@ -33,25 +31,20 @@ export class LedsClient {
   validateSettings(onConfigError) {
     if (!onConfigError) return
 
-    const hardware = useSettingsStore.getState().hardware || {}
-    const colorFields = [
-      {
-        envKey: "VITE_LEDS_CREATORS_COLOR",
-        storeKey: "ledsCreatorsColor",
-      },
-      {
-        envKey: "VITE_LEDS_CATEGORIES_COLOR",
-        storeKey: "ledsCategoriesColor",
-      },
-      {
-        envKey: "VITE_LEDS_WORK_COLOR",
-        storeKey: "ledsWorkColor",
-      },
+    if (!import.meta.env.VITE_LED_TARGET) {
+      onConfigError(t("The {{field}} environment variable is required!"), {
+        field: "VITE_LED_TARGET",
+      })
+    }
+
+    const envKeys = [
+      "VITE_LEDS_CREATORS_COLOR",
+      "VITE_LEDS_CATEGORIES_COLOR",
+      "VITE_LEDS_WORK_COLOR",
     ]
 
-    colorFields.forEach(({ envKey, storeKey }) => {
+    envKeys.forEach((envKey) => {
       const envVal = import.meta.env[envKey]
-      const storeVal = hardware[storeKey]
 
       // Check if the environment variable itself is present but invalid
       const isEnvInvalid =
@@ -59,14 +52,8 @@ export class LedsClient {
         envVal !== "" &&
         !LedsClient.isValidColor(envVal)
 
-      // Check if the active store value is invalid
-      const isStoreInvalid =
-        storeVal !== undefined &&
-        storeVal !== "" &&
-        !LedsClient.isValidColor(storeVal)
-
-      if (isEnvInvalid || isStoreInvalid) {
-        onConfigError("The {{field}} environment variable is invalid!", {
+      if (isEnvInvalid) {
+        onConfigError(t("The {{field}} environment variable is invalid!"), {
           field: envKey,
         })
       }

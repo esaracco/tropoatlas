@@ -14,9 +14,9 @@ export default defineConfig(({ mode }) => {
   const userAgent = `${appName}/${packageJson.version} (${packageJson.homepage})`
 
   const proxy = {}
-  if (env.VITE_SET_LEDS === "yes" && env.VITE_AUDIOLIBRARY_URL) {
+  if (env.VITE_SET_LEDS === "yes" && env.VITE_LED_TARGET) {
     const ledProxyOptions = {
-      target: env.VITE_AUDIOLIBRARY_URL,
+      target: env.VITE_LED_TARGET,
       changeOrigin: true,
       headers: {
         Connection: "close",

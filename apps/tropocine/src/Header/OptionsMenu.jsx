@@ -4,7 +4,6 @@ import { useTranslation } from "react-i18next"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import {
   faCog,
-  faSliders,
   faSync,
   faPalette,
   faInfoCircle,
@@ -13,13 +12,13 @@ import {
   faUpload,
 } from "@fortawesome/free-solid-svg-icons"
 import { ConfirmModal, ThemeSelector, LanguageSelector } from "@tropo/react"
-import { useAppStore, useSettingsStore, getItem } from "@tropo/core"
+import { useAppStore, getItem } from "@tropo/core"
 import { syncCollection } from "../utils/sync"
 import { plugin } from "../provider"
 import ExportBackupModal from "./ExportBackupModal"
 import ImportBackupModal from "./ImportBackupModal"
 
-const OptionsMenu = ({ onOpenSettings }) => {
+const OptionsMenu = () => {
   const { t } = useTranslation()
   const isOnline = useAppStore((s) => s.isOnline)
   const isSyncing = useAppStore((s) => s.isSyncing)
@@ -31,13 +30,8 @@ const OptionsMenu = ({ onOpenSettings }) => {
   const [showImportModal, setShowImportModal] = useState(false)
   const [forceRefresh, setForceRefresh] = useState(false)
 
-  const tmdbListId = useSettingsStore(
-    (s) => s.pluginsConfig?.tmdb?.listId ?? import.meta.env.VITE_TMDB_LIST_ID,
-  )
-  const currentCleanId = plugin.cleanListId(tmdbListId)
-  const previousListId =
-    getItem("syncedListId") ||
-    plugin.cleanListId(import.meta.env.VITE_TMDB_LIST_ID)
+  const currentCleanId = plugin.cleanListId(import.meta.env.VITE_TMDB_LIST_ID)
+  const previousListId = getItem("syncedListId") || currentCleanId
   const isListChanged = Boolean(
     previousListId && currentCleanId && previousListId !== currentCleanId,
   )
@@ -136,14 +130,6 @@ const OptionsMenu = ({ onOpenSettings }) => {
               <span>{t("Sync collection")}</span>
             </Dropdown.Item>
           )}
-
-          <Dropdown.Item
-            onClick={onOpenSettings}
-            className="d-flex align-items-center gap-2 py-2"
-          >
-            <FontAwesomeIcon icon={faSliders} className="options-menu-icon" />
-            <span>{t("Settings")}</span>
-          </Dropdown.Item>
 
           <Dropdown.Item
             onClick={() => setShowAbout(true)}

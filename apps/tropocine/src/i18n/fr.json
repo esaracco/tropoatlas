@@ -18,7 +18,6 @@
   "Show all {{count}} movies by {{creator}}": "Afficher les {{count}} films de {{creator}}",
   "The synchronization of your collection can take a few moments.": "La synchronisation de votre collection peut prendre quelques instants.",
   "Title": "Titre",
-  "TMDB List ID (e.g., 8691537 or 8691537-my-list)": "Identifiant de la liste TMDB (ex : 8691537 ou 8691537-ma-liste)",
   "TMDB List ID is missing or invalid.": "L'identifiant de liste TMDB est manquant ou invalide.",
   "View release on {{provider}}": "Voir le film sur {{provider}}",
   "keyAboutMessage": "TropoCine est un gestionnaire de collection de films sous licence libre. Synchronisez vos films (<ProviderLink>{{provider}}</ProviderLink>), découvrez réalisateurs et acteurs, et organisez votre cinémathèque."
