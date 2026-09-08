@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0, viewport-fit=cover"
+    />
+    <meta name="theme-color" content="%THEME_SURFACE_COLOR%" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+
+    <meta name="robots" content="noindex, nofollow" />
+    <meta
+      name="description"
+      content="Organize your collection, enrich it with your own metadata, and locate books instantly using LED strips"
+    />
+
+    <link rel="icon" href="/favicon.ico" />
+    <link rel="apple-touch-icon" href="/icon-180.png" />
+
+    <title>TropoBiblio – A universal book collection manager</title>
+    <script>
+      try {
+        var theme = localStorage.getItem("tropobiblio-theme") || "green"
+        document.documentElement.setAttribute("data-theme", theme)
+        var themeColors = %THEME_COLORS_MAP%
+        var metaThemeColor = document.querySelector('meta[name="theme-color"]')
+        if (metaThemeColor && themeColors[theme]) {
+          metaThemeColor.setAttribute("content", themeColors[theme])
+        }
+      } catch (e) {}
+    </script>
+  </head>
+  <body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="root"></div>
+    <script type="module" src="/src/index.jsx"></script>
+  </body>
+</html>

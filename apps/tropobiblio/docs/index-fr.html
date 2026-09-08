@@ -1,0 +1,930 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Primary SEO Meta Tags -->
+    <title>
+      TropoBiblio — Gestionnaire universel de collection de livres &
+      localisateur d'étagère par LEDs
+    </title>
+    <meta
+      name="title"
+      content="TropoBiblio — Gestionnaire universel de collection de livres & localisateur d'étagère par LEDs"
+    />
+    <meta
+      name="description"
+      content="TropoBiblio est un gestionnaire de collection de livres libre et open source. Synchronisez votre bibliothèque depuis Inventaire.io, explorez auteurs et genres, et localisez vos livres sur vos étagères grâce à des rubans LED connectés."
+    />
+    <meta
+      name="keywords"
+      content="TropoBiblio, TropoAtlas, gestionnaire de collection de livres, Inventaire.io, bibliothèque, livres, auteurs, genres, localisateur d'étagère LED, ESP32, monorepo React"
+    />
+    <meta name="author" content="Emmanuel Saracco" />
+    <meta name="robots" content="index, follow" />
+    <link
+      rel="canonical"
+      href="https://tropobiblio.esaracco.fr/index-fr.html"
+    />
+    <link
+      rel="alternate"
+      hreflang="fr"
+      href="https://tropobiblio.esaracco.fr/index-fr.html"
+    />
+    <link
+      rel="alternate"
+      hreflang="en"
+      href="https://tropobiblio.esaracco.fr/index.html"
+    />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta
+      property="og:url"
+      content="https://tropobiblio.esaracco.fr/index-fr.html"
+    />
+    <meta
+      property="og:title"
+      content="TropoBiblio — Gestionnaire universel de collection de livres & localisateur d'étagère par LEDs"
+    />
+    <meta
+      property="og:description"
+      content="TropoBiblio est un gestionnaire de collection de livres libre et open source. Synchronisez votre bibliothèque depuis Inventaire.io, explorez auteurs et genres, et localisez vos livres sur vos étagères grâce à des rubans LED connectés."
+    />
+    <meta property="og:image" content="./icon-512.png" />
+    <meta property="og:site_name" content="TropoBiblio" />
+
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta
+      name="twitter:url"
+      content="https://tropobiblio.esaracco.fr/index-fr.html"
+    />
+    <meta
+      name="twitter:title"
+      content="TropoBiblio — Gestionnaire universel de collection de livres & localisateur d'étagère par LEDs"
+    />
+    <meta
+      name="twitter:description"
+      content="TropoBiblio est un gestionnaire de collection de livres libre et open source. Synchronisez votre bibliothèque depuis Inventaire.io, explorez auteurs et genres, et localisez vos livres sur vos étagères grâce à des rubans LED connectés."
+    />
+    <meta name="twitter:image" content="./icon-512.png" />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="./favicon.ico" />
+    <link rel="icon" type="image/png" sizes="180x180" href="./icon-180.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="./icon-180.png" />
+
+    <!-- Structured Data (Schema.org) for SEO -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "TropoBiblio",
+        "applicationCategory": "MultimediaApplication",
+        "operatingSystem": "Web, Docker, Linux, macOS, Windows",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "EUR"
+        },
+        "description": "TropoBiblio est un gestionnaire de collection de livres libre et open source. Synchronisez votre bibliothèque depuis Inventaire.io, explorez auteurs et genres, et localisez vos livres sur vos étagères grâce à des rubans LED connectés.",
+        "license": "https://www.gnu.org/licenses/gpl-3.0.html",
+        "image": "https://tropobiblio.esaracco.fr/icon-512.png"
+      }
+    </script>
+
+    <!-- Prevent navbar brand flash before scroll-reveal initializes -->
+    <script>
+      if ("IntersectionObserver" in window) {
+        document.documentElement.classList.add("has-scroll-reveal")
+      }
+    </script>
+
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="./index.css" />
+  </head>
+  <body>
+    <!-- Navigation Bar -->
+    <nav class="navbar" aria-label="Navigation principale">
+      <div class="container navbar-container">
+        <a href="#top" class="brand" id="nav-brand">
+          <img
+            src="./icon-180.png"
+            alt="Logo TropoBiblio"
+            class="brand-logo"
+            width="32"
+            height="32"
+          />
+          <span>Tropo<span class="brand-text-biblio">Biblio</span></span>
+        </a>
+
+        <ul class="nav-links">
+          <li>
+            <a href="#features" class="nav-link" id="nav-features"
+              >Fonctionnalités</a
+            >
+          </li>
+          <li>
+            <a href="#gallery" class="nav-link" id="nav-gallery">Interface</a>
+          </li>
+          <li>
+            <a href="#leds" class="nav-link" id="nav-leds">Localisateur LED</a>
+          </li>
+          <li>
+            <a href="#architecture" class="nav-link" id="nav-architecture"
+              >Architecture</a
+            >
+          </li>
+          <li>
+            <a href="#quickstart" class="nav-link" id="nav-quickstart"
+              >Installation</a
+            >
+          </li>
+        </ul>
+
+        <div class="nav-actions">
+          <a
+            href="./index.html"
+            class="btn btn-secondary"
+            id="lang-switch-en"
+            title="English version"
+          >
+            EN
+          </a>
+          <a
+            href="https://github.com/esaracco/tropoatlas"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="btn btn-secondary"
+            id="btn-github-nav"
+          >
+            GitHub
+          </a>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Header / Hero Section -->
+    <header class="hero" id="top">
+      <div class="container">
+        <div class="hero-brand-lockup">
+          <img
+            src="./icon-180.png"
+            alt="Logo TropoBiblio"
+            class="hero-brand-icon"
+            width="56"
+            height="56"
+          />
+          <span class="hero-brand-name"
+            >Tropo<span class="brand-text-biblio">Biblio</span></span
+          >
+        </div>
+
+        <a
+          href="https://tropoatlas.esaracco.fr"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="hero-pill"
+        >
+          <span class="hero-pill-dot"></span>
+          <span
+            >Une application Tropo<span class="brand-text-atlas">Atlas</span>
+            ↗</span
+          >
+        </a>
+
+        <h1 class="hero-title">
+          La passerelle entre vos bibliothèques
+          <span class="brand-text-biblio">numérique et physique</span>
+        </h1>
+
+        <p class="hero-subtitle">
+          Tropo<span class="brand-text-biblio">Biblio</span> est un gestionnaire
+          de collection de livres sous licence libre. Synchronisez votre
+          bibliothèque depuis Inventaire.io, explorez auteurs et genres, et
+          localisez vos livres sur vos étagères grâce à des rubans LED
+          connectés.
+        </p>
+
+        <div class="hero-cta">
+          <a href="#quickstart" class="btn btn-primary" id="btn-hero-start"
+            >Déployer TropoBiblio</a
+          >
+          <a href="#leds" class="btn btn-secondary" id="btn-hero-leds"
+            >Découvrir le localisateur LED</a
+          >
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+      <!-- Section Features -->
+      <section class="section" id="features">
+        <div class="container">
+          <div class="section-header">
+            <span class="section-tag">Fonctionnalités</span>
+            <h2 class="section-title">
+              Conçu pour les collectionneurs et bibliophiles
+            </h2>
+            <p class="section-description">
+              Donnez une nouvelle dimension à votre bibliothèque personnelle et
+              redécouvrez le plaisir d'en parcourir les étagères.
+            </p>
+          </div>
+
+          <div class="features-grid">
+            <article class="feature-card" id="card-search">
+              <h3 class="feature-title">Recherche & Tri instantanés</h3>
+              <p class="feature-desc">
+                Filtrez et triez votre collection en temps réel par auteur,
+                année, date d'ajout, note ou emplacement physique sur votre
+                étagère.
+              </p>
+            </article>
+
+            <article class="feature-card" id="card-metadata">
+              <h3 class="feature-title">Métadonnées personnalisées</h3>
+              <p class="feature-desc">
+                Enrichissez chaque livre de champs personnalisés&nbsp;:
+                emplacement exact, prix d'achat et genres simplifiés.
+              </p>
+            </article>
+
+            <article class="feature-card" id="card-led">
+              <h3 class="feature-title">Localisation LED physique</h3>
+              <p class="feature-desc">
+                Sélectionnez un livre, des genres ou des auteurs à l'écran, et
+                les emplacements s'illuminent sur votre étagère grâce à des
+                rubans LED.
+              </p>
+            </article>
+
+            <article class="feature-card" id="card-monorepo">
+              <h3 class="feature-title">Architecture modulaire</h3>
+              <p class="feature-desc">
+                Monorepo NPM clair séparant composants d'interface, gestion
+                d'état, cache, pilotes matériels, et plugins de données.
+              </p>
+            </article>
+
+            <article class="feature-card" id="card-backup">
+              <h3 class="feature-title">Sauvegardes portables</h3>
+              <p class="feature-desc">
+                Exportez et restaurez des sauvegardes complètes avec métadonnées
+                et pochettes sous forme d'archives ZIP portables.
+              </p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- Gallery / Screenshots Section -->
+      <section class="section" id="gallery">
+        <div class="container">
+          <div class="section-header">
+            <span class="section-tag">Interface</span>
+            <h2 class="section-title">Explorez l'interface</h2>
+            <p class="section-description">
+              Une interface fluide et moderne pour garder votre bibliothèque à
+              portée de main.
+            </p>
+          </div>
+
+          <div class="gallery-layout">
+            <div
+              class="gallery-tabs"
+              role="tablist"
+              aria-label="Captures d'écran"
+            >
+              <button
+                type="button"
+                class="gallery-tab active"
+                role="tab"
+                aria-selected="true"
+                aria-controls="panel-1"
+                id="tab-1"
+                data-target="panel-1"
+              >
+                <div class="tab-index">01</div>
+                <div class="tab-text">
+                  <span class="tab-title">Collection</span>
+                  <span class="tab-desc"
+                    >Navigation en grille virtuelle avec accès rapide à la
+                    recherche, la synchronisation et les thèmes.</span
+                  >
+                </div>
+              </button>
+
+              <button
+                type="button"
+                class="gallery-tab"
+                role="tab"
+                aria-selected="false"
+                aria-controls="panel-2"
+                id="tab-2"
+                data-target="panel-2"
+              >
+                <div class="tab-index">02</div>
+                <div class="tab-text">
+                  <span class="tab-title">Fiche Livre</span>
+                  <span class="tab-desc"
+                    >Auteur, note, emplacement, prix, genres cliquables, et
+                    synopsis.</span
+                  >
+                </div>
+              </button>
+
+              <button
+                type="button"
+                class="gallery-tab"
+                role="tab"
+                aria-selected="false"
+                aria-controls="panel-3"
+                id="tab-3"
+                data-target="panel-3"
+              >
+                <div class="tab-index">03</div>
+                <div class="tab-text">
+                  <span class="tab-title">Filtrage</span>
+                  <span class="tab-desc"
+                    >Filtrage multicritère instantané par genres et
+                    auteurs.</span
+                  >
+                </div>
+              </button>
+
+              <button
+                type="button"
+                class="gallery-tab"
+                role="tab"
+                aria-selected="false"
+                aria-controls="panel-4"
+                id="tab-4"
+                data-target="panel-4"
+              >
+                <div class="tab-index">04</div>
+                <div class="tab-text">
+                  <span class="tab-title">Paramètres</span>
+                  <span class="tab-desc"
+                    >Mapping des champs inventaire.io (emplacement, prix,
+                    genres, note).</span
+                  >
+                </div>
+              </button>
+
+              <button
+                type="button"
+                class="gallery-tab"
+                role="tab"
+                aria-selected="false"
+                aria-controls="panel-5"
+                id="tab-5"
+                data-target="panel-5"
+              >
+                <div class="tab-index">05</div>
+                <div class="tab-text">
+                  <span class="tab-title">À propos</span>
+                  <span class="tab-desc"
+                    >Informations de version, liens vers le code source et
+                    licence libre.</span
+                  >
+                </div>
+              </button>
+            </div>
+
+            <div class="gallery-viewport">
+              <div
+                class="gallery-panel active"
+                id="panel-1"
+                role="tabpanel"
+                aria-labelledby="tab-1"
+              >
+                <div class="mockup-window">
+                  <div class="mockup-header">
+                    <div class="mockup-dots" aria-hidden="true">
+                      <span class="mockup-dot dot-red"></span>
+                      <span class="mockup-dot dot-yellow"></span>
+                      <span class="mockup-dot dot-green"></span>
+                    </div>
+                    <div class="mockup-title">Collection</div>
+                    <div class="mockup-spacer" aria-hidden="true"></div>
+                  </div>
+                  <div class="mockup-body">
+                    <img
+                      src="./img/1.png"
+                      alt="Collection et menu d'options"
+                      class="mockup-img"
+                      width="805"
+                      height="1104"
+                      loading="lazy"
+                    />
+                  </div>
+                </div>
+                <p class="gallery-caption">
+                  Navigation en grille virtuelle avec accès rapide à la
+                  recherche, la synchronisation et les thèmes.
+                </p>
+              </div>
+
+              <div
+                class="gallery-panel"
+                id="panel-2"
+                role="tabpanel"
+                aria-labelledby="tab-2"
+                hidden
+              >
+                <div class="mockup-window">
+                  <div class="mockup-header">
+                    <div class="mockup-dots" aria-hidden="true">
+                      <span class="mockup-dot dot-red"></span>
+                      <span class="mockup-dot dot-yellow"></span>
+                      <span class="mockup-dot dot-green"></span>
+                    </div>
+                    <div class="mockup-title">Fiche Livre</div>
+                    <div class="mockup-spacer" aria-hidden="true"></div>
+                  </div>
+                  <div class="mockup-body">
+                    <img
+                      src="./img/2.png"
+                      alt="Modale de détail du livre"
+                      class="mockup-img"
+                      width="805"
+                      height="1104"
+                      loading="lazy"
+                    />
+                  </div>
+                </div>
+                <p class="gallery-caption">
+                  Galerie de couvertures, auteur, note, emplacement, prix,
+                  genres et synopsis.
+                </p>
+              </div>
+
+              <div
+                class="gallery-panel"
+                id="panel-3"
+                role="tabpanel"
+                aria-labelledby="tab-3"
+                hidden
+              >
+                <div class="mockup-window">
+                  <div class="mockup-header">
+                    <div class="mockup-dots" aria-hidden="true">
+                      <span class="mockup-dot dot-red"></span>
+                      <span class="mockup-dot dot-yellow"></span>
+                      <span class="mockup-dot dot-green"></span>
+                    </div>
+                    <div class="mockup-title">Filtrage</div>
+                    <div class="mockup-spacer" aria-hidden="true"></div>
+                  </div>
+                  <div class="mockup-body">
+                    <img
+                      src="./img/3.png"
+                      alt="Modale des auteurs"
+                      class="mockup-img"
+                      width="805"
+                      height="1104"
+                      loading="lazy"
+                    />
+                  </div>
+                </div>
+                <p class="gallery-caption">
+                  Recherche instantanée et filtrage multicritère par auteur ou
+                  créateur.
+                </p>
+              </div>
+
+              <div
+                class="gallery-panel"
+                id="panel-4"
+                role="tabpanel"
+                aria-labelledby="tab-4"
+                hidden
+              >
+                <div class="mockup-window">
+                  <div class="mockup-header">
+                    <div class="mockup-dots" aria-hidden="true">
+                      <span class="mockup-dot dot-red"></span>
+                      <span class="mockup-dot dot-yellow"></span>
+                      <span class="mockup-dot dot-green"></span>
+                    </div>
+                    <div class="mockup-title">Paramètres</div>
+                    <div class="mockup-spacer" aria-hidden="true"></div>
+                  </div>
+                  <div class="mockup-body">
+                    <img
+                      src="./img/4.png"
+                      alt="Modale des paramètres"
+                      class="mockup-img"
+                      width="805"
+                      height="1104"
+                      loading="lazy"
+                    />
+                  </div>
+                </div>
+                <p class="gallery-caption">
+                  Correspondance personnalisée des balises de notes privées
+                  (emplacement, prix, genres, note).
+                </p>
+              </div>
+
+              <div
+                class="gallery-panel"
+                id="panel-5"
+                role="tabpanel"
+                aria-labelledby="tab-5"
+                hidden
+              >
+                <div class="mockup-window">
+                  <div class="mockup-header">
+                    <div class="mockup-dots" aria-hidden="true">
+                      <span class="mockup-dot dot-red"></span>
+                      <span class="mockup-dot dot-yellow"></span>
+                      <span class="mockup-dot dot-green"></span>
+                    </div>
+                    <div class="mockup-title">À propos de TropoBiblio</div>
+                    <div class="mockup-spacer" aria-hidden="true"></div>
+                  </div>
+                  <div class="mockup-body">
+                    <img
+                      src="./img/5.png"
+                      alt="À propos de TropoBiblio"
+                      class="mockup-img"
+                      width="805"
+                      height="1104"
+                      loading="lazy"
+                    />
+                  </div>
+                </div>
+                <p class="gallery-caption">
+                  Informations de version, liens vers le code source et licence
+                  libre.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- LED Spotlight Section -->
+      <section class="section" id="leds">
+        <div class="container">
+          <div class="led-section">
+            <div>
+              <span class="section-tag">Matériel IoT</span>
+              <h2 class="section-title">Trouvez vos livres en un clin d'œil</h2>
+              <p class="section-description">
+                Laissez Tropo<span class="brand-text-biblio">Biblio</span>
+                piloter les rubans LED de vos étagères&nbsp;!
+              </p>
+              <ul class="led-list">
+                <li class="led-list-item">
+                  Indication visuelle immédiate de l'ouvrage sélectionné, des
+                  genres ou des auteurs.
+                </li>
+                <li class="led-list-item">
+                  Intégration HTTP directe avec un petit firmware ESP32.
+                </li>
+              </ul>
+            </div>
+
+            <!-- Interactive shelf simulation -->
+            <div class="shelf-demo">
+              <div class="shelf-header">
+                <span>Étagère</span>
+                <span class="shelf-led-active" id="shelf-status"
+                  >LED active&nbsp;: 42</span
+                >
+              </div>
+              <div class="shelf-row">
+                <div class="shelf-col" data-index="41">
+                  <div class="book-spine">
+                    <span class="spine-author">Kropotkine</span>
+                    <span class="spine-title">L'Entraide</span>
+                  </div>
+                  <div class="led-bulb"></div>
+                </div>
+
+                <div class="shelf-col" data-index="42">
+                  <div class="book-spine highlighted">
+                    <span class="spine-author">George Orwell</span>
+                    <span class="spine-title">1984</span>
+                  </div>
+                  <div class="led-bulb active"></div>
+                </div>
+
+                <div class="shelf-col" data-index="43">
+                  <div class="book-spine">
+                    <span class="spine-author">Perec</span>
+                    <span class="spine-title">Une homme qui dort</span>
+                  </div>
+                  <div class="led-bulb"></div>
+                </div>
+
+                <div class="shelf-col" data-index="44">
+                  <div class="book-spine">
+                    <span class="spine-author">Sartre</span>
+                    <span class="spine-title">L'Être et le Néant</span>
+                  </div>
+                  <div class="led-bulb"></div>
+                </div>
+
+                <div class="shelf-col" data-index="45">
+                  <div class="book-spine">
+                    <span class="spine-author">Husserl</span>
+                    <span class="spine-title">Ideen I</span>
+                  </div>
+                  <div class="led-bulb"></div>
+                </div>
+
+                <div class="shelf-col" data-index="46">
+                  <div class="book-spine">
+                    <span class="spine-author">Deleuze</span>
+                    <span class="spine-title">Différence et répétition</span>
+                  </div>
+                  <div class="led-bulb"></div>
+                </div>
+              </div>
+              <p class="shelf-caption">
+                Simulation interactive de ruban LED adressable (cliquez sur un
+                volume)
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Architecture Section -->
+      <section class="section" id="architecture">
+        <div class="container">
+          <div class="section-header">
+            <span class="section-tag">Monorepo TropoAtlas</span>
+            <h2 class="section-title">Structure propre et découplée</h2>
+            <p class="section-description">
+              Développé au sein du monorepo Tropo<span class="brand-text-atlas"
+                >Atlas</span
+              >
+              à l'aide de paquets modulaires et de plugins.
+            </p>
+          </div>
+
+          <div class="arch-cards">
+            <div class="arch-card">
+              <span class="arch-tag">apps/tropobiblio</span>
+              <h3>Application React</h3>
+              <p>
+                Application cliente principale pour explorer votre collection de
+                livres.
+              </p>
+            </div>
+            <div class="arch-card">
+              <span class="arch-tag">packages/core</span>
+              <h3>@tropo/core</h3>
+              <p>
+                Gestion d'état avec Zustand, mise en cache et normalisation.
+              </p>
+            </div>
+            <div class="arch-card">
+              <span class="arch-tag">packages/react</span>
+              <h3>@tropo/react</h3>
+              <p>
+                Système de composants UI réutilisables, moteurs de thèmes,
+                modales et navigation.
+              </p>
+            </div>
+            <div class="arch-card">
+              <span class="arch-tag">packages/leds</span>
+              <h3>@tropo/leds</h3>
+              <p>Client HTTP pour la communication avec le contrôleur LED.</p>
+            </div>
+            <div class="arch-card">
+              <span class="arch-tag">plugins/biblio/inventaire</span>
+              <h3>@tropo/inventaire</h3>
+              <p>Plugin d'intégration avec l'API inventaire.io.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Quick Start & Deployment Section -->
+      <section class="section" id="quickstart">
+        <div class="container">
+          <div class="section-header">
+            <span class="section-tag">Déploiement</span>
+            <h2 class="section-title">Démarrage rapide</h2>
+            <p class="section-description">
+              Lancez Tropo<span class="brand-text-biblio">Biblio</span>
+              localement ou avec Docker, et déployez-le derrière un reverse
+              proxy Apache/Nginx.
+            </p>
+          </div>
+
+          <div class="code-box">
+            <div class="code-header">
+              <span>Configuration du développement local</span>
+              <span>Bash</span>
+            </div>
+            <div class="code-content">
+              <span class="code-comment"
+                ># 1. Cloner le dépôt et installer les dépendances</span
+              ><br />
+              git clone https://github.com/esaracco/tropoatlas.git<br />
+              cd tropoatlas<br />
+              npm install<br /><br />
+              <span class="code-comment"
+                ># 2. Configurer les variables d'environnement</span
+              ><br />
+              cp apps/tropobiblio/.env.sample apps/tropobiblio/.env<br /><br />
+              <span class="code-comment"
+                ># 3. Lancer le serveur de développement</span
+              ><br />
+              npm run dev:biblio
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="container">
+        <div class="footer-top">
+          <div class="footer-brand">
+            <img
+              src="./icon-180.png"
+              alt="Logo TropoBiblio"
+              class="brand-logo"
+              width="28"
+              height="28"
+            />
+            <span>Tropo<span class="brand-text-biblio">Biblio</span></span>
+          </div>
+
+          <ul class="footer-nav">
+            <li>
+              <a
+                href="https://tropoatlas.esaracco.fr"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="footer-nav-link"
+              >
+                TropoAtlas
+              </a>
+            </li>
+            <li>
+              <a
+                href="https://tropoaudio.esaracco.fr"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="footer-nav-link"
+              >
+                TropoAudio
+              </a>
+            </li>
+            <li>
+              <a
+                href="https://tropocine.esaracco.fr"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="footer-nav-link"
+              >
+                TropoCine
+              </a>
+            </li>
+            <li>
+              <a
+                href="https://github.com/esaracco/tropoatlas"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="footer-nav-link"
+              >
+                Dépôt GitHub
+              </a>
+            </li>
+            <li>
+              <a
+                href="https://github.com/esaracco/tropoatlas/issues"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="footer-nav-link"
+              >
+                Tickets & Support
+              </a>
+            </li>
+          </ul>
+        </div>
+
+        <div class="footer-bottom">
+          <p>
+            <span class="copyleft" aria-hidden="true">&copy;</span> 2026
+            <strong>Emmanuel Saracco</strong> · Distribué sous licence
+            <a
+              href="https://www.gnu.org/licenses/gpl-3.0.html"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="link"
+            >
+              GNU GPL v3
+            </a>
+            · Logiciel Libre
+          </p>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Interactive Scripts -->
+    <script>
+      /* Navbar brand scroll-reveal */
+      ;(function () {
+        var brand = document.querySelector(".brand")
+        var heroLockup = document.querySelector(".hero-brand-lockup")
+        if (!brand || !heroLockup || !("IntersectionObserver" in window)) {
+          document.documentElement.classList.remove("has-scroll-reveal")
+          return
+        }
+
+        var observer = new IntersectionObserver(
+          function (entries) {
+            entries.forEach(function (entry) {
+              if (entry.isIntersecting) {
+                brand.classList.remove("visible")
+              } else {
+                brand.classList.add("visible")
+              }
+            })
+          },
+          { threshold: 0.1 },
+        )
+        observer.observe(heroLockup)
+      })()
+
+      /* Shelf interactive simulation */
+      ;(function () {
+        var cols = document.querySelectorAll(".shelf-col")
+        var status = document.getElementById("shelf-status")
+
+        cols.forEach(function (col) {
+          col.addEventListener("click", function () {
+            cols.forEach(function (c) {
+              var spine = c.querySelector(".book-spine")
+              var bulb = c.querySelector(".led-bulb")
+              if (spine) spine.classList.remove("highlighted")
+              if (bulb) bulb.classList.remove("active")
+            })
+
+            var spine = col.querySelector(".book-spine")
+            var bulb = col.querySelector(".led-bulb")
+            if (spine) spine.classList.add("highlighted")
+            if (bulb) bulb.classList.add("active")
+
+            var idx = col.getAttribute("data-index")
+            if (status && idx) {
+              status.textContent = "LED active\u00a0: " + idx
+            }
+          })
+        })
+      })()
+
+      /* Gallery tabs switching */
+      ;(function () {
+        var tabButtons = document.querySelectorAll(".gallery-tab")
+        var panels = document.querySelectorAll(".gallery-panel")
+
+        tabButtons.forEach(function (button) {
+          button.addEventListener("click", function () {
+            var targetId = button.getAttribute("data-target")
+
+            tabButtons.forEach(function (btn) {
+              btn.classList.remove("active")
+              btn.setAttribute("aria-selected", "false")
+            })
+
+            panels.forEach(function (panel) {
+              panel.classList.remove("active")
+              panel.setAttribute("hidden", "")
+            })
+
+            button.classList.add("active")
+            button.setAttribute("aria-selected", "true")
+            button.scrollIntoView({
+              behavior: "smooth",
+              inline: "center",
+              block: "nearest",
+            })
+
+            var activePanel = document.getElementById(targetId)
+            if (activePanel) {
+              activePanel.classList.remove("active")
+              void activePanel.offsetWidth
+              activePanel.classList.add("active")
+              activePanel.removeAttribute("hidden")
+            }
+          })
+        })
+      })()
+    </script>
+  </body>
+</html>

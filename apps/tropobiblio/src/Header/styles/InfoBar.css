@@ -1,0 +1,42 @@
+.InfoBar {
+  position: relative;
+  flex-shrink: 0;
+  width: 100%;
+  z-index: 1020;
+  font-size: 0.72rem;
+  line-height: 1;
+  letter-spacing: 0.02em;
+  background: var(--tropo-surface-2);
+  border-top: 1px solid var(--tropo-border);
+  /* Include iOS safe area bottom inset to avoid home indicator overlap */
+  padding: 8px 10px calc(8px + env(safe-area-inset-bottom, 0px)) 10px;
+  color: var(--tropo-text-muted);
+  box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  transition:
+    color 0.3s,
+    background 0.3s;
+}
+
+.InfoBar b {
+  color: var(--tropo-text);
+  font-weight: 600;
+}
+
+.InfoBar.noresult {
+  background: var(--tropo-danger-bg);
+  color: var(--tropo-danger-text);
+  border-color: var(--tropo-danger-border);
+  font-weight: 600;
+}
+
+.InfoBar .offline-badge {
+  font-size: 0.75rem;
+  color: var(--tropo-danger-text);
+  font-weight: bold;
+  background: var(--tropo-danger-bg);
+  border: 1px solid var(--tropo-danger-border);
+  border-radius: 4px;
+  padding: 1px 6px;
+  display: inline-block;
+}
