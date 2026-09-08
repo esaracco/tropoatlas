@@ -912,6 +912,17 @@ export class InventairePlugin extends BasePlugin {
     }
   }
 
+  // Fetch full lead section introduction from MediaWiki API
+  async #fetchWikiLeadSection(targetLang, articleTitle) {
+    const cleanTitle = encodeURIComponent(articleTitle.replace(/\s/g, "_"))
+    const url = `https://${targetLang}.wikipedia.org/w/api.php?action=query&prop=extracts&exintro=true&explaintext=true&redirects=true&titles=${cleanTitle}&format=json&origin=*`
+    const data = await this.#fetchWiki(url)
+    const pages = data?.query?.pages
+    if (!pages) return null
+    const page = Object.values(pages)[0]
+    return page?.extract?.trim() || null
+  }
+
   // Fetch and validate summary for a specific Wikipedia page title
   async #fetchWikiSummaryByTitle(
     targetLang,
@@ -951,8 +962,19 @@ export class InventairePlugin extends BasePlugin {
     const exact =
       isExactSitelink || isTitleMatch(articleTitle, bookTitle, subtitle)
 
+    let extract = data.extract
+    if (exact) {
+      const fullIntro = await this.#fetchWikiLeadSection(
+        targetLang,
+        data.title || articleTitle,
+      )
+      if (fullIntro) {
+        extract = fullIntro
+      }
+    }
+
     return {
-      extract: data.extract,
+      extract,
       url:
         data.content_urls?.desktop?.page ||
         data.content_urls?.mobile?.page ||
