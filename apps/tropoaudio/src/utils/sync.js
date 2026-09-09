@@ -2,6 +2,7 @@ import {
   useAppStore,
   useCollectionStore,
   setLargeItem,
+  getLargeItem,
   setItem,
 } from "@tropo/core"
 import { clearAllCaches } from "./storage"
@@ -11,7 +12,7 @@ import { plugin, getProviderInfo } from "../provider"
 
 // Synchronizes the user collection with the active provider.
 // When forceRefresh is true, clears all caches and resets current filters.
-// Otherwise, performs a differential sync preserving cached cover images.
+// Otherwise, performs a differential sync preserving cached items and covers.
 export const syncCollection = async ({ forceRefresh = false } = {}) => {
   if (useAppStore.getState().isSyncing) return
 
@@ -31,13 +32,31 @@ export const syncCollection = async ({ forceRefresh = false } = {}) => {
       useAppStore.getState().setSearchStr("")
     }
 
-    const items = await plugin.getCollection((prog) => setProgress(prog))
+    const currentItems =
+      useCollectionStore.getState().items || (await getLargeItem("items")) || {}
+    const existingItems = forceRefresh ? {} : currentItems
+
+    const items = await plugin.getCollection((prog) => setProgress(prog), {
+      forceRefresh,
+      existingItems,
+    })
 
     setItems(items)
     setDisplayCount(Object.keys(items).length)
 
     const categories = plugin.getCategories(items)
     setCategories(categories)
+
+    // Prune stale filter selections if items were removed
+    const selected = useCollectionStore.getState().selected
+    if (selected?.categories?.length) {
+      const validCategories = selected.categories.filter((c) =>
+        categories.includes(c),
+      )
+      if (validCategories.length !== selected.categories.length) {
+        useCollectionStore.getState().setFilter("categories", validCategories)
+      }
+    }
 
     await setLargeItem("items", items)
     await setItem("categories", categories)
