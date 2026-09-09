@@ -192,7 +192,10 @@ export class DiscogsPlugin extends BasePlugin {
     return fields
   }
 
-  async getCollection(onProgress) {
+  async getCollection(
+    onProgress,
+    { forceRefresh = false, existingItems = {} } = {},
+  ) {
     await this.getFieldsId()
     const releases = {}
     const _formats =
@@ -230,6 +233,14 @@ export class DiscogsPlugin extends BasePlugin {
         const format = info.formats[0].name
 
         if (!_formats || _formats.has(format.toLowerCase())) {
+          const instanceId = release.instance_id
+
+          // In differential mode, preserve cached item with enriched details
+          if (!forceRefresh && existingItems && existingItems[instanceId]) {
+            releases[instanceId] = existingItems[instanceId]
+            continue
+          }
+
           let { place, price, categories } = this.#getFieldsValue(release.notes)
           const haveFields = !!(place || price || categories)
 
