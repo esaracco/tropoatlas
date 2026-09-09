@@ -48,6 +48,25 @@ export const syncCollection = async ({ forceRefresh = false } = {}) => {
     const creators = plugin.getCreators ? plugin.getCreators(items) : []
     setCreators(creators)
 
+    // Prune stale filter selections if items were removed
+    const selected = useCollectionStore.getState().selected
+    if (selected?.categories?.length) {
+      const validCategories = selected.categories.filter((c) =>
+        categories.includes(c),
+      )
+      if (validCategories.length !== selected.categories.length) {
+        useCollectionStore.getState().setFilter("categories", validCategories)
+      }
+    }
+    if (selected?.creators?.length) {
+      const validCreators = selected.creators.filter((c) =>
+        creators.includes(c),
+      )
+      if (validCreators.length !== selected.creators.length) {
+        useCollectionStore.getState().setFilter("creators", validCreators)
+      }
+    }
+
     await setLargeItem("items", items)
     await setItem("categories", categories)
     await setItem("creators", creators)
