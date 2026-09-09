@@ -2,6 +2,7 @@ import {
   useAppStore,
   useCollectionStore,
   setLargeItem,
+  getLargeItem,
   setItem,
   getItem,
 } from "@tropo/core"
@@ -29,16 +30,22 @@ export const syncCollection = async ({ forceRefresh = false } = {}) => {
     const isUserChanged = Boolean(
       previousUser && currentUser && previousUser !== currentUser,
     )
+    const isFullSync = forceRefresh || isUserChanged
 
     // Clear all previous caches if user changed or forceRefresh requested
-    if (forceRefresh || isUserChanged) {
+    if (isFullSync) {
       await clearAllCaches()
       useCollectionStore.getState().clearFilters()
       useAppStore.getState().setSearchStr("")
     }
 
+    const currentItems =
+      useCollectionStore.getState().items || (await getLargeItem("items")) || {}
+    const existingItems = isFullSync ? {} : currentItems
+
     const items = await plugin.getCollection((prog) => setProgress(prog), {
-      forceRefresh: forceRefresh || isUserChanged,
+      forceRefresh: isFullSync,
+      existingItems,
       onWarning: (msg, params) => {
         toast.warn(i18n.t(msg, params), { autoClose: 8000 })
       },
@@ -52,6 +59,25 @@ export const syncCollection = async ({ forceRefresh = false } = {}) => {
 
     const creators = plugin.getCreators ? plugin.getCreators(items) : []
     setCreators(creators)
+
+    // Prune stale filter selections if items were removed
+    const selected = useCollectionStore.getState().selected
+    if (selected?.categories?.length) {
+      const validCategories = selected.categories.filter((c) =>
+        categories.includes(c),
+      )
+      if (validCategories.length !== selected.categories.length) {
+        useCollectionStore.getState().setFilter("categories", validCategories)
+      }
+    }
+    if (selected?.creators?.length) {
+      const validCreators = selected.creators.filter((c) =>
+        creators.includes(c),
+      )
+      if (validCreators.length !== selected.creators.length) {
+        useCollectionStore.getState().setFilter("creators", validCreators)
+      }
+    }
 
     await setLargeItem("items", items)
     await setItem("categories", categories)
