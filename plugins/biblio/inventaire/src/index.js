@@ -439,7 +439,10 @@ export class InventairePlugin extends BasePlugin {
   }
 
   // Fetch full inventory collection
-  async getCollection(onProgress) {
+  async getCollection(
+    onProgress,
+    { forceRefresh = false, existingItems = {} } = {},
+  ) {
     if (onProgress) onProgress(5)
 
     // Authenticate session to access private item notes; abort if auth fails
@@ -471,7 +474,50 @@ export class InventairePlugin extends BasePlugin {
 
     if (onProgress) onProgress(25)
 
-    // 2. Fetch user shelves for custom category mapping
+    // 2. Fetch inventory items belonging to user
+    const itemsRes = await this.#request(
+      `api/items/by-users?users=${userId}&limit=1000`,
+    )
+    const rawItems = itemsRes?.items || []
+
+    if (rawItems.length === 0) {
+      if (onProgress) onProgress(100)
+      return {}
+    }
+
+    if (onProgress) onProgress(35)
+
+    const collection = {}
+    let itemsToProcess = rawItems
+
+    // In differential sync mode, identify which items are new vs already cached
+    if (
+      !forceRefresh &&
+      existingItems &&
+      Object.keys(existingItems).length > 0
+    ) {
+      const currentRemoteIds = new Set(
+        rawItems.map((it) => it._id || it.id).filter(Boolean),
+      )
+
+      // Keep existing items that are still present remotely
+      for (const [id, item] of Object.entries(existingItems)) {
+        if (currentRemoteIds.has(id)) {
+          collection[id] = item
+        }
+      }
+
+      // Filter rawItems to only those not yet in existingItems
+      itemsToProcess = rawItems.filter((it) => !existingItems[it._id || it.id])
+    }
+
+    // If no new items need resolution, return collection immediately
+    if (itemsToProcess.length === 0) {
+      if (onProgress) onProgress(100)
+      return collection
+    }
+
+    // 3. Fetch user shelves for custom category mapping of new items
     const shelfMap = {}
     try {
       const shelvesRes = await this.#request(
@@ -490,24 +536,11 @@ export class InventairePlugin extends BasePlugin {
       // Non-critical: continue if shelves cannot be fetched
     }
 
-    if (onProgress) onProgress(35)
-
-    // 3. Fetch inventory items belonging to user
-    const itemsRes = await this.#request(
-      `api/items/by-users?users=${userId}&limit=1000`,
-    )
-    const rawItems = itemsRes?.items || []
-
-    if (rawItems.length === 0) {
-      if (onProgress) onProgress(100)
-      return {}
-    }
-
     if (onProgress) onProgress(50)
 
     // 4. Batch resolve entity metadata (works, editions, authors, publishers)
     const entityUris = Array.from(
-      new Set(rawItems.map((it) => it.entity).filter(Boolean)),
+      new Set(itemsToProcess.map((it) => it.entity).filter(Boolean)),
     )
 
     const entitiesMap = {}
@@ -582,8 +615,7 @@ export class InventairePlugin extends BasePlugin {
     if (onProgress) onProgress(85)
 
     // 5. Normalize items into canonical TropoAtlas book format
-    const collection = {}
-    for (const item of rawItems) {
+    for (const item of itemsToProcess) {
       const itemId = item._id || item.id
       const resolvedUri = redirectsMap[item.entity] || item.entity
       const entity = entitiesMap[resolvedUri] || entitiesMap[item.entity] || {}

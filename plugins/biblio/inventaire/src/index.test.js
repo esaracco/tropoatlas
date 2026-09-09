@@ -1,4 +1,4 @@
-import { describe, it, expect } from "vitest"
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest"
 import {
   InventairePlugin,
   MIN_DESCRIPTION_LENGTH,
@@ -274,5 +274,139 @@ describe("InventairePlugin - item details sanitization", () => {
     }
     const result = await plugin.getItemDetails(item)
     expect(result.isbn).toBe("978-2-08-070090-2")
+  })
+})
+
+describe("InventairePlugin - differential synchronization", () => {
+  let plugin
+
+  beforeEach(() => {
+    plugin = new InventairePlugin({
+      user: "testuser",
+    })
+  })
+
+  afterEach(() => {
+    vi.restoreAllMocks()
+  })
+
+  it("should preserve existing cached items and remove deleted items", async () => {
+    vi.spyOn(globalThis, "fetch").mockImplementation((url) => {
+      const urlStr = String(url)
+      if (urlStr.includes("api/users/by-usernames")) {
+        return Promise.resolve({
+          ok: true,
+          json: () => Promise.resolve({ users: { testuser: { _id: "u1" } } }),
+        })
+      }
+      if (urlStr.includes("api/items/by-users")) {
+        // Remote inventory contains item1 and item3 (item2 was deleted)
+        return Promise.resolve({
+          ok: true,
+          json: () =>
+            Promise.resolve({
+              items: [
+                { _id: "item1", entity: "inv:e1" },
+                { _id: "item3", entity: "inv:e3" },
+              ],
+            }),
+        })
+      }
+      if (urlStr.includes("api/shelves/by-owners")) {
+        return Promise.resolve({
+          ok: true,
+          json: () => Promise.resolve({ shelves: [] }),
+        })
+      }
+      if (urlStr.includes("api/entities/by-uris")) {
+        return Promise.resolve({
+          ok: true,
+          json: () =>
+            Promise.resolve({
+              entities: {
+                "inv:e3": {
+                  labels: { en: "Book 3" },
+                  claims: {},
+                },
+              },
+            }),
+        })
+      }
+      return Promise.resolve({ ok: true, json: () => Promise.resolve({}) })
+    })
+
+    const existingItems = {
+      item1: {
+        id: "item1",
+        title: "Book 1 (Enriched)",
+        description: "Enriched Wikipedia description",
+        hasDetails: true,
+        hasWikipedia: true,
+      },
+      item2: {
+        id: "item2",
+        title: "Deleted Book",
+      },
+    }
+
+    const collection = await plugin.getCollection(null, {
+      forceRefresh: false,
+      existingItems,
+    })
+
+    // item1 must be preserved with its enriched details
+    expect(collection.item1).toBe(existingItems.item1)
+    expect(collection.item1.description).toBe("Enriched Wikipedia description")
+    expect(collection.item1.hasDetails).toBe(true)
+
+    // item2 was removed remotely and must not be in collection
+    expect(collection.item2).toBeUndefined()
+
+    // item3 was newly added and resolved
+    expect(collection.item3).toBeDefined()
+    expect(collection.item3.title).toBe("Book 3")
+  })
+
+  it("should return early when all items are already cached", async () => {
+    let entitiesCalled = false
+    vi.spyOn(globalThis, "fetch").mockImplementation((url) => {
+      const urlStr = String(url)
+      if (urlStr.includes("api/users/by-usernames")) {
+        return Promise.resolve({
+          ok: true,
+          json: () => Promise.resolve({ users: { testuser: { _id: "u1" } } }),
+        })
+      }
+      if (urlStr.includes("api/items/by-users")) {
+        return Promise.resolve({
+          ok: true,
+          json: () =>
+            Promise.resolve({
+              items: [{ _id: "item1", entity: "inv:e1" }],
+            }),
+        })
+      }
+      if (urlStr.includes("api/entities/by-uris")) {
+        entitiesCalled = true
+      }
+      return Promise.resolve({ ok: true, json: () => Promise.resolve({}) })
+    })
+
+    const existingItems = {
+      item1: {
+        id: "item1",
+        title: "Book 1",
+        description: "Cached Description",
+        hasDetails: true,
+      },
+    }
+
+    const collection = await plugin.getCollection(null, {
+      forceRefresh: false,
+      existingItems,
+    })
+
+    expect(collection.item1).toBe(existingItems.item1)
+    expect(entitiesCalled).toBe(false)
   })
 })
