@@ -5,18 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <!-- Primary SEO Meta Tags -->
-    <title>TropoCine — Gestionnaire Universel de Collection Cinéma</title>
+    <title>
+      TropoCine — Gestionnaire universel de films & Repérage physique LED
+    </title>
     <meta
       name="title"
-      content="TropoCine — Gestionnaire Universel de Collection Cinéma"
+      content="TropoCine — Gestionnaire universel de films & Repérage physique LED"
     />
     <meta
       name="description"
-      content="TropoCine est un gestionnaire de collection de films sous licence libre. Synchronisez vos films (TMDB), explorez réalisateurs et acteurs, personnalisez vos métadonnées et parcourez votre vidéothèque."
+      content="TropoCine est un gestionnaire de collection de films sous licence libre. Synchronisez vos films depuis TMDB, enrichissez-les de métadonnées personnalisées et localisez vos DVDs et Blu-rays sur vos étagères grâce à des rubans LED connectés."
     />
     <meta
       name="keywords"
-      content="TropoCine, TropoAtlas, gestionnaire de films, TMDB, collection cinéma, vidéothèque, liste de films, réalisateurs, acteurs, monorepo React"
+      content="TropoCine, TropoAtlas, gestionnaire de films, TMDB, collection cinéma, vidéothèque, liste de films, réalisateurs, acteurs, repérage LED étagère, ESP32, ruban LED connecté, monorepo React"
     />
     <meta name="author" content="Emmanuel Saracco" />
     <meta name="robots" content="index, follow" />
@@ -40,11 +42,11 @@
     />
     <meta
       property="og:title"
-      content="TropoCine — Gestionnaire Universel de Collection Cinéma"
+      content="TropoCine — Gestionnaire universel de films & Repérage physique LED"
     />
     <meta
       property="og:description"
-      content="TropoCine est un gestionnaire de collection de films sous licence libre. Synchronisez vos films (TMDB), explorez réalisateurs et acteurs, personnalisez vos métadonnées et parcourez votre vidéothèque."
+      content="TropoCine est un gestionnaire de collection de films sous licence libre. Synchronisez vos films depuis TMDB, enrichissez-les de métadonnées personnalisées et localisez vos DVDs et Blu-rays sur vos étagères grâce à des rubans LED connectés."
     />
     <meta property="og:image" content="./icon-512.png" />
     <meta property="og:site_name" content="TropoCine" />
@@ -57,11 +59,11 @@
     />
     <meta
       name="twitter:title"
-      content="TropoCine — Gestionnaire Universel de Collection Cinéma"
+      content="TropoCine — Gestionnaire universel de films & Repérage physique LED"
     />
     <meta
       name="twitter:description"
-      content="TropoCine est un gestionnaire de collection de films sous licence libre. Synchronisez vos films (TMDB), explorez réalisateurs et acteurs, personnalisez vos métadonnées et parcourez votre vidéothèque."
+      content="TropoCine est un gestionnaire de collection de films sous licence libre. Synchronisez vos films depuis TMDB, enrichissez-les de métadonnées personnalisées et localisez vos DVDs et Blu-rays sur vos étagères grâce à des rubans LED connectés."
     />
     <meta name="twitter:image" content="./icon-512.png" />
 
@@ -83,7 +85,7 @@
           "price": "0",
           "priceCurrency": "EUR"
         },
-        "description": "TropoCine est un gestionnaire de collection de films sous licence libre. Synchronisez vos films (TMDB), explorez réalisateurs et acteurs, personnalisez vos métadonnées et parcourez votre vidéothèque.",
+        "description": "TropoCine est un gestionnaire de collection de films sous licence libre. Synchronisez vos films depuis TMDB, enrichissez-les de métadonnées personnalisées et localisez vos DVDs et Blu-rays sur vos étagères grâce à des rubans LED connectés.",
         "license": "https://www.gnu.org/licenses/gpl-3.0.html",
         "image": "https://tropocine.esaracco.fr/icon-512.png"
       }
@@ -122,6 +124,9 @@
           </li>
           <li>
             <a href="#gallery" class="nav-link" id="nav-gallery">Interface</a>
+          </li>
+          <li>
+            <a href="#leds" class="nav-link" id="nav-leds">Repérage LED</a>
           </li>
           <li>
             <a href="#architecture" class="nav-link" id="nav-architecture"
@@ -193,17 +198,17 @@
 
         <p class="hero-subtitle">
           Tropo<span class="brand-text-cine">Cine</span> est un gestionnaire de
-          collection films sous licence libre. Synchronisez vos films depuis
-          TMDB, explorez réalisateurs et acteurs, et parcourez votre vidéothèque
-          en toute simplicité.
+          collection de films sous licence libre. Synchronisez vos DVDs et
+          Blu-rays depuis TMDB, enrichissez-les de métadonnées personnalisées et
+          localisez-les sur vos étagères grâce à des rubans LED connectés.
         </p>
 
         <div class="hero-cta">
           <a href="#quickstart" class="btn btn-primary" id="btn-hero-start"
             >Déployer TropoCine</a
           >
-          <a href="#features" class="btn btn-secondary" id="btn-hero-features"
-            >Découvrir les fonctionnalités</a
+          <a href="#leds" class="btn btn-secondary" id="btn-hero-leds"
+            >Découvrir le repérage LED</a
           >
         </div>
 
@@ -252,7 +257,25 @@
               <h3 class="feature-title">Recherche & Filtres Instantanés</h3>
               <p class="feature-desc">
                 Filtrez et triez votre collection en temps réel par réalisateur,
-                acteur, genre, année de sortie, note ou date d'ajout.
+                acteur, genre, année de sortie, note ou emplacement physique sur
+                vos étagères.
+              </p>
+            </article>
+
+            <article class="feature-card" id="card-metadata">
+              <h3 class="feature-title">Métadonnées personnalisées</h3>
+              <p class="feature-desc">
+                Enrichissez chaque film grâce aux commentaires personnalisés :
+                emplacement physique exact, prix d'achat et note.
+              </p>
+            </article>
+
+            <article class="feature-card" id="card-led">
+              <h3 class="feature-title">Localisation physique par LED</h3>
+              <p class="feature-desc">
+                Sélectionnez un film, des genres ou des réalisateurs à l'écran,
+                et les emplacements s'illuminent sur vos étagères grâce à des
+                rubans LED.
               </p>
             </article>
 
@@ -268,15 +291,15 @@
               <h3 class="feature-title">Architecture modulaire</h3>
               <p class="feature-desc">
                 Monorepo NPM clair séparant composants d'interface, gestion
-                d'état, cache, et plugins de données.
+                d'état, cache, pilotes matériels et plugins de données.
               </p>
             </article>
 
             <article class="feature-card" id="card-backup">
-              <h3 class="feature-title">Sauvegardes Portables</h3>
+              <h3 class="feature-title">Sauvegardes portables</h3>
               <p class="feature-desc">
-                Exportez et restaurez des archives complètes de votre collection
-                avec métadonnées et affiches dans des fichiers ZIP portables.
+                Exportez et restaurez des sauvegardes complètes avec métadonnées
+                et pochettes sous forme d'archives ZIP portables.
               </p>
             </article>
           </div>
@@ -333,7 +356,7 @@
                 <div class="tab-text">
                   <span class="tab-title">Fiche Film</span>
                   <span class="tab-desc"
-                    >Réalisateur, note publique, casting & genres cliquables, et
+                    >Réalisateur, notes, casting & genres cliquables, et
                     synopsis.</span
                   >
                 </div>
@@ -518,6 +541,121 @@
         </div>
       </section>
 
+      <!-- LED Spotlight Section -->
+      <section class="section" id="leds">
+        <div class="container">
+          <div class="led-section">
+            <div>
+              <span class="section-tag">Matériel IoT</span>
+              <h2 class="section-title">Trouvez vos films en un clin d'œil</h2>
+              <p class="section-description">
+                Laissez Tropo<span class="brand-text-cine">Cine</span>
+                piloter les rubans LED de vos étagères&nbsp;!
+              </p>
+              <ul class="led-list">
+                <li class="led-list-item">
+                  Indication visuelle immédiate du film sélectionné, des genres
+                  ou des réalisateurs.
+                </li>
+                <li class="led-list-item">
+                  Intégration HTTP directe avec un petit firmware ESP32.
+                </li>
+              </ul>
+
+              <div class="hardware-note">
+                <p>
+                  💡 <strong>Conçu pour les Makers :</strong> L'ensemble du code
+                  source du firmware et les schémas de câblage sont libres et
+                  inclus dans le dépôt, prêts à être téléversés sur un
+                  microcontrôleur ESP32.
+                </p>
+                <div class="hardware-note-link">
+                  <a
+                    href="./img/wiring-diagram.svg"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="btn btn-secondary btn-sm"
+                    id="btn-wiring-diagram"
+                  >
+                    🔌 Consulter le schéma de câblage (SVG)
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <!-- Interactive LED simulation -->
+            <div class="shelf-demo">
+              <div class="shelf-header">
+                <span>Étagère</span>
+                <span class="shelf-led-active" id="shelf-status"
+                  >LED active&nbsp;: 42</span
+                >
+              </div>
+              <div class="shelf-row">
+                <div class="shelf-col" data-index="41">
+                  <div class="movie-spine">
+                    <span class="spine-director">Anspach</span>
+                    <span class="spine-title">Queen of Montreuil</span>
+                  </div>
+                  <div class="led-bulb"></div>
+                </div>
+
+                <div class="shelf-col" data-index="42">
+                  <div class="movie-spine">
+                    <span class="spine-director">Arcand</span>
+                    <span class="spine-title">Les Invasions barbares</span>
+                  </div>
+                  <div class="led-bulb active"></div>
+                </div>
+
+                <div class="shelf-col" data-index="43">
+                  <div class="movie-spine">
+                    <span class="spine-director">Poiré</span>
+                    <span class="spine-title">Les visiteurs</span>
+                  </div>
+                  <div class="led-bulb"></div>
+                </div>
+
+                <div class="shelf-col" data-index="44">
+                  <div class="movie-spine">
+                    <span class="spine-director">Podalydès</span>
+                    <span class="spine-title">Comme un avion</span>
+                  </div>
+                  <div class="led-bulb"></div>
+                </div>
+
+                <div class="shelf-col" data-index="45">
+                  <div class="movie-spine">
+                    <span class="spine-director">Nolan</span>
+                    <span class="spine-title">Interstellar</span>
+                  </div>
+                  <div class="led-bulb"></div>
+                </div>
+
+                <div class="shelf-col" data-index="46">
+                  <div class="movie-spine">
+                    <span class="spine-director">Coppola</span>
+                    <span class="spine-title">Apocalypse Now</span>
+                  </div>
+                  <div class="led-bulb"></div>
+                </div>
+
+                <div class="shelf-col" data-index="47">
+                  <div class="movie-spine">
+                    <span class="spine-director">Miyazaki</span>
+                    <span class="spine-title">Chihiro</span>
+                  </div>
+                  <div class="led-bulb"></div>
+                </div>
+              </div>
+              <p class="shelf-caption">
+                Simulation interactive (cliquez sur un boîtier)
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <!-- Architecture Section -->
       <section class="section" id="architecture">
         <div class="container">
@@ -554,6 +692,11 @@
                 Système de composants UI réutilisables, moteurs de thèmes,
                 modales et navigation.
               </p>
+            </div>
+            <div class="arch-card">
+              <span class="arch-tag">packages/leds</span>
+              <h3>@tropo/leds</h3>
+              <p>Client HTTP pour la communication avec les rubans LED.</p>
             </div>
             <div class="arch-card">
               <span class="arch-tag">plugins/cine/tmdb</span>
@@ -751,6 +894,29 @@
           { threshold: 0.1 },
         )
         observer.observe(heroLockup)
+      })()
+
+      /* Shelf interactive simulation */
+      ;(function () {
+        var cols = document.querySelectorAll(".shelf-col")
+        var status = document.getElementById("shelf-status")
+
+        cols.forEach(function (col) {
+          col.addEventListener("click", function () {
+            cols.forEach(function (c) {
+              var bulb = c.querySelector(".led-bulb")
+              if (bulb) bulb.classList.remove("active")
+            })
+
+            var bulb = col.querySelector(".led-bulb")
+            if (bulb) bulb.classList.add("active")
+
+            var idx = col.getAttribute("data-index")
+            if (status && idx) {
+              status.innerHTML = "LED active&nbsp;: " + idx
+            }
+          })
+        })
       })()
     </script>
   </body>

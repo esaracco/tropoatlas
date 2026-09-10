@@ -8,6 +8,7 @@
 
   --accent: #0284c7;
   --accent-hover: #0369a1;
+  --led-active: #38bdf8;
 
   --font-main:
     system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
@@ -548,6 +549,157 @@ p {
   }
 }
 
+/* ── LED Showcase Section ────────────────────────────────────────────────── */
+.led-section {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2.5rem;
+  align-items: center;
+  background: var(--bg-subtle);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 2.5rem;
+}
+
+.led-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  margin-top: 1.25rem;
+  font-size: 0.95rem;
+}
+
+.led-list-item {
+  color: var(--text);
+}
+
+.hardware-note {
+  margin-top: 1.5rem;
+  padding: 0.85rem 1rem;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--accent);
+  border-radius: 4px;
+  font-size: 0.86rem;
+  color: var(--text-muted);
+}
+
+.hardware-note-link {
+  margin-top: 0.75rem;
+}
+
+.shelf-demo {
+  background: #0f172a;
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: fit-content;
+  max-width: 100%;
+  margin: 0 auto;
+}
+
+.shelf-header {
+  width: 100%;
+  font-size: 0.8rem;
+  color: #94a3b8;
+  margin-bottom: 0.75rem;
+  display: flex;
+  justify-content: space-between;
+}
+
+.shelf-led-active {
+  color: #38bdf8;
+  font-weight: 600;
+}
+
+.shelf-row {
+  display: flex;
+  gap: 10px;
+  padding: 0.85rem;
+  background: #1e293b;
+  border-radius: 6px;
+  margin-bottom: 0.75rem;
+  width: fit-content;
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+.shelf-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.led-bulb {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #475569;
+  transition: all 0.2s ease;
+}
+
+.led-bulb.active {
+  background: var(--led-active);
+  box-shadow: 0 0 8px var(--led-active);
+}
+
+.movie-spine {
+  flex: none;
+  width: 22px;
+  min-width: 22px;
+  height: 140px;
+  min-height: 140px;
+  background: #334155;
+  border-radius: 3px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 2px;
+  cursor: default;
+  overflow: hidden;
+  user-select: none;
+  transition: background 0.2s ease;
+}
+
+.shelf-col:hover .movie-spine {
+  background: #3e4f66;
+}
+
+.spine-director {
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  font-size: 0.62rem;
+  font-weight: 700;
+  color: #f8fafc;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: center;
+}
+
+.spine-title {
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  font-size: 0.58rem;
+  font-weight: 400;
+  color: #cbd5e1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: center;
+}
+
+.shelf-caption {
+  font-size: 0.75rem;
+  color: #64748b;
+  margin-top: 0.25rem;
+}
+
 /* ── Architecture Section ────────────────────────────────────────────────── */
 .arch-cards {
   display: grid;
@@ -708,6 +860,12 @@ p {
 
   .section {
     padding: 3rem 0;
+  }
+
+  .led-section {
+    grid-template-columns: 1fr;
+    padding: 1.5rem 1rem;
+    gap: 1.75rem;
   }
 
   .features-grid {

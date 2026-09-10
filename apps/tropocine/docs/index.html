@@ -5,18 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <!-- Primary SEO Meta Tags -->
-    <title>TropoCine — Universal Film Collection Manager</title>
+    <title>
+      TropoCine — Universal Film Collection Manager & LED Shelf Locator
+    </title>
     <meta
       name="title"
-      content="TropoCine — Universal Film Collection Manager"
+      content="TropoCine — Universal Film Collection Manager & LED Shelf Locator"
     />
     <meta
       name="description"
-      content="TropoCine is a free software film collection manager. Synchronize your movies from TMDB, explore directors and cast members, customize your metadata, and navigate your film library."
+      content="TropoCine is a free software film collection manager. Synchronize your DVDs and Blu-rays from TMDB, enrich them with custom metadata, and locate them on your shelves with connected LED strips."
     />
     <meta
       name="keywords"
-      content="TropoCine, TropoAtlas, film collection manager, TMDB, film collection, film library, movie list, directors, actors, React monorepo"
+      content="TropoCine, TropoAtlas, film collection manager, TMDB, film collection, film library, movie list, directors, actors, LED shelf locator, ESP32, connected LED strip, React monorepo"
     />
     <meta name="author" content="Emmanuel Saracco" />
     <meta name="robots" content="index, follow" />
@@ -40,11 +42,11 @@
     />
     <meta
       property="og:title"
-      content="TropoCine — Universal Film Collection Manager"
+      content="TropoCine — Universal Film Collection Manager & LED Shelf Locator"
     />
     <meta
       property="og:description"
-      content="TropoCine is a free software film collection manager. Synchronize your movies from TMDB, explore directors and cast members, customize your metadata, and navigate your film library."
+      content="TropoCine is a free software film collection manager. Synchronize your DVDs and Blu-rays from TMDB, enrich them with custom metadata, and locate them on your shelves with connected LED strips."
     />
     <meta property="og:image" content="./icon-512.png" />
     <meta property="og:site_name" content="TropoCine" />
@@ -57,11 +59,11 @@
     />
     <meta
       name="twitter:title"
-      content="TropoCine — Universal Film Collection Manager"
+      content="TropoCine — Universal Film Collection Manager & LED Shelf Locator"
     />
     <meta
       name="twitter:description"
-      content="TropoCine is a free software film collection manager. Synchronize your movies from TMDB, explore directors and cast members, customize your metadata, and navigate your film library."
+      content="TropoCine is a free software film collection manager. Synchronize your DVDs and Blu-rays from TMDB, enrich them with custom metadata, and locate them on your shelves with connected LED strips."
     />
     <meta name="twitter:image" content="./icon-512.png" />
 
@@ -83,7 +85,7 @@
           "price": "0",
           "priceCurrency": "EUR"
         },
-        "description": "TropoCine is a free software film collection manager. Synchronize your movies from TMDB, explore directors and cast members, customize your metadata, and navigate your film library.",
+        "description": "TropoCine is a free software film collection manager. Synchronize your DVDs and Blu-rays from TMDB, enrich them with custom metadata, and locate them on your shelves with connected LED strips.",
         "license": "https://www.gnu.org/licenses/gpl-3.0.html",
         "image": "https://tropocine.esaracco.fr/icon-512.png"
       }
@@ -120,6 +122,9 @@
           </li>
           <li>
             <a href="#gallery" class="nav-link" id="nav-gallery">Interface</a>
+          </li>
+          <li>
+            <a href="#leds" class="nav-link" id="nav-leds">LED Locator</a>
           </li>
           <li>
             <a href="#architecture" class="nav-link" id="nav-architecture"
@@ -191,16 +196,17 @@
 
         <p class="hero-subtitle">
           Tropo<span class="brand-text-cine">Cine</span> is a free software film
-          collection manager. Synchronize your films from TMDB, explore
-          directors and cast members, and navigate your film library with ease.
+          collection manager. Synchronize your DVDs and Blu-rays from TMDB,
+          enrich them with custom metadata, and locate them on your shelves with
+          connected LED strips.
         </p>
 
         <div class="hero-cta">
           <a href="#quickstart" class="btn btn-primary" id="btn-hero-start"
             >Deploy TropoCine</a
           >
-          <a href="#features" class="btn btn-secondary" id="btn-hero-features"
-            >Explore Features</a
+          <a href="#leds" class="btn btn-secondary" id="btn-hero-leds"
+            >Explore LED Locator</a
           >
         </div>
 
@@ -249,7 +255,24 @@
               <h3 class="feature-title">Instant Search & Filter</h3>
               <p class="feature-desc">
                 Filter and sort your collection in real-time by director, actor,
-                genre, release year, rating, or date added.
+                genre, release year, rating, or physical shelf locations.
+              </p>
+            </article>
+
+            <article class="feature-card" id="card-metadata">
+              <h3 class="feature-title">Custom Metadata</h3>
+              <p class="feature-desc">
+                Enrich movie entries with custom comments: exact shelf location,
+                custom genres, and personal ratings.
+              </p>
+            </article>
+
+            <article class="feature-card" id="card-led">
+              <h3 class="feature-title">Physical LED Locator</h3>
+              <p class="feature-desc">
+                Select a film, genres, or directors on the screen, and the
+                corresponding slots on your shelves light up thanks to LED
+                strips.
               </p>
             </article>
 
@@ -265,7 +288,7 @@
               <h3 class="feature-title">Decoupled Architecture</h3>
               <p class="feature-desc">
                 A clean NPM workspace monorepo separating UI components, state
-                management, cache, and data plugins.
+                management, cache, hardware drivers, and data plugins.
               </p>
             </article>
 
@@ -326,7 +349,7 @@
                 <div class="tab-text">
                   <span class="tab-title">Film Details</span>
                   <span class="tab-desc"
-                    >Director, public rating, clickable cast & genres, and
+                    >Director, ratings, clickable cast & genres, and
                     synopsis.</span
                   >
                 </div>
@@ -511,6 +534,122 @@
         </div>
       </section>
 
+      <!-- LED Spotlight Section -->
+      <section class="section" id="leds">
+        <div class="container">
+          <div class="led-section">
+            <div>
+              <span class="section-tag">IoT Hardware</span>
+              <h2 class="section-title">
+                Find your films in the blink of an eye
+              </h2>
+              <p class="section-description">
+                Let Tropo<span class="brand-text-cine">Cine</span>
+                control the LED strips of your shelves!
+              </p>
+              <ul class="led-list">
+                <li class="led-list-item">
+                  Immediate visual indication of the selected film, genres, or
+                  directors.
+                </li>
+                <li class="led-list-item">
+                  Direct HTTP integration with lightweight ESP32 firmware.
+                </li>
+              </ul>
+
+              <div class="hardware-note">
+                <p>
+                  💡 <strong>Maker-Friendly:</strong> All firmware source code
+                  and wiring schematics are free software and included in the
+                  repository, ready to flash onto an ESP32 microcontroller.
+                </p>
+                <div class="hardware-note-link">
+                  <a
+                    href="./img/wiring-diagram.svg"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="btn btn-secondary btn-sm"
+                    id="btn-wiring-diagram"
+                  >
+                    🔌 View Wiring Diagram (SVG)
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <!-- Interactive LED simulation -->
+            <div class="shelf-demo">
+              <div class="shelf-header">
+                <span>Shelf</span>
+                <span class="shelf-led-active" id="shelf-status"
+                  >Active LED: 42</span
+                >
+              </div>
+              <div class="shelf-row">
+                <div class="shelf-col" data-index="41">
+                  <div class="movie-spine">
+                    <span class="spine-director">Stanley Kubrick</span>
+                    <span class="spine-title">2001: A Space Odyssey</span>
+                  </div>
+                  <div class="led-bulb"></div>
+                </div>
+
+                <div class="shelf-col" data-index="42">
+                  <div class="movie-spine">
+                    <span class="spine-director">David Lynch</span>
+                    <span class="spine-title">Mulholland Drive</span>
+                  </div>
+                  <div class="led-bulb active"></div>
+                </div>
+
+                <div class="shelf-col" data-index="43">
+                  <div class="movie-spine">
+                    <span class="spine-director">Alfred Hitchcock</span>
+                    <span class="spine-title">Vertigo</span>
+                  </div>
+                  <div class="led-bulb"></div>
+                </div>
+
+                <div class="shelf-col" data-index="44">
+                  <div class="movie-spine">
+                    <span class="spine-director">Akira Kurosawa</span>
+                    <span class="spine-title">Seven Samurai</span>
+                  </div>
+                  <div class="led-bulb"></div>
+                </div>
+
+                <div class="shelf-col" data-index="45">
+                  <div class="movie-spine">
+                    <span class="spine-director">Andrei Tarkovsky</span>
+                    <span class="spine-title">Stalker</span>
+                  </div>
+                  <div class="led-bulb"></div>
+                </div>
+
+                <div class="shelf-col" data-index="46">
+                  <div class="movie-spine">
+                    <span class="spine-director">F. F. Coppola</span>
+                    <span class="spine-title">Apocalypse Now</span>
+                  </div>
+                  <div class="led-bulb"></div>
+                </div>
+
+                <div class="shelf-col" data-index="47">
+                  <div class="movie-spine">
+                    <span class="spine-director">Agnès Varda</span>
+                    <span class="spine-title">Cléo de 5 à 7</span>
+                  </div>
+                  <div class="led-bulb"></div>
+                </div>
+              </div>
+              <p class="shelf-caption">
+                Interactive simulation (click any movie case)
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <!-- Architecture Section -->
       <section class="section" id="architecture">
         <div class="container">
@@ -538,6 +677,11 @@
               <span class="arch-tag">packages/react</span>
               <h3>@tropo/react</h3>
               <p>Reusable UI components.</p>
+            </div>
+            <div class="arch-card">
+              <span class="arch-tag">packages/leds</span>
+              <h3>@tropo/leds</h3>
+              <p>HTTP client for LED strip hardware communication.</p>
             </div>
             <div class="arch-card">
               <span class="arch-tag">plugins/cine/tmdb</span>
@@ -733,6 +877,29 @@
           { threshold: 0.1 },
         )
         observer.observe(heroLockup)
+      })()
+
+      /* Shelf interactive simulation */
+      ;(function () {
+        var cols = document.querySelectorAll(".shelf-col")
+        var status = document.getElementById("shelf-status")
+
+        cols.forEach(function (col) {
+          col.addEventListener("click", function () {
+            cols.forEach(function (c) {
+              var bulb = c.querySelector(".led-bulb")
+              if (bulb) bulb.classList.remove("active")
+            })
+
+            var bulb = col.querySelector(".led-bulb")
+            if (bulb) bulb.classList.add("active")
+
+            var idx = col.getAttribute("data-index")
+            if (status && idx) {
+              status.textContent = "Active LED: " + idx
+            }
+          })
+        })
       })()
     </script>
   </body>

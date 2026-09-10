@@ -2,7 +2,7 @@
 
 [![GPL License](https://img.shields.io/badge/license-GPLv3-blue.svg)](../../LICENSE) [![TMDB API](https://img.shields.io/badge/Powered%20by-TMDB-01b4e4.svg)](https://developer.themoviedb.org/) [![Made with React](https://img.shields.io/badge/React-19-61DAFB.svg)](https://reactjs.org/) [![Vite](https://img.shields.io/badge/Vite-B73BFE.svg)](https://vitejs.dev/)
 
-**TropoCine is a free software film collection manager, part of the [TropoAtlas](../../README.md) suite. Synchronize your movie lists from The Movie Database (TMDB), explore directors and cast members, customize your metadata, and navigate your film library.**
+**TropoCine is a free software film collection manager, part of the [TropoAtlas](../../README.md) suite. Synchronize your movie lists from The Movie Database (TMDB), explore directors and cast members, customize your metadata, and instantly locate your DVDs and Blu-rays on your shelves using connected LED strips.**
 
 <div align="center"><img src="public/icon-180.png" alt="TropoCine logo" /></div>
 
@@ -11,6 +11,8 @@
 ## Features
 
 - 🔎 **Instant Search & Multi-criteria Filter**: Browse and filter your film collection in real-time by title, people (directors and actors), genres, release year, rating, or date added.
+- 🏷️ **Custom Metadata**: Enrich movie entries with custom fields saved directly into your TMDB list item comments: exact shelf location (`place`), purchase price (`price`), and personal rating (`note`).
+- 💡 **Physical LED Shelf Locator & Ruler**: Select a movie, genres, directors, or cast members, and the corresponding slots on your shelf light up instantly via connected LED strips. Includes a dedicated physical ruler mode to illuminate whole shelves.
 - 🎬 **TMDB Synchronization & Rich Metadata**:
   - Connects to personal or public lists from The Movie Database using list ID or URL slugs.
   - Automatically fetches movie posters, backdrops, runtime, overview/synopsis, director, and leading cast.
@@ -24,7 +26,7 @@
   - **Full Extraction & Enrichment**: Proactively fetches missing details and high-resolution posters for offline safekeeping.
 - 📥 **Offline Import & Restore**: Restore or migrate your film collection on another device by importing the ZIP backup without needing an internet connection.
 - 📱 **Progressive Web App (PWA)**: Full offline navigation support and responsive touch interface optimized for desktop, tablet, and mobile.
-- 🎨 **Multi-Theme Support**: Dark, Light, Orange, Blue, Purple, and Green themes with instant zero-flicker hydration.
+- 🎨 **Multi-Theme Support**: Dark, Light, Orange, Blue (default), Purple, and Green themes with instant zero-flicker hydration.
 
 ---
 
@@ -57,15 +59,42 @@ cp .env.sample .env
 
 ### Core Environment Variables
 
-| Variable             | Description                                                                    | Default       |
-| :------------------- | :----------------------------------------------------------------------------- | :------------ |
-| `VITE_APP_NAME`      | Application identifier (do not change)                                         | `"tropocine"` |
-| `VITE_DATA_PROVIDER` | Active data provider plugin                                                    | `"tmdb"`      |
-| `VITE_TMDB_LIST_ID`  | Your TMDB list ID or URL slug (e.g. `8691537` or `8691537-ma-liste`)           | _(Required)_  |
-| `TMDB_TOKEN`         | Your TMDB API Read Access Token _(No `VITE_` prefix to prevent browser leaks)_ | _(Required)_  |
-| `VITE_SET_LEDS`      | Enable hardware LED integration                                                | `"no"`        |
+| Variable             | Description                                                                     | Default       |
+| :------------------- | :------------------------------------------------------------------------------ | :------------ |
+| `VITE_APP_NAME`      | Application identifier (do not change)                                          | `"tropocine"` |
+| `VITE_DATA_PROVIDER` | Active data provider plugin                                                     | `"tmdb"`      |
+| `VITE_CURRENCY`      | Currency symbol displayed for prices                                            | `€`           |
+| `VITE_TMDB_LIST_ID`  | Your TMDB list ID or URL slug (e.g. `8691537` or `8691537-ma-liste`)            | _(Required)_  |
+| `TMDB_TOKEN`         | Your TMDB Bearer token with write access _(No `VITE_` prefix to prevent leaks)_ | _(Required)_  |
 
 > **Security Note**: `TMDB_TOKEN` does not have a `VITE_` prefix. During local development, the Vite dev server securely proxies requests to `/api/tmdb/` and injects this token. In production, your web server (Apache or Nginx) injects the Bearer token so your secret key is never exposed to client browsers.
+
+### TMDB Authorization & Write Permissions (Ratings, Prices & Shelf Locations)
+
+By default, TMDB developer API tokens provide read-only access. To allow TropoCine to save your personal ratings, purchasing prices, and physical shelf locations directly into your TMDB list item comments (format: `place: 12, note: 5, price: 14.99`), your token must be authorized with user write access.
+
+TropoCine includes an automated one-step authorization helper:
+
+1. Copy your **API Read Access Token (v4 auth)** from [TMDB Settings > API](https://www.themoviedb.org/settings/api) into your `.env` file (`TMDB_TOKEN="ey..."`).
+2. Run the interactive authorization script from the repository root:
+   ```bash
+   npm run auth:cine
+   ```
+   _(Or `npm run auth` directly from `apps/tropocine`)._
+3. The script automatically opens your browser to the TMDB approval page. Click **Approve**, then press **[Enter]** in your terminal.
+
+The script automatically exchanges the temporary request token for a permanent User Access Token and updates your `.env` file. Your token now has both read and write capabilities with zero manual payload manipulation.
+
+### LED Strips Configuration
+
+- **`VITE_SET_LEDS`**: Set to `"yes"` to enable IoT LED communication.
+- **`VITE_LED_TARGET`**: HTTP URL of your microcontroller LED server (e.g., `http://127.0.0.1:8000`).
+- **`VITE_LEDS_CREATORS_COLOR`**: RGB color for directors/actors filter layer (default: `0,0,130`).
+- **`VITE_LEDS_CATEGORIES_COLOR`**: RGB color for genres filter layer (default: `0,150,0`).
+- **`VITE_LEDS_WORK_COLOR`**: RGB color for focused movie modal (default: `255,0,0`).
+
+> 💡 **Hardware Setup & Wiring**:
+> To assemble, flash, and connect your physical shelf LED controller, see the [ESP32 LED Controller Firmware Guide](../../firmware/led-controller/README.md) and the [Official Wiring Diagram (SVG)](../../firmware/led-controller/wiring-diagram.svg).
 
 ---
 
@@ -128,7 +157,7 @@ _(This generates optimized static files in `apps/tropocine/build/`, along with `
 
     SSLProxyEngine On
 
-    # Static files and SPA routing (.htaccess)
+    # Static files and .htaccess support
     <Directory /var/www/tropoatlas/apps/tropocine/build>
         Options Indexes FollowSymLinks
         AllowOverride All
@@ -144,13 +173,27 @@ _(This generates optimized static files in `apps/tropocine/build/`, along with `
         ProxyPassReverse https://api.themoviedb.org/
     </Location>
 
-    # TMDB Image Proxy (CORS bypass for client-side ZIP export)
+    # TMDB Artwork Image Proxy (CORS bypass for client-side ZIP export)
     <Location /api/tmdb-image/>
         IncludeOptional /var/www/tropoatlas/apps/tropocine/build/headers.conf
         Header set Access-Control-Allow-Origin "*"
         ProxyPreserveHost Off
         ProxyPass https://image.tmdb.org/
         ProxyPassReverse https://image.tmdb.org/
+    </Location>
+
+    # (Optional) LED Server Proxy
+    <Location /api/leds>
+        ProxyPass http://127.0.0.1:8000/leds
+        ProxyPassReverse http://127.0.0.1:8000/leds
+    </Location>
+    <Location /api/ruler>
+        ProxyPass http://127.0.0.1:8000/ruler
+        ProxyPassReverse http://127.0.0.1:8000/ruler
+    </Location>
+    <Location /api/ping>
+        ProxyPass http://127.0.0.1:8000/ping
+        ProxyPassReverse http://127.0.0.1:8000/ping
     </Location>
 </VirtualHost>
 ```
