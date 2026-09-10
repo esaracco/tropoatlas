@@ -81,8 +81,11 @@ describe("TMDBPlugin - image proxying and devMode", () => {
 })
 
 describe("TMDBPlugin - getPreservedKeys", () => {
-  it("should return syncedListId", () => {
+  it("should return syncedListId and customFieldsInfo", () => {
     const plugin = new TMDBPlugin()
-    expect(plugin.getPreservedKeys()).toEqual(["syncedListId"])
+    expect(plugin.getPreservedKeys()).toEqual([
+      "syncedListId",
+      "customFieldsInfo",
+    ])
   })
 })

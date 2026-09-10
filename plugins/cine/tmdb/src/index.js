@@ -42,10 +42,6 @@ export class TMDBPlugin extends BasePlugin {
     }
   }
 
-  getPreservedKeys() {
-    return ["syncedListId"]
-  }
-
   validateSettings(onConfigError) {
     const id = this.cleanListId(this.listId)
     if (!id) {
@@ -123,42 +119,74 @@ export class TMDBPlugin extends BasePlugin {
     }
   }
 
-  // Fetch list contents across v4 or v3
+  // Extract a tagged value from a freeform comment string
+  #extractTag(commentText, tag) {
+    if (!commentText || !tag) return undefined
+    const cleanTag = tag.trim().replace(/[.*+?^${}()|[\]\\]/g, "\\$&")
+    // Match "tag: value" bounded by newlines, delimiters or following tags
+    const regex = new RegExp(
+      `(?:^|[\\r\\n;,|])\\s*${cleanTag}:\\s*([^\\r\\n;|]+?)(?=\\s*[,;]?\\s*[\\w-]+:\\s*|[\\r\\n;|]|$)`,
+      "i",
+    )
+    const match = commentText.match(regex)
+    return match ? match[1].trim() : undefined
+  }
+
+  // Update, append, or remove a tagged value in a comment string
+  #updateTag(commentText, tag, value) {
+    if (!tag) return commentText
+    const cleanTag = tag.trim().replace(/[.*+?^${}()|[\]\\]/g, "\\$&")
+    const regex = new RegExp(
+      `(?:^|[\\r\\n;,|])\\s*${cleanTag}:\\s*([^\\r\\n;|]+?)(?=\\s*[,;]?\\s*[\\w-]+:\\s*|[\\r\\n;|]|$)`,
+      "i",
+    )
+    if (value === undefined || value === null || value === "") {
+      return (commentText || "")
+        .replace(regex, "")
+        .replace(/^[\r\n;,|\s]+|[\r\n;,|\s]+$/g, "")
+    }
+    const tagFormatted = `${tag}: ${value}`
+    if (regex.test(commentText || "")) {
+      return (commentText || "").replace(regex, (match) => {
+        const firstChar = match.charAt(0)
+        const prefix = /[\r\n;,|]/.test(firstChar) ? firstChar + " " : ""
+        return `${prefix}${tagFormatted}`
+      })
+    }
+    const trimmed = (commentText || "").trim()
+    if (!trimmed) return tagFormatted
+    const separator = /[\r\n;,|]$/.test(trimmed) ? " " : ", "
+    return `${trimmed}${separator}${tagFormatted}`
+  }
+
+  // Fetch list contents, returning items array and comments map
   async #fetchListItems(cleanId, language = "fr-FR") {
     const items = []
+    const comments = {}
     let page = 1
     let totalPages = 1
 
     while (page <= totalPages) {
-      try {
-        // Attempt TMDB v4 list first
-        const v4Data = await this.#request(
-          `4/list/${cleanId}`,
-          `page=${page}&language=${language}`,
-        )
-        if (v4Data && Array.isArray(v4Data.results)) {
-          items.push(...v4Data.results)
-          totalPages = v4Data.total_pages || 1
-          page++
-          continue
+      // Bust CDN cache with unique timestamp
+      const nocache = Date.now()
+      const data = await this.#request(
+        `4/list/${cleanId}`,
+        `page=${page}&language=${language}&nocache=${nocache}`,
+      )
+      if (data && Array.isArray(data.results)) {
+        items.push(...data.results)
+        // Merge comments from each page into a single map
+        if (data.comments && typeof data.comments === "object") {
+          Object.assign(comments, data.comments)
         }
-      } catch {
-        // Fallback to TMDB v3 list
-        const v3Data = await this.#request(
-          `3/list/${cleanId}`,
-          `page=${page}&language=${language}`,
-        )
-        if (v3Data && Array.isArray(v3Data.items)) {
-          items.push(...v3Data.items)
-          totalPages = v3Data.total_pages || 1
-          page++
-          continue
-        }
+        totalPages = data.total_pages || 1
+        page++
+      } else {
         break
       }
     }
 
-    return items
+    return { items, comments }
   }
 
   // Fetch movie credits, director, cast, runtime, overview
@@ -202,7 +230,7 @@ export class TMDBPlugin extends BasePlugin {
     const genreMap = await this.#fetchGenreMap()
     if (onProgress) onProgress(10)
 
-    const rawMovies = await this.#fetchListItems(cleanId)
+    const { items: rawMovies, comments } = await this.#fetchListItems(cleanId)
     if (onProgress) onProgress(20)
 
     const total = rawMovies.length
@@ -267,6 +295,30 @@ export class TMDBPlugin extends BasePlugin {
       const castString = cast.join(" ")
       const searchIndex = `${cleanDirector.replace(/\s/g, "-")}_${cleanTitle.replace(/\s/g, "-")}_${normalize(cleanDirector)}_${normalize(cleanTitle)}_${normalize(castString)}`
 
+      // Extract custom fields from the TMDB comment (format: "place: 5, note: 4")
+      const mediaType = movie.media_type || "movie"
+      const commentKey = `${mediaType}:${movie.id}`
+      const commentText = comments[commentKey] || ""
+
+      const placeVal = this.#extractTag(commentText, "place")
+      const placeMatch = placeVal?.match(/(\d+)/)
+      const place = placeMatch ? placeMatch[1] : undefined
+
+      const price = this.#extractTag(commentText, "price")
+
+      const noteVal = this.#extractTag(commentText, "note")
+      const noteMatch = noteVal?.match(/(\d+)/)
+      // User personal rating (1-5 stars) from comment tag, 0 if unrated
+      const rating = noteMatch
+        ? Math.min(5, Math.max(0, parseInt(noteMatch[1], 10)))
+        : 0
+
+      // TMDB community score (0-10)
+      const voteAverage =
+        typeof movie.vote_average === "number" && movie.vote_average > 0
+          ? Math.round(movie.vote_average * 10) / 10
+          : undefined
+
       collection[movie.id] = {
         id: movie.id,
         title: cleanTitle,
@@ -275,13 +327,18 @@ export class TMDBPlugin extends BasePlugin {
         cover: coverUrl,
         backdrop: backdropUrl,
         categories,
-        rating: movie.vote_average ? Math.round(movie.vote_average / 2) : 0,
+        rating,
+        vote_average: voteAverage,
         format: "Film",
         runtime,
         overview,
         cast,
         searchIndex,
         added: i,
+        // Custom fields from TMDB comment
+        place,
+        price,
+        comment: commentText || undefined,
       }
 
       currentProgress += progressStep
@@ -349,5 +406,67 @@ export class TMDBPlugin extends BasePlugin {
 
   getDefaultSort() {
     return "added_desc"
+  }
+
+  getPreservedKeys() {
+    return ["syncedListId", "customFieldsInfo"]
+  }
+
+  async getCustomFieldsInfo() {
+    return {
+      supportsPlace: true,
+      supportsPrice: true,
+      supportsRating: true,
+      // Categories are not editable via TMDB comment in this version
+      supportsCategories: false,
+    }
+  }
+
+  // Write custom fields back to TMDB by updating the item comment
+  async updateItem(item, changes) {
+    const cleanId = this.cleanListId(this.listId)
+    if (!cleanId) {
+      throw new Error("No valid TMDB list ID configured.")
+    }
+
+    const { rating, place, price } = changes
+    let commentText = item.comment || ""
+
+    if (place !== undefined) {
+      commentText = this.#updateTag(commentText, "place", place)
+    }
+    if (price !== undefined) {
+      commentText = this.#updateTag(commentText, "price", price)
+    }
+    if (rating !== undefined) {
+      commentText = this.#updateTag(
+        commentText,
+        "note",
+        rating > 0 ? rating : "",
+      )
+    }
+
+    const mediaType = item.media_type || "movie"
+    const url = `${this.apiBase}/4/list/${cleanId}/items`
+    const res = await fetch(url, {
+      method: "PUT",
+      headers: { "content-type": "application/json;charset=utf-8" },
+      body: JSON.stringify({
+        items: [
+          { media_type: mediaType, media_id: item.id, comment: commentText },
+        ],
+      }),
+    })
+
+    if (!res.ok) {
+      throw new Error(
+        t("TMDB API error ({{status}}): could not save item.", {
+          status: res.status,
+        }),
+      )
+    }
+
+    // Return the updated item fields so the store can be patched locally
+    return { comment: commentText || undefined, place, price, rating }
   }
 }
