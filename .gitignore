@@ -10,6 +10,8 @@
 .env.production.local
 
 _*.txt
+TODO.*
+FIXME.*
 *.sh
 .*.swp
 *~

@@ -19,6 +19,7 @@
     "build:cine": "npm run build -w apps/tropocine",
     "build:biblio": "npm run build -w apps/tropobiblio",
     "build": "npm run build:audio && npm run build:cine && npm run build:biblio",
+    "auth:cine": "npm run auth -w apps/tropocine",
     "test": "vitest run",
     "lint": "./node_modules/.bin/eslint apps/ packages/ plugins/",
     "lint-fix": "./node_modules/.bin/eslint --fix apps/ packages/ plugins/",
