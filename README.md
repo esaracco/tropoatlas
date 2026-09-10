@@ -16,11 +16,11 @@
 
 TropoAtlas provides dedicated, tailored collection managers for different physical and digital media:
 
-| Application | Status | Focus / Formats | Documentation |
-| :--- | :--- | :--- | :--- |
-| 🎵 **[TropoAudio](apps/tropoaudio)** | **Active** | Vinyl records, CDs, Cassettes, Discogs sync, audio library LED locator | [apps/tropoaudio/README.md](apps/tropoaudio/README.md) · [Website](https://tropoaudio.esaracco.fr) |
-| 🎬 **[TropoCine](apps/tropocine)** | **Active** | Movies, series, TMDB list sync, directors & actors exploration | [apps/tropocine/README.md](apps/tropocine/README.md) · [Website](https://tropocine.esaracco.fr) |
-| 📚 **[TropoBiblio](apps/tropobiblio)** | **Active** | Books, comics, mangas, Inventaire.io sync, home library shelves LED locator | [apps/tropobiblio/README.md](apps/tropobiblio/README.md) · [Website](https://tropobiblio.esaracco.fr) |
+| Application | Focus / Formats | Documentation |
+| :--- | :--- | :--- |
+| 🎵 **[TropoAudio](apps/tropoaudio)** | Discogs sync, Vinyl records, CDs | [apps/tropoaudio/README.md](apps/tropoaudio/README.md) · [Website](https://tropoaudio.esaracco.fr) |
+| 🎬 **[TropoCine](apps/tropocine)** | TMDB list sync, DVDs, Blu-rays | [apps/tropocine/README.md](apps/tropocine/README.md) · [Website](https://tropocine.esaracco.fr) |
+| 📚 **[TropoBiblio](apps/tropobiblio)** | Inventaire.io sync, Books, Comics | [apps/tropobiblio/README.md](apps/tropobiblio/README.md) · [Website](https://tropobiblio.esaracco.fr) |
 
 ---
 

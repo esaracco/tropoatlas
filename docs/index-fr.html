@@ -16,7 +16,7 @@
     />
     <meta
       name="keywords"
-      content="TropoAtlas, TropoAudio, TropoCine, TropoBiblio, gestionnaire de collection, vinyles, collection de films, livres, étagères connectées, ESP32, WS2812B, repérage bandeau LED, Discogs, TMDB, Inventaire, monorepo React, logiciel libre, GPLv3"
+      content="TropoAtlas, TropoAudio, TropoCine, TropoBiblio, gestionnaire de collection, vinyles, collection de films, livres, étagères connectées, ESP32, WS2812B, repérage bandeau LED, Discogs, TMDB, Inventaire.io, monorepo React, logiciel libre, GPLv3"
     />
     <meta name="author" content="Emmanuel Saracco" />
     <meta name="robots" content="index, follow" />
@@ -332,8 +332,7 @@
             <span class="section-tag">Suite d'Applications</span>
             <h2 class="section-title">Des gestionnaires conçus sur-mesure pour chaque média</h2>
             <p class="section-description">
-              Chaque application de la suite Tropo<span class="brand-text-atlas">Atlas</span> est spécifiquement adaptée aux nuances
-              de son support, tout en partageant le même cœur robuste, design system et pilotes matériels.
+              Chaque application de la suite Tropo<span class="brand-text-atlas">Atlas</span> est conçue pour répondre aux spécificités de son support, tout en s’appuyant sur un design system cohérent et un socle robuste.
             </p>
           </div>
 
@@ -354,13 +353,11 @@
                     <sup class="app-domain-emoji" aria-hidden="true">🎵</sup>
                   </h3>
                 </div>
-                <span class="badge badge-active">Actif</span>
               </div>
 
               <div class="app-badges">
                 <span class="badge badge-audio">Vinyles & CDs</span>
                 <span class="badge badge-audio">Synchro Discogs</span>
-                <span class="badge badge-active">Repérage LED actif</span>
               </div>
 
               <div class="app-preview-box">
@@ -426,13 +423,11 @@
                     <sup class="app-domain-emoji" aria-hidden="true">🎬</sup>
                   </h3>
                 </div>
-                <span class="badge badge-active">Actif</span>
               </div>
 
               <div class="app-badges">
-                <span class="badge badge-cine">Films</span>
+                <span class="badge badge-cine">DVDs et Blu-rays</span>
                 <span class="badge badge-cine">Synchro TMDB</span>
-                <span class="badge badge-roadmap">Repérage LED prévu</span>
               </div>
 
               <div class="app-preview-box">
@@ -446,7 +441,7 @@
 
               <p class="app-description">
                 Gestionnaire de films pour cinéphiles passionnés. Synchronisez vos films
-                et listes depuis TMDB, naviguez parmi les réalisateurs et le casting complet, et explorez votre cinémathèque.
+                et listes depuis TMDB, et repérez rapidement vos DVDs et Blu-rays sur vos étagères.
               </p>
 
               <ul class="app-features-list">
@@ -454,10 +449,10 @@
 		Recherche instantanée, tris et filtres multicritères par réalisateurs, acteurs et genres
                 </li>
                 <li class="app-feature-item app-feature-item-cine">
-                  Exploration approfondie des réalisateurs, acteurs et filmographies complètes
+                  Métadonnées personnalisées (emplacement physique, prix et notation)
                 </li>
                 <li class="app-feature-item app-feature-item-cine">
-                  Repérage physique par LED en temps réel prévu sur la roadmap
+                  Repérage physique par LED en temps réel
                 </li>
               </ul>
 
@@ -499,13 +494,11 @@
                     <sup class="app-domain-emoji" aria-hidden="true">📚</sup>
                   </h3>
                 </div>
-                <span class="badge badge-active">Actif</span>
               </div>
 
               <div class="app-badges">
                 <span class="badge badge-biblio">Livres</span>
-                <span class="badge badge-biblio">Synchro Inventaire</span>
-                <span class="badge badge-active">Repérage LED actif</span>
+                <span class="badge badge-biblio">Synchro Inventaire.io</span>
               </div>
 
               <div class="app-preview-box">
@@ -518,7 +511,7 @@
               </div>
 
               <p class="app-description">
-                Gestionnaire de bibliothèque pour lecteurs passionnés. Synchronisez vos livres depuis Inventaire.io, explorez auteurs et genres, et localisez vos ouvrages en temps réel sur vos étagères.
+                Gestionnaire de bibliothèque pour lecteurs passionnés. Synchronisez vos livres depuis Inventaire.io, et localisez vos ouvrages en temps réel sur vos étagères.
               </p>
 
               <ul class="app-features-list">
@@ -574,8 +567,7 @@
             <div class="hardware-info">
               <h3 class="hardware-title">Retrouvez vos œuvres en un clin d'œil</h3>
               <p class="hardware-desc">
-                Des bandeaux LED adressables fixés le long de vos étagères illuminent l'emplacement exact
-                correspondant aux oeuvres sélectionnées ou aux filtres actifs. Fini les recherches fastidieuses sur les tranches&nbsp;!
+                Des bandeaux LED adressables fixés le long de vos étagères illuminent les emplacements correspondant aux œuvres sélectionnées ou aux filtres actifs. Fini les recherches fastidieuses sur les tranches&nbsp;!
               </p>
 
               <ul class="hardware-list">
@@ -587,15 +579,10 @@
                   <span class="hardware-bullet">2</span>
                   <span><strong>Pilote matériel centralisé :</strong> Package partagé autonome (<code class="code-inline">@tropo/leds</code>) orchestrant les couleurs, luminosités et effets de clignotement.</span>
                 </li>
-                <li class="hardware-list-item">
-                  <span class="hardware-bullet">3</span>
-                  <span><strong>État actuel :</strong> Actif et pleinement opérationnel dans <strong>TropoAudio</strong> (vinyles, CDs) et <strong>TropoBiblio</strong> (livres), et conçu pour s'étendre aux supports physiques de films (TropoCine).</span>
-                </li>
               </ul>
-
               <div class="hardware-note">
                 <p>
-                  💡 <strong>Conçu pour les Makers :</strong> L'ensemble du code source du firmware et les schémas de câblage sont libres et inclus dans le dépôt, prêts à être téléversés sur un microcontrôleur ESP32 bon marché.
+                  💡 <strong>Conçu pour les Makers :</strong> L'ensemble du code source du firmware et les schémas de câblage sont libres et inclus dans le dépôt, prêts à être téléversés sur un microcontrôleur ESP32.
                 </p>
                 <div class="hardware-note-link">
                   <a
@@ -711,7 +698,7 @@
               <span class="pillar-icon">🔌</span>
               <h3 class="pillar-title">Architecture de plugins</h3>
               <p class="pillar-desc">
-                Les fournisseurs de données (Discogs, TMDB, Inventaire) sont isolés dans des plugins de domaine,
+                Les fournisseurs de données (Discogs, TMDB, Inventaire.io) sont isolés dans des plugins de domaine,
                 préservant l'indépendance totale des interfaces.
               </p>
             </article>
@@ -725,17 +712,17 @@
             </div>
             <pre class="tree-content"><code>tropoatlas/
 ├── <span class="tree-highlight">apps/</span>
-│   ├── <span class="tree-highlight">tropoaudio/</span>          <span class="tree-comment"># Gestionnaire de musique (Discogs, repérage étagères LED)</span>
-│   ├── <span class="tree-highlight">tropocine/</span>           <span class="tree-comment"># Gestionnaire de films (TMDB, casting & réalisateurs)</span>
-│   └── <span class="tree-highlight">tropobiblio/</span>         <span class="tree-comment"># Gestionnaire de livres (Inventaire, repérage étagères LED)</span>
+│   ├── <span class="tree-highlight">tropoaudio/</span>          <span class="tree-comment"># Gestionnaire de musique (Discogs, repérage LED)</span>
+│   ├── <span class="tree-highlight">tropocine/</span>           <span class="tree-comment"># Gestionnaire de films (TMDB, casting & réalisateurs, repérage LED)</span>
+│   └── <span class="tree-highlight">tropobiblio/</span>         <span class="tree-comment"># Gestionnaire de livres (Inventaire.io, repérage LED)</span>
 ├── <span class="tree-highlight">packages/</span>
 │   ├── <span class="tree-highlight">core/</span>                <span class="tree-comment"># Abstraction stockage, store Zustand, export/sauvegarde</span>
 │   ├── <span class="tree-highlight">react/</span>               <span class="tree-comment"># Modales partagées, design tokens, composants UI</span>
-│   └── <span class="tree-highlight">leds/</span>                <span class="tree-comment"># Client HTTP autonome pour bandeaux LED adressables ESP32</span>
+│   └── <span class="tree-highlight">leds/</span>                <span class="tree-comment"># Client HTTP autonome pour bandeaux LED adressables</span>
 ├── <span class="tree-highlight">plugins/</span>
 │   ├── audio/discogs/       <span class="tree-comment"># Fournisseur de données API Discogs (@tropo/discogs)</span>
 │   ├── cine/tmdb/           <span class="tree-comment"># Fournisseur de données API TMDB (@tropo/tmdb)</span>
-│   └── biblio/inventaire/   <span class="tree-comment"># Fournisseur de données API Inventaire (@tropo/inventaire)</span>
+│   └── biblio/inventaire/   <span class="tree-comment"># Fournisseur de données API Inventaire.io (@tropo/inventaire)</span>
 └── <span class="tree-highlight">firmware/</span>
     └── led-controller/      <span class="tree-comment"># Firmware C++ ESP32-S3 Mini pour bandeaux LED WS2812B</span></code></pre>
           </div>
@@ -823,10 +810,10 @@
               <a href="https://tropoaudio.esaracco.fr" class="footer-nav-link">TropoAudio</a>
             </li>
             <li>
-              <a href="https://tropocine.esaracco.fr" class="footer-nav-link">TropoCine</a>
+              <a href="https://tropobiblio.esaracco.fr" class="footer-nav-link">TropoBiblio</a>
             </li>
             <li>
-              <a href="https://tropobiblio.esaracco.fr" class="footer-nav-link">TropoBiblio</a>
+              <a href="https://tropocine.esaracco.fr" class="footer-nav-link">TropoCine</a>
             </li>
             <li>
               <a
