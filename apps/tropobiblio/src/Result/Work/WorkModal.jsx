@@ -347,9 +347,38 @@ const WorkModal = ({ instanceId, onClose }) => {
                 <div className="work-details">
                   {work.year ? work.year + " – " : ""}
                   <strong>{work.title}</strong>
-                  {work.subtitle && (
-                    <div className="work-subtitle">{work.subtitle}</div>
+                  {work.subtitle ? <div>{work.subtitle}</div> : <div />}
+                  {work.pageCount && (
+                    <span className="work-secondary-info">
+                      {work.pageCount} {t("pages")}
+                    </span>
                   )}
+                  {work.publisher ? (
+                    work.pageCount ? (
+                      <span className="work-secondary-info">
+                        {" "}
+                        ({work.publisher})
+                      </span>
+                    ) : (
+                      <div className="work-secondary-info">
+                        {work.publisher}
+                      </div>
+                    )
+                  ) : (
+                    <div />
+                  )}
+                  <div style={{ color: "var(--tropo-text)" }}>
+                    {work.isbn &&
+                    !work.isbn.startsWith("inv:") &&
+                    !work.isbn.startsWith("wd:") ? (
+                      work.isbn
+                    ) : (
+                      <span className="text-muted fst-italic">
+                        {t("No ISBN for this edition")}
+                      </span>
+                    )}
+                  </div>
+
                   {count > 1 && (
                     <div>
                       <a
@@ -448,32 +477,6 @@ const WorkModal = ({ instanceId, onClose }) => {
                   </td>
                 </tr>
               )}
-              {work.publisher && (
-                <tr>
-                  <th>{t("Publisher")}</th>
-                  <td>{work.publisher}</td>
-                </tr>
-              )}
-              {work.pageCount && (
-                <tr>
-                  <th>{t("Pages")}</th>
-                  <td>{work.pageCount}</td>
-                </tr>
-              )}
-              <tr>
-                <th>{t("ISBN")}</th>
-                <td>
-                  {work.isbn &&
-                  !work.isbn.startsWith("inv:") &&
-                  !work.isbn.startsWith("wd:") ? (
-                    work.isbn
-                  ) : (
-                    <span className="text-muted fst-italic">
-                      {t("No ISBN for this edition")}
-                    </span>
-                  )}
-                </td>
-              </tr>
             </tbody>
           </Table>
           {haveCustomFields && <hr />}

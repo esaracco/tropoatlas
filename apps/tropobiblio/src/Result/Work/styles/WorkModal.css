@@ -35,11 +35,10 @@
   margin-top: 2px;
 }
 
-.WorkModal .work-subtitle {
-  font-size: 0.85rem;
+.WorkModal .work-details .work-secondary-info {
+  font-size: 0.8rem;
+  color: var(--tropo-text);
   font-style: italic;
-  color: var(--tropo-text-muted);
-  margin-top: 2px;
 }
 
 .WorkModal .modal-header-content {
