@@ -16,7 +16,7 @@ if (providerName === "discogs") {
 export const plugin = new PluginClass({
   env: import.meta.env,
   apiBase: `/api/${providerName}`,
-  devMode: Settings.env === "development",
+  devMode: import.meta.env.VITE_DEV_MODE === "yes",
 })
 
 // i18n static analyzer hints for dynamically translated plugin messages

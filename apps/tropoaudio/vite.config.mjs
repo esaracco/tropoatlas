@@ -36,24 +36,7 @@ export default defineConfig(({ mode }) => {
     }
   }
 
-  if (env.DISCOGS_TOKEN) {
-    const token = env.DISCOGS_TOKEN
-    proxy["/api/discogs"] = {
-      target: "https://api.discogs.com",
-      changeOrigin: true,
-      rewrite: (path) => path.replace(/^\/api\/discogs/, ""),
-      headers: {
-        Authorization: `Discogs token=${token}`,
-        "User-Agent": userAgent,
-      },
-      configure: (proxyServer) => {
-        proxyServer.on("proxyRes", (proxyRes) => {
-          delete proxyRes.headers["set-cookie"]
-        })
-      },
-    }
-  }
-
+  // Proxy for Discogs images (declared first to avoid prefix collision)
   proxy["/api/discogs-image"] = {
     target: "https://i.discogs.com",
     changeOrigin: true,
@@ -67,6 +50,25 @@ export default defineConfig(({ mode }) => {
         proxyRes.headers["access-control-allow-origin"] = "*"
       })
     },
+  }
+
+  // Proxy for Discogs API
+  if (env.DISCOGS_TOKEN) {
+    const token = env.DISCOGS_TOKEN
+    proxy["^/api/discogs(/|$)"] = {
+      target: "https://api.discogs.com",
+      changeOrigin: true,
+      rewrite: (path) => path.replace(/^\/api\/discogs/, ""),
+      headers: {
+        Authorization: `Discogs token=${token}`,
+        "User-Agent": userAgent,
+      },
+      configure: (proxyServer) => {
+        proxyServer.on("proxyRes", (proxyRes) => {
+          delete proxyRes.headers["set-cookie"]
+        })
+      },
+    }
   }
 
   // Image proxy middleware to bypass CORS for client-side ZIP export

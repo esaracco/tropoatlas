@@ -32,7 +32,7 @@ import {
 } from "../../provider"
 import * as Settings from "../../utils/settings"
 
-import vinylImg from "../../assets/vinyl.png"
+import workPlaceholder from "../../assets/album.svg"
 
 import "./styles/WorkModal.css"
 
@@ -370,7 +370,7 @@ const WorkModal = ({ instanceId, onClose }) => {
                   onClick={handleIGClick}
                   showPlayButton={false}
                   showThumbnails={false}
-                  items={[{ original: release.cover || vinylImg }]}
+                  items={[{ original: release.cover || workPlaceholder }]}
                 />
               </div>
               <div className="modal-header-info">

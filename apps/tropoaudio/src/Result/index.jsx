@@ -15,7 +15,7 @@ import { useTranslation } from "react-i18next"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faSync } from "@fortawesome/free-solid-svg-icons"
 
-import vinylImg from "../assets/vinyl.png"
+import workPlaceholder from "../assets/album.svg"
 
 import "./Result.css"
 
@@ -366,7 +366,7 @@ const Result = () => {
                 key={item.id}
                 setActiveInstanceId={setActiveInstanceId}
                 instanceid={item.id}
-                img={item.cover || vinylImg}
+                img={item.cover || workPlaceholder}
                 cardWidth={cardWidth}
                 creator={item.creator}
                 year={item.year}
