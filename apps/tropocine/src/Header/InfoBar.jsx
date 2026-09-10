@@ -43,7 +43,7 @@ const InfoBar = () => {
             label = t("Title")
             break
           case "rating":
-            label = t("Public rating")
+            label = t("My rating")
             break
           case "year":
             label = t("Year")

@@ -73,4 +73,15 @@ server {
 
         proxy_pass https://$image_host$image_path;
     }
+
+    # (Optional) LED Server Proxy
+    location /api/leds {
+        proxy_pass http://127.0.0.1:8000/leds;
+    }
+    location /api/ruler {
+        proxy_pass http://127.0.0.1:8000/ruler;
+    }
+    location /api/ping {
+        proxy_pass http://127.0.0.1:8000/ping;
+    }
 }

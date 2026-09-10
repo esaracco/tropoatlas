@@ -6,6 +6,8 @@ import { useScrollbarWidth, useWindowWidth, ScrollButton } from "@tropo/react"
 import { useTranslation } from "react-i18next"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faSync } from "@fortawesome/free-solid-svg-icons"
+import { ledsClient } from "../utils/leds"
+import * as Settings from "../utils/settings"
 
 import Work from "./Work"
 import WorkModal from "./Work/WorkModal"
@@ -37,6 +39,8 @@ const Result = () => {
   const isSyncing = useAppStore((s) => s.isSyncing)
   const progress = useAppStore((s) => s.progress)
   const setDisplayCount = useAppStore((s) => s.setDisplayCount)
+  const fromRuler = useAppStore((s) => s.fromRuler)
+  const setFromRuler = useAppStore((s) => s.setFromRuler)
   const scrollbarWidth = useScrollbarWidth()
   const virtuosoRef = useRef(null)
   const scrollerRef = useRef(null)
@@ -50,6 +54,9 @@ const Result = () => {
   const sort = useCollectionStore((s) => s.sort)
   const winWidth = useWindowWidth(0)
 
+  const _setLeds = Settings.setLeds === "yes"
+  const turnOffLeds = useRef(false)
+
   // Calculate dynamic responsive card width for grid layout
   const calculateCardWidth = () => {
     const thresholds = [300, 400, 600, 800, 1000, 1200]
@@ -60,7 +67,13 @@ const Result = () => {
   }
 
   // Memoized filtering and sorting
-  const { result, availableCategories, availableCreators } = useMemo(() => {
+  const {
+    result,
+    placesCategories,
+    placesCreators,
+    availableCategories,
+    availableCreators,
+  } = useMemo(() => {
     const keys = Object.keys(releases || {})
     const result = []
     const search = normalize(searchStr)
@@ -70,6 +83,8 @@ const Result = () => {
 
     const fCategories = new Set()
     const fCreators = new Set()
+    const placesCategories = new Set()
+    const placesCreators = new Set()
 
     // sort
     const [sortField, sortDir] = (sort || "added_desc").split("_")
@@ -80,6 +95,13 @@ const Result = () => {
         keys.sort(
           (a, b) => ((releases[a].added || 0) - (releases[b].added || 0)) * mul,
         )
+        break
+      case "place":
+        keys.sort((a, b) => {
+          const pA = parseInt(releases[a].place, 10) || 0
+          const pB = parseInt(releases[b].place, 10) || 0
+          return (pA - pB) * mul
+        })
         break
       case "rating":
         keys.sort((a, b) => {
@@ -144,6 +166,8 @@ const Result = () => {
         sCreatorsLen === 0 ||
         selected.creators.some((person) => moviePeople.includes(person))
 
+      const hasPlace = _setLeds && r.place && String(r.place).match(/^\d+$/)
+
       if (matchPeople) {
         ;(r.categories || []).forEach((c) => fCategories.add(c))
       }
@@ -155,14 +179,33 @@ const Result = () => {
       if (matchCategory && matchPeople) {
         result.push(r)
       }
+
+      if (hasPlace) {
+        if (
+          sCategoriesLen > 0 &&
+          selected.categories.some((item) =>
+            (r.categories || []).includes(item),
+          )
+        ) {
+          placesCategories.add(r.place)
+        }
+        if (sCreatorsLen > 0 && matchPeople) {
+          placesCreators.add(r.place)
+        }
+      }
     }
 
     return {
       result,
+      placesCategories: Array.from(placesCategories),
+      placesCreators: Array.from(placesCreators),
       availableCategories: Array.from(fCategories).sort(),
       availableCreators: Array.from(fCreators).sort(),
     }
-  }, [searchStr, releases, selected, sort])
+  }, [_setLeds, searchStr, releases, selected, sort])
+
+  const placesCategoriesStr = placesCategories.join(",")
+  const placesCreatorsStr = placesCreators.join(",")
 
   // Update store state
   useEffect(() => {
@@ -178,14 +221,100 @@ const Result = () => {
     setCreators,
   ])
 
+  // Central LED orchestration watcher
+  useEffect(() => {
+    if (!_setLeds) return
+
+    const manageLeds = async () => {
+      const hasCategories = placesCategories.length > 0
+      const hasCreators = placesCreators.length > 0
+      const activeRelease = activeInstanceId ? releases[activeInstanceId] : null
+      const hasModal = Boolean(
+        activeInstanceId && activeRelease && activeRelease.place,
+      )
+
+      if (hasCategories || hasCreators || hasModal) {
+        turnOffLeds.current = true
+        let hasLit = false
+        const ledCommands = []
+
+        // 1. Categories: Lowest priority, drawn first, background intensity
+        if (hasCategories) {
+          ledCommands.push({
+            place: placesCategories,
+            color: Settings.getLedsCategoriesColor(),
+            intensity: 0.05,
+            noreset: hasLit,
+          })
+          hasLit = true
+        }
+
+        // 2. Creators: Medium priority, drawn second, medium intensity
+        if (hasCreators) {
+          ledCommands.push({
+            place: placesCreators,
+            color: Settings.getLedsCreatorsColor(),
+            intensity: 0.5,
+            noreset: hasLit,
+          })
+          hasLit = true
+        }
+
+        // 3. Modal: Highest priority, drawn last, high intensity with blink
+        if (hasModal) {
+          ledCommands.push({
+            place: activeRelease.place,
+            color: Settings.getLedsWorkColor(),
+            intensity: 1.0,
+            blink: true,
+            noreset: hasLit,
+          })
+          hasLit = true
+        }
+
+        if (ledCommands.length > 0) {
+          try {
+            await ledsClient.setLeds(ledCommands)
+          } catch {
+            // Handled by ledsClient.onError
+          }
+        }
+      } else if (turnOffLeds.current) {
+        turnOffLeds.current = false
+        if (!fromRuler) {
+          try {
+            await ledsClient.setLeds()
+          } catch {
+            // Handled by ledsClient.onError
+          }
+        } else {
+          setFromRuler(false)
+        }
+      }
+    }
+
+    manageLeds()
+  }, [
+    _setLeds,
+    placesCategoriesStr,
+    placesCreatorsStr,
+    fromRuler,
+    setFromRuler,
+    activeInstanceId,
+    releases,
+  ])
+
   const cardWidth = calculateCardWidth()
 
   return (
     <>
-      <WorkModal
-        instanceId={activeInstanceId}
-        onClose={() => setActiveInstanceId(null)}
-      />
+      {activeInstanceId && (
+        <WorkModal
+          key={activeInstanceId}
+          instanceId={activeInstanceId}
+          onClose={() => setActiveInstanceId(null)}
+        />
+      )}
       <div className="Result">
         {isSyncing && (
           <div className="sync-overlay">

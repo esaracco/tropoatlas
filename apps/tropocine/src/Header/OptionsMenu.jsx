@@ -10,13 +10,16 @@ import {
   faLanguage,
   faDownload,
   faUpload,
+  faLightbulb,
 } from "@fortawesome/free-solid-svg-icons"
 import { ConfirmModal, ThemeSelector, LanguageSelector } from "@tropo/react"
 import { useAppStore, getItem } from "@tropo/core"
+import * as Settings from "../utils/settings"
 import { syncCollection } from "../utils/sync"
 import { plugin } from "../provider"
 import ExportBackupModal from "./ExportBackupModal"
 import ImportBackupModal from "./ImportBackupModal"
+import LedsModal from "./LedsModal"
 
 const OptionsMenu = () => {
   const { t } = useTranslation()
@@ -28,6 +31,7 @@ const OptionsMenu = () => {
   const [showSyncModal, setShowSyncModal] = useState(false)
   const [showExportModal, setShowExportModal] = useState(false)
   const [showImportModal, setShowImportModal] = useState(false)
+  const [showLedsModal, setShowLedsModal] = useState(false)
   const [forceRefresh, setForceRefresh] = useState(false)
 
   const currentCleanId = plugin.cleanListId(import.meta.env.VITE_TMDB_LIST_ID)
@@ -105,6 +109,13 @@ const OptionsMenu = () => {
         setIsBusy={setIsBackupBusy}
       />
 
+      {Settings.setLeds === "yes" && isOnline && (
+        <LedsModal
+          show={showLedsModal}
+          onHide={() => setShowLedsModal(false)}
+        />
+      )}
+
       <Dropdown align="end" className="options-menu-dropdown me-1">
         <Dropdown.Toggle
           variant="secondary"
@@ -128,6 +139,19 @@ const OptionsMenu = () => {
                 spin={isSyncing}
               />
               <span>{t("Sync collection")}</span>
+            </Dropdown.Item>
+          )}
+
+          {Settings.setLeds === "yes" && isOnline && (
+            <Dropdown.Item
+              onClick={() => setShowLedsModal(true)}
+              className="d-flex align-items-center gap-2 py-2"
+            >
+              <FontAwesomeIcon
+                icon={faLightbulb}
+                className="options-menu-icon"
+              />
+              <span>{t("Leds control")}</span>
             </Dropdown.Item>
           )}
 

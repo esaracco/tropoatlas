@@ -13,24 +13,30 @@ export default defineConfig(({ mode }) => {
 
   const proxy = {}
 
-  if (env.TMDB_TOKEN) {
-    const token = env.TMDB_TOKEN
-    proxy["/api/tmdb"] = {
-      target: "https://api.themoviedb.org",
+  // Proxy for hardware LEDs if configured
+  if (env.VITE_LED_TARGET) {
+    const ledProxyOptions = {
+      target: env.VITE_LED_TARGET,
       changeOrigin: true,
-      rewrite: (path) => path.replace(/^\/api\/tmdb/, ""),
       headers: {
-        Authorization: `Bearer ${token}`,
-        "User-Agent": userAgent,
+        Connection: "close",
       },
-      configure: (proxyServer) => {
-        proxyServer.on("proxyRes", (proxyRes) => {
-          delete proxyRes.headers["set-cookie"]
-        })
-      },
+    }
+    proxy["/api/leds"] = {
+      ...ledProxyOptions,
+      rewrite: (path) => path.replace(/^\/api\/leds/, "/leds"),
+    }
+    proxy["/api/ping"] = {
+      ...ledProxyOptions,
+      rewrite: (path) => path.replace(/^\/api\/ping/, "/ping"),
+    }
+    proxy["/api/ruler"] = {
+      ...ledProxyOptions,
+      rewrite: (path) => path.replace(/^\/api\/ruler/, "/ruler"),
     }
   }
 
+  // Proxy for TMDB images (declared first to avoid prefix collision)
   proxy["/api/tmdb-image"] = {
     target: "https://image.tmdb.org",
     changeOrigin: true,
@@ -44,6 +50,25 @@ export default defineConfig(({ mode }) => {
         proxyRes.headers["access-control-allow-origin"] = "*"
       })
     },
+  }
+
+  // Proxy for TMDB API
+  if (env.TMDB_TOKEN) {
+    const token = env.TMDB_TOKEN
+    proxy["^/api/tmdb(/|$)"] = {
+      target: "https://api.themoviedb.org",
+      changeOrigin: true,
+      rewrite: (path) => path.replace(/^\/api\/tmdb/, ""),
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "User-Agent": userAgent,
+      },
+      configure: (proxyServer) => {
+        proxyServer.on("proxyRes", (proxyRes) => {
+          delete proxyRes.headers["set-cookie"]
+        })
+      },
+    }
   }
 
   // Image proxy middleware to bypass CORS for client-side ZIP export
