@@ -1,3 +1,4 @@
+import { setItem } from "@tropo/core"
 import { TMDBPlugin } from "@tropo/tmdb"
 import i18n from "../i18n"
 import { toast } from "react-toastify"
@@ -14,7 +15,7 @@ if (providerName === "tmdb") {
 export const plugin = new PluginClass({
   env: import.meta.env,
   apiBase: `/api/${providerName}`,
-  devMode: import.meta.env.DEV || false,
+  devMode: import.meta.env.VITE_DEV_MODE === "yes",
 })
 
 export const validateProviderSettings = () => {
@@ -22,6 +23,14 @@ export const validateProviderSettings = () => {
     toast.error(i18n.t(msg, params), { autoClose: false })
   })
 }
+
+// Initialize provider custom fields info
+plugin
+  .getCustomFieldsInfo()
+  .then((info) => {
+    setItem("customFieldsInfo", info)
+  })
+  .catch((e) => toast.error(i18n.t(e.message), { autoClose: false }))
 
 export const getItemDetails = plugin.getItemDetails.bind(plugin)
 export const getItemImage = plugin.getItemImage.bind(plugin)
@@ -38,6 +47,15 @@ export const getImageProxyUrl = plugin.getImageProxyUrl
   ? plugin.getImageProxyUrl.bind(plugin)
   : (url) => url
 
+export const updateItem = plugin.updateItem.bind(plugin)
+export const getCustomFieldsInfo = plugin.getCustomFieldsInfo.bind(plugin)
+export const getDraftCapabilities = plugin.getDraftCapabilities
+  ? plugin.getDraftCapabilities.bind(plugin)
+  : () => ({})
+export const getCurrentConfig = plugin.getCurrentConfig
+  ? plugin.getCurrentConfig.bind(plugin)
+  : () => ({})
+
 const provider = {
   plugin,
   getItemDetails,
@@ -47,6 +65,10 @@ const provider = {
   getCreators,
   getProviderInfo,
   getMaxRequestsPerMinute,
+  updateItem,
+  getCustomFieldsInfo,
+  getDraftCapabilities,
+  getCurrentConfig,
 }
 
 export default provider

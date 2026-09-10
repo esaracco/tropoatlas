@@ -11,6 +11,8 @@ import i18n from "../i18n"
 import { plugin, getProviderInfo } from "../provider"
 
 export const syncCollection = async ({ forceRefresh = false } = {}) => {
+  if (useAppStore.getState().isSyncing) return
+
   const setIsSyncing = useAppStore.getState().setIsSyncing
   const setProgress = useAppStore.getState().setProgress
   const setItems = useCollectionStore.getState().setItems
@@ -70,6 +72,15 @@ export const syncCollection = async ({ forceRefresh = false } = {}) => {
     await setLargeItem("items", items)
     await setItem("categories", categories)
     await setItem("creators", creators)
+
+    if (plugin.getCustomFieldsInfo) {
+      try {
+        const customFieldsInfo = await plugin.getCustomFieldsInfo()
+        await setItem("customFieldsInfo", customFieldsInfo)
+      } catch (err) {
+        console.warn("Could not refresh custom fields info:", err)
+      }
+    }
 
     if (currentCleanId) {
       setItem("syncedListId", currentCleanId)

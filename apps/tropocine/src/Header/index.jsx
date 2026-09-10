@@ -262,7 +262,7 @@ const Header = () => {
           year: t("Year"),
           title: t("Title"),
           creator: t("Director"),
-          rating: t("Public rating"),
+          rating: t("My rating"),
         }}
         sort={sort}
         onSortChange={setSort}

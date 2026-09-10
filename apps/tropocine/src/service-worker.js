@@ -66,7 +66,10 @@ const bgSyncPlugin = new BackgroundSyncPlugin(buildCacheKey("provider-queue"), {
 })
 
 registerRoute(
-  ({ url }) => url.pathname.startsWith("/api/"),
+  ({ url }) =>
+    url.pathname.startsWith("/api/") &&
+    !url.pathname.startsWith("/api/leds") &&
+    !url.pathname.startsWith("/api/ruler"),
   new NetworkOnly({
     plugins: [bgSyncPlugin],
   }),
