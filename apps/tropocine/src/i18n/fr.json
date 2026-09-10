@@ -13,12 +13,13 @@
   "Organize your collection, discover directors and actors, and explore your films": "Organisez votre collection, découvrez réalisateurs et acteurs, et explorez vos films",
   "Otherwise, only added or removed movies will be processed": "Sinon, seuls les films ajoutés ou supprimés seront traités",
   "People": "Personnes",
-  "Public rating": "Note publique",
-  "Runtime": "Durée",
+  "TMDB rating": "Note TMDB",
   "Show all {{count}} movies by {{creator}}": "Afficher les {{count}} films de {{creator}}",
   "The synchronization of your collection can take a few moments.": "La synchronisation de votre collection peut prendre quelques instants.",
   "Title": "Titre",
+  "TMDB API error ({{status}}): could not save item.": "Erreur TMDB API ({{status}}) : impossible de sauvegarder l'item.",
   "TMDB List ID is missing or invalid.": "L'identifiant de liste TMDB est manquant ou invalide.",
+  "Unable to reach the film library web server!": "Impossible d'atteindre le serveur de la cinémathèque !",
   "View release on {{provider}}": "Voir le film sur {{provider}}",
   "keyAboutMessage": "TropoCine est un gestionnaire de collection de films sous licence libre. Synchronisez vos films (<ProviderLink>{{provider}}</ProviderLink>), découvrez réalisateurs et acteurs, et organisez votre cinémathèque."
 }
