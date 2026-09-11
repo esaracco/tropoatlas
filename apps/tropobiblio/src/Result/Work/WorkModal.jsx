@@ -36,7 +36,6 @@ import {
   getCategories,
   getItemDetails,
   getProviderInfo,
-  getDraftCapabilities,
 } from "../../provider"
 import * as Settings from "../../utils/settings"
 import workPlaceholder from "../../assets/book.svg"
@@ -108,9 +107,7 @@ const WorkModal = ({ instanceId, onClose }) => {
 
   const { t } = useTranslation()
   const refIG = useRef(null)
-  const customFields =
-    getItem("customFieldsInfo") ||
-    (getDraftCapabilities ? getDraftCapabilities({}) : {})
+  const customFields = getItem("customFieldsInfo") || {}
   const haveCustomFields =
     customFields.supportsPlace ||
     customFields.supportsPrice ||
@@ -466,7 +463,7 @@ const WorkModal = ({ instanceId, onClose }) => {
                         onChange={onChange}
                       />
                       <InputGroup.Text className="price-currency-addon">
-                        {Settings.getCurrency() || "€"}
+                        {Settings.currency}
                       </InputGroup.Text>
                     </InputGroup>
                   </td>

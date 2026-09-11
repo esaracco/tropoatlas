@@ -29,12 +29,8 @@ import { toast } from "react-toastify"
 import ImageGallery from "react-image-gallery"
 import "react-image-gallery/styles/image-gallery.css"
 
-import {
-  updateItem,
-  getDraftCapabilities,
-  getProviderInfo,
-} from "../../provider"
-import { getCurrency } from "../../utils/settings"
+import { updateItem, getProviderInfo } from "../../provider"
+import * as Settings from "../../utils/settings"
 import workPlaceholder from "../../assets/film.svg"
 import "./styles/WorkModal.css"
 
@@ -49,9 +45,7 @@ const WorkModal = ({ instanceId, onClose }) => {
   const release = releases ? releases[instanceId] : null
   const { t } = useTranslation()
 
-  const customFields =
-    getItem("customFieldsInfo") ||
-    (getDraftCapabilities ? getDraftCapabilities({}) : {})
+  const customFields = getItem("customFieldsInfo") || {}
 
   const [formState, setFormState] = useState({
     rating: release?.rating ?? 0,
@@ -325,7 +319,7 @@ const WorkModal = ({ instanceId, onClose }) => {
                         onChange={onChange}
                       />
                       <InputGroup.Text className="price-currency-addon">
-                        {getCurrency() || "€"}
+                        {Settings.currency}
                       </InputGroup.Text>
                     </InputGroup>
                   </td>

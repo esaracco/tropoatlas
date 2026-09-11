@@ -101,7 +101,7 @@ const OptionsMenu = () => {
         setIsBusy={setIsBackupBusy}
       />
 
-      {Settings.setLeds === "yes" && isOnline && (
+      {Settings.setLeds && isOnline && (
         <LedsModal
           show={showLedsModal}
           onHide={() => setShowLedsModal(false)}
@@ -134,7 +134,7 @@ const OptionsMenu = () => {
             </Dropdown.Item>
           )}
 
-          {Settings.setLeds === "yes" && isOnline && (
+          {Settings.setLeds && isOnline && (
             <Dropdown.Item
               onClick={() => setShowLedsModal(true)}
               className="d-flex align-items-center gap-2 py-2"

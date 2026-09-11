@@ -1,5 +1,12 @@
 import React, { useEffect, useState, useRef } from "react"
-import { useCollectionStore, cleanPrice } from "@tropo/core"
+import {
+  useCollectionStore,
+  getItem,
+  setLargeItem,
+  setItem,
+  formatRating,
+  cleanPrice,
+} from "@tropo/core"
 import { useTranslation } from "react-i18next"
 import {
   Modal,
@@ -28,7 +35,6 @@ import {
 import { ConfirmModal } from "@tropo/react"
 import WorkCategoryButtons from "./WorkCategoryButtons"
 
-import { getItem, setLargeItem, setItem, formatRating } from "@tropo/core"
 import {
   updateItem,
   getCategories,
@@ -485,7 +491,7 @@ const WorkModal = ({ instanceId, onClose }) => {
                         onChange={onChange}
                       />
                       <InputGroup.Text className="price-currency-addon">
-                        {Settings.getCurrency() || "€"}
+                        {Settings.currency}
                       </InputGroup.Text>
                     </InputGroup>
                   </td>

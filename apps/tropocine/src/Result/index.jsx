@@ -54,7 +54,7 @@ const Result = () => {
   const sort = useCollectionStore((s) => s.sort)
   const winWidth = useWindowWidth(0)
 
-  const _setLeds = Settings.setLeds === "yes"
+  const _setLeds = Settings.setLeds
   const turnOffLeds = useRef(false)
 
   // Calculate dynamic responsive card width for grid layout
@@ -242,7 +242,7 @@ const Result = () => {
         if (hasCategories) {
           ledCommands.push({
             place: placesCategories,
-            color: Settings.getLedsCategoriesColor(),
+            color: Settings.ledsCategoriesColor,
             intensity: 0.05,
             noreset: hasLit,
           })
@@ -253,7 +253,7 @@ const Result = () => {
         if (hasCreators) {
           ledCommands.push({
             place: placesCreators,
-            color: Settings.getLedsCreatorsColor(),
+            color: Settings.ledsCreatorsColor,
             intensity: 0.5,
             noreset: hasLit,
           })
@@ -264,7 +264,7 @@ const Result = () => {
         if (hasModal) {
           ledCommands.push({
             place: activeRelease.place,
-            color: Settings.getLedsWorkColor(),
+            color: Settings.ledsWorkColor,
             intensity: 1.0,
             blink: true,
             noreset: hasLit,

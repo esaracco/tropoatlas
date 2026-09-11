@@ -1,5 +1,10 @@
 import React, { useState, useEffect, useRef } from "react"
-import { useCollectionStore, useAppStore, normalize } from "@tropo/core"
+import {
+  useCollectionStore,
+  useAppStore,
+  normalize,
+  getItem,
+} from "@tropo/core"
 import { useTranslation } from "react-i18next"
 import { ButtonModal, HeaderButton, Search } from "@tropo/react"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
@@ -8,7 +13,6 @@ import { Button, Container, Nav, Navbar, Offcanvas } from "react-bootstrap"
 
 import ClearFiltersButton from "./ClearFiltersButton"
 import OptionsMenu from "./OptionsMenu"
-import provider from "../provider"
 import "./styles/Header.css"
 
 const Header = () => {
@@ -87,17 +91,15 @@ const Header = () => {
 
   const expandBreakpoint = "sm"
 
-  const draftCaps = provider.plugin?.getDraftCapabilities
-    ? provider.plugin.getDraftCapabilities({})
-    : {}
+  const customFields = getItem("customFieldsInfo") || {}
 
   const sortContent = {
     added: t("Date added"),
     year: t("Year"),
     title: t("Title"),
     creator: t("Author"),
-    ...(draftCaps.supportsPlace ? { place: t("Place") } : {}),
-    ...(draftCaps.supportsRating ? { rating: t("My rating") } : {}),
+    ...(customFields.supportsPlace ? { place: t("Place") } : {}),
+    ...(customFields.supportsRating ? { rating: t("My rating") } : {}),
   }
 
   return (
