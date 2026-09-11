@@ -58,14 +58,14 @@ cp .env.sample .env
 | `VITE_INVENTAIRE_USER`     | Your Inventaire.io username or email                           | _(Required)_    |
 | `VITE_INVENTAIRE_PASSWORD` | Your Inventaire.io password (required to access private notes) | _(Optional)_    |
 
-### Private Notes Custom Fields Mapping (Inventaire)
+### Private Notes Custom Fields (Inventaire)
 
 TropoBiblio extracts custom metadata from tags defined in your Inventaire private notes (format: `#tag value` or `tag: value`):
 
-- **`VITE_INVENTAIRE_FIELD_PLACE`**: Tag name for physical shelf location (numeric value for LEDs, default: `"place"`).
-- **`VITE_INVENTAIRE_FIELD_PRICE`**: Tag name for purchase price (default: `"price"`).
-- **`VITE_INVENTAIRE_FIELD_RATING`**: Tag name for personal rating (default: `"rating"`).
-- **`VITE_INVENTAIRE_FIELD_GENRES`**: Tag name for custom genre tags (default: `"genre"`).
+- **`place`**: Physical shelf location (numeric value for LEDs).
+- **`price`**: Purchase price.
+- **`rating`**: Personal rating (1 to 5).
+- **`categories`**: Custom genre tags (comma or slash separated).
 
 ### LED Strips Configuration
 

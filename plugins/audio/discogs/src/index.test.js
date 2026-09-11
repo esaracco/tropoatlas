@@ -15,6 +15,27 @@ describe("DiscogsPlugin - getPreservedKeys", () => {
   })
 })
 
+describe("DiscogsPlugin - capabilities and settings", () => {
+  it("should report draft capabilities as true for place, price, and categories", () => {
+    const plugin = new DiscogsPlugin()
+    expect(plugin.getDraftCapabilities()).toEqual({
+      supportsPlace: true,
+      supportsPrice: true,
+      supportsCategories: true,
+    })
+  })
+
+  it("should require VITE_DISCOGS_USER during settings validation", () => {
+    const plugin = new DiscogsPlugin()
+    const onConfigError = vi.fn()
+    plugin.validateSettings(onConfigError)
+    expect(onConfigError).toHaveBeenCalledWith(
+      "The {{field}} environment variable is required!",
+      { field: "VITE_DISCOGS_USER" },
+    )
+  })
+})
+
 describe("DiscogsPlugin - getArtistName", () => {
   it("should return name when no ANV is provided", () => {
     expect(getArtistName({ name: "Pink Floyd" })).toBe("Pink Floyd")

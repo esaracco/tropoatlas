@@ -1,5 +1,13 @@
 import sleep from "sleep-promise"
-import { normalize, cleanText, BasePlugin } from "@tropo/core"
+import {
+  normalize,
+  cleanText,
+  BasePlugin,
+  FIELD_PLACE,
+  FIELD_PRICE,
+  FIELD_CATEGORIES,
+  FIELD_RATING,
+} from "@tropo/core"
 import logo from "./assets/logo.svg"
 
 // Minimum length for a description to be considered complete.
@@ -99,53 +107,12 @@ export class InventairePlugin extends BasePlugin {
     const env = config.env || {}
     this.user = env.VITE_INVENTAIRE_USER || config.user
     this.password = env.VITE_INVENTAIRE_PASSWORD || config.password
-    this.fieldPlace =
-      env.VITE_INVENTAIRE_FIELD_PLACE || config.fieldPlace || "place"
-    this.fieldPrice =
-      env.VITE_INVENTAIRE_FIELD_PRICE || config.fieldPrice || "price"
-    this.fieldCategories =
-      env.VITE_INVENTAIRE_FIELD_GENRES || config.fieldCategories || "genre"
-    this.fieldRating =
-      env.VITE_INVENTAIRE_FIELD_RATING || config.fieldRating || "rating"
     this.devMode = config.devMode || false
     this.minDescriptionLength =
       config.minDescriptionLength || MIN_DESCRIPTION_LENGTH
 
     // Default to /api/inventaire for Vite dev proxy
     this.apiBase = config.apiBase || "/api/inventaire"
-  }
-
-  get activeUser() {
-    return this.user
-  }
-
-  get activePassword() {
-    return this.password
-  }
-
-  get activeFieldPlace() {
-    return this.fieldPlace || "place"
-  }
-
-  get activeFieldPrice() {
-    return this.fieldPrice || "price"
-  }
-
-  get activeFieldCategories() {
-    return this.fieldCategories || "genre"
-  }
-
-  get activeFieldRating() {
-    return this.fieldRating || "rating"
-  }
-
-  getCurrentConfig() {
-    return {
-      fieldPlace: this.activeFieldPlace,
-      fieldPrice: this.activeFieldPrice,
-      fieldCategories: this.activeFieldCategories,
-      fieldRating: this.activeFieldRating,
-    }
   }
 
   getProviderInfo() {
@@ -161,26 +128,26 @@ export class InventairePlugin extends BasePlugin {
     return ["syncedInventory", "customFieldsInfo"]
   }
 
-  getDraftCapabilities(config = {}) {
+  getDraftCapabilities() {
     return {
-      supportsPlace: !!(config.fieldPlace || this.activeFieldPlace),
-      supportsPrice: !!(config.fieldPrice || this.activeFieldPrice),
-      supportsRating: !!(config.fieldRating || this.activeFieldRating),
+      supportsPlace: true,
+      supportsPrice: true,
+      supportsRating: true,
       supportsCategories: true,
     }
   }
 
   async getCustomFieldsInfo() {
     return {
-      supportsPlace: !!this.activeFieldPlace,
-      supportsPrice: !!this.activeFieldPrice,
-      supportsRating: !!this.activeFieldRating,
+      supportsPlace: true,
+      supportsPrice: true,
+      supportsRating: true,
       supportsCategories: true,
     }
   }
 
   validateSettings(onConfigError) {
-    if (!this.activeUser) {
+    if (!this.user) {
       if (onConfigError) {
         onConfigError(
           t("Inventaire username or email is required."),
@@ -189,7 +156,7 @@ export class InventairePlugin extends BasePlugin {
       }
       return false
     }
-    if (!this.activePassword) {
+    if (!this.password) {
       if (onConfigError) {
         onConfigError(
           t("Inventaire password is required to access private notes."),
@@ -235,7 +202,7 @@ export class InventairePlugin extends BasePlugin {
   async #checkSession() {
     try {
       const res = await this.#request("api/user")
-      if (res?.user?.username === this.activeUser) {
+      if (res?.user?.username === this.user) {
         this.#isLoggedIn = true
         return true
       }
@@ -247,8 +214,8 @@ export class InventairePlugin extends BasePlugin {
 
   // Authenticate user to obtain active session
   async #login(force = false) {
-    const user = this.activeUser
-    const pass = this.activePassword
+    const user = this.user
+    const pass = this.password
     if (!user || !pass) return false
 
     // Invalidate session if credentials changed
@@ -446,7 +413,7 @@ export class InventairePlugin extends BasePlugin {
     if (onProgress) onProgress(5)
 
     // Authenticate session to access private item notes; abort if auth fails
-    if (this.activePassword) {
+    if (this.password) {
       const loggedIn = await this.#login()
       if (!loggedIn) {
         throw new Error(
@@ -460,16 +427,16 @@ export class InventairePlugin extends BasePlugin {
 
     // 1. Resolve user ID from username
     const usersRes = await this.#request(
-      `api/users/by-usernames?usernames=${encodeURIComponent(this.activeUser)}`,
+      `api/users/by-usernames?usernames=${encodeURIComponent(this.user)}`,
     )
     const usersMap = usersRes?.users || {}
     const userObj =
-      usersMap[this.activeUser] ||
-      usersMap[this.activeUser.toLowerCase()] ||
+      usersMap[this.user] ||
+      usersMap[this.user.toLowerCase()] ||
       Object.values(usersMap)[0]
     const userId = userObj?._id || userObj?.id
     if (!userId) {
-      throw new Error(`User not found on Inventaire: ${this.activeUser}`)
+      throw new Error(`User not found on Inventaire: ${this.user}`)
     }
 
     if (onProgress) onProgress(25)
@@ -731,10 +698,10 @@ export class InventairePlugin extends BasePlugin {
         item.notes || item.details || item.comment || item.description || ""
 
       // Extract custom tags from private notes
-      const placeVal = this.#extractTag(noteText, this.activeFieldPlace)
-      const priceVal = this.#extractTag(noteText, this.activeFieldPrice)
-      const categoryVal = this.#extractTag(noteText, this.activeFieldCategories)
-      const ratingVal = this.#extractTag(noteText, this.activeFieldRating)
+      const placeVal = this.#extractTag(noteText, FIELD_PLACE)
+      const priceVal = this.#extractTag(noteText, FIELD_PRICE)
+      const categoryVal = this.#extractTag(noteText, FIELD_CATEGORIES)
+      const ratingVal = this.#extractTag(noteText, FIELD_RATING)
 
       // Only assign numeric place for LED alignment
       const placeMatch = placeVal?.match(/(\d+)/)
@@ -1389,28 +1356,24 @@ export class InventairePlugin extends BasePlugin {
     const { rating, place, price, categories } = changes
     let noteText = item.notes || ""
 
-    if (rating !== undefined && this.activeFieldRating) {
+    if (rating !== undefined) {
       noteText = this.#updateTag(
         noteText,
-        this.activeFieldRating,
+        FIELD_RATING,
         rating > 0 ? rating : "",
       )
     }
-    if (place !== undefined && this.activeFieldPlace) {
-      noteText = this.#updateTag(noteText, this.activeFieldPlace, place)
+    if (place !== undefined) {
+      noteText = this.#updateTag(noteText, FIELD_PLACE, place)
     }
-    if (price !== undefined && this.activeFieldPrice) {
-      noteText = this.#updateTag(noteText, this.activeFieldPrice, price)
+    if (price !== undefined) {
+      noteText = this.#updateTag(noteText, FIELD_PRICE, price)
     }
-    if (categories !== undefined && this.activeFieldCategories) {
+    if (categories !== undefined) {
       const categoriesStr = Array.isArray(categories)
         ? categories.join(", ")
         : categories
-      noteText = this.#updateTag(
-        noteText,
-        this.activeFieldCategories,
-        categoriesStr,
-      )
+      noteText = this.#updateTag(noteText, FIELD_CATEGORIES, categoriesStr)
     }
 
     const itemId = item.id || item._id

@@ -76,6 +76,12 @@ export * from "./utils.js"
 export * from "./plugin.js"
 export * from "./backup.js"
 
+// Canonical item field names across data providers and apps
+export const FIELD_PLACE = "place"
+export const FIELD_PRICE = "price"
+export const FIELD_CATEGORIES = "categories"
+export const FIELD_RATING = "rating"
+
 export const getPluginTerminology = (pluginName) => {
   const terminologies = {
     discogs: {

@@ -5,8 +5,13 @@ import {
   cleanText,
   normalize,
   BasePlugin,
+  FIELD_PLACE,
+  FIELD_PRICE,
+  FIELD_CATEGORIES,
 } from "@tropo/core"
 import logo from "./assets/logo.png"
+
+const API_ITEMS_PER_REQUEST = 250
 
 export const getArtistName = ({ name, anv } = {}) => {
   if (!name) return anv || ""
@@ -32,15 +37,8 @@ export class DiscogsPlugin extends BasePlugin {
     this.user = env.VITE_DISCOGS_USER || config.user
     this.devMode = config.devMode || false
 
-    this.itemsPerRequest =
-      Number(
-        env.VITE_DISCOGS_API_ITEMS_PER_REQUEST || config.apiItemsPerRequest,
-      ) || 250
+    this.itemsPerRequest = API_ITEMS_PER_REQUEST
     this.formats = env.VITE_DISCOGS_FORMATS || config.formats || "all"
-    this.placeField = env.VITE_DISCOGS_FIELD_PLACE || config.fieldPlace || ""
-    this.priceField = env.VITE_DISCOGS_FIELD_PRICE || config.fieldPrice || ""
-    this.categoriesField =
-      env.VITE_DISCOGS_FIELD_STYLES || config.fieldCategories || ""
     this.fieldsRequired =
       env.VITE_DISCOGS_FIELDS_REQUIRED || config.fieldsRequired || "no"
 
@@ -64,11 +62,11 @@ export class DiscogsPlugin extends BasePlugin {
     return ["customFieldsInfo"]
   }
 
-  getDraftCapabilities(config = {}) {
+  getDraftCapabilities() {
     return {
-      supportsPlace: !!(config.fieldPlace ?? this.placeField),
-      supportsPrice: !!(config.fieldPrice ?? this.priceField),
-      supportsCategories: !!(config.fieldCategories ?? this.categoriesField),
+      supportsPlace: true,
+      supportsPrice: true,
+      supportsCategories: true,
     }
   }
 
@@ -77,21 +75,6 @@ export class DiscogsPlugin extends BasePlugin {
       onConfigError("The {{field}} environment variable is required!", {
         field: "VITE_DISCOGS_USER",
       })
-    }
-    if (
-      this.fieldsRequired === "yes" &&
-      !(this.placeField || this.priceField || this.categoriesField) &&
-      onConfigError
-    ) {
-      onConfigError(
-        'With the {{required}} environment variable set to "yes" you must at least set one of the following variables: {{place}}, {{price}} or {{categories}}!',
-        {
-          required: "VITE_DISCOGS_FIELDS_REQUIRED",
-          place: "VITE_DISCOGS_FIELD_PLACE",
-          price: "VITE_DISCOGS_FIELD_PRICE",
-          categories: "VITE_DISCOGS_FIELD_STYLES",
-        },
-      )
     }
   }
 
@@ -152,13 +135,12 @@ export class DiscogsPlugin extends BasePlugin {
   }
 
   async getFieldsId() {
-    if (!this.placeField && !this.priceField && !this.categoriesField) return {}
     if (Object.keys(this.fieldsId).length > 0) return this.fieldsId
 
     const conf = Object.entries({
-      placeId: this.placeField,
-      priceId: this.priceField,
-      categoriesId: this.categoriesField,
+      placeId: FIELD_PLACE,
+      priceId: FIELD_PRICE,
+      categoriesId: FIELD_CATEGORIES,
     })
 
     const r = await this.#request("GET", `users/${this.user}/collection/fields`)

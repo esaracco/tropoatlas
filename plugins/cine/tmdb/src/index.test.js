@@ -89,3 +89,32 @@ describe("TMDBPlugin - getPreservedKeys", () => {
     ])
   })
 })
+
+describe("TMDBPlugin - updateItem", () => {
+  it("should serialize rating, place, and price into comment for PUT payload", async () => {
+    const plugin = new TMDBPlugin({ listId: "12345" })
+    let capturedBody = null
+
+    globalThis.fetch = async (url, options) => {
+      capturedBody = JSON.parse(options.body)
+      return {
+        ok: true,
+        status: 200,
+        json: async () => ({ status_code: 1 }),
+      }
+    }
+
+    const item = { id: 999, media_type: "movie", comment: "" }
+    await plugin.updateItem(item, { rating: 5, place: "42", price: "19.99" })
+
+    expect(capturedBody).toEqual({
+      items: [
+        {
+          media_type: "movie",
+          media_id: 999,
+          comment: "place: 42, price: 19.99, rating: 5",
+        },
+      ],
+    })
+  })
+})

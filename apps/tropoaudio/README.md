@@ -61,13 +61,13 @@ cp .env.sample .env
 | `VITE_DISCOGS_FORMATS`         | Media formats to include (e.g. `vinyl`, `cd`, `all`)                              | `all`          |
 | `VITE_DISCOGS_FIELDS_REQUIRED` | Only show items that have at least one custom field (`yes`/`no`)                  | `no`           |
 
-### Custom Fields Mapping (Discogs)
+### Custom Fields (Discogs)
 
-TropoAudio can map to three optional custom fields defined in your Discogs collection:
+TropoAudio automatically reads and maps the following optional custom fields created in your Discogs collection:
 
-- **`VITE_DISCOGS_FIELD_PLACE`**: Name of the field storing the physical shelf location (numeric value if LEDs are enabled).
-- **`VITE_DISCOGS_FIELD_PRICE`**: Name of the field storing the purchase price.
-- **`VITE_DISCOGS_FIELD_STYLES`**: Name of the field storing custom style tags (comma-separated).
+- **`place`**: Physical shelf location (numeric value if LEDs are enabled).
+- **`price`**: Purchase price.
+- **`categories`**: Custom album style tags (comma-separated).
 
 ### LED Strips Configuration
 

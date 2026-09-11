@@ -6,6 +6,9 @@ import {
   getItem,
   setItem,
   buildCacheKey,
+  FIELD_PLACE,
+  FIELD_PRICE,
+  FIELD_RATING,
 } from "@tropo/core"
 import logo from "./assets/logo.svg"
 
@@ -295,22 +298,22 @@ export class TMDBPlugin extends BasePlugin {
       const castString = cast.join(" ")
       const searchIndex = `${cleanDirector.replace(/\s/g, "-")}_${cleanTitle.replace(/\s/g, "-")}_${normalize(cleanDirector)}_${normalize(cleanTitle)}_${normalize(castString)}`
 
-      // Extract custom fields from the TMDB comment (format: "place: 5, note: 4")
+      // Extract custom fields from the TMDB comment (format: "place: 5, rating: 4")
       const mediaType = movie.media_type || "movie"
       const commentKey = `${mediaType}:${movie.id}`
       const commentText = comments[commentKey] || ""
 
-      const placeVal = this.#extractTag(commentText, "place")
+      const placeVal = this.#extractTag(commentText, FIELD_PLACE)
       const placeMatch = placeVal?.match(/(\d+)/)
       const place = placeMatch ? placeMatch[1] : undefined
 
-      const price = this.#extractTag(commentText, "price")
+      const price = this.#extractTag(commentText, FIELD_PRICE)
 
-      const noteVal = this.#extractTag(commentText, "note")
-      const noteMatch = noteVal?.match(/(\d+)/)
+      const ratingVal = this.#extractTag(commentText, FIELD_RATING)
+      const ratingMatch = ratingVal?.match(/(\d+)/)
       // User personal rating (1-5 stars) from comment tag, 0 if unrated
-      const rating = noteMatch
-        ? Math.min(5, Math.max(0, parseInt(noteMatch[1], 10)))
+      const rating = ratingMatch
+        ? Math.min(5, Math.max(0, parseInt(ratingMatch[1], 10)))
         : 0
 
       // TMDB community score (0-10)
@@ -433,15 +436,15 @@ export class TMDBPlugin extends BasePlugin {
     let commentText = item.comment || ""
 
     if (place !== undefined) {
-      commentText = this.#updateTag(commentText, "place", place)
+      commentText = this.#updateTag(commentText, FIELD_PLACE, place)
     }
     if (price !== undefined) {
-      commentText = this.#updateTag(commentText, "price", price)
+      commentText = this.#updateTag(commentText, FIELD_PRICE, price)
     }
     if (rating !== undefined) {
       commentText = this.#updateTag(
         commentText,
-        "note",
+        FIELD_RATING,
         rating > 0 ? rating : "",
       )
     }

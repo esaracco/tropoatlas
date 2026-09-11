@@ -98,12 +98,8 @@ describe("InventairePlugin - categories and creators extraction", () => {
 describe("InventairePlugin - capabilities and image proxying", () => {
   const plugin = new InventairePlugin()
 
-  it("should report draft capabilities based on configuration", () => {
-    const caps = plugin.getDraftCapabilities({
-      fieldPlace: "place",
-      fieldPrice: "price",
-      fieldRating: "rating",
-    })
+  it("should report draft capabilities as true", () => {
+    const caps = plugin.getDraftCapabilities()
     expect(caps).toEqual({
       supportsPlace: true,
       supportsPrice: true,

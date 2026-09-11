@@ -11,7 +11,7 @@
 ## Features
 
 - 🔎 **Instant Search & Multi-criteria Filter**: Browse and filter your film collection in real-time by title, people (directors and actors), genres, release year, rating, or date added.
-- 🏷️ **Custom Metadata**: Enrich movie entries with custom fields saved directly into your TMDB list item comments: exact shelf location (`place`), purchase price (`price`), and personal rating (`note`).
+- 🏷️ **Custom Metadata**: Enrich movie entries with custom fields saved directly into your TMDB list item comments: exact shelf location (`place`), purchase price (`price`), and personal rating (`rating`).
 - 💡 **Physical LED Shelf Locator & Ruler**: Select a movie, genres, directors, or cast members, and the corresponding slots on your shelf light up instantly via connected LED strips. Includes a dedicated physical ruler mode to illuminate whole shelves.
 - 🎬 **TMDB Synchronization & Rich Metadata**:
   - Connects to personal or public lists from The Movie Database using list ID or URL slugs.
@@ -71,7 +71,7 @@ cp .env.sample .env
 
 ### TMDB Authorization & Write Permissions (Ratings, Prices & Shelf Locations)
 
-By default, TMDB developer API tokens provide read-only access. To allow TropoCine to save your personal ratings, purchasing prices, and physical shelf locations directly into your TMDB list item comments (format: `place: 12, note: 5, price: 14.99`), your token must be authorized with user write access.
+By default, TMDB developer API tokens provide read-only access. To allow TropoCine to save your personal ratings, purchasing prices, and physical shelf locations directly into your TMDB list item comments (format: `place: 12, rating: 5, price: 14.99`), your token must be authorized with user write access.
 
 TropoCine includes an automated one-step authorization helper:
 

@@ -83,3 +83,14 @@ describe("useCollectionStore", () => {
     expect(useCollectionStore.getState().sort).toBe("title_asc")
   })
 })
+
+describe("Field Constants", () => {
+  it("should export canonical field constants", async () => {
+    const { FIELD_PLACE, FIELD_PRICE, FIELD_CATEGORIES, FIELD_RATING } =
+      await import("./index.js")
+    expect(FIELD_PLACE).toBe("place")
+    expect(FIELD_PRICE).toBe("price")
+    expect(FIELD_CATEGORIES).toBe("categories")
+    expect(FIELD_RATING).toBe("rating")
+  })
+})
