@@ -7,6 +7,8 @@
   background: var(--tropo-item-card);
   border: 1px solid var(--tropo-border-light);
   box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
   transition:
     transform 0.2s ease-out,
     box-shadow 0.2s ease-out,
@@ -43,6 +45,22 @@
   background: var(--tropo-item-footer);
   color: var(--tropo-text-muted);
   border-top: 1px solid var(--tropo-border-light);
+  line-height: 1.35;
+  height: 54px;
+  min-height: 54px;
+  max-height: 54px;
+  box-sizing: border-box;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.Work .creator .work-title {
+  font-weight: 600;
+  color: var(--tropo-text, #ffffff);
+}
+
+.Work .creator .work-creator {
+  color: var(--tropo-text-muted);
 }
 
 .Work .format-badge {

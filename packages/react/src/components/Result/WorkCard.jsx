@@ -215,11 +215,17 @@ export const WorkCard = ({
       {plugin.getProviderInfo().multipleFormats && format && (
         <div className="format-badge">{format}</div>
       )}
-      <div className="creator text-truncate" style={{ width: cardWidth }}>
-        {creator}
-        <br />
-        {year ? `${year} - ` : ""}
-        {title}
+      <div className="creator" style={{ width: cardWidth }}>
+        <div className="text-truncate work-title" title={title}>
+          {title}
+        </div>
+        <div
+          className="text-truncate work-creator"
+          title={`${year ? `${year} - ` : ""}${creator}`}
+        >
+          {year ? `${year} - ` : ""}
+          {creator}
+        </div>
       </div>
     </div>
   )
