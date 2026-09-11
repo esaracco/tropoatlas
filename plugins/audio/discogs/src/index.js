@@ -3,6 +3,7 @@ import {
   hasLatinLetter,
   hasNonLatinLetter,
   cleanText,
+  cleanPrice,
   normalize,
   BasePlugin,
   FIELD_PLACE,
@@ -166,9 +167,13 @@ export class DiscogsPlugin extends BasePlugin {
     if (data && Object.keys(this.fieldsId).length) {
       const { placeId, priceId, categoriesId } = this.fieldsId
       for (const item of data) {
-        if (item.field_id === placeId) fields.place = item.value
-        else if (item.field_id === priceId) fields.price = item.value
-        else if (item.field_id === categoriesId) fields.categories = item.value
+        if (item.field_id === placeId) {
+          fields.place = item.value
+        } else if (item.field_id === priceId) {
+          fields.price = cleanPrice(item.value) || undefined
+        } else if (item.field_id === categoriesId) {
+          fields.categories = item.value
+        }
       }
     }
     return fields
@@ -431,7 +436,7 @@ export class DiscogsPlugin extends BasePlugin {
     if (price !== undefined && priceId) {
       requests.push(
         this.#request("POST", `${base}/fields/${priceId}`, {
-          value: price,
+          value: cleanPrice(price),
         }),
       )
     }

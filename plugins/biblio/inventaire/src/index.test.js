@@ -406,3 +406,56 @@ describe("InventairePlugin - differential synchronization", () => {
     expect(entitiesCalled).toBe(false)
   })
 })
+
+describe("InventairePlugin - custom tags and price sanitization", () => {
+  it("should extract and sanitize numeric price from private notes", async () => {
+    const plugin = new InventairePlugin({ user: "testuser" })
+
+    vi.spyOn(globalThis, "fetch").mockImplementation((url) => {
+      const urlStr = String(url)
+      if (urlStr.includes("api/users/by-usernames")) {
+        return Promise.resolve({
+          ok: true,
+          json: () => Promise.resolve({ users: { testuser: { _id: "u1" } } }),
+        })
+      }
+      if (urlStr.includes("api/items/by-users")) {
+        return Promise.resolve({
+          ok: true,
+          json: () =>
+            Promise.resolve({
+              items: [
+                {
+                  _id: "item1",
+                  entity: "inv:e1",
+                  notes:
+                    "place: 12, price: 14,50 €, rating: 4, categories: Roman",
+                },
+              ],
+            }),
+        })
+      }
+      if (urlStr.includes("api/entities/by-uris")) {
+        return Promise.resolve({
+          ok: true,
+          json: () =>
+            Promise.resolve({
+              entities: {
+                "inv:e1": {
+                  labels: { en: "Test Book" },
+                  claims: {},
+                },
+              },
+            }),
+        })
+      }
+      return Promise.resolve({ ok: true, json: () => Promise.resolve({}) })
+    })
+
+    const collection = await plugin.getCollection()
+    expect(collection.item1.price).toBe("14.50")
+    expect(collection.item1.place).toBe("12")
+    expect(collection.item1.rating).toBe(4)
+    expect(collection.item1.categories).toEqual(["Roman"])
+  })
+})

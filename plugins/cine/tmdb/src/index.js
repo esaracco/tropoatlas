@@ -2,6 +2,7 @@ import sleep from "sleep-promise"
 import {
   normalize,
   cleanText,
+  cleanPrice,
   BasePlugin,
   getItem,
   setItem,
@@ -307,7 +308,8 @@ export class TMDBPlugin extends BasePlugin {
       const placeMatch = placeVal?.match(/(\d+)/)
       const place = placeMatch ? placeMatch[1] : undefined
 
-      const price = this.#extractTag(commentText, FIELD_PRICE)
+      const priceVal = this.#extractTag(commentText, FIELD_PRICE)
+      const price = cleanPrice(priceVal) || undefined
 
       const ratingVal = this.#extractTag(commentText, FIELD_RATING)
       const ratingMatch = ratingVal?.match(/(\d+)/)
@@ -439,7 +441,7 @@ export class TMDBPlugin extends BasePlugin {
       commentText = this.#updateTag(commentText, FIELD_PLACE, place)
     }
     if (price !== undefined) {
-      commentText = this.#updateTag(commentText, FIELD_PRICE, price)
+      commentText = this.#updateTag(commentText, FIELD_PRICE, cleanPrice(price))
     }
     if (rating !== undefined) {
       commentText = this.#updateTag(

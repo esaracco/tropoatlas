@@ -2,6 +2,7 @@ import sleep from "sleep-promise"
 import {
   normalize,
   cleanText,
+  cleanPrice,
   BasePlugin,
   FIELD_PLACE,
   FIELD_PRICE,
@@ -707,6 +708,8 @@ export class InventairePlugin extends BasePlugin {
       const placeMatch = placeVal?.match(/(\d+)/)
       const place = placeMatch ? placeMatch[1] : undefined
 
+      const price = cleanPrice(priceVal) || undefined
+
       // Parse rating (1-5 stars)
       const ratingMatch = ratingVal?.match(/(\d+)/)
       const rating = ratingMatch
@@ -852,7 +855,7 @@ export class InventairePlugin extends BasePlugin {
         creators: authors,
         categories: Array.from(itemCategories),
         place,
-        price: priceVal,
+        price,
         rating,
         cover,
         year,
@@ -1367,7 +1370,7 @@ export class InventairePlugin extends BasePlugin {
       noteText = this.#updateTag(noteText, FIELD_PLACE, place)
     }
     if (price !== undefined) {
-      noteText = this.#updateTag(noteText, FIELD_PRICE, price)
+      noteText = this.#updateTag(noteText, FIELD_PRICE, cleanPrice(price))
     }
     if (categories !== undefined) {
       const categoriesStr = Array.isArray(categories)

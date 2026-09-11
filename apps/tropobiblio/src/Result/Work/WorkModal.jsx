@@ -1,5 +1,11 @@
 import React, { useEffect, useState, useRef, useMemo } from "react"
-import { useCollectionStore, getItem, setLargeItem, setItem } from "@tropo/core"
+import {
+  useCollectionStore,
+  getItem,
+  setLargeItem,
+  setItem,
+  cleanPrice,
+} from "@tropo/core"
 import { useTranslation } from "react-i18next"
 import {
   Modal,
@@ -210,10 +216,10 @@ const WorkModal = ({ instanceId, onClose }) => {
       changes.place = formState.place
     }
 
-    const currentPrice = String(formState.price ?? "").trim()
-    const originalPrice = String(workClone.price ?? "").trim()
+    const currentPrice = cleanPrice(formState.price)
+    const originalPrice = cleanPrice(workClone.price)
     if (currentPrice !== originalPrice) {
-      changes.price = formState.price
+      changes.price = currentPrice
     }
 
     if (customFields.supportsCategories) {
@@ -241,7 +247,7 @@ const WorkModal = ({ instanceId, onClose }) => {
     worksClone[instanceId] = {
       ...workToUpdate,
       place: formState.place,
-      price: formState.price,
+      price: cleanPrice(formState.price),
       rating: formState.rating,
     }
     setItems(worksClone)
@@ -455,6 +461,7 @@ const WorkModal = ({ instanceId, onClose }) => {
                         type="text"
                         className="price-control"
                         value={formState.price ?? ""}
+                        placeholder="0.00"
                         data-field="price"
                         onChange={onChange}
                       />

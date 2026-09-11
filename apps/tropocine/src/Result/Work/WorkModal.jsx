@@ -4,6 +4,7 @@ import {
   getItem,
   setLargeItem,
   formatRating,
+  cleanPrice,
 } from "@tropo/core"
 import { useTranslation } from "react-i18next"
 import {
@@ -109,10 +110,10 @@ const WorkModal = ({ instanceId, onClose }) => {
       changes.place = formState.place
     }
 
-    const currentPrice = String(formState.price ?? "").trim()
-    const originalPrice = String(releaseClone.price ?? "").trim()
+    const currentPrice = cleanPrice(formState.price)
+    const originalPrice = cleanPrice(releaseClone.price)
     if (currentPrice !== originalPrice) {
-      changes.price = formState.price
+      changes.price = currentPrice
     }
 
     return { releasesClone, release: releaseClone, changes }
@@ -130,7 +131,7 @@ const WorkModal = ({ instanceId, onClose }) => {
     releasesClone[instanceId] = {
       ...releaseToUpdate,
       place: formState.place,
-      price: formState.price,
+      price: cleanPrice(formState.price),
       rating: formState.rating,
     }
     setItems(releasesClone)

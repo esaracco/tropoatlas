@@ -230,3 +230,79 @@ describe("DiscogsPlugin - getItemDetails", () => {
     expect(details.notes).toBe("Release note")
   })
 })
+
+describe("DiscogsPlugin - custom fields and price sanitization", () => {
+  it("should sanitize numeric price from collection notes", async () => {
+    const plugin = new DiscogsPlugin({ user: "testuser" })
+
+    vi.spyOn(globalThis, "fetch").mockImplementation((url) => {
+      const urlStr = String(url)
+      if (urlStr.includes("users/testuser/collection/fields")) {
+        return Promise.resolve({
+          ok: true,
+          headers: new Headers(),
+          text: () =>
+            Promise.resolve(
+              JSON.stringify({
+                fields: [
+                  { id: 1, name: "place" },
+                  { id: 2, name: "price" },
+                  { id: 3, name: "categories" },
+                ],
+              }),
+            ),
+        })
+      }
+      if (urlStr.includes("per_page=1")) {
+        return Promise.resolve({
+          ok: true,
+          headers: new Headers(),
+          text: () =>
+            Promise.resolve(JSON.stringify({ pagination: { items: 1 } })),
+        })
+      }
+      if (urlStr.includes("page=1")) {
+        return Promise.resolve({
+          ok: true,
+          headers: new Headers(),
+          text: () =>
+            Promise.resolve(
+              JSON.stringify({
+                releases: [
+                  {
+                    instance_id: 201,
+                    folder_id: 0,
+                    rating: 5,
+                    date_added: "2026-01-01",
+                    notes: [
+                      { field_id: 1, value: "10" },
+                      { field_id: 2, value: "19,99 €" },
+                      { field_id: 3, value: "Rock, Prog" },
+                    ],
+                    basic_information: {
+                      id: 10,
+                      master_id: 100,
+                      year: 1973,
+                      title: "Dark Side",
+                      formats: [{ name: "Vinyl" }],
+                      artists: [{ name: "Pink Floyd" }],
+                    },
+                  },
+                ],
+              }),
+            ),
+        })
+      }
+      return Promise.resolve({
+        ok: true,
+        headers: new Headers(),
+        text: () => Promise.resolve(JSON.stringify({})),
+      })
+    })
+
+    const collection = await plugin.getCollection()
+    expect(collection[201].price).toBe("19.99")
+    expect(collection[201].place).toBe("10")
+    expect(collection[201].categories).toEqual(["Prog", "Rock"])
+  })
+})

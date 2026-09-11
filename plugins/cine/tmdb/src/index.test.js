@@ -1,3 +1,4 @@
+// @vitest-environment jsdom
 import { describe, it, expect } from "vitest"
 import { TMDBPlugin } from "./index.js"
 
@@ -116,5 +117,66 @@ describe("TMDBPlugin - updateItem", () => {
         },
       ],
     })
+  })
+})
+
+describe("TMDBPlugin - custom fields and price sanitization", () => {
+  it("should extract and sanitize numeric price from list comments", async () => {
+    const plugin = new TMDBPlugin({ listId: "12345" })
+
+    globalThis.fetch = async (url) => {
+      const urlStr = String(url)
+      if (urlStr.includes("genre/movie/list")) {
+        return {
+          ok: true,
+          status: 200,
+          text: async () => JSON.stringify({ genres: [] }),
+        }
+      }
+      if (urlStr.includes("4/list/12345")) {
+        return {
+          ok: true,
+          status: 200,
+          text: async () =>
+            JSON.stringify({
+              results: [
+                {
+                  id: 101,
+                  media_type: "movie",
+                  title: "Inception",
+                  release_date: "2010-07-16",
+                },
+              ],
+              comments: {
+                "movie:101": "place: 3, price: 9,99 €, rating: 5",
+              },
+              total_pages: 1,
+            }),
+        }
+      }
+      if (urlStr.includes("movie/101")) {
+        return {
+          ok: true,
+          status: 200,
+          text: async () =>
+            JSON.stringify({
+              credits: {
+                crew: [{ job: "Director", name: "Christopher Nolan" }],
+                cast: [],
+              },
+            }),
+        }
+      }
+      return {
+        ok: true,
+        status: 200,
+        text: async () => JSON.stringify({}),
+      }
+    }
+
+    const collection = await plugin.getCollection()
+    expect(collection[101].price).toBe("9.99")
+    expect(collection[101].place).toBe("3")
+    expect(collection[101].rating).toBe(5)
   })
 })
