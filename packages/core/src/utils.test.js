@@ -1,4 +1,4 @@
-import { cleanText, normalize, formatRating } from "./utils"
+import { cleanText, normalize, formatRating, cleanPrice } from "./utils"
 import { it, expect } from "vitest"
 
 it("Strings normalization", () => {
@@ -37,4 +37,19 @@ it("formatRating formats ratings without trailing zero decimals for whole number
   expect(formatRating(null)).toBe("")
   expect(formatRating(undefined)).toBe("")
   expect(formatRating(NaN)).toBe("")
+})
+
+it("cleanPrice sanitizes prices with dots, commas, currency symbols, or raw numbers", () => {
+  expect(cleanPrice("14,99")).toBe("14.99")
+  expect(cleanPrice("14.99")).toBe("14.99")
+  expect(cleanPrice("14,99 €")).toBe("14.99")
+  expect(cleanPrice("€ 14.99")).toBe("14.99")
+  expect(cleanPrice("  19,50  ")).toBe("19.50")
+  expect(cleanPrice(15)).toBe("15")
+  expect(cleanPrice("15")).toBe("15")
+  expect(cleanPrice(15.99)).toBe("15.99")
+  expect(cleanPrice(null)).toBe("")
+  expect(cleanPrice(undefined)).toBe("")
+  expect(cleanPrice("")).toBe("")
+  expect(cleanPrice("invalid")).toBe("")
 })

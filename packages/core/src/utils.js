@@ -146,3 +146,12 @@ export const formatRating = (value, maxDecimals = 2) => {
   if (typeof value !== "number" || isNaN(value)) return ""
   return Number(value.toFixed(maxDecimals)).toString()
 }
+
+// Sanitizes price string or number to standard decimal format with a dot
+export const cleanPrice = (value) => {
+  if (value === undefined || value === null) return ""
+  const str = String(value).trim()
+  if (!str) return ""
+  const match = str.match(/(\d+(?:[.,]\d+)?)/)
+  return match ? match[1].replace(",", ".") : ""
+}
