@@ -2,5 +2,6 @@
   "keyAboutMessage": "TropoCine is a free software film collection manager. Synchronize your movies (<ProviderLink>{{provider}}</ProviderLink>), discover directors and actors, and organize your film library.",
   "TMDB rating": "TMDB rating",
   "TMDB API error ({{status}}): could not save item.": "TMDB API error ({{status}}): could not save item.",
-  "TMDB List ID is missing or invalid.": "TMDB List ID is missing or invalid."
+  "TMDB List ID is missing or invalid.": "TMDB List ID is missing or invalid.",
+  "Write permission required: your TMDB token does not have write access. Please generate a user access token with write permission in your TMDB account.": "Write permission required: your TMDB token does not have write access. Please generate a user access token with write permission in your TMDB account."
 }

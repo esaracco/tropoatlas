@@ -14,5 +14,6 @@
   "Unable to reach the film library web server!": "Impossible d'atteindre le serveur de la cinémathèque !",
   "View release on {{provider}}": "Voir le film sur {{provider}}",
   "Cast": "Casting",
-  "Filter by {{person}}": "Filtrer par {{person}}"
+  "Filter by {{person}}": "Filtrer par {{person}}",
+  "Write permission required: your TMDB token does not have write access. Please generate a user access token with write permission in your TMDB account.": "Permission d'écriture requise : votre jeton TMDB ne dispose pas des droits d'écriture. Veuillez générer un jeton d'accès utilisateur avec permission d'écriture dans votre compte TMDB."
 }

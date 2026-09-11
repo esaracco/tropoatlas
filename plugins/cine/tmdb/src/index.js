@@ -522,6 +522,33 @@ export class TMDBPlugin extends BasePlugin {
     })
 
     if (!res.ok) {
+      let statusCode = null
+      let statusMessage = ""
+      try {
+        const errorData = await res.json()
+        statusCode = errorData?.status_code
+        statusMessage = errorData?.status_message || errorData?.statusMessage
+      } catch {
+        // Ignore non-JSON error response
+      }
+
+      // Handle missing write permissions on TMDB token (status_code 36)
+      if (
+        statusCode === 36 ||
+        (statusMessage &&
+          statusMessage.toLowerCase().includes("write permission"))
+      ) {
+        throw new Error(
+          t(
+            "Write permission required: your TMDB token does not have write access. Please generate a user access token with write permission in your TMDB account.",
+          ),
+        )
+      }
+
+      if (statusMessage) {
+        throw new Error(`TMDB API error (${res.status}): ${statusMessage}`)
+      }
+
       throw new Error(
         t("TMDB API error ({{status}}): could not save item.", {
           status: res.status,

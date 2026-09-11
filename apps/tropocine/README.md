@@ -59,13 +59,13 @@ cp .env.sample .env
 
 ### Core Environment Variables
 
-| Variable             | Description                                                                     | Default       |
-| :------------------- | :------------------------------------------------------------------------------ | :------------ |
-| `VITE_APP_NAME`      | Application identifier (do not change)                                          | `"tropocine"` |
-| `VITE_DATA_PROVIDER` | Active data provider plugin                                                     | `"tmdb"`      |
-| `VITE_CURRENCY`      | Currency symbol displayed for prices                                            | `€`           |
-| `VITE_TMDB_LIST_ID`  | Your TMDB list ID or URL slug (e.g. `8691537` or `8691537-ma-liste`)            | _(Required)_  |
-| `TMDB_TOKEN`         | Your TMDB Bearer token with write access _(No `VITE_` prefix to prevent leaks)_ | _(Required)_  |
+| Variable             | Description                                                                                                       | Default       |
+| :------------------- | :---------------------------------------------------------------------------------------------------------------- | :------------ |
+| `VITE_APP_NAME`      | Application identifier (do not change)                                                                            | `"tropocine"` |
+| `VITE_DATA_PROVIDER` | Active data provider plugin                                                                                       | `"tmdb"`      |
+| `VITE_CURRENCY`      | Currency symbol displayed for prices                                                                              | `€`           |
+| `VITE_TMDB_LIST_ID`  | Your TMDB list ID or URL slug (e.g. `8691537` or `8691537-ma-liste`)                                              | _(Required)_  |
+| `TMDB_TOKEN`         | Your TMDB Bearer Token with write access generated via `npm run auth:cine` _(No `VITE_` prefix to prevent leaks)_ | _(Required)_  |
 
 > **Security Note**: `TMDB_TOKEN` does not have a `VITE_` prefix. During local development, the Vite dev server securely proxies requests to `/api/tmdb/` and injects this token. In production, your web server (Apache or Nginx) injects the Bearer token so your secret key is never exposed to client browsers.
 
@@ -75,7 +75,7 @@ By default, TMDB developer API tokens provide read-only access. To allow TropoCi
 
 TropoCine includes an automated one-step authorization helper:
 
-1. Copy your **API Read Access Token (v4 auth)** from [TMDB Settings > API](https://www.themoviedb.org/settings/api) into your `.env` file (`TMDB_TOKEN="ey..."`).
+1. Copy your initial **API Read Access Token (v4 auth)** from [TMDB Settings > API](https://www.themoviedb.org/settings/api) into your `.env` file (`TMDB_TOKEN="ey..."`).
 2. Run the interactive authorization script from the repository root:
    ```bash
    npm run auth:cine
@@ -83,7 +83,13 @@ TropoCine includes an automated one-step authorization helper:
    _(Or `npm run auth` directly from `apps/tropocine`)._
 3. The script automatically opens your browser to the TMDB approval page. Click **Approve**, then press **[Enter]** in your terminal.
 
-The script automatically exchanges the temporary request token for a permanent User Access Token and updates your `.env` file. Your token now has both read and write capabilities with zero manual payload manipulation.
+The script automatically exchanges the temporary request token for a permanent **User Access Token with write permissions** and saves it to your `.env` file as `TMDB_TOKEN`.
+
+> ⚠️ **Applying the Authorized Token to Production**:
+>
+> - **Development mode (`npm run dev`)**: The Vite dev proxy automatically loads the authorized `TMDB_TOKEN` from `.env`.
+> - **Apache VirtualHost**: Copy the generated `TMDB_TOKEN` from `.env` into your VirtualHost configuration (`RequestHeader set Authorization "Bearer <YOUR_TMDB_TOKEN>"`), then reload Apache (`sudo systemctl reload apache2`).
+> - **Docker / Docker Compose**: Pass the generated `TMDB_TOKEN` via the environment variable (`-e TMDB_TOKEN="<YOUR_TMDB_TOKEN>"`), then restart your container.
 
 ### LED Strips Configuration
 
@@ -128,7 +134,7 @@ docker compose up tropocine
 
 # Or using standalone Docker
 docker build --build-arg APP_NAME=tropocine --build-arg PORT=3001 -t tropocine:prod .
-docker run --rm -it -p 3001:3001 -e TMDB_TOKEN="your_personal_token" tropocine:prod
+docker run --rm -it -p 3001:3001 -e TMDB_TOKEN="<YOUR_AUTHORIZED_TMDB_TOKEN>" tropocine:prod
 ```
 
 ### Option 2: Apache Reverse Proxy
@@ -164,9 +170,9 @@ _(This generates optimized static files in `apps/tropocine/build/`, along with `
         Require all granted
     </Directory>
 
-    # Secure TMDB API Proxy (Token Injection)
+    # Secure TMDB API Proxy (Injects TMDB_TOKEN with write permission from .env)
     <Location /api/tmdb/>
-        RequestHeader set Authorization "Bearer YOUR_TMDB_READ_ACCESS_TOKEN"
+        RequestHeader set Authorization "Bearer YOUR_AUTHORIZED_TMDB_TOKEN"
         IncludeOptional /var/www/tropoatlas/apps/tropocine/build/headers.conf
         ProxyPreserveHost Off
         ProxyPass https://api.themoviedb.org/

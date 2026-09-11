@@ -118,6 +118,43 @@ describe("TMDBPlugin - updateItem", () => {
       ],
     })
   })
+
+  it("should throw dedicated write permission error on status_code 36", async () => {
+    const plugin = new TMDBPlugin({ listId: "12345" })
+
+    globalThis.fetch = async () => ({
+      ok: false,
+      status: 401,
+      json: async () => ({
+        status_code: 36,
+        status_message:
+          "This token hasn't been granted write permission by the user.",
+      }),
+    })
+
+    const item = { id: 999, media_type: "movie", comment: "" }
+    await expect(plugin.updateItem(item, { place: "42" })).rejects.toThrow(
+      /write permission/i,
+    )
+  })
+
+  it("should include TMDB status_message in error if present", async () => {
+    const plugin = new TMDBPlugin({ listId: "12345" })
+
+    globalThis.fetch = async () => ({
+      ok: false,
+      status: 404,
+      json: async () => ({
+        status_code: 34,
+        status_message: "The resource you requested could not be found.",
+      }),
+    })
+
+    const item = { id: 999, media_type: "movie", comment: "" }
+    await expect(plugin.updateItem(item, { place: "42" })).rejects.toThrow(
+      "TMDB API error (404): The resource you requested could not be found.",
+    )
+  })
 })
 
 describe("TMDBPlugin - custom fields and price sanitization", () => {
