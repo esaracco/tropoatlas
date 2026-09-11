@@ -18,12 +18,17 @@ import ImageGallery from "react-image-gallery"
 import "react-image-gallery/styles/image-gallery.css"
 import { Rating } from "react-simple-star-rating"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faInfoCircle, faPen, faUser } from "@fortawesome/free-solid-svg-icons"
+import {
+  faInfoCircle,
+  faPen,
+  faUser,
+  faTimes,
+} from "@fortawesome/free-solid-svg-icons"
 
 import { ConfirmModal } from "@tropo/react"
 import WorkCategoryButtons from "./WorkCategoryButtons"
 
-import { getItem, setLargeItem, setItem } from "@tropo/core"
+import { getItem, setLargeItem, setItem, formatRating } from "@tropo/core"
 import {
   updateItem,
   getCategories,
@@ -281,6 +286,12 @@ const WorkModal = ({ instanceId, onClose }) => {
     setShowConfirm(true)
   }
 
+  // METHOD onResetRating()
+  const onResetRating = (e) => {
+    e.stopPropagation()
+    setFormState((prev) => ({ ...prev, rating: 0 }))
+  }
+
   // METHOD onRatingClick()
   const onRatingClick = (value) =>
     setFormState((prev) => ({ ...prev, rating: value }))
@@ -402,13 +413,22 @@ const WorkModal = ({ instanceId, onClose }) => {
                       </a>
                     </div>
                   )}
-                  <div>
-                    {" "}
+                  <div className="rating-container">
                     <Rating
+                      key={formState.rating}
                       size="20"
                       onClick={onRatingClick}
                       initialValue={formState.rating}
                     />
+                    {formState.rating > 0 && (
+                      <FontAwesomeIcon
+                        icon={faTimes}
+                        className="reset rating-reset"
+                        onClick={onResetRating}
+                        title={t("Reset rating")}
+                        aria-label={t("Reset rating")}
+                      />
+                    )}
                   </div>
                 </div>
               </div>
@@ -418,6 +438,16 @@ const WorkModal = ({ instanceId, onClose }) => {
         <Modal.Body>
           <Table borderless size="sm">
             <tbody>
+              {release.community_rating > 0 && (
+                <tr>
+                  <th>{t("Discogs rating")}</th>
+                  <td
+                    style={{ fontSize: "0.8rem", color: "var(--tropo-text)" }}
+                  >
+                    ★ {formatRating(release.community_rating)} / 5
+                  </td>
+                </tr>
+              )}
               {customFields.supportsPlace && (
                 <tr>
                   <th>{t("Location")}</th>

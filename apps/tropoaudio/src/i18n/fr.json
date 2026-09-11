@@ -31,5 +31,6 @@
   "No tracks available.": "Aucune piste disponible.",
   "The synchronization of your collection can take a few moments.": "La synchronisation de votre collection peut prendre quelques instants.",
   "Force full re-synchronization of all albums": "Forcer la réactualisation complète de tous les albums",
-  "Otherwise, only added or removed albums will be processed": "Sinon, seuls les albums ajoutés ou supprimés seront traités"
+  "Otherwise, only added or removed albums will be processed": "Sinon, seuls les albums ajoutés ou supprimés seront traités",
+  "Discogs rating": "Note Discogs"
 }

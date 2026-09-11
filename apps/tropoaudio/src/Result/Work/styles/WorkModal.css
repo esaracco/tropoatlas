@@ -188,6 +188,25 @@
   color: var(--tropo-text-muted);
 }
 
+.WorkModal .rating-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.WorkModal .rating-reset {
+  cursor: pointer;
+  color: var(--tropo-text-muted);
+  font-size: 0.85rem;
+  transition: color 0.15s ease-in-out;
+}
+
+.WorkModal .reset:hover,
+.WorkModal .rating-reset:hover {
+  color: var(--tropo-text);
+}
+
 /* Image gallery dark override */
 .WorkModal .image-gallery-slide img {
   border-radius: 4px;

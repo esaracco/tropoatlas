@@ -183,3 +183,50 @@ describe("DiscogsPlugin - differential synchronization", () => {
     expect(collection[103].title).toBe("Wish You Were Here")
   })
 })
+
+describe("DiscogsPlugin - getItemDetails", () => {
+  it("should extract public community rating from release response", async () => {
+    const plugin = new DiscogsPlugin({ user: "testuser" })
+
+    vi.spyOn(globalThis, "fetch").mockImplementation((url) => {
+      const urlStr = String(url)
+      if (urlStr.includes("releases/500")) {
+        return Promise.resolve({
+          ok: true,
+          headers: new Headers(),
+          text: () =>
+            Promise.resolve(
+              JSON.stringify({
+                id: 500,
+                year: 1982,
+                country: "US",
+                notes: "Release note",
+                tracklist: [{ title: "Thriller" }],
+                community: {
+                  rating: {
+                    average: 4.456,
+                    count: 200,
+                  },
+                },
+              }),
+            ),
+        })
+      }
+      return Promise.resolve({
+        ok: true,
+        headers: new Headers(),
+        text: () => Promise.resolve(JSON.stringify({})),
+      })
+    })
+
+    const details = await plugin.getItemDetails({
+      id: 1,
+      releaseid: 500,
+      title: "Thriller",
+    })
+
+    expect(details.community_rating).toBe(4.46)
+    expect(details.country).toBe("US")
+    expect(details.notes).toBe("Release note")
+  })
+})

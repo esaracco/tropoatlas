@@ -367,11 +367,19 @@ export class DiscogsPlugin extends BasePlugin {
       )
     }
 
+    const communityAvg =
+      release?.community?.rating?.average || master?.community?.rating?.average
+    const communityRating =
+      typeof communityAvg === "number" && communityAvg > 0
+        ? Math.round(communityAvg * 100) / 100
+        : undefined
+
     return {
       ...item,
       cover,
       year,
       country: release.country,
+      community_rating: communityRating,
       notes: rNotes,
       globalNotes: mNotes,
       tracklist: finalTracklist,
