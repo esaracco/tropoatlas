@@ -140,3 +140,9 @@ export const hasNonLatinLetter = (value) =>
   Array.from(value).some(
     (char) => /\p{L}/u.test(char) && !/\p{Script=Latin}/u.test(char),
   )
+
+// Formats numeric rating without trailing zeros for whole numbers
+export const formatRating = (value, maxDecimals = 2) => {
+  if (typeof value !== "number" || isNaN(value)) return ""
+  return Number(value.toFixed(maxDecimals)).toString()
+}

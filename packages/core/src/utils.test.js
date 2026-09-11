@@ -1,4 +1,4 @@
-import { cleanText, normalize } from "./utils"
+import { cleanText, normalize, formatRating } from "./utils"
 import { it, expect } from "vitest"
 
 it("Strings normalization", () => {
@@ -23,4 +23,18 @@ it("cleanText cleans typographical glitches and spaces", () => {
   expect(cleanText("O'   Connor")).toBe("O'Connor")
   expect(cleanText(null)).toBe(null)
   expect(cleanText(undefined)).toBe(undefined)
+})
+
+it("formatRating formats ratings without trailing zero decimals for whole numbers", () => {
+  expect(formatRating(4)).toBe("4")
+  expect(formatRating(4.0)).toBe("4")
+  expect(formatRating(4.5)).toBe("4.5")
+  expect(formatRating(4.56)).toBe("4.56")
+  expect(formatRating(4.567)).toBe("4.57")
+  expect(formatRating(8, 1)).toBe("8")
+  expect(formatRating(8.0, 1)).toBe("8")
+  expect(formatRating(8.4, 1)).toBe("8.4")
+  expect(formatRating(null)).toBe("")
+  expect(formatRating(undefined)).toBe("")
+  expect(formatRating(NaN)).toBe("")
 })

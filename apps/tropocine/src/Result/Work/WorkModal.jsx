@@ -1,5 +1,10 @@
 import React, { useEffect, useState, useRef } from "react"
-import { useCollectionStore, getItem, setLargeItem } from "@tropo/core"
+import {
+  useCollectionStore,
+  getItem,
+  setLargeItem,
+  formatRating,
+} from "@tropo/core"
 import { useTranslation } from "react-i18next"
 import {
   Modal,
@@ -278,7 +283,7 @@ const WorkModal = ({ instanceId, onClose }) => {
                   <td
                     style={{ fontSize: "0.8rem", color: "var(--tropo-text)" }}
                   >
-                    ★ {release.vote_average.toFixed(1)} / 10
+                    ★ {formatRating(release.vote_average, 1)} / 10
                   </td>
                 </tr>
               )}
