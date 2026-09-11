@@ -6,7 +6,7 @@ TropoAtlas is decoupled from any specific media database (like Discogs or TMDB).
 Plugins are categorized by media domain:
 - `plugins/audio/*`: Audio providers (e.g. `plugins/audio/discogs`)
 - `plugins/cine/*`: Film and TV providers (e.g. `plugins/cine/tmdb`)
-- `plugins/biblio/*`: Book and comic providers (e.g. `plugins/biblio/openlibrary`)
+- `plugins/biblio/*`: Book and comic providers (e.g. `plugins/biblio/inventaire`)
 
 ## Creating a new Provider Plugin
 
@@ -18,7 +18,7 @@ Your plugin class must implement the following methods:
 
 - **`getProviderInfo()`**: Returns `{ name, url, logo, multipleFormats }`.
 - **`validateSettings(onConfigError)`**: Validates that required environment variables are set.
-- **`getCustomFieldsInfo()`**: Returns `{ supportsPlace, supportsPrice, supportsCategories }`.
+- **`getCustomFieldsInfo()`**: Returns `{ supportsPlace, supportsPrice, supportsRating, supportsCategories }`.
 - **`getCollection(onProgress)`**: Fetches all the lightweight items from the API, mapping them to the internal `Item` format.
 - **`getItemDetails(item)`**: Fetches additional detailed data (tracklist, full notes, etc.) for a specific item.
 - **`getItemImage(item)`**: Fetches the artwork image `{ cover }` for an item.
