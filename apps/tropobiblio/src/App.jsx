@@ -4,23 +4,16 @@ import i18n from "i18next"
 import { ToastContainer, cssTransition } from "react-toastify"
 
 import * as Settings from "./utils/settings"
-import { syncCollection } from "./utils/sync"
+import { ExtraTabs } from "./ExtraTabs"
+import { HeaderDetails } from "./HeaderDetails"
+import workPlaceholder from "./assets/book.svg"
 
-import Header from "./Header"
-import About from "./About"
-import Result from "./Result"
-import InfoBar from "./Header/InfoBar"
-import { PwaReloadPrompt } from "@tropo/react"
-import {
-  useAppStore,
-  useCollectionStore,
-  getLargeItem,
-  getItem,
-  setItem,
-  buildCacheKey,
-} from "@tropo/core"
-import { clearAllCaches, STORAGE_SCHEMA_VERSION } from "./utils/storage"
+import { PwaReloadPrompt, Header, InfoBar, Result, About } from "@tropo/react"
+import { useAppStore, initCollectionStorage } from "@tropo/core"
+import { toast } from "react-toastify"
 import { plugin, validateProviderSettings } from "./provider"
+import { STORAGE_SCHEMA_VERSION } from "./utils/storage"
+import { ledsClient } from "./utils/leds"
 
 import "react-toastify/dist/ReactToastify.css"
 import "@tropo/react/src/global.css"
@@ -35,7 +28,6 @@ const App = () => {
   const { t } = useTranslation()
   const setIsOnline = useAppStore((s) => s.setIsOnline)
   const setLoading = useAppStore((s) => s.setLoading)
-  const setDisplayCount = useAppStore((s) => s.setDisplayCount)
 
   // Network online/offline status
   useEffect(() => {
@@ -83,87 +75,15 @@ const App = () => {
 
     setLoading(true)
 
-    const initData = async () => {
-      const schemaVersionKey = buildCacheKey("schemaVersion")
-      const cachedSchemaVersion = localStorage.getItem(schemaVersionKey)
-      const currentSchemaVersion = String(STORAGE_SCHEMA_VERSION)
-
-      // Ensure sort order is supported by current provider
-      const defaultSort = plugin.getDefaultSort?.() || "added_desc"
-
-      if (cachedSchemaVersion !== currentSchemaVersion) {
-        await clearAllCaches()
-        useCollectionStore.getState().setSort(defaultSort)
-        localStorage.setItem(schemaVersionKey, currentSchemaVersion)
-      }
-
-      const currentSort = useCollectionStore.getState().sort
-      const [sortField] = (currentSort || "").split("_")
-      const validSortFields = ["added", "year", "title", "creator", "place"]
-      if (!validSortFields.includes(sortField)) {
-        useCollectionStore.getState().setSort(defaultSort)
-      }
-
-      const setItems = useCollectionStore.getState().setItems
-      const setCategories = useCollectionStore.getState().setCategories
-      const setCreators = useCollectionStore.getState().setCreators
-
-      try {
-        const currentUser = plugin.user
-        const previousUser =
-          getItem("syncedInventoryUser") || import.meta.env.VITE_INVENTAIRE_USER
-        const isUserChanged = Boolean(
-          previousUser && currentUser && previousUser !== currentUser,
-        )
-
-        if (isUserChanged) {
-          await clearAllCaches()
-          useCollectionStore.getState().clearFilters()
-          useAppStore.getState().setSearchStr("")
-        }
-
-        const [cachedItems, cachedCategories, cachedCreators] =
-          await Promise.all([
-            getLargeItem("items"),
-            Promise.resolve(getItem("categories")),
-            Promise.resolve(getItem("creators")),
-          ])
-
-        const hasCachedItems =
-          cachedItems &&
-          typeof cachedItems === "object" &&
-          Object.keys(cachedItems).length > 0
-
-        if (!isUserChanged && hasCachedItems) {
-          if (!getItem("syncedInventoryUser") && currentUser) {
-            setItem("syncedInventoryUser", currentUser)
-          }
-          setItems(cachedItems)
-          setCategories(cachedCategories || [])
-          // Populate creators from plugin extraction or cache
-          const creatorsList = plugin.getCreators
-            ? plugin.getCreators(cachedItems)
-            : cachedCreators && cachedCreators.length
-              ? cachedCreators
-              : []
-          if (creatorsList.length) {
-            setCreators(creatorsList)
-          }
-          setDisplayCount(Object.keys(cachedItems).length)
-          setLoading(false)
-        } else {
-          // First load or user changed: trigger synchronization
-          await syncCollection({ forceRefresh: isUserChanged })
-          setLoading(false)
-        }
-      } catch (e) {
-        console.error("Error loading cache:", e)
-        setLoading(false)
-      }
-    }
-
-    initData()
-  }, [setDisplayCount, setLoading])
+    initCollectionStorage({
+      plugin,
+      schemaVersion: STORAGE_SCHEMA_VERSION,
+      onWarning: (msg, params) =>
+        toast.warn(t(msg, params), { autoClose: false }),
+      onError: (msg, params) =>
+        toast.error(t(msg, params), { autoClose: false }),
+    })
+  }, [setLoading])
 
   return (
     <div className="app-shell">
@@ -172,10 +92,29 @@ const App = () => {
         transition={ToastTransition}
         hideProgressBar={true}
       />
-      <Header />
-      <About />
-      <Result />
-      <InfoBar />
+      <Header
+        plugin={plugin}
+        setLeds={Settings.setLeds}
+        ledsClient={ledsClient}
+        themeStorageKey="tropobiblio-theme"
+        showFormats={false}
+      />
+      <About plugin={plugin} appName={Settings.appName} />
+      <Result
+        plugin={plugin}
+        placeholder={workPlaceholder}
+        currency={Settings.currency}
+        ledsColors={{
+          categories: Settings.ledsCategoriesColor,
+          creators: Settings.ledsCreatorsColor,
+          work: Settings.ledsWorkColor,
+        }}
+        setLeds={Settings.setLeds}
+        ledsClient={ledsClient}
+        renderExtraTabs={(instanceId) => <ExtraTabs instanceId={instanceId} />}
+        renderHeaderDetails={(item) => <HeaderDetails item={item} />}
+      />
+      <InfoBar plugin={plugin} />
       <PwaReloadPrompt
         message={t("Update available! The app will be reloaded.")}
         buttonReload={t("Reload")}

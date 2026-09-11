@@ -16,13 +16,23 @@ import logo from "./assets/logo.svg"
 // Marker function for i18n static extraction
 const t = (s) => s
 
+// Terminology markers for static i18n analysis
+t("Casting")
+t("movie")
+t("movies")
+t("Genre")
+t("Genres")
+t("TMDB rating")
+t("movie, director, actor...")
+t("View release on {{provider}}")
+
 export class TMDBPlugin extends BasePlugin {
   #lastRequestTime = 0
 
   constructor(config = {}) {
     super()
     const env = config.env || {}
-    this.listId = env.VITE_TMDB_LIST_ID || config.listId
+    this.listId = this.cleanListId(env.VITE_TMDB_LIST_ID || config.listId)
     this.devMode = config.devMode || false
 
     // Default to /api/tmdb for Vite dev proxy or custom endpoint
@@ -44,6 +54,14 @@ export class TMDBPlugin extends BasePlugin {
       logo,
       multipleFormats: false,
     }
+  }
+
+  getSyncIdentifier() {
+    return this.listId || null
+  }
+
+  getValidSortFields() {
+    return ["added", "year", "title", "creator", "rating"]
   }
 
   validateSettings(onConfigError) {
@@ -328,6 +346,9 @@ export class TMDBPlugin extends BasePlugin {
         id: movie.id,
         title: cleanTitle,
         creator: cleanDirector,
+        creators: Array.from(
+          new Set([cleanDirector, ...cast].filter(Boolean)),
+        ).sort(),
         year,
         cover: coverUrl,
         backdrop: backdropUrl,
@@ -415,6 +436,43 @@ export class TMDBPlugin extends BasePlugin {
 
   getPreservedKeys() {
     return ["syncedListId", "customFieldsInfo"]
+  }
+
+  // Return movie poster aspect ratio multiplier (2:3 portrait format)
+  getCoverAspectRatio() {
+    return 1.5
+  }
+
+  // Return TMDB public community rating (scale of 10)
+  getPublicRating(item) {
+    if (item?.vote_average > 0) {
+      return {
+        score: item.vote_average,
+        max: 10,
+        label: t("TMDB rating"),
+      }
+    }
+    return null
+  }
+
+  // Terminology mappings for films
+  getTerminology() {
+    return {
+      creator: t("Casting"),
+      creators: t("Casting"),
+      item: t("movie"),
+      items: t("movies"),
+      category: t("Genre"),
+      categories: t("Genres"),
+      communityRating: t("TMDB rating"),
+      searchPlaceholder: t("movie, director, actor..."),
+      viewOnProvider: t("View release on {{provider}}"),
+    }
+  }
+
+  // Film items are already enriched during collection fetch
+  isItemDetailed() {
+    return true
   }
 
   async getCustomFieldsInfo() {

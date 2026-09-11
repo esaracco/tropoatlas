@@ -14,6 +14,21 @@ import logo from "./assets/logo.png"
 
 const API_ITEMS_PER_REQUEST = 250
 
+// Marker function for i18n static extraction
+const t = (s) => s
+
+// Terminology markers for static i18n analysis
+t("Artist")
+t("Artists")
+t("album")
+t("albums")
+t("Style")
+t("Styles")
+t("Discogs rating")
+t("artist, album...")
+t("New style...")
+t("View release on {{provider}}")
+
 export const getArtistName = ({ name, anv } = {}) => {
   if (!name) return anv || ""
   if (!anv) return name
@@ -57,6 +72,14 @@ export class DiscogsPlugin extends BasePlugin {
         this.formats === "all" ||
         this.formats.indexOf(",") > -1,
     }
+  }
+
+  getSyncIdentifier() {
+    return this.user || null
+  }
+
+  getValidSortFields() {
+    return ["added", "year", "title", "creator", "place", "price", "rating"]
   }
 
   getPreservedKeys() {
@@ -381,6 +404,7 @@ export class DiscogsPlugin extends BasePlugin {
       globalNotes: mNotes,
       tracklist: finalTracklist,
       externalUrl: `https://www.discogs.com/release/${item.releaseid}`,
+      hasDetails: true,
     }
   }
 
@@ -459,5 +483,44 @@ export class DiscogsPlugin extends BasePlugin {
 
   getDefaultSort() {
     return "added_desc"
+  }
+
+  // Discogs API does not support resetting ratings to 0 or unrated
+  canResetRating() {
+    return false
+  }
+
+  // Return Discogs public community rating (scale of 5)
+  getPublicRating(item) {
+    if (item?.community_rating > 0) {
+      return {
+        score: item.community_rating,
+        max: 5,
+        label: t("Discogs rating"),
+      }
+    }
+    return null
+  }
+
+  // Terminology mappings for audio releases
+  getTerminology() {
+    return {
+      creator: t("Artist"),
+      creators: t("Artists"),
+      item: t("album"),
+      items: t("albums"),
+      category: t("Style"),
+      categories: t("Styles"),
+      communityRating: t("Discogs rating"),
+      searchPlaceholder: t("artist, album..."),
+      newCategoryPlaceholder: t("New style..."),
+      viewOnProvider: t("View release on {{provider}}"),
+    }
+  }
+
+  // Check if tracklist or enriched details are already present
+  isItemDetailed(item) {
+    if (!item) return false
+    return Boolean(item.hasDetails || item.tracklist !== undefined)
   }
 }

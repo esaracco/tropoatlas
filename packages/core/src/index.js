@@ -75,6 +75,7 @@ export * from "./storage.js"
 export * from "./utils.js"
 export * from "./plugin.js"
 export * from "./backup.js"
+export * from "./sync.js"
 
 // Canonical item field names across data providers and apps
 export const FIELD_PLACE = "place"
@@ -82,16 +83,21 @@ export const FIELD_PRICE = "price"
 export const FIELD_CATEGORIES = "categories"
 export const FIELD_RATING = "rating"
 
-export const getPluginTerminology = (pluginName) => {
-  const terminologies = {
-    discogs: {
-      creator: "Artist",
-      creators: "Artists",
-      item: "Release",
-      items: "Releases",
-      category: "Style",
-      categories: "Styles",
-    },
+// Resolves terminology from a plugin instance or returns generic defaults
+export const getPluginTerminology = (plugin) => {
+  if (plugin && typeof plugin.getTerminology === "function") {
+    return plugin.getTerminology()
   }
-  return terminologies[pluginName] || terminologies.discogs
+  return {
+    creator: "Creator",
+    creators: "Creators",
+    item: "item",
+    items: "items",
+    category: "Category",
+    categories: "Categories",
+    communityRating: "Community rating",
+    searchPlaceholder: "Search...",
+    newCategoryPlaceholder: "New category...",
+    viewOnProvider: "View on {{provider}}",
+  }
 }

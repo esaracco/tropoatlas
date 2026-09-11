@@ -64,7 +64,7 @@ export class BasePlugin {
   }
 
   /**
-   * Fetches detailed information for a specific item (e.g. tracklist).
+   * Fetches detailed information for a specific item (e.g. additional metadata).
    * @param {Object} item - The base item object.
    * @returns {Promise<Object>} The item with detailed information attached.
    */
@@ -137,5 +137,81 @@ export class BasePlugin {
    */
   getDefaultSort() {
     return "added_desc"
+  }
+
+  /**
+   * Return the array of valid sort keys supported by this provider.
+   * Must be implemented by the specific plugin.
+   * @returns {string[]}
+   */
+  getValidSortFields() {
+    throw new Error("getValidSortFields() must be implemented by the plugin.")
+  }
+
+  /**
+   * Return a unique identifier representing the active user/list/collection target.
+   * If this changes between syncs, the storage cache is automatically refreshed.
+   * Must be implemented by the specific plugin.
+   * @returns {string|null}
+   */
+  getSyncIdentifier() {
+    throw new Error("getSyncIdentifier() must be implemented by the plugin.")
+  }
+
+  /**
+   * Return whether the provider allows resetting an item rating to unrated (0).
+   * Defaults to true.
+   * @returns {boolean}
+   */
+  canResetRating() {
+    return true
+  }
+
+  /**
+   * Return the aspect ratio (height / width multiplier) for item cover images.
+   * Defaults to 1.0 (square 1:1, suitable for audio vinyls/CDs).
+   * Plugins for books or movie posters can override this (e.g. 1.5).
+   * @returns {number}
+   */
+  getCoverAspectRatio() {
+    return 1.0
+  }
+
+  /**
+   * Return terminology mapping for domain concepts.
+   * @returns {Object}
+   */
+  getTerminology() {
+    return {
+      creator: "Creator",
+      creators: "Creators",
+      item: "item",
+      items: "items",
+      category: "Category",
+      categories: "Categories",
+      communityRating: "Community rating",
+      searchPlaceholder: "Search...",
+      newCategoryPlaceholder: "New category...",
+      viewOnProvider: "View on {{provider}}",
+    }
+  }
+
+  /**
+   * Return whether an item already has detailed metadata loaded.
+   * @param {Object} item
+   * @returns {boolean}
+   */
+  isItemDetailed(item) {
+    if (!item) return false
+    return Boolean(item.hasDetails)
+  }
+
+  /**
+   * Return normalized public or community rating for an item.
+   * @param {Object} item - Collection item.
+   * @returns {{ score: number, max: number, label?: string }|null}
+   */
+  getPublicRating(item) {
+    return null
   }
 }

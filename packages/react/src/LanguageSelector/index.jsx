@@ -20,7 +20,8 @@ const LanguageSelector = ({
     .toLowerCase()
 
   // Switch active language in i18next
-  const handleLanguageChange = (code) => {
+  const handleLanguageChange = (e, code) => {
+    e.stopPropagation()
     if (code !== currentLang) {
       i18n.changeLanguage(code)
     }
@@ -41,7 +42,7 @@ const LanguageSelector = ({
             className={`btn btn-sm ${
               isActive ? "btn-primary active" : "btn-outline-secondary"
             }`}
-            onClick={() => handleLanguageChange(lang.code)}
+            onClick={(e) => handleLanguageChange(e, lang.code)}
           >
             {lang.label}
           </button>

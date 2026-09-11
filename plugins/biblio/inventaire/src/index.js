@@ -19,6 +19,17 @@ export const MIN_DESCRIPTION_LENGTH = 200
 // Marker function for i18n static extraction
 const t = (s) => s
 
+// Terminology markers for static i18n analysis
+t("Author")
+t("Authors")
+t("book")
+t("books")
+t("Genre")
+t("Genres")
+t("book, author...")
+t("New genre...")
+t("View book on {{provider}}")
+
 // Capitalize the first letter of a genre or category
 const capitalize = (str) =>
   str ? str.charAt(0).toUpperCase() + str.slice(1) : str
@@ -136,6 +147,14 @@ export class InventairePlugin extends BasePlugin {
       supportsRating: true,
       supportsCategories: true,
     }
+  }
+
+  getSyncIdentifier() {
+    return this.user || null
+  }
+
+  getValidSortFields() {
+    return ["added", "year", "title", "creator", "place"]
   }
 
   validateSettings(onConfigError) {
@@ -1486,6 +1505,43 @@ export class InventairePlugin extends BasePlugin {
 
   getDefaultSort() {
     return "added_desc"
+  }
+
+  // Return book cover aspect ratio multiplier (2:3 portrait format)
+  getCoverAspectRatio() {
+    return 1.5
+  }
+
+  // Inventaire does not provide public community ratings
+  getPublicRating() {
+    return null
+  }
+
+  // Terminology mappings for books
+  getTerminology() {
+    return {
+      creator: t("Author"),
+      creators: t("Authors"),
+      item: t("book"),
+      items: t("books"),
+      category: t("Genre"),
+      categories: t("Genres"),
+      searchPlaceholder: t("book, author..."),
+      newCategoryPlaceholder: t("New genre..."),
+      viewOnProvider: t("View book on {{provider}}"),
+    }
+  }
+
+  // Check if book description or metadata is already enriched
+  isItemDetailed(item) {
+    if (!item) return false
+    const isShort =
+      !item.description || item.description.length < this.minDescriptionLength
+    return Boolean(
+      item.hasDetails &&
+      (item.hasWikipedia ||
+        (item.wikipediaChecked && (!isShort || item.hasOpenLibrary))),
+    )
   }
 }
 

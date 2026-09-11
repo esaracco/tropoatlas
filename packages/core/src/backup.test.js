@@ -28,7 +28,7 @@ describe("backup.js - Duration Estimation & Formatting", () => {
     const items = {
       item1: {
         id: "1",
-        tracklist: [{ title: "Track 1" }],
+        hasDetails: true,
         cover: "https://example.com/cover1.jpg",
       },
     }
@@ -50,12 +50,10 @@ describe("backup.js - Duration Estimation & Formatting", () => {
       match: vi.fn().mockResolvedValue(null),
     }
 
-    // 1 item with missing tracklist and masterid (2 calls) + 1 missing cover
+    // 1 item with missing details (1 call) + 1 missing cover (1 call)
     const items = {
       item1: {
         id: "1",
-        masterid: "m1",
-        releaseid: "r1",
         cover: "https://example.com/cover1.jpg",
       },
     }
@@ -68,9 +66,8 @@ describe("backup.js - Duration Estimation & Formatting", () => {
 
     expect(stats.missingDetailsCount).toBe(1)
     expect(stats.missingCoversCount).toBe(1)
-    expect(stats.totalNetworkCalls).toBe(3)
-    // At 55 req/min, 2 API calls take ~3s, 1 image call takes ~2s, max(3,2) + 2 = 5s
-    expect(stats.estimatedSeconds).toBeGreaterThanOrEqual(4)
+    expect(stats.totalNetworkCalls).toBe(2)
+    expect(stats.estimatedSeconds).toBeGreaterThanOrEqual(2)
   })
 })
 
@@ -85,7 +82,7 @@ describe("backup.js - ZIP Export", () => {
           id: "101",
           title: "Album 1",
           creator: "Artist 1",
-          cover: "/api/discogs-image/cover101.jpg",
+          cover: "/api/proxy-image/cover101.jpg",
           categories: ["Rock"],
         },
       },
@@ -154,7 +151,7 @@ describe("backup.js - ZIP Export", () => {
         101: {
           id: "101",
           title: "Album 1",
-          cover: "/api/discogs-image/sample.jpg",
+          cover: "/api/proxy-image/sample.jpg",
         },
       },
       categories: [],
@@ -180,7 +177,7 @@ describe("backup.js - ZIP Export", () => {
     })
 
     // Local IndexedDB copy MUST preserve valid /api/ proxy URL
-    expect(memoryStore.items["101"].cover).toBe("/api/discogs-image/sample.jpg")
+    expect(memoryStore.items["101"].cover).toBe("/api/proxy-image/sample.jpg")
   })
 })
 

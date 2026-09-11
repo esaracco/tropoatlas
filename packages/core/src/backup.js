@@ -94,8 +94,6 @@ const getCachedImageBlob = async (
       if (!proxyUrl || proxyUrl === url) {
         if (url.startsWith("/api/")) {
           proxyUrl = url
-        } else if (url.startsWith("https://i.discogs.com/")) {
-          proxyUrl = `/api/discogs-image/${url.replace("https://i.discogs.com/", "")}`
         } else {
           proxyUrl = `/api/proxy-image?url=${encodeURIComponent(url)}`
         }
@@ -207,13 +205,13 @@ export const estimateExportBackupDuration = async ({
   let missingCoversCount = 0
 
   for (const item of entries) {
-    // Check missing details (tracklist / notes / generic details)
+    // Check missing details (generic details flag or plugin callback)
     const isDetailed = isItemDetailed
       ? isItemDetailed(item)
-      : item.tracklist !== undefined || item.hasDetails === true
+      : Boolean(item.hasDetails)
     if (!isDetailed) {
       missingDetailsCount++
-      apiCalls += item.masterid ? 2 : 1
+      apiCalls++
     }
 
     // Check missing cover in cache
@@ -366,9 +364,9 @@ export const exportCollectionBackupZIP = async (optionsOrProgress) => {
     for (const [, rawItem] of entries) {
       const isDetailed = isItemDetailed
         ? isItemDetailed(rawItem)
-        : rawItem.tracklist !== undefined || rawItem.hasDetails === true
+        : Boolean(rawItem.hasDetails)
       if (!isDetailed) {
-        remainingApiCalls += rawItem.masterid ? 2 : 1
+        remainingApiCalls++
       }
       if (rawItem.cover && !rawItem.cover.startsWith("data:")) {
         let isCached = false
@@ -419,7 +417,7 @@ export const exportCollectionBackupZIP = async (optionsOrProgress) => {
       const detailTask = async () => {
         const isDetailed = isItemDetailed
           ? isItemDetailed(localItem)
-          : localItem.tracklist !== undefined || localItem.hasDetails === true
+          : Boolean(localItem.hasDetails)
         if (enrichMissing && getItemDetails && !isDetailed) {
           try {
             const detailed = await apiThrottler(() => getItemDetails(localItem))
@@ -435,8 +433,7 @@ export const exportCollectionBackupZIP = async (optionsOrProgress) => {
               err.message,
             )
           } finally {
-            const callsDone = localItem.masterid ? 2 : 1
-            remainingApiCalls = Math.max(0, remainingApiCalls - callsDone)
+            remainingApiCalls = Math.max(0, remainingApiCalls - 1)
           }
         }
 
@@ -551,7 +548,7 @@ export const exportCollectionBackupZIP = async (optionsOrProgress) => {
     version: BACKUP_FORMAT_VERSION,
     app: import.meta.env.VITE_APP_NAME || "tropoatlas",
     exportDate: new Date().toISOString(),
-    provider: import.meta.env.VITE_DATA_PROVIDER || "discogs",
+    provider: import.meta.env.VITE_DATA_PROVIDER || "",
     categories,
     items: exportedItems,
   }

@@ -4,22 +4,16 @@ import i18n from "i18next"
 import { ToastContainer, cssTransition } from "react-toastify"
 
 import * as Settings from "./utils/settings"
+import { ExtraTabs } from "./ExtraTabs"
+import { HeaderDetails } from "./HeaderDetails"
+import workPlaceholder from "./assets/album.svg"
 
-import Header from "./Header"
-import About from "./About"
-import Result from "./Result"
-import InfoBar from "./Header/InfoBar"
-import { PwaReloadPrompt } from "@tropo/react"
-import {
-  useAppStore,
-  useCollectionStore,
-  getLargeItem,
-  getItem,
-  buildCacheKey,
-} from "@tropo/core"
-import { clearAllCaches, STORAGE_SCHEMA_VERSION } from "./utils/storage"
-import { syncCollection } from "./utils/sync"
-import { plugin, validateProviderSettings } from "./provider"
+import { PwaReloadPrompt, Header, InfoBar, Result, About } from "@tropo/react"
+import { useAppStore, initCollectionStorage } from "@tropo/core"
+import { toast } from "react-toastify"
+import { plugin, validateProviderSettings, getProviderInfo } from "./provider"
+import { STORAGE_SCHEMA_VERSION } from "./utils/storage"
+import { ledsClient } from "./utils/leds"
 
 import "react-toastify/dist/ReactToastify.css"
 import "@tropo/react/src/global.css"
@@ -35,7 +29,6 @@ const App = () => {
   const { t } = useTranslation()
   const setIsOnline = useAppStore((s) => s.setIsOnline)
   const setLoading = useAppStore((s) => s.setLoading)
-  const setDisplayCount = useAppStore((s) => s.setDisplayCount)
 
   // Online / offline network status listeners
   useEffect(() => {
@@ -86,73 +79,14 @@ const App = () => {
 
     setLoading(true)
 
-    const initData = async () => {
-      // 1. Check storage schema version and clear cache if updated
-      const schemaVersionKey = buildCacheKey("schemaVersion")
-      const cachedSchemaVersion = localStorage.getItem(schemaVersionKey)
-      const currentSchemaVersion = String(STORAGE_SCHEMA_VERSION)
-
-      if (cachedSchemaVersion !== currentSchemaVersion) {
-        await clearAllCaches()
-        localStorage.setItem(schemaVersionKey, currentSchemaVersion)
-      }
-
-      // Ensure sort order is supported by current provider
-      const defaultSort = plugin.getDefaultSort?.() || "added_desc"
-      const currentSort = useCollectionStore.getState().sort
-      const [sortField] = (currentSort || "").split("_")
-      const validSortFields = [
-        "added",
-        "year",
-        "title",
-        "creator",
-        "place",
-        "price",
-        "rating",
-      ]
-      if (!validSortFields.includes(sortField)) {
-        useCollectionStore.getState().setSort(defaultSort)
-      }
-
-      const setItems = useCollectionStore.getState().setItems
-      const setCategories = useCollectionStore.getState().setCategories
-
-      try {
-        const [cachedItems, cachedCategories] = await Promise.all([
-          getLargeItem("items"),
-          Promise.resolve(getItem("categories")),
-        ])
-        const hasCachedItems =
-          cachedItems &&
-          typeof cachedItems === "object" &&
-          Object.keys(cachedItems).length > 0
-
-        if (hasCachedItems) {
-          // Restore from cache
-          const itemsObj = cachedItems || {}
-          const categoriesArr = cachedCategories || []
-
-          // Populate Zustand store
-          const mappedItems = {}
-          Object.values(itemsObj).forEach((r) => {
-            mappedItems[r.id] = r
-          })
-          setItems(mappedItems)
-          setCategories(categoriesArr)
-          setDisplayCount(Object.keys(mappedItems).length)
-          setLoading(false)
-        } else {
-          // First load or schema changed: trigger synchronization
-          await syncCollection()
-          setLoading(false)
-        }
-      } catch (e) {
-        console.error("Error loading cache", e)
-        setLoading(false)
-      }
-    }
-
-    initData()
+    initCollectionStorage({
+      plugin,
+      schemaVersion: STORAGE_SCHEMA_VERSION,
+      onWarning: (msg, params) =>
+        toast.warn(t(msg, params), { autoClose: false }),
+      onError: (msg, params) =>
+        toast.error(t(msg, params), { autoClose: false }),
+    })
   }, [])
 
   return (
@@ -162,10 +96,29 @@ const App = () => {
         transition={ToastTransition}
         hideProgressBar={true}
       />
-      <Header />
-      <About />
-      <Result />
-      <InfoBar />
+      <Header
+        plugin={plugin}
+        setLeds={Settings.setLeds}
+        ledsClient={ledsClient}
+        themeStorageKey="tropoaudio-theme"
+        showFormats={getProviderInfo().multipleFormats}
+      />
+      <About plugin={plugin} appName={Settings.appName} />
+      <Result
+        plugin={plugin}
+        placeholder={workPlaceholder}
+        currency={Settings.currency}
+        ledsColors={{
+          categories: Settings.ledsCategoriesColor,
+          creators: Settings.ledsCreatorsColor,
+          work: Settings.ledsWorkColor,
+        }}
+        setLeds={Settings.setLeds}
+        ledsClient={ledsClient}
+        renderExtraTabs={(instanceId) => <ExtraTabs instanceId={instanceId} />}
+        renderHeaderDetails={(item) => <HeaderDetails item={item} />}
+      />
+      <InfoBar plugin={plugin} />
       <PwaReloadPrompt
         message={t("Update available! The app will be reloaded.")}
         buttonReload={t("Reload")}
