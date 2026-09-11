@@ -288,6 +288,9 @@ export default defineConfig(({ mode }) => {
         },
       }),
     ],
+    optimizeDeps: {
+      exclude: ["@tropo/core", "@tropo/react", "@tropo/leds", "@tropo/tmdb"],
+    },
     define: {
       __APP_NAME__: JSON.stringify("TropoCine"),
       __APP_VERSION__: JSON.stringify(packageJson.version),

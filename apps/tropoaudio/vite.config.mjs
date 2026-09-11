@@ -266,6 +266,9 @@ export default defineConfig(({ mode }) => {
         },
       }),
     ],
+    optimizeDeps: {
+      exclude: ["@tropo/core", "@tropo/react", "@tropo/leds", "@tropo/discogs"],
+    },
     server: {
       port: 3000,
       proxy: proxy,

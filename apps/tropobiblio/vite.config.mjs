@@ -303,6 +303,14 @@ export default defineConfig(({ mode }) => {
         },
       }),
     ],
+    optimizeDeps: {
+      exclude: [
+        "@tropo/core",
+        "@tropo/react",
+        "@tropo/leds",
+        "@tropo/inventaire",
+      ],
+    },
     define: {
       __APP_VERSION__: JSON.stringify(packageJson.version),
       __APP_HOMEPAGE__: JSON.stringify(packageJson.homepage),
