@@ -14,7 +14,8 @@ export default defineConfig(({ mode }) => {
   const userAgent = `${appName}/${packageJson.version} (${packageJson.homepage})`
 
   const proxy = {}
-  if (env.VITE_SET_LEDS === "yes" && env.VITE_LED_TARGET) {
+  // Proxy for hardware LEDs if configured
+  if (env.VITE_LED_TARGET) {
     const ledProxyOptions = {
       target: env.VITE_LED_TARGET,
       changeOrigin: true,
