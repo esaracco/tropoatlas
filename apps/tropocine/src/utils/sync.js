@@ -24,7 +24,7 @@ export const syncCollection = async ({ forceRefresh = false } = {}) => {
   setProgress(0)
 
   try {
-    const currentCleanId = plugin.cleanListId(plugin.activeListId)
+    const currentCleanId = plugin.cleanListId(plugin.listId)
     const previousListId = getItem("syncedListId")
     const isListChanged = Boolean(
       previousListId && currentCleanId && previousListId !== currentCleanId,

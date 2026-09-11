@@ -25,7 +25,7 @@ export const syncCollection = async ({ forceRefresh = false } = {}) => {
   setProgress(0)
 
   try {
-    const currentUser = plugin.activeUser
+    const currentUser = plugin.user
     const previousUser = getItem("syncedInventoryUser")
     const isUserChanged = Boolean(
       previousUser && currentUser && previousUser !== currentUser,

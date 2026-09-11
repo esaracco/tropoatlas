@@ -97,7 +97,7 @@ const App = () => {
       const setCreators = useCollectionStore.getState().setCreators
 
       try {
-        const currentCleanId = plugin.cleanListId(plugin.activeListId)
+        const currentCleanId = plugin.cleanListId(plugin.listId)
         const previousListId =
           getItem("syncedListId") ||
           plugin.cleanListId(import.meta.env.VITE_TMDB_LIST_ID)
@@ -118,17 +118,17 @@ const App = () => {
             Promise.resolve(getItem("creators")),
           ])
 
-        if (
-          !isListChanged &&
-          cachedCategories &&
-          cachedCategories.length &&
-          cachedItems
-        ) {
+        const hasCachedItems =
+          cachedItems &&
+          typeof cachedItems === "object" &&
+          Object.keys(cachedItems).length > 0
+
+        if (!isListChanged && hasCachedItems) {
           if (!getItem("syncedListId") && currentCleanId) {
             setItem("syncedListId", currentCleanId)
           }
           setItems(cachedItems)
-          setCategories(cachedCategories)
+          setCategories(cachedCategories || [])
           if (cachedCreators && cachedCreators.length) {
             setCreators(cachedCreators)
           }

@@ -1,7 +1,7 @@
 import React, { useEffect } from "react"
 import { useTranslation } from "react-i18next"
 import i18n from "i18next"
-import { ToastContainer, toast, cssTransition } from "react-toastify"
+import { ToastContainer, cssTransition } from "react-toastify"
 
 import * as Settings from "./utils/settings"
 
@@ -31,14 +31,13 @@ const ToastTransition = cssTransition({
   appendPosition: false,
 })
 
-// COMPONENT App
 const App = () => {
   const { t } = useTranslation()
   const setIsOnline = useAppStore((s) => s.setIsOnline)
   const setLoading = useAppStore((s) => s.setLoading)
   const setDisplayCount = useAppStore((s) => s.setDisplayCount)
 
-  // EFFECT 1
+  // Online / offline network status listeners
   useEffect(() => {
     const _onlineEvent = (e) => {
       setIsOnline(e.type === "online")
@@ -59,25 +58,29 @@ const App = () => {
     }
   }, [])
 
-  // EFFECT 2
+  // Page title & description
   useEffect(() => {
-    if (Settings.env !== "test") {
-      document.documentElement.lang = i18n.language
-      const meta = document.querySelector('meta[name="description"]')
-      if (meta)
-        meta.setAttribute(
-          "content",
-          t(
-            "Organize your collection, enrich it with your own metadata, and locate albums instantly using LED strips",
-          ),
-        )
-      document.title = `TropoAudio – ${t("An album collection manager")}`
+    document.documentElement.lang = (
+      i18n.resolvedLanguage ||
+      i18n.language ||
+      "en"
+    )
+      .slice(0, 2)
+      .toLowerCase()
+    const meta = document.querySelector('meta[name="description"]')
+    if (meta) {
+      meta.setAttribute(
+        "content",
+        t(
+          "Organize your collection, enrich it with your own metadata, and locate albums instantly using LED strips",
+        ),
+      )
     }
+    document.title = `TropoAudio – ${t("An album collection manager")}`
   }, [t])
 
-  // EFFECT 3
+  // Initial data loading & validation
   useEffect(() => {
-    toast.dismiss()
     Settings.validateSettings()
     validateProviderSettings()
 
@@ -119,7 +122,12 @@ const App = () => {
           getLargeItem("items"),
           Promise.resolve(getItem("categories")),
         ])
-        if (cachedCategories && cachedCategories.length && cachedItems) {
+        const hasCachedItems =
+          cachedItems &&
+          typeof cachedItems === "object" &&
+          Object.keys(cachedItems).length > 0
+
+        if (hasCachedItems) {
           // Restore from cache
           const itemsObj = cachedItems || {}
           const categoriesArr = cachedCategories || []
@@ -147,7 +155,6 @@ const App = () => {
     initData()
   }, [])
 
-  // RENDER
   return (
     <div className="app-shell">
       <ToastContainer

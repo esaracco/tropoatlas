@@ -109,7 +109,7 @@ const App = () => {
       const setCreators = useCollectionStore.getState().setCreators
 
       try {
-        const currentUser = plugin.activeUser
+        const currentUser = plugin.user
         const previousUser =
           getItem("syncedInventoryUser") || import.meta.env.VITE_INVENTAIRE_USER
         const isUserChanged = Boolean(
@@ -129,17 +129,17 @@ const App = () => {
             Promise.resolve(getItem("creators")),
           ])
 
-        if (
-          !isUserChanged &&
-          cachedCategories &&
-          cachedCategories.length &&
-          cachedItems
-        ) {
+        const hasCachedItems =
+          cachedItems &&
+          typeof cachedItems === "object" &&
+          Object.keys(cachedItems).length > 0
+
+        if (!isUserChanged && hasCachedItems) {
           if (!getItem("syncedInventoryUser") && currentUser) {
             setItem("syncedInventoryUser", currentUser)
           }
           setItems(cachedItems)
-          setCategories(cachedCategories)
+          setCategories(cachedCategories || [])
           // Populate creators from plugin extraction or cache
           const creatorsList = plugin.getCreators
             ? plugin.getCreators(cachedItems)
