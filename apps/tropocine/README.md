@@ -94,7 +94,7 @@ The script automatically exchanges the temporary request token for a permanent *
 ### LED Strips Configuration
 
 - **`VITE_SET_LEDS`**: Set to `"yes"` to enable IoT LED communication.
-- **`VITE_LED_TARGET`**: HTTP URL of your microcontroller LED server (e.g., `http://127.0.0.1:8000`).
+- **`VITE_LED_TARGET`**: HTTP URL of your microcontroller LED server (e.g., `http://192.168.1.1`).
 - **`VITE_LEDS_CREATORS_COLOR`**: RGB color for directors/actors filter layer (default: `0,0,130`).
 - **`VITE_LEDS_CATEGORIES_COLOR`**: RGB color for genres filter layer (default: `0,150,0`).
 - **`VITE_LEDS_WORK_COLOR`**: RGB color for focused movie modal (default: `255,0,0`).
@@ -190,16 +190,16 @@ _(This generates optimized static files in `apps/tropocine/build/`, along with `
 
     # (Optional) LED Server Proxy
     <Location /api/leds>
-        ProxyPass http://127.0.0.1:8000/leds
-        ProxyPassReverse http://127.0.0.1:8000/leds
+        ProxyPass http://192.168.1.1/leds
+        ProxyPassReverse http://192.168.1.1/leds
     </Location>
     <Location /api/ruler>
-        ProxyPass http://127.0.0.1:8000/ruler
-        ProxyPassReverse http://127.0.0.1:8000/ruler
+        ProxyPass http://192.168.1.1/ruler
+        ProxyPassReverse http://192.168.1.1/ruler
     </Location>
     <Location /api/ping>
-        ProxyPass http://127.0.0.1:8000/ping
-        ProxyPassReverse http://127.0.0.1:8000/ping
+        ProxyPass http://192.168.1.1/ping
+        ProxyPassReverse http://192.168.1.1/ping
     </Location>
 </VirtualHost>
 ```

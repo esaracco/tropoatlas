@@ -7,7 +7,7 @@ It exposes a simple API to light up LEDs based on numerical identifiers, keeping
 
 When LEDs are enabled (`VITE_SET_LEDS=yes`) in an application, the following environment variables are consumed or validated:
 
-- `VITE_LED_TARGET`: Target URL of the ESP32 LED controller (e.g. `http://192.168.1.113:8000`), proxied through Vite or the production reverse proxy.
+- `VITE_LED_TARGET`: Target URL of the ESP32 LED controller (e.g. `http://192.168.1.1`), proxied through Vite or the production reverse proxy.
 - `VITE_LEDS_CREATORS_COLOR`: RGB color for creators/artists filter layer (e.g. `0,0,130`).
 - `VITE_LEDS_CATEGORIES_COLOR`: RGB color for categories/styles/genres filter layer (e.g. `0,150,0`).
 - `VITE_LEDS_WORK_COLOR`: RGB color for the active item modal highlight (e.g. `255,0,0`).
