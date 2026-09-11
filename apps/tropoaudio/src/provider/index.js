@@ -33,7 +33,7 @@ plugin
   .then((info) => {
     setItem("customFieldsInfo", info)
 
-    if (Settings.setLeds === "yes" && !info.supportsPlace) {
+    if (Settings.setLeds && !info.supportsPlace) {
       toast.error(
         i18n.t(
           "LEDs are enabled but your data provider is not configured to support the physical location field (place).",
@@ -44,9 +44,7 @@ plugin
   })
   .catch((e) => toast.error(i18n.t(e.message), { autoClose: false }))
 
-export const getMaster = plugin.getMaster.bind(plugin)
 export const getItemDetails = plugin.getItemDetails.bind(plugin)
-export const getCustomFieldsInfo = plugin.getCustomFieldsInfo.bind(plugin)
 export const getItemImage = plugin.getItemImage.bind(plugin)
 export const updateItem = plugin.updateItem.bind(plugin)
 export const getCategories = plugin.getCategories.bind(plugin)
@@ -54,16 +52,3 @@ export const getProviderInfo = plugin.getProviderInfo.bind(plugin)
 export const getMaxRequestsPerMinute = plugin.getMaxRequestsPerMinute
   ? plugin.getMaxRequestsPerMinute.bind(plugin)
   : () => 60
-
-const provider = {
-  plugin,
-  getItemDetails,
-  getCustomFieldsInfo,
-  getItemImage,
-  updateItem,
-  getCategories,
-  getProviderInfo,
-  getMaxRequestsPerMinute,
-}
-
-export default provider

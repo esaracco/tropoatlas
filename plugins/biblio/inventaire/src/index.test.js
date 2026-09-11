@@ -95,18 +95,8 @@ describe("InventairePlugin - categories and creators extraction", () => {
   })
 })
 
-describe("InventairePlugin - capabilities and image proxying", () => {
+describe("InventairePlugin - image proxying", () => {
   const plugin = new InventairePlugin()
-
-  it("should report draft capabilities as true", () => {
-    const caps = plugin.getDraftCapabilities()
-    expect(caps).toEqual({
-      supportsPlace: true,
-      supportsPrice: true,
-      supportsRating: true,
-      supportsCategories: true,
-    })
-  })
 
   it("should rewrite remote Inventaire image URLs to local proxy endpoint with 300x300 thumbnail", () => {
     expect(

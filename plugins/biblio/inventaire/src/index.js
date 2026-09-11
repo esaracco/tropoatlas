@@ -129,15 +129,6 @@ export class InventairePlugin extends BasePlugin {
     return ["syncedInventory", "customFieldsInfo"]
   }
 
-  getDraftCapabilities() {
-    return {
-      supportsPlace: true,
-      supportsPrice: true,
-      supportsRating: true,
-      supportsCategories: true,
-    }
-  }
-
   async getCustomFieldsInfo() {
     return {
       supportsPlace: true,

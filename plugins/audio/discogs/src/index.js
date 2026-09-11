@@ -63,14 +63,6 @@ export class DiscogsPlugin extends BasePlugin {
     return ["customFieldsInfo"]
   }
 
-  getDraftCapabilities() {
-    return {
-      supportsPlace: true,
-      supportsPrice: true,
-      supportsCategories: true,
-    }
-  }
-
   validateSettings(onConfigError) {
     if (!this.user && onConfigError) {
       onConfigError("The {{field}} environment variable is required!", {

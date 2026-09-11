@@ -48,27 +48,3 @@ export const getImageProxyUrl = plugin.getImageProxyUrl
   : (url) => url
 
 export const updateItem = plugin.updateItem.bind(plugin)
-export const getCustomFieldsInfo = plugin.getCustomFieldsInfo.bind(plugin)
-export const getDraftCapabilities = plugin.getDraftCapabilities
-  ? plugin.getDraftCapabilities.bind(plugin)
-  : () => ({})
-export const getCurrentConfig = plugin.getCurrentConfig
-  ? plugin.getCurrentConfig.bind(plugin)
-  : () => ({})
-
-const provider = {
-  plugin,
-  getItemDetails,
-  getItemImage,
-  getImageProxyUrl,
-  getCategories,
-  getCreators,
-  getProviderInfo,
-  getMaxRequestsPerMinute,
-  updateItem,
-  getCustomFieldsInfo,
-  getDraftCapabilities,
-  getCurrentConfig,
-}
-
-export default provider

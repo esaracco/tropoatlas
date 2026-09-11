@@ -47,20 +47,6 @@ export class BasePlugin {
 
   /**
    * Return information about which custom fields the provider supports.
-   * This is a synchronous, offline check for UI reactivity.
-   * @param {Object} [config] - Optional configuration overrides.
-   * @returns {CustomFieldsInfo}
-   */
-  getDraftCapabilities(config) {
-    return {
-      supportsPlace: false,
-      supportsPrice: false,
-      supportsCategories: false,
-    }
-  }
-
-  /**
-   * Return information about which custom fields the provider supports.
    * @returns {Promise<CustomFieldsInfo>}
    */
   async getCustomFieldsInfo() {

@@ -15,16 +15,7 @@ describe("DiscogsPlugin - getPreservedKeys", () => {
   })
 })
 
-describe("DiscogsPlugin - capabilities and settings", () => {
-  it("should report draft capabilities as true for place, price, and categories", () => {
-    const plugin = new DiscogsPlugin()
-    expect(plugin.getDraftCapabilities()).toEqual({
-      supportsPlace: true,
-      supportsPrice: true,
-      supportsCategories: true,
-    })
-  })
-
+describe("DiscogsPlugin - settings validation", () => {
   it("should require VITE_DISCOGS_USER during settings validation", () => {
     const plugin = new DiscogsPlugin()
     const onConfigError = vi.fn()
