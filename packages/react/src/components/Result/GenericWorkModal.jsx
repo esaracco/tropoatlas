@@ -251,6 +251,10 @@ export const GenericWorkModal = ({
     setFormState((prev) => ({ ...prev, [el.dataset.field]: el.value }))
   }
 
+  const providerUrl =
+    release?.externalUrl ||
+    (plugin?.getItemExternalUrl ? plugin.getItemExternalUrl(release) : null)
+
   // RENDER
   return (
     <>
@@ -414,11 +418,11 @@ export const GenericWorkModal = ({
           {renderExtraTabs ? renderExtraTabs(instanceId, release) : null}
         </Modal.Body>
         <Modal.Footer className="d-flex justify-content-between align-items-center">
-          {release.externalUrl && (
+          {providerUrl && (
             <Button
               variant="outline-secondary"
               size="sm"
-              href={release.externalUrl}
+              href={providerUrl}
               target="_blank"
               rel="noopener noreferrer"
               className="provider-link-btn d-inline-flex align-items-center"

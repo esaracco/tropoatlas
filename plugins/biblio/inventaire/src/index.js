@@ -859,6 +859,9 @@ export class InventairePlugin extends BasePlugin {
         id: itemId,
         entity: item.entity,
         entityUri: item.entity,
+        externalUrl: item.entity
+          ? `https://inventaire.io/entity/${item.entity}`
+          : "https://inventaire.io",
         title,
         subtitle,
         creator,
@@ -1530,6 +1533,16 @@ export class InventairePlugin extends BasePlugin {
       newCategoryPlaceholder: t("New genre..."),
       viewOnProvider: t("View book on {{provider}}"),
     }
+  }
+
+  // Return external URL for Inventaire entity page
+  getItemExternalUrl(item) {
+    if (!item) return null
+    if (item.externalUrl) return item.externalUrl
+    const entity = item.entity || item.entityUri
+    return entity
+      ? `https://inventaire.io/entity/${entity}`
+      : "https://inventaire.io"
   }
 
   // Check if book description or metadata is already enriched

@@ -212,8 +212,24 @@ describe("TMDBPlugin - custom fields and price sanitization", () => {
     }
 
     const collection = await plugin.getCollection()
+    expect(collection[101].externalUrl).toBe(
+      "https://www.themoviedb.org/movie/101",
+    )
     expect(collection[101].price).toBe("9.99")
     expect(collection[101].place).toBe("3")
     expect(collection[101].rating).toBe(5)
+  })
+
+  it("should return external URL for movie items", () => {
+    const plugin = new TMDBPlugin()
+    expect(plugin.getItemExternalUrl({ id: 550 })).toBe(
+      "https://www.themoviedb.org/movie/550",
+    )
+    expect(
+      plugin.getItemExternalUrl({
+        externalUrl: "https://www.themoviedb.org/movie/550",
+      }),
+    ).toBe("https://www.themoviedb.org/movie/550")
+    expect(plugin.getItemExternalUrl(null)).toBeNull()
   })
 })

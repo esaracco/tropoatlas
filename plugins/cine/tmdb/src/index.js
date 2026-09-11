@@ -344,6 +344,7 @@ export class TMDBPlugin extends BasePlugin {
 
       collection[movie.id] = {
         id: movie.id,
+        externalUrl: `https://www.themoviedb.org/movie/${movie.id}`,
         title: cleanTitle,
         creator: cleanDirector,
         creators: Array.from(
@@ -468,6 +469,13 @@ export class TMDBPlugin extends BasePlugin {
       searchPlaceholder: t("movie, director, actor..."),
       viewOnProvider: t("View release on {{provider}}"),
     }
+  }
+
+  // Return external URL for TMDB movie page
+  getItemExternalUrl(item) {
+    if (!item) return null
+    if (item.externalUrl) return item.externalUrl
+    return item.id ? `https://www.themoviedb.org/movie/${item.id}` : null
   }
 
   // Film items are already enriched during collection fetch

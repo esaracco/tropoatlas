@@ -443,9 +443,29 @@ describe("InventairePlugin - custom tags and price sanitization", () => {
     })
 
     const collection = await plugin.getCollection()
+    expect(collection.item1.externalUrl).toBe(
+      "https://inventaire.io/entity/inv:e1",
+    )
     expect(collection.item1.price).toBe("14.50")
     expect(collection.item1.place).toBe("12")
     expect(collection.item1.rating).toBe(4)
     expect(collection.item1.categories).toEqual(["Roman"])
+  })
+
+  it("should return external URL for inventaire entities", () => {
+    const plugin = new InventairePlugin()
+    expect(plugin.getItemExternalUrl({ entity: "wd:Q12345" })).toBe(
+      "https://inventaire.io/entity/wd:Q12345",
+    )
+    expect(plugin.getItemExternalUrl({ entityUri: "isbn:9780140449136" })).toBe(
+      "https://inventaire.io/entity/isbn:9780140449136",
+    )
+    expect(
+      plugin.getItemExternalUrl({
+        externalUrl: "https://inventaire.io/entity/custom",
+      }),
+    ).toBe("https://inventaire.io/entity/custom")
+    expect(plugin.getItemExternalUrl({})).toBe("https://inventaire.io")
+    expect(plugin.getItemExternalUrl(null)).toBeNull()
   })
 })

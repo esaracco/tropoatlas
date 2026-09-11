@@ -285,6 +285,7 @@ export class DiscogsPlugin extends BasePlugin {
             folderid: release.folder_id,
             masterid: info.master_id,
             releaseid: info.id,
+            externalUrl: `https://www.discogs.com/release/${info.id}`,
             added: release.date_added,
             creator: artist,
             year: info.year,
@@ -516,6 +517,14 @@ export class DiscogsPlugin extends BasePlugin {
       newCategoryPlaceholder: t("New style..."),
       viewOnProvider: t("View release on {{provider}}"),
     }
+  }
+
+  // Return external URL for Discogs release page
+  getItemExternalUrl(item) {
+    if (!item) return null
+    if (item.externalUrl) return item.externalUrl
+    const id = item.releaseid || item.id
+    return id ? `https://www.discogs.com/release/${id}` : null
   }
 
   // Check if tracklist or enriched details are already present

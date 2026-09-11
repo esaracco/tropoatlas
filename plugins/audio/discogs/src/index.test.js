@@ -292,8 +292,28 @@ describe("DiscogsPlugin - custom fields and price sanitization", () => {
     })
 
     const collection = await plugin.getCollection()
+    expect(collection[201].externalUrl).toBe(
+      "https://www.discogs.com/release/10",
+    )
     expect(collection[201].price).toBe("19.99")
     expect(collection[201].place).toBe("10")
     expect(collection[201].categories).toEqual(["Prog", "Rock"])
+  })
+
+  it("should return external URL for discogs items", () => {
+    const plugin = new DiscogsPlugin()
+    expect(plugin.getItemExternalUrl({ releaseid: 12345 })).toBe(
+      "https://www.discogs.com/release/12345",
+    )
+    expect(plugin.getItemExternalUrl({ id: 67890 })).toBe(
+      "https://www.discogs.com/release/67890",
+    )
+    expect(
+      plugin.getItemExternalUrl({
+        externalUrl: "https://www.discogs.com/release/999",
+      }),
+    ).toBe("https://www.discogs.com/release/999")
+    expect(plugin.getItemExternalUrl({})).toBeNull()
+    expect(plugin.getItemExternalUrl(null)).toBeNull()
   })
 })
