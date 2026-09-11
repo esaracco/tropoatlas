@@ -30,6 +30,10 @@ FROM nginx:alpine
 ARG APP_NAME=tropoaudio
 ARG PORT=3000
 
+ENV DISCOGS_TOKEN="" \
+    TMDB_TOKEN="" \
+    VITE_LED_TARGET="http://127.0.0.1:8000"
+
 # Copy the built React app from the builder stage
 COPY --from=builder /app/apps/${APP_NAME}/build /usr/share/nginx/html
 

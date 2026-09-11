@@ -7,8 +7,8 @@ services:
         PORT: 3000
     ports:
       - "${TROPOAUDIO_PORT:-3000}:3000"
-    environment:
-      - DISCOGS_TOKEN=${DISCOGS_TOKEN}
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     env_file:
       - path: apps/tropoaudio/.env
         required: false
@@ -21,8 +21,8 @@ services:
         PORT: 3001
     ports:
       - "${TROPOCINE_PORT:-3001}:3001"
-    environment:
-      - TMDB_TOKEN=${TMDB_TOKEN}
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     env_file:
       - path: apps/tropocine/.env
         required: false
@@ -35,6 +35,8 @@ services:
         PORT: 3002
     ports:
       - "${TROPOBIBLIO_PORT:-3002}:3002"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     env_file:
       - path: apps/tropobiblio/.env
         required: false

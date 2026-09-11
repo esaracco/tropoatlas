@@ -77,12 +77,15 @@ server {
 
     # (Optional) LED Server Proxy
     location /api/leds {
-        proxy_pass http://127.0.0.1:8000/leds;
+        proxy_set_header Connection "close";
+        proxy_pass ${VITE_LED_TARGET}/leds;
     }
     location /api/ruler {
-        proxy_pass http://127.0.0.1:8000/ruler;
+        proxy_set_header Connection "close";
+        proxy_pass ${VITE_LED_TARGET}/ruler;
     }
     location /api/ping {
-        proxy_pass http://127.0.0.1:8000/ping;
+        proxy_set_header Connection "close";
+        proxy_pass ${VITE_LED_TARGET}/ping;
     }
 }
