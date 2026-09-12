@@ -21,9 +21,15 @@
   padding-right: 25px;
 }
 
-.WorkModal .creator-name {
+.WorkModal .work-title {
   font-size: 1.1rem;
   font-weight: 700;
+  color: var(--tropo-text);
+  line-height: 1.25;
+}
+
+.WorkModal .work-subtitle {
+  font-size: 0.95rem;
   color: var(--tropo-text);
   line-height: 1.25;
 }

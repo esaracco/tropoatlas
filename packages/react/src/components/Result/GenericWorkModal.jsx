@@ -294,10 +294,16 @@ export const GenericWorkModal = ({
                 />
               </div>
               <div className="modal-header-info">
-                <div className="creator-name">{release.creator}</div>
+                <div className="work-title">{release.title}</div>
+                {release.subtitle && (
+                  <div className="work-subtitle">{release.subtitle}</div>
+                )}
                 <div className="work-details">
-                  {release.year ? release.year + " – " : ""}
-                  <strong>{release.title}</strong>
+                  <div className="work-creator">
+                    {[release.year, release.creator]
+                      .filter(Boolean)
+                      .join(" – ")}
+                  </div>
                   {renderHeaderDetails ? renderHeaderDetails(release) : null}
                   {count > 1 && (
                     <div>

@@ -1,7 +1,7 @@
 import React from "react"
 import { useTranslation } from "react-i18next"
 
-// Render subtitle, page count, publisher, and ISBN for books
+// Render page count, publisher, and ISBN for books
 export const HeaderDetails = ({ item }) => {
   const { t } = useTranslation()
 
@@ -9,7 +9,6 @@ export const HeaderDetails = ({ item }) => {
 
   return (
     <>
-      {item.subtitle ? <div>{item.subtitle}</div> : null}
       {(item.pageCount || item.publisher) && (
         <div>
           {item.pageCount && (
