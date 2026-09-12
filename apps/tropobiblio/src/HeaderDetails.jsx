@@ -19,7 +19,8 @@ export const HeaderDetails = ({ item }) => {
           )}
           {item.publisher && (
             <span className="work-secondary-info">
-              {item.pageCount ? ` (${item.publisher})` : item.publisher}
+              {item.pageCount && ", "}
+              {item.publisher}
             </span>
           )}
         </div>
@@ -27,14 +28,9 @@ export const HeaderDetails = ({ item }) => {
       {item.isbn !== undefined && (
         <div style={{ color: "var(--tropo-text)" }}>
           {item.isbn &&
-          !item.isbn.startsWith("inv:") &&
-          !item.isbn.startsWith("wd:") ? (
-            item.isbn
-          ) : (
-            <span className="text-muted fst-italic">
-              {t("No ISBN for this edition")}
-            </span>
-          )}
+            !item.isbn.startsWith("inv:") &&
+            !item.isbn.startsWith("wd:") &&
+            item.isbn}
         </div>
       )}
     </>

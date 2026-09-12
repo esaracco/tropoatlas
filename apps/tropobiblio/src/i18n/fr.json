@@ -20,6 +20,5 @@
   "View book on {{provider}}": "Voir le livre sur {{provider}}",
   "This description is from the related article \"{{title}}\" and may not directly summarize the work.": "Cette description est issue de l'article connexe « {{title}} » et ne résume pas directement l'ouvrage dans son ensemble.",
   "related topic": "sujet connexe",
-  "No ISBN for this edition": "Pas d'ISBN pour cette édition",
   "pages": "pages"
 }
