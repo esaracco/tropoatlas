@@ -95,15 +95,28 @@ export const GenericWorkModal = ({
     customFields.supportsPrice ||
     customFields.supportsCategories
 
-  useEffect(() => {
-    if (!release) return null
+  const targetCreators =
+    Array.isArray(release?.creators) && release.creators.length > 0
+      ? release.creators
+      : [release?.creator].filter(Boolean)
 
+  useEffect(() => {
+    if (!release || targetCreators.length === 0 || !releases) {
+      setCount(0)
+      return
+    }
+
+    const creatorSet = new Set(targetCreators)
     let c = 0
-    if (releases) {
-      for (const key in releases) {
-        if (releases[key].creator === release.creator) {
-          c++
-        }
+    for (const key in releases) {
+      const r = releases[key]
+      const itemCreators =
+        Array.isArray(r.creators) && r.creators.length > 0
+          ? r.creators
+          : [r.creator].filter(Boolean)
+
+      if (itemCreators.some((creator) => creatorSet.has(creator))) {
+        c++
       }
     }
     setCount(c)
@@ -291,7 +304,7 @@ export const GenericWorkModal = ({
                       <a
                         href="#"
                         onClick={() => {
-                          setFilter("creators", [release.creator])
+                          setFilter("creators", targetCreators)
                           onHide()
                         }}
                         title={t(
