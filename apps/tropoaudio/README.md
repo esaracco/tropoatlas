@@ -51,15 +51,14 @@ cp .env.sample .env
 
 ### Core Environment Variables
 
-| Variable                       | Description                                                                       | Default        |
-| :----------------------------- | :-------------------------------------------------------------------------------- | :------------- |
-| `VITE_APP_NAME`                | Application identifier (do not change)                                            | `"tropoaudio"` |
-| `VITE_DATA_PROVIDER`           | Active data provider plugin                                                       | `"discogs"`    |
-| `VITE_CURRENCY`                | Currency symbol displayed for prices                                              | `€`            |
-| `VITE_DISCOGS_USER`            | Your Discogs username                                                             | _(Required)_   |
-| `DISCOGS_TOKEN`                | Your Discogs personal API token _(No `VITE_` prefix to prevent browser exposure)_ | _(Required)_   |
-| `VITE_DISCOGS_FORMATS`         | Media formats to include (e.g. `vinyl`, `cd`, `all`)                              | `all`          |
-| `VITE_DISCOGS_FIELDS_REQUIRED` | Only show items that have at least one custom field (`yes`/`no`)                  | `no`           |
+| Variable                       | Description                                                                       | Default      |
+| :----------------------------- | :-------------------------------------------------------------------------------- | :----------- |
+| `VITE_DATA_PROVIDER`           | Active data provider plugin                                                       | `"discogs"`  |
+| `VITE_CURRENCY`                | Currency symbol displayed for prices                                              | `€`          |
+| `VITE_DISCOGS_USER`            | Your Discogs username                                                             | _(Required)_ |
+| `DISCOGS_TOKEN`                | Your Discogs personal API token _(No `VITE_` prefix to prevent browser exposure)_ | _(Required)_ |
+| `VITE_DISCOGS_FORMATS`         | Media formats to include (e.g. `vinyl`, `cd`, `all`)                              | `all`        |
+| `VITE_DISCOGS_FIELDS_REQUIRED` | Only show items that have at least one custom field (`yes`/`no`)                  | `no`         |
 
 ### Custom Fields (Discogs)
 

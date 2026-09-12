@@ -23,6 +23,7 @@ export const Header = ({
   ledsClient,
   themeStorageKey,
   showFormats = false,
+  appName,
 }) => {
   const terminology = getPluginTerminology(plugin)
   const setShowAbout = useAppStore((s) => s.setShowAbout)
@@ -268,6 +269,7 @@ export const Header = ({
                 setLeds={setLeds}
                 ledsClient={ledsClient}
                 themeStorageKey={themeStorageKey}
+                appName={appName}
               />
             </div>
           </Container>

@@ -19,6 +19,7 @@ export const ExportBackupModal = ({
   isBusy,
   setIsBusy,
   plugin,
+  appName,
 }) => {
   const { t } = useTranslation()
   const [enrichMissing, setEnrichMissing] = useState(false)
@@ -78,6 +79,7 @@ export const ExportBackupModal = ({
 
     try {
       const result = await exportCollectionBackupZIP({
+        appName,
         enrichMissing,
         getItemDetails: plugin.getItemDetails.bind(plugin),
         getItemImage: plugin.getItemImage.bind(plugin),

@@ -26,6 +26,7 @@ export const OptionsMenu = ({
   setLeds,
   ledsClient,
   themeStorageKey,
+  appName,
 }) => {
   const { t } = useTranslation()
   const terminology = getPluginTerminology(plugin)
@@ -112,6 +113,7 @@ export const OptionsMenu = ({
         isBusy={isBackupBusy}
         setIsBusy={setIsBackupBusy}
         plugin={plugin}
+        appName={appName}
       />
 
       <ImportBackupModal

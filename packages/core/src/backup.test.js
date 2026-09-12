@@ -125,6 +125,7 @@ describe("backup.js - ZIP Export", () => {
     )
 
     const result = await exportCollectionBackupZIP({
+      appName: "tropoaudio",
       enrichMissing: false,
     })
 
@@ -139,6 +140,7 @@ describe("backup.js - ZIP Export", () => {
     const manifest = JSON.parse(manifestText)
 
     expect(manifest.version).toBeDefined()
+    expect(manifest.app).toBe("tropoaudio")
     expect(manifest.categories).toEqual(["Rock"])
     expect(manifest.items["101"]).toBeDefined()
     // Settings MUST be excluded from collection backup
@@ -173,6 +175,7 @@ describe("backup.js - ZIP Export", () => {
     )
 
     await exportCollectionBackupZIP({
+      appName: "tropoaudio",
       enrichMissing: false,
     })
 

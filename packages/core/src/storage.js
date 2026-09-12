@@ -1,10 +1,6 @@
 import localforage from "localforage"
 
-export const buildCacheKey = (...parts) => {
-  const appName = import.meta.env.VITE_APP_NAME || "tropoatlas"
-  const name = parts.filter(Boolean).join("-")
-  return name.startsWith(appName) ? name : `${appName}-${name}`
-}
+export const buildCacheKey = (...parts) => parts.filter(Boolean).join("-")
 
 export const setLargeItem = async (name, value) => {
   try {
@@ -49,9 +45,6 @@ export const DEFAULT_PRESERVED_KEYS = [
 ]
 
 export const clearAllCaches = async (keysToPreserve = []) => {
-  const appName = import.meta.env.VITE_APP_NAME || "tropoatlas"
-  const prefix = `${appName}-`
-
   const preservedKeys = new Set(
     [...DEFAULT_PRESERVED_KEYS, ...keysToPreserve].map((key) =>
       buildCacheKey(key),
@@ -63,10 +56,7 @@ export const clearAllCaches = async (keysToPreserve = []) => {
     try {
       const cacheNames = await caches.keys()
       for (const cname of cacheNames) {
-        if (
-          cname.startsWith(prefix) ||
-          cname === buildCacheKey("item-covers")
-        ) {
+        if (!preservedKeys.has(cname)) {
           await caches.delete(cname)
         }
       }
@@ -79,7 +69,7 @@ export const clearAllCaches = async (keysToPreserve = []) => {
   const lsKeysToRemove = []
   for (let i = 0; i < localStorage.length; i++) {
     const key = localStorage.key(i)
-    if (key && key.startsWith(prefix) && !preservedKeys.has(key)) {
+    if (key && !preservedKeys.has(key)) {
       lsKeysToRemove.push(key)
     }
   }
@@ -90,7 +80,7 @@ export const clearAllCaches = async (keysToPreserve = []) => {
     const keys = await localforage.keys()
     await Promise.all(
       keys
-        .filter((key) => key.startsWith(prefix))
+        .filter((key) => !preservedKeys.has(key))
         .map((key) => localforage.removeItem(key)),
     )
   } catch (e) {

@@ -59,13 +59,12 @@ cp .env.sample .env
 
 ### Core Environment Variables
 
-| Variable             | Description                                                                                                       | Default       |
-| :------------------- | :---------------------------------------------------------------------------------------------------------------- | :------------ |
-| `VITE_APP_NAME`      | Application identifier (do not change)                                                                            | `"tropocine"` |
-| `VITE_DATA_PROVIDER` | Active data provider plugin                                                                                       | `"tmdb"`      |
-| `VITE_CURRENCY`      | Currency symbol displayed for prices                                                                              | `€`           |
-| `VITE_TMDB_LIST_ID`  | Your TMDB list ID or URL slug (e.g. `8691537` or `8691537-ma-liste`)                                              | _(Required)_  |
-| `TMDB_TOKEN`         | Your TMDB Bearer Token with write access generated via `npm run auth:cine` _(No `VITE_` prefix to prevent leaks)_ | _(Required)_  |
+| Variable             | Description                                                                                                       | Default      |
+| :------------------- | :---------------------------------------------------------------------------------------------------------------- | :----------- |
+| `VITE_DATA_PROVIDER` | Active data provider plugin                                                                                       | `"tmdb"`     |
+| `VITE_CURRENCY`      | Currency symbol displayed for prices                                                                              | `€`          |
+| `VITE_TMDB_LIST_ID`  | Your TMDB list ID or URL slug (e.g. `8691537` or `8691537-ma-liste`)                                              | _(Required)_ |
+| `TMDB_TOKEN`         | Your TMDB Bearer Token with write access generated via `npm run auth:cine` _(No `VITE_` prefix to prevent leaks)_ | _(Required)_ |
 
 > **Security Note**: `TMDB_TOKEN` does not have a `VITE_` prefix. During local development, the Vite dev server securely proxies requests to `/api/tmdb/` and injects this token. In production, your web server (Apache or Nginx) injects the Bearer token so your secret key is never exposed to client browsers.
 

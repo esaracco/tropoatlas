@@ -50,13 +50,12 @@ cp .env.sample .env
 
 ### Core Environment Variables
 
-| Variable                   | Description                                                    | Default         |
-| :------------------------- | :------------------------------------------------------------- | :-------------- |
-| `VITE_APP_NAME`            | Application identifier (do not change)                         | `"tropobiblio"` |
-| `VITE_DATA_PROVIDER`       | Active data provider plugin                                    | `"inventaire"`  |
-| `VITE_CURRENCY`            | Currency symbol displayed for prices                           | `€`             |
-| `VITE_INVENTAIRE_USER`     | Your Inventaire.io username or email                           | _(Required)_    |
-| `VITE_INVENTAIRE_PASSWORD` | Your Inventaire.io password (required to access private notes) | _(Optional)_    |
+| Variable                   | Description                                                    | Default        |
+| :------------------------- | :------------------------------------------------------------- | :------------- |
+| `VITE_DATA_PROVIDER`       | Active data provider plugin                                    | `"inventaire"` |
+| `VITE_CURRENCY`            | Currency symbol displayed for prices                           | `€`            |
+| `VITE_INVENTAIRE_USER`     | Your Inventaire.io username or email                           | _(Required)_   |
+| `VITE_INVENTAIRE_PASSWORD` | Your Inventaire.io password (required to access private notes) | _(Optional)_   |
 
 ### Private Notes Custom Fields (Inventaire)
 

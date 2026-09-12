@@ -98,6 +98,7 @@ const App = () => {
       />
       <Header
         plugin={plugin}
+        appName={Settings.appName}
         setLeds={Settings.setLeds}
         ledsClient={ledsClient}
         themeStorageKey="tropoaudio-theme"

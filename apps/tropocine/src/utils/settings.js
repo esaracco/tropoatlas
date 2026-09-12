@@ -2,7 +2,7 @@ import i18n from "../i18n"
 import { toast } from "react-toastify"
 import { ledsClient } from "./leds"
 
-export const appName = import.meta.env.VITE_APP_NAME
+export const appName = "tropocine"
 export const setLeds = import.meta.env.VITE_SET_LEDS === "yes"
 export const currency = import.meta.env.VITE_CURRENCY || "€"
 
@@ -15,21 +15,6 @@ export const ledsCategoriesColor =
 export const ledsWorkColor = import.meta.env.VITE_LEDS_WORK_COLOR || "255,0,0"
 
 export function validateSettings() {
-  const missingFields = []
-
-  if (!appName) {
-    missingFields.push("VITE_APP_NAME")
-  }
-
-  missingFields.forEach((f) =>
-    toast.error(
-      i18n.t("The {{field}} environment variable is required!", {
-        field: f,
-      }),
-      { autoClose: false },
-    ),
-  )
-
   if (setLeds) {
     ledsClient.validateSettings((msg, params) =>
       toast.error(i18n.t(msg, params), { autoClose: false }),

@@ -310,6 +310,7 @@ export const exportCollectionBackupZIP = async (optionsOrProgress) => {
   }
 
   const {
+    appName,
     onProgress,
     enrichMissing = false,
     getItemDetails = null,
@@ -546,7 +547,7 @@ export const exportCollectionBackupZIP = async (optionsOrProgress) => {
 
   const collectionJson = {
     version: BACKUP_FORMAT_VERSION,
-    app: import.meta.env.VITE_APP_NAME || "tropoatlas",
+    app: appName,
     exportDate: new Date().toISOString(),
     provider: import.meta.env.VITE_DATA_PROVIDER || "",
     categories,
@@ -575,7 +576,6 @@ export const exportCollectionBackupZIP = async (optionsOrProgress) => {
 
   // Trigger file download in browser
   const dateStr = new Date().toISOString().slice(0, 10)
-  const appName = import.meta.env.VITE_APP_NAME || "tropoatlas"
   const fileName = `${appName}-backup-${dateStr}.zip`
 
   const url = URL.createObjectURL(zipBlob)
