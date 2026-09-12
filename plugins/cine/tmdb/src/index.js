@@ -17,6 +17,7 @@ import logo from "./assets/logo.svg"
 const t = (s) => s
 
 // Terminology markers for static i18n analysis
+t("Director")
 t("Casting")
 t("movie")
 t("movies")
@@ -456,7 +457,7 @@ export class TMDBPlugin extends BasePlugin {
   // Terminology mappings for films
   getTerminology() {
     return {
-      creator: t("Casting"),
+      creator: t("Director"),
       creators: t("Casting"),
       item: t("movie"),
       items: t("movies"),

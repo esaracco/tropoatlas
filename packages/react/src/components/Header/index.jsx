@@ -224,7 +224,7 @@ export const Header = ({
                       onClick={() => setActiveModal("categories")}
                     />
                     <HeaderButton
-                      label={t(terminology.creator)}
+                      label={t(terminology.creators || terminology.creator)}
                       stype="creators"
                       selected={selected}
                       onClick={() => setActiveModal("creators")}
@@ -288,7 +288,7 @@ export const Header = ({
       />
       <ButtonModal
         show={activeModal === "creators"}
-        label={t(terminology.creator)}
+        label={t(terminology.creators || terminology.creator)}
         type="checkbox"
         stype="creators"
         selected={selected}

@@ -2,6 +2,7 @@
   "keyAboutMessage": "TropoCine est un gestionnaire de collection de films sous licence libre. Synchronisez vos films (<ProviderLink>{{provider}}</ProviderLink>), découvrez réalisateurs et acteurs, et organisez votre cinémathèque.",
   "A film collection manager": "Un gestionnaire de collection de films",
   "Casting": "Casting",
+  "Director": "Réalisateur",
   "Genre": "Genre",
   "Genres": "Genres",
   "movie": "film",
