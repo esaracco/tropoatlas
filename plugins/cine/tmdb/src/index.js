@@ -347,9 +347,6 @@ export class TMDBPlugin extends BasePlugin {
         externalUrl: `https://www.themoviedb.org/movie/${movie.id}`,
         title: cleanTitle,
         creator: cleanDirector,
-        creators: Array.from(
-          new Set([cleanDirector, ...cast].filter(Boolean)),
-        ).sort(),
         year,
         cover: coverUrl,
         backdrop: backdropUrl,
