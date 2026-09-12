@@ -61,7 +61,7 @@ cp .env.sample .env
 
 | Variable             | Description                                                                                                       | Default      |
 | :------------------- | :---------------------------------------------------------------------------------------------------------------- | :----------- |
-| `VITE_DATA_PROVIDER` | Active data provider plugin                                                                                       | `"tmdb"`     |
+| `VITE_DATA_PROVIDER` | Active data provider plugin (determines required provider variables below)                                        | `"tmdb"`     |
 | `VITE_CURRENCY`      | Currency symbol displayed for prices                                                                              | `€`          |
 | `VITE_TMDB_LIST_ID`  | Your TMDB list ID or URL slug (e.g. `8691537` or `8691537-ma-liste`)                                              | _(Required)_ |
 | `TMDB_TOKEN`         | Your TMDB Bearer Token with write access generated via `npm run auth:cine` _(No `VITE_` prefix to prevent leaks)_ | _(Required)_ |

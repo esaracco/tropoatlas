@@ -53,7 +53,7 @@ cp .env.sample .env
 
 | Variable                       | Description                                                                       | Default      |
 | :----------------------------- | :-------------------------------------------------------------------------------- | :----------- |
-| `VITE_DATA_PROVIDER`           | Active data provider plugin                                                       | `"discogs"`  |
+| `VITE_DATA_PROVIDER`           | Active data provider plugin (determines required provider variables below)        | `"discogs"`  |
 | `VITE_CURRENCY`                | Currency symbol displayed for prices                                              | `€`          |
 | `VITE_DISCOGS_USER`            | Your Discogs username                                                             | _(Required)_ |
 | `DISCOGS_TOKEN`                | Your Discogs personal API token _(No `VITE_` prefix to prevent browser exposure)_ | _(Required)_ |
