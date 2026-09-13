@@ -9,10 +9,15 @@ export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), "")
   const packageJson = JSON.parse(fs.readFileSync("./package.json", "utf8"))
 
-  // Derive User-Agent string dynamically from package metadata
-  const appName =
-    packageJson.name === "tropoaudio" ? "TropoAudio" : packageJson.name
-  const userAgent = `${appName}/${packageJson.version} (${packageJson.homepage})`
+  const appMeta = {
+    shortName: "TropoAudio",
+    title: "TropoAudio – A universal album collection manager",
+    description:
+      "Organize your collection, enrich it with your own metadata, and locate albums instantly using LED strips",
+    defaultTheme: "orange",
+  }
+
+  const userAgent = `${appMeta.shortName}/${packageJson.version} (${packageJson.homepage})`
 
   const proxy = {}
   // Proxy for hardware LEDs if configured
@@ -177,7 +182,7 @@ export default defineConfig(({ mode }) => {
   }
 
   // Theme configuration & HTML injection
-  const { themeColorPlugin, defaultThemeColor } = getThemeConfig("orange")
+  const { themeColorPlugin, defaultThemeColor } = getThemeConfig(appMeta)
 
   return {
     define: {
@@ -195,10 +200,9 @@ export default defineConfig(({ mode }) => {
         filename: "service-worker.js",
         manifest: {
           lang: "en",
-          short_name: "TropoAudio",
-          name: "TropoAudio – A universal album collection manager",
-          description:
-            "Organize your collection, enrich it with your own metadata, and locate albums instantly using LED strips",
+          short_name: appMeta.shortName,
+          name: appMeta.title,
+          description: appMeta.description,
           translations: {
             fr: {
               name: "TropoAudio – Un gestionnaire universel de collection d'albums",

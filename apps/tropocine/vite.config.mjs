@@ -9,9 +9,15 @@ export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), "")
   const packageJson = JSON.parse(fs.readFileSync("./package.json", "utf8"))
 
-  // Derive User-Agent string dynamically from package metadata
-  const appName = "TropoCine"
-  const userAgent = `${appName}/${packageJson.version} (${packageJson.homepage})`
+  const appMeta = {
+    shortName: "TropoCine",
+    title: "TropoCine – A universal film collection manager",
+    description:
+      "Organize your collection, discover directors and actors, and explore your films",
+    defaultTheme: "blue",
+  }
+
+  const userAgent = `${appMeta.shortName}/${packageJson.version} (${packageJson.homepage})`
 
   const proxy = {}
 
@@ -174,7 +180,7 @@ export default defineConfig(({ mode }) => {
   }
 
   // Theme configuration & HTML injection
-  const { themeColorPlugin, defaultThemeColor } = getThemeConfig("blue")
+  const { themeColorPlugin, defaultThemeColor } = getThemeConfig(appMeta)
 
   return {
     server: {
@@ -218,10 +224,9 @@ export default defineConfig(({ mode }) => {
         filename: "service-worker.js",
         manifest: {
           lang: "en",
-          short_name: "TropoCine",
-          name: "TropoCine – A universal film collection manager",
-          description:
-            "Organize your collection, discover directors and actors, and explore your films",
+          short_name: appMeta.shortName,
+          name: appMeta.title,
+          description: appMeta.description,
           translations: {
             fr: {
               name: "TropoCine – Un gestionnaire universel de collection de films",

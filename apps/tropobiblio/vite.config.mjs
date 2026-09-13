@@ -9,9 +9,15 @@ export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), "")
   const packageJson = JSON.parse(fs.readFileSync("./package.json", "utf8"))
 
-  // Derive User-Agent string dynamically from package metadata
-  const appName = "TropoBiblio"
-  const userAgent = `${appName}/${packageJson.version} (${packageJson.homepage})`
+  const appMeta = {
+    shortName: "TropoBiblio",
+    title: "TropoBiblio – A universal book collection manager",
+    description:
+      "Organize your collection, enrich it with your own metadata, and locate books instantly using LED strips",
+    defaultTheme: "green",
+  }
+
+  const userAgent = `${appMeta.shortName}/${packageJson.version} (${packageJson.homepage})`
 
   const proxy = {}
 
@@ -178,7 +184,7 @@ export default defineConfig(({ mode }) => {
   }
 
   // Theme configuration & HTML injection
-  const { themeColorPlugin, defaultThemeColor } = getThemeConfig("green")
+  const { themeColorPlugin, defaultThemeColor } = getThemeConfig(appMeta)
 
   return {
     server: {
@@ -233,10 +239,9 @@ export default defineConfig(({ mode }) => {
         filename: "service-worker.js",
         manifest: {
           lang: "en",
-          short_name: "TropoBiblio",
-          name: "TropoBiblio – A universal book collection manager",
-          description:
-            "Organize your collection, enrich it with your own metadata, and locate books instantly using LED strips",
+          short_name: appMeta.shortName,
+          name: appMeta.title,
+          description: appMeta.description,
           translations: {
             fr: {
               name: "TropoBiblio – Un gestionnaire universel de collection de livres",
