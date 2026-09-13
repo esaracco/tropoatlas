@@ -1,8 +1,9 @@
 import { defineConfig, loadEnv } from "vite"
 import react from "@vitejs/plugin-react"
 import { VitePWA } from "vite-plugin-pwa"
-
 import fs from "fs"
+
+import { getThemeConfig } from "../../packages/react/src/theme-plugin.js"
 
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), "")
@@ -175,38 +176,8 @@ export default defineConfig(({ mode }) => {
     },
   }
 
-  // Extract theme surface colors from CSS tokens (single source of truth)
-  const themesCssPath = new URL(
-    "../../packages/react/src/themes.css",
-    import.meta.url,
-  )
-  const themesCss = fs.readFileSync(themesCssPath, "utf8")
-  const defaultTheme = "orange"
-
-  const themeColors = {}
-  const themeBlockRegex = /(?:\[data-theme="([^"]+)"\]|:root)[^{]*\{([^}]+)\}/g
-  let blockMatch
-  while ((blockMatch = themeBlockRegex.exec(themesCss)) !== null) {
-    const themeName = blockMatch[1] || "dark"
-    const colorMatch = blockMatch[2].match(
-      /--tropo-surface:\s*(#[0-9a-f]{3,8})/i,
-    )
-    if (colorMatch) {
-      themeColors[themeName] = colorMatch[1]
-    }
-  }
-
-  const defaultThemeColor = themeColors[defaultTheme] || "#121212"
-
-  // Inject theme surface colors into index.html
-  const themeColorPlugin = {
-    name: "theme-color-plugin",
-    transformIndexHtml(html) {
-      return html
-        .replace("%THEME_SURFACE_COLOR%", defaultThemeColor)
-        .replace("%THEME_COLORS_MAP%", JSON.stringify(themeColors))
-    },
-  }
+  // Theme configuration & HTML injection
+  const { themeColorPlugin, defaultThemeColor } = getThemeConfig("orange")
 
   return {
     define: {

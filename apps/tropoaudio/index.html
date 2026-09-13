@@ -23,7 +23,7 @@
     <title>TropoAudio – A universal album collection manager</title>
     <script>
       try {
-        var theme = localStorage.getItem("theme") || "orange"
+        var theme = localStorage.getItem("theme") || "%DEFAULT_THEME%"
         document.documentElement.setAttribute("data-theme", theme)
         var themeColors = %THEME_COLORS_MAP%
         var metaThemeColor = document.querySelector('meta[name="theme-color"]')
