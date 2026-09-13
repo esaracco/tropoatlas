@@ -97,7 +97,6 @@ const App = () => {
         appName={Settings.appName}
         setLeds={Settings.setLeds}
         ledsClient={ledsClient}
-        themeStorageKey="tropobiblio-theme"
         showFormats={false}
       />
       <About plugin={plugin} appName={Settings.appName} />

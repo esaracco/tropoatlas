@@ -101,7 +101,6 @@ const App = () => {
         appName={Settings.appName}
         setLeds={Settings.setLeds}
         ledsClient={ledsClient}
-        themeStorageKey="tropoaudio-theme"
         showFormats={getProviderInfo().multipleFormats}
       />
       <About plugin={plugin} appName={Settings.appName} />

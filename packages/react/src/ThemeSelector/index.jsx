@@ -5,15 +5,12 @@ import "./ThemeSelector.css"
 // COMPONENT ThemeSelector
 const ThemeSelector = ({
   themes = ["dark", "light", "orange", "blue", "purple", "green"],
-  defaultTheme,
-  storageKey = "tropo-theme",
   title = "Theme",
   ariaLabel = "Change theme",
 }) => {
   const [theme, setTheme] = useState(() => {
-    const saved = localStorage.getItem(storageKey)
+    const saved = localStorage.getItem("theme")
     if (saved) return saved
-    if (defaultTheme) return defaultTheme
     if (typeof document !== "undefined") {
       const docTheme = document.documentElement.getAttribute("data-theme")
       if (docTheme) return docTheme
@@ -23,7 +20,7 @@ const ThemeSelector = ({
 
   useEffect(() => {
     document.documentElement.setAttribute("data-theme", theme)
-    localStorage.setItem(storageKey, theme)
+    localStorage.setItem("theme", theme)
     const metaThemeColor = document.querySelector('meta[name="theme-color"]')
     if (metaThemeColor) {
       const surfaceColor = getComputedStyle(document.documentElement)
@@ -33,7 +30,7 @@ const ThemeSelector = ({
         metaThemeColor.setAttribute("content", surfaceColor)
       }
     }
-  }, [theme, storageKey])
+  }, [theme])
 
   const cycleTheme = () => {
     const nextIndex = (themes.indexOf(theme) + 1) % themes.length

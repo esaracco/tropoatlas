@@ -88,7 +88,6 @@ const App = () => {
         appName={Settings.appName}
         setLeds={Settings.setLeds}
         ledsClient={ledsClient}
-        themeStorageKey="tropocine-theme"
         showFormats={false}
       />
       <About plugin={plugin} appName={Settings.appName} />

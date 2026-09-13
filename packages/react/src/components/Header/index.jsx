@@ -21,7 +21,6 @@ export const Header = ({
   plugin,
   setLeds,
   ledsClient,
-  themeStorageKey,
   showFormats = false,
   appName,
 }) => {
@@ -268,7 +267,6 @@ export const Header = ({
                 plugin={plugin}
                 setLeds={setLeds}
                 ledsClient={ledsClient}
-                themeStorageKey={themeStorageKey}
                 appName={appName}
               />
             </div>

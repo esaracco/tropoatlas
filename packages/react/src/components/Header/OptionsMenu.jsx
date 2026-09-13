@@ -21,13 +21,7 @@ import { ExportBackupModal } from "./ExportBackupModal"
 import { ImportBackupModal } from "./ImportBackupModal"
 import { LedsModal } from "./LedsModal"
 
-export const OptionsMenu = ({
-  plugin,
-  setLeds,
-  ledsClient,
-  themeStorageKey,
-  appName,
-}) => {
+export const OptionsMenu = ({ plugin, setLeds, ledsClient, appName }) => {
   const { t } = useTranslation()
   const terminology = getPluginTerminology(plugin)
   const isOnline = useAppStore((s) => s.isOnline)
@@ -208,12 +202,7 @@ export const OptionsMenu = ({
               <FontAwesomeIcon icon={faPalette} className="options-menu-icon" />
               <span>{t("Theme")}</span>
             </span>
-            <ThemeSelector
-              storageKey={themeStorageKey || "tropo-theme"}
-              defaultTheme="orange"
-              title={t("Theme")}
-              ariaLabel={t("Change theme")}
-            />
+            <ThemeSelector title={t("Theme")} ariaLabel={t("Change theme")} />
           </div>
 
           <div className="px-3 py-1 d-flex align-items-center justify-content-between gap-3">
