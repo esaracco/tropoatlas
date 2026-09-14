@@ -128,8 +128,9 @@ TropoCine builds as a static Single Page Application in production. API calls to
 Build and run using Docker Compose or standalone Docker from the repository root:
 
 ```bash
-# Using Docker Compose
-docker compose up tropocine
+# Using Docker Compose (automatically builds and starts on port 3001)
+# Tip: Use --build on first run or after git updates
+docker compose up --build tropocine
 
 # Or using standalone Docker
 docker build --build-arg APP_NAME=tropocine --build-arg PORT=3001 -t tropocine:prod .

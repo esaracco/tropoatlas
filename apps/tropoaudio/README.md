@@ -103,13 +103,15 @@ TropoAudio is purely static in production: API requests are securely proxied thr
 
 ### Option 1: Docker (Recommended)
 
-Build and run the production container from the repository root:
+Build and run using Docker Compose or standalone Docker from the repository root:
 
 ```bash
-# Build the Docker image
-docker build --build-arg APP_NAME=tropoaudio --build-arg PORT=3000 -t tropoaudio:prod .
+# Using Docker Compose (automatically builds and starts on port 3000)
+# Tip: Use --build on first run or after git updates
+docker compose up --build tropoaudio
 
-# Run the container
+# Or using standalone Docker
+docker build --build-arg APP_NAME=tropoaudio --build-arg PORT=3000 -t tropoaudio:prod .
 docker run --rm -it -p 3000:3000 -e DISCOGS_TOKEN="your_personal_token" tropoaudio:prod
 ```
 

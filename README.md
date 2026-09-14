@@ -95,15 +95,16 @@ Open `http://localhost:3000` (TropoAudio), `http://localhost:3001` (TropoCine), 
 
 All TropoAtlas frontends build into purely static web bundles. API calls and tokens are proxied securely through web servers (Apache or Nginx) without exposing secret credentials to client browsers.
 
-- **Docker Compose**: Run applications concurrently or individually from repository root:
+- **Docker Compose**: Build/rebuild and run applications concurrently or individually from repository root:
   ```bash
-  # Run all applications (TropoAudio on :3000, TropoCine on :3001, TropoBiblio on :3002)
-  docker compose up
+  # Build and run all applications (TropoAudio on :3000, TropoCine on :3001, TropoBiblio on :3002)
+  # Tip: Always use --build on initial run or after a git update
+  docker compose up --build
 
   # Or run a single application
-  docker compose up tropoaudio
-  docker compose up tropocine
-  docker compose up tropobiblio
+  docker compose up --build tropoaudio
+  docker compose up --build tropocine
+  docker compose up --build tropobiblio
   ```
 - **Docker (Standalone)**: Build and run individual containers with build arguments:
   ```bash

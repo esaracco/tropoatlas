@@ -753,12 +753,12 @@
                   <span>BASH</span>
                 </div>
                 <div class="code-content">
-                  <span class="code-comment"># Lancer toutes les applications</span><br />
-                  docker compose up<br /><br />
+                  <span class="code-comment"># Construire/reconstruire et lancer toutes les applications</span><br />
+                  docker compose up --build<br /><br />
                   <span class="code-comment"># Ou lancer une seule application</span><br />
-                  docker compose up tropoaudio<br />
-                  docker compose up tropocine<br />
-                  docker compose up tropobiblio
+                  docker compose up --build tropoaudio<br />
+                  docker compose up --build tropocine<br />
+                  docker compose up --build tropobiblio
                 </div>
               </div>
             </div>

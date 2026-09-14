@@ -104,8 +104,9 @@ TropoBiblio builds as a static Single Page Application in production. API calls 
 Build and run using Docker Compose or standalone Docker from the repository root:
 
 ```bash
-# Using Docker Compose (automatically builds with apps/tropobiblio/.env)
-docker compose up tropobiblio
+# Using Docker Compose (automatically builds and starts on port 3002)
+# Tip: Use --build on first run or after git updates
+docker compose up --build tropobiblio
 
 # Or using standalone Docker (ensure apps/tropobiblio/.env is configured before build)
 docker build --build-arg APP_NAME=tropobiblio --build-arg PORT=3002 -t tropobiblio:prod .
