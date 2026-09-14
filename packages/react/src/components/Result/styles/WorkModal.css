@@ -234,13 +234,39 @@
   align-items: center;
   gap: 8px;
   margin-top: 4px;
+  min-height: 28px;
 }
 
 .WorkModal .rating-reset {
   cursor: pointer;
   color: var(--tropo-text-muted);
   font-size: 0.85rem;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   transition: color 0.15s ease-in-out;
+}
+
+/* Touch devices & mobile ergonomics for rating stars */
+@media (pointer: coarse), (max-width: 576px) {
+  .WorkModal .rating-container {
+    gap: 12px;
+    margin-top: 8px;
+    margin-bottom: 4px;
+    min-height: 36px;
+  }
+
+  .WorkModal .rating-container .star-svg {
+    width: 28px !important;
+    height: 28px !important;
+  }
+
+  .WorkModal .rating-reset {
+    font-size: 1.1rem;
+    padding: 6px;
+    margin-left: 2px;
+  }
 }
 
 .WorkModal .reset:hover,
