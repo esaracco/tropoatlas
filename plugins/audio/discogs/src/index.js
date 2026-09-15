@@ -10,7 +10,7 @@ import {
   FIELD_PRICE,
   FIELD_CATEGORIES,
 } from "@tropo/core"
-import logo from "./assets/logo.png"
+import logo from "./assets/logo.svg"
 
 const API_ITEMS_PER_REQUEST = 250
 
