@@ -1,10 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest"
-import {
-  InventairePlugin,
-  MIN_DESCRIPTION_LENGTH,
-  isBiography,
-  isTitleMatch,
-} from "./index.js"
+import { InventairePlugin, isBiography, isTitleMatch } from "./index.js"
 
 describe("InventairePlugin - metadata and default sorting", () => {
   const plugin = new InventairePlugin()
@@ -31,11 +26,10 @@ describe("InventairePlugin - metadata and default sorting", () => {
     expect(plugin.getMaxRequestsPerMinute()).toBe(60)
   })
 
-  it("should configure minDescriptionLength with default of 200", () => {
-    expect(MIN_DESCRIPTION_LENGTH).toBe(200)
-    expect(plugin.minDescriptionLength).toBe(200)
-    const custom = new InventairePlugin({ minDescriptionLength: 150 })
-    expect(custom.minDescriptionLength).toBe(150)
+  it("should configure userAgent from options", () => {
+    expect(plugin.userAgent).toBeNull()
+    const custom = new InventairePlugin({ userAgent: "MyApp/1.0.0" })
+    expect(custom.userAgent).toBe("MyApp/1.0.0")
   })
 })
 

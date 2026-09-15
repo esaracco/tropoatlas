@@ -120,6 +120,7 @@ export class InventairePlugin extends BasePlugin {
     this.user = env.VITE_INVENTAIRE_USER || config.user
     this.password = env.VITE_INVENTAIRE_PASSWORD || config.password
     this.devMode = config.devMode || false
+    this.userAgent = config.userAgent || null
     this.minDescriptionLength =
       config.minDescriptionLength || MIN_DESCRIPTION_LENGTH
 
@@ -908,9 +909,8 @@ export class InventairePlugin extends BasePlugin {
     }
     // Only send Api-User-Agent in Node to prevent CORS preflight rejection
     // by Wikimedia in browser environments
-    if (typeof window === "undefined") {
-      headers["Api-User-Agent"] =
-        "TropoBiblio/1.0.0 (https://tropobiblio.esaracco.fr; contact@esaracco.fr)"
+    if (typeof window === "undefined" && this.userAgent) {
+      headers["Api-User-Agent"] = this.userAgent
     }
 
     try {

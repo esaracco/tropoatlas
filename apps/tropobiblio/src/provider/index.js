@@ -16,6 +16,8 @@ export const plugin = new PluginClass({
   env: import.meta.env,
   apiBase: `/api/${providerName}`,
   devMode: import.meta.env.VITE_DEV_MODE === "yes",
+  // eslint-disable-next-line no-undef
+  userAgent: __APP_USER_AGENT__,
 })
 
 export const validateProviderSettings = () => {

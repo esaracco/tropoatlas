@@ -291,6 +291,7 @@ export default defineConfig(({ mode }) => {
     define: {
       __APP_VERSION__: JSON.stringify(packageJson.version),
       __APP_HOMEPAGE__: JSON.stringify(packageJson.homepage),
+      __APP_USER_AGENT__: JSON.stringify(userAgent),
     },
   }
 })
