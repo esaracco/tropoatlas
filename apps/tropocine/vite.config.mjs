@@ -4,18 +4,11 @@ import { VitePWA } from "vite-plugin-pwa"
 import fs from "fs"
 
 import { getThemeConfig } from "../../packages/react/src/theme-plugin.js"
+import { appMeta } from "./src/utils/appMeta.js"
 
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), "")
   const packageJson = JSON.parse(fs.readFileSync("./package.json", "utf8"))
-
-  const appMeta = {
-    shortName: "TropoCine",
-    title: "TropoCine – A universal film collection manager",
-    description:
-      "Organize your collection, discover directors and actors, and explore your films",
-    defaultTheme: "blue",
-  }
 
   const userAgent = `${appMeta.shortName}/${packageJson.version} (${packageJson.homepage})`
 
@@ -269,7 +262,6 @@ export default defineConfig(({ mode }) => {
       exclude: ["@tropo/core", "@tropo/react", "@tropo/leds", "@tropo/tmdb"],
     },
     define: {
-      __APP_NAME__: JSON.stringify("TropoCine"),
       __APP_VERSION__: JSON.stringify(packageJson.version),
       __APP_HOMEPAGE__: JSON.stringify(packageJson.homepage),
     },

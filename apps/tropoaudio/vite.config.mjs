@@ -4,18 +4,11 @@ import { VitePWA } from "vite-plugin-pwa"
 import fs from "fs"
 
 import { getThemeConfig } from "../../packages/react/src/theme-plugin.js"
+import { appMeta } from "./src/utils/appMeta.js"
 
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), "")
   const packageJson = JSON.parse(fs.readFileSync("./package.json", "utf8"))
-
-  const appMeta = {
-    shortName: "TropoAudio",
-    title: "TropoAudio – A universal album collection manager",
-    description:
-      "Organize your collection, enrich it with your own metadata, and locate albums instantly using LED strips",
-    defaultTheme: "orange",
-  }
 
   const userAgent = `${appMeta.shortName}/${packageJson.version} (${packageJson.homepage})`
 

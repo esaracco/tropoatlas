@@ -29,6 +29,9 @@ module.exports = [
         afterEach: 'readonly',
         beforeAll: 'readonly',
         afterAll: 'readonly',
+        __APP_VERSION__: 'readonly',
+        __APP_HOMEPAGE__: 'readonly',
+        __APP_USER_AGENT__: 'readonly',
       },
       parserOptions: {
         ecmaFeatures: {

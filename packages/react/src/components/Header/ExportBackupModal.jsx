@@ -19,7 +19,7 @@ export const ExportBackupModal = ({
   isBusy,
   setIsBusy,
   plugin,
-  appName,
+  appName = "TropoAtlas",
 }) => {
   const { t } = useTranslation()
   const [enrichMissing, setEnrichMissing] = useState(false)

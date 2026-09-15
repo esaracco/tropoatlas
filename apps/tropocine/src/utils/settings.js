@@ -2,7 +2,9 @@ import i18n from "../i18n"
 import { toast } from "react-toastify"
 import { ledsClient } from "./leds"
 
-export const appName = "tropocine"
+import { appMeta } from "./appMeta"
+
+export const appName = appMeta.shortName
 export const setLeds = import.meta.env.VITE_SET_LEDS === "yes"
 export const currency = import.meta.env.VITE_CURRENCY || "€"
 

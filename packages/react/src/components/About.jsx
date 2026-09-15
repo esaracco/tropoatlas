@@ -32,10 +32,10 @@ export const About = ({ plugin, appName }) => {
     />
   )
 
-  // eslint-disable-next-line no-undef
-  const appVersion = __APP_VERSION__
-  // eslint-disable-next-line no-undef
-  const appHomepage = __APP_HOMEPAGE__
+  const appVersion =
+    typeof __APP_VERSION__ !== "undefined" ? __APP_VERSION__ : ""
+  const appHomepage =
+    typeof __APP_HOMEPAGE__ !== "undefined" ? __APP_HOMEPAGE__ : ""
 
   // RENDER
   return (
