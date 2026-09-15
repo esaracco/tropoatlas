@@ -15,10 +15,10 @@ This file defines the rules and conventions that the AI agent must follow when w
   - `plugins/*/*`: Plugins organized by domain (e.g., `plugins/audio/discogs`, `plugins/cine/tmdb`).
 - **Rule Abstraction**: Do NOT hardcode specific numeric raw values (e.g. pixel widths, arbitrary z-indices) in rule or documentation files. Document abstract design principles, responsive layout intentions, and architectural invariants instead. Exact numbers belong in code tokens and constants.
 - **Code Sobriety & Single Access Path**: Avoid speculative code bloat for non-existent future requirements (KISS/YAGNI). Every class, utility method, or constant MUST have a single canonical export and access path. Avoid creating duplicate top-level function wrappers or redundant aliases for methods and constants that belong to a class or module.
+- **Human readability**: Prefer straightforward, explicit code over abstractions introduced only to make the architecture more uniform or extensible. A developer unfamiliar with the project should be able to understand and modify a component without having to trace unnecessary layers of indirection.
 
 ## Architecture & Data Providers
-- **Decoupling**: TropoAtlas uses a generic, plugin-based architecture. Applications (`apps/*`) and shared packages (`@tropo/core`) MUST remain completely agnostic and MUST NOT contain code specific to a data provider.
-- **Core Agnosticism & Inversion of Control**: Shared core packages (`@tropo/core`) MUST remain strictly domain- and app-agnostic, with zero knowledge of specific data providers or consuming applications. Any provider-specific persistence needs or preserved cache keys MUST be declared dynamically by plugins via inversion of control, never hardcoded in shared libraries.
+- **Decoupling & Core Agnosticism**: Applications (`apps/*`) and shared packages (`@tropo/core`) MUST remain completely agnostic and MUST NOT contain code specific to a data provider. Shared core packages MUST remain strictly domain- and app-agnostic, with zero knowledge of specific data providers or consuming applications. Any provider-specific persistence needs or preserved cache keys MUST be declared dynamically by plugins via inversion of control, never hardcoded in shared libraries.
 - **Plugins**: Data fetching and API logic MUST be encapsulated in a plugin inside the domain directory of `plugins/` (e.g., `plugins/audio/discogs`).
 - **Configuration**: The application selects the active provider via the `VITE_DATA_PROVIDER` environment variable. Plugin-specific variables must only be parsed and validated by their respective plugin.
 - **Feature Ignorance**: Plugins MUST remain completely ignorant of app-level features (e.g., IoT LEDs). Any validation logic combining app settings (like `VITE_SET_LEDS`) with provider capabilities MUST be handled by the main application.
@@ -33,7 +33,7 @@ This file defines the rules and conventions that the AI agent must follow when w
 - **Zero External Dependencies**: Pages MUST be 100% self-contained and MUST NOT make external network requests (use native system font stacks instead of third-party font services).
 
 ## LEDs Behavior
-- **Centralized Logic**: All LED orchestration MUST be handled centrally by a single watcher (currently in `Result/index.jsx`). Individual components (like item cards or Modals) MUST NOT call the `Leds` API directly.
+- **Centralized Logic**: All LED orchestration MUST be handled centrally by a single watcher in the main collection view. Individual components (like item cards or Modals) MUST NOT call the `Leds` API directly.
 - **Filters**: LEDs are only controlled by the **Categories** and **Creators** filters, and the **Item Modal** (focus mode). Text searches and secondary filters (e.g., formats) do NOT interact with or modify LEDs.
 - **Intensity and Draw Priority**: When multiple layers are active, both intensity and draw order follow a fixed semantic priority:
   - 1. **Categories**: Lowest priority, drawn first, background intensity.
