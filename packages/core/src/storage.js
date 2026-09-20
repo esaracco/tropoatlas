@@ -28,13 +28,34 @@ export const removeLargeItem = async (name) => {
   }
 }
 
-export const setItem = (name, value) =>
-  localStorage.setItem(buildCacheKey(name), JSON.stringify(value))
+export const setItem = (name, value) => {
+  if (typeof localStorage === "undefined") return
+  try {
+    localStorage.setItem(buildCacheKey(name), JSON.stringify(value))
+  } catch (err) {
+    console.warn(`Error writing ${name} to localStorage:`, err)
+  }
+}
 
-export const getItem = (name) =>
-  JSON.parse(localStorage.getItem(buildCacheKey(name)))
+export const getItem = (name) => {
+  if (typeof localStorage === "undefined") return null
+  try {
+    const item = localStorage.getItem(buildCacheKey(name))
+    return item ? JSON.parse(item) : null
+  } catch (err) {
+    console.warn(`Error reading ${name} from localStorage:`, err)
+    return null
+  }
+}
 
-export const removeItem = (name) => localStorage.removeItem(buildCacheKey(name))
+export const removeItem = (name) => {
+  if (typeof localStorage === "undefined") return
+  try {
+    localStorage.removeItem(buildCacheKey(name))
+  } catch (err) {
+    console.warn(`Error removing ${name} from localStorage:`, err)
+  }
+}
 
 // Keys that must never be removed during cache clears (user preferences,
 // UI state, and structural schema version metadata).
@@ -66,14 +87,16 @@ export const clearAllCaches = async (keysToPreserve = []) => {
   }
 
   // 2. LocalStorage
-  const lsKeysToRemove = []
-  for (let i = 0; i < localStorage.length; i++) {
-    const key = localStorage.key(i)
-    if (key && !preservedKeys.has(key)) {
-      lsKeysToRemove.push(key)
+  if (typeof localStorage !== "undefined") {
+    const lsKeysToRemove = []
+    for (let i = 0; i < localStorage.length; i++) {
+      const key = localStorage.key(i)
+      if (key && !preservedKeys.has(key)) {
+        lsKeysToRemove.push(key)
+      }
     }
+    lsKeysToRemove.forEach((key) => localStorage.removeItem(key))
   }
-  lsKeysToRemove.forEach((key) => localStorage.removeItem(key))
 
   // 3. LocalForage (IndexedDB)
   try {

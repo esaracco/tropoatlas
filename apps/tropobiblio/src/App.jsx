@@ -8,7 +8,14 @@ import { ExtraTabs } from "./ExtraTabs"
 import { HeaderDetails } from "./HeaderDetails"
 import workPlaceholder from "./assets/book.svg"
 
-import { PwaReloadPrompt, Header, InfoBar, Result, About } from "@tropo/react"
+import {
+  PwaReloadPrompt,
+  Header,
+  InfoBar,
+  Result,
+  About,
+  useNetworkStatus,
+} from "@tropo/react"
 import { useAppStore, initCollectionStorage } from "@tropo/core"
 import { toast } from "react-toastify"
 import { plugin, validateProviderSettings } from "./provider"
@@ -26,22 +33,9 @@ const ToastTransition = cssTransition({
 
 const App = () => {
   const { t } = useTranslation()
-  const setIsOnline = useAppStore((s) => s.setIsOnline)
   const setLoading = useAppStore((s) => s.setLoading)
 
-  // Network online/offline status
-  useEffect(() => {
-    const onlineEvent = (e) => {
-      setIsOnline(e.type === "online")
-    }
-    window.addEventListener("online", onlineEvent)
-    window.addEventListener("offline", onlineEvent)
-
-    return () => {
-      window.removeEventListener("offline", onlineEvent)
-      window.removeEventListener("online", onlineEvent)
-    }
-  }, [setIsOnline])
+  useNetworkStatus()
 
   // HTML page title & description
   useEffect(() => {

@@ -8,7 +8,14 @@ import { ExtraTabs } from "./ExtraTabs"
 import { HeaderDetails } from "./HeaderDetails"
 import workPlaceholder from "./assets/album.svg"
 
-import { PwaReloadPrompt, Header, InfoBar, Result, About } from "@tropo/react"
+import {
+  PwaReloadPrompt,
+  Header,
+  InfoBar,
+  Result,
+  About,
+  useNetworkStatus,
+} from "@tropo/react"
 import { useAppStore, initCollectionStorage } from "@tropo/core"
 import { toast } from "react-toastify"
 import { plugin, validateProviderSettings, getProviderInfo } from "./provider"
@@ -27,29 +34,9 @@ const ToastTransition = cssTransition({
 
 const App = () => {
   const { t } = useTranslation()
-  const setIsOnline = useAppStore((s) => s.setIsOnline)
   const setLoading = useAppStore((s) => s.setLoading)
 
-  // Online / offline network status listeners
-  useEffect(() => {
-    const _onlineEvent = (e) => {
-      setIsOnline(e.type === "online")
-      if (e.type === "online" && "serviceWorker" in navigator) {
-        if (navigator.serviceWorker.controller) {
-          navigator.serviceWorker.controller.postMessage({
-            type: "REPLAY_QUEUES",
-          })
-        }
-      }
-    }
-    window.addEventListener("online", _onlineEvent)
-    window.addEventListener("offline", _onlineEvent)
-
-    return () => {
-      window.removeEventListener("offline", _onlineEvent)
-      window.removeEventListener("online", _onlineEvent)
-    }
-  }, [])
+  useNetworkStatus()
 
   // Page title & description
   useEffect(() => {

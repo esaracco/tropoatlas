@@ -2,8 +2,13 @@ import { clientsClaim } from "workbox-core"
 import { ExpirationPlugin } from "workbox-expiration"
 import { precacheAndRoute, createHandlerBoundToURL } from "workbox-precaching"
 import { registerRoute } from "workbox-routing"
-import { StaleWhileRevalidate, CacheFirst } from "workbox-strategies"
+import {
+  StaleWhileRevalidate,
+  CacheFirst,
+  NetworkOnly,
+} from "workbox-strategies"
 import { CacheableResponsePlugin } from "workbox-cacheable-response"
+import { BackgroundSyncPlugin } from "workbox-background-sync"
 import { buildCacheKey } from "@tropo/core"
 
 clientsClaim()
@@ -56,8 +61,31 @@ registerRoute(
   }),
 )
 
-self.addEventListener("message", (event) => {
+// Background Sync for offline provider updates
+const bgSyncPlugin = new BackgroundSyncPlugin(buildCacheKey("provider-queue"), {
+  maxRetentionTime: 24 * 60,
+})
+
+const bgSyncStrategy = new NetworkOnly({
+  plugins: [bgSyncPlugin],
+})
+
+const isProviderMutation = ({ url }) =>
+  url.pathname.startsWith("/api/") &&
+  !url.pathname.startsWith("/api/leds") &&
+  !url.pathname.startsWith("/api/ruler")
+
+registerRoute(isProviderMutation, bgSyncStrategy, "POST")
+registerRoute(isProviderMutation, bgSyncStrategy, "PUT")
+
+// Allows the web app to trigger skipWaiting via
+// registration.waiting.postMessage({ type: 'SKIP_WAITING' })
+self.addEventListener("message", async (event) => {
   if (event.data && event.data.type === "SKIP_WAITING") {
     self.skipWaiting()
+  } else if (event.data && event.data.type === "REPLAY_QUEUES") {
+    if (bgSyncPlugin && bgSyncPlugin._queue) {
+      await bgSyncPlugin._queue.replayRequests()
+    }
   }
 })

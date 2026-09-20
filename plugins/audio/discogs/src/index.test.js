@@ -9,9 +9,12 @@ describe("DiscogsPlugin - getDefaultSort", () => {
 })
 
 describe("DiscogsPlugin - getPreservedKeys", () => {
-  it("should return customFieldsInfo", () => {
+  it("should return customFieldsInfo and discogsFieldsId", () => {
     const plugin = new DiscogsPlugin()
-    expect(plugin.getPreservedKeys()).toEqual(["customFieldsInfo"])
+    expect(plugin.getPreservedKeys()).toEqual([
+      "customFieldsInfo",
+      "discogsFieldsId",
+    ])
   })
 })
 

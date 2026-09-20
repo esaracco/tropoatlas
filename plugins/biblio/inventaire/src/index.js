@@ -1401,18 +1401,20 @@ export class InventairePlugin extends BasePlugin {
       )
     }
 
-    // Check or establish session before saving
-    const loggedIn = await this.#login()
+    // Check or establish session before saving when online
+    if (typeof navigator === "undefined" || navigator.onLine) {
+      const loggedIn = await this.#login()
 
-    if (!loggedIn) {
-      throw new Error(
-        t(
-          "Authentication failed on {{provider}}. Please check your username and password.",
-          {
-            provider: this.getProviderInfo().name,
-          },
-        ),
-      )
+      if (!loggedIn) {
+        throw new Error(
+          t(
+            "Authentication failed on {{provider}}. Please check your username and password.",
+            {
+              provider: this.getProviderInfo().name,
+            },
+          ),
+        )
+      }
     }
 
     const payload = {

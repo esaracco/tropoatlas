@@ -65,16 +65,17 @@ const bgSyncPlugin = new BackgroundSyncPlugin(buildCacheKey("provider-queue"), {
   maxRetentionTime: 24 * 60,
 })
 
-registerRoute(
-  ({ url }) =>
-    url.pathname.startsWith("/api/") &&
-    !url.pathname.startsWith("/api/leds") &&
-    !url.pathname.startsWith("/api/ruler"),
-  new NetworkOnly({
-    plugins: [bgSyncPlugin],
-  }),
-  "POST",
-)
+const bgSyncStrategy = new NetworkOnly({
+  plugins: [bgSyncPlugin],
+})
+
+const isProviderMutation = ({ url }) =>
+  url.pathname.startsWith("/api/") &&
+  !url.pathname.startsWith("/api/leds") &&
+  !url.pathname.startsWith("/api/ruler")
+
+registerRoute(isProviderMutation, bgSyncStrategy, "POST")
+registerRoute(isProviderMutation, bgSyncStrategy, "PUT")
 
 // Allows the web app to trigger skipWaiting via
 // registration.waiting.postMessage({ type: 'SKIP_WAITING' })

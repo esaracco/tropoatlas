@@ -6,6 +6,8 @@ import {
   cleanPrice,
   normalize,
   BasePlugin,
+  getItem,
+  setItem,
   FIELD_PLACE,
   FIELD_PRICE,
   FIELD_CATEGORIES,
@@ -83,7 +85,7 @@ export class DiscogsPlugin extends BasePlugin {
   }
 
   getPreservedKeys() {
-    return ["customFieldsInfo"]
+    return ["customFieldsInfo", "discogsFieldsId"]
   }
 
   validateSettings(onConfigError) {
@@ -153,6 +155,16 @@ export class DiscogsPlugin extends BasePlugin {
   async getFieldsId() {
     if (Object.keys(this.fieldsId).length > 0) return this.fieldsId
 
+    const cached = getItem("discogsFieldsId")
+    if (
+      cached &&
+      typeof cached === "object" &&
+      Object.keys(cached).length > 0
+    ) {
+      this.fieldsId = cached
+      return this.fieldsId
+    }
+
     const conf = Object.entries({
       placeId: FIELD_PLACE,
       priceId: FIELD_PRICE,
@@ -165,6 +177,7 @@ export class DiscogsPlugin extends BasePlugin {
         if (field.name === v) this.fieldsId[k] = field.id
       }
     }
+    setItem("discogsFieldsId", this.fieldsId)
     return this.fieldsId
   }
 

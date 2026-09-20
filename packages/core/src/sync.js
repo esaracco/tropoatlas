@@ -106,8 +106,9 @@ export const syncCollection = async ({
     }
   } catch (e) {
     console.error("Sync error:", e)
-    const providerName = plugin.getProviderInfo().name
-    if (onError) {
+    const isOnline = typeof navigator === "undefined" || navigator.onLine
+    if (isOnline && onError) {
+      const providerName = plugin.getProviderInfo().name
       const msg = e.message
         ? e.message
         : _("An error occurred while using the {{provider}} API!")
