@@ -156,30 +156,68 @@ export const cleanPrice = (value) => {
   return match ? match[1].replace(",", ".") : ""
 }
 
-// Extracts a tagged value (e.g., "place: 5") from freeform text
-export const extractTag = (text, tag) => {
-  if (!text || !tag || typeof text !== "string") return undefined
-  const cleanTag = String(tag)
-    .trim()
-    .replace(/[.*+?^${}()|[\]\\]/g, "\\$&")
-  const regex = new RegExp(
-    `(?:^|[\\r\\n;,|])\\s*${cleanTag}:\\s*([^\\r\\n;|]+?)(?=\\s*[,;]?\\s*[\\w-]+:\\s*|[\\r\\n;|]|$)`,
+// Canonical item field names across data providers and apps
+export const FIELD_PLACE = "place"
+export const FIELD_PRICE = "price"
+export const FIELD_CATEGORIES = "categories"
+export const FIELD_RATING = "rating"
+
+// Supported multilingual and semantic aliases for canonical fields in freeform text
+export const FIELD_ALIASES = {
+  [FIELD_PLACE]: ["place", "places", "emplacement", "emplacements"],
+  [FIELD_PRICE]: ["price", "prices", "prix"],
+  [FIELD_RATING]: ["rating", "ratings", "rate", "rates", "note", "notes"],
+  [FIELD_CATEGORIES]: [
+    "categories",
+    "category",
+    "cat",
+    "genre",
+    "genres",
+    "style",
+    "styles",
+  ],
+}
+
+// Resolves tag or canonical field name to a list of matching alias strings
+const resolveTagPatterns = (tag) => {
+  if (Array.isArray(tag)) {
+    return tag.map((t) => String(t).trim()).filter(Boolean)
+  }
+  if (!tag) return []
+  const str = String(tag).trim()
+  if (FIELD_ALIASES[str]) {
+    return FIELD_ALIASES[str]
+  }
+  return [str]
+}
+
+// Builds regex matching any recognized alias of a tag bounded by delimiters
+const buildTagRegex = (tag) => {
+  const patterns = resolveTagPatterns(tag)
+  if (patterns.length === 0) return null
+  const escaped = patterns
+    .map((p) => p.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"))
+    .join("|")
+  return new RegExp(
+    `(?:^|[\\r\\n;,|])\\s*(?:${escaped}):\\s*([^\\r\\n;|]+?)(?=\\s*[,;]?\\s*[\\w-]+:\\s*|[\\r\\n;|]|$)`,
     "i",
   )
+}
+
+// Extracts a tagged value or any of its aliases from freeform text
+export const extractTag = (text, tag) => {
+  if (!text || !tag || typeof text !== "string") return undefined
+  const regex = buildTagRegex(tag)
+  if (!regex) return undefined
   const match = text.match(regex)
   return match ? match[1].trim() : undefined
 }
 
-// Updates, appends, or removes a tagged value in freeform text
+// Updates, appends, or removes a tagged value (matching any aliases) in text
 export const updateTag = (text, tag, value) => {
   if (!tag) return text || ""
-  const cleanTag = String(tag)
-    .trim()
-    .replace(/[.*+?^${}()|[\]\\]/g, "\\$&")
-  const regex = new RegExp(
-    `(?:^|[\\r\\n;,|])\\s*${cleanTag}:\\s*([^\\r\\n;|]+?)(?=\\s*[,;]?\\s*[\\w-]+:\\s*|[\\r\\n;|]|$)`,
-    "i",
-  )
+  const regex = buildTagRegex(tag)
+  if (!regex) return text || ""
 
   if (value === undefined || value === null || value === "") {
     return (text || "")
