@@ -162,7 +162,7 @@ describe("DiscogsPlugin - differential synchronization", () => {
     })
 
     // Item 101 must be preserved with its enriched details
-    expect(collection[101]).toBe(existingItems[101])
+    expect(collection[101]).toEqual(expect.objectContaining(existingItems[101]))
     expect(collection[101].tracklist).toEqual([
       { title: "Speak to Me" },
       { title: "Breathe" },

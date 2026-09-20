@@ -335,7 +335,9 @@ describe("InventairePlugin - differential synchronization", () => {
     })
 
     // item1 must be preserved with its enriched details
-    expect(collection.item1).toBe(existingItems.item1)
+    expect(collection.item1).toEqual(
+      expect.objectContaining(existingItems.item1),
+    )
     expect(collection.item1.description).toBe("Enriched Wikipedia description")
     expect(collection.item1.hasDetails).toBe(true)
 
@@ -386,7 +388,9 @@ describe("InventairePlugin - differential synchronization", () => {
       existingItems,
     })
 
-    expect(collection.item1).toBe(existingItems.item1)
+    expect(collection.item1).toEqual(
+      expect.objectContaining(existingItems.item1),
+    )
     expect(entitiesCalled).toBe(false)
   })
 })

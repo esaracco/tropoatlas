@@ -4,9 +4,6 @@ import {
   cleanText,
   cleanPrice,
   BasePlugin,
-  getItem,
-  setItem,
-  buildCacheKey,
   FIELD_PLACE,
   FIELD_PRICE,
   FIELD_RATING,
@@ -242,7 +239,10 @@ export class TMDBPlugin extends BasePlugin {
     }
   }
 
-  async getCollection(onProgress, { forceRefresh = false } = {}) {
+  async getCollection(
+    onProgress,
+    { forceRefresh = false, existingItems = {} } = {},
+  ) {
     const cleanId = this.cleanListId(this.listId)
     if (!cleanId) {
       throw new Error("No valid TMDB list ID configured.")
@@ -270,18 +270,23 @@ export class TMDBPlugin extends BasePlugin {
       const movie = rawMovies[i]
       if (!movie || !movie.id) continue
 
-      const cacheKey = buildCacheKey("tmdb-movie", String(movie.id))
       let details = null
 
-      if (!forceRefresh) {
-        details = await getItem(cacheKey)
+      if (!forceRefresh && existingItems && existingItems[movie.id]) {
+        const existing = existingItems[movie.id]
+        details = {
+          director: existing.creator || "",
+          cast: existing.cast || [],
+          runtime: existing.runtime || null,
+          overview: existing.overview || "",
+          backdrop: existing.backdrop
+            ? existing.backdrop.replace(/.*\/t\/p\/w1280/, "")
+            : null,
+        }
       }
 
       if (!details) {
         details = await this.#fetchMovieDetails(movie.id)
-        if (details) {
-          await setItem(cacheKey, details)
-        }
       }
 
       const director = details?.director || ""

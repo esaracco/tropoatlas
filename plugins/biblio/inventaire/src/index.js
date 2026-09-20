@@ -475,14 +475,46 @@ export class InventairePlugin extends BasePlugin {
       existingItems &&
       Object.keys(existingItems).length > 0
     ) {
-      const currentRemoteIds = new Set(
-        rawItems.map((it) => it._id || it.id).filter(Boolean),
-      )
+      const rawMap = new Map(rawItems.map((it) => [it._id || it.id, it]))
 
-      // Keep existing items that are still present remotely
+      // Keep existing items that are still present remotely, refreshing custom tags
       for (const [id, item] of Object.entries(existingItems)) {
-        if (currentRemoteIds.has(id)) {
-          collection[id] = item
+        const raw = rawMap.get(id)
+        if (raw) {
+          const noteText =
+            raw.notes || raw.details || raw.comment || raw.description || ""
+          const placeVal = this.#extractTag(noteText, FIELD_PLACE)
+          const priceVal = this.#extractTag(noteText, FIELD_PRICE)
+          const categoryVal = this.#extractTag(noteText, FIELD_CATEGORIES)
+          const ratingVal = this.#extractTag(noteText, FIELD_RATING)
+
+          const placeMatch = placeVal?.match(/(\d+)/)
+          const place = placeMatch ? placeMatch[1] : undefined
+          const price = cleanPrice(priceVal) || undefined
+          const ratingMatch = ratingVal?.match(/(\d+)/)
+          const rating = ratingMatch
+            ? Math.min(5, Math.max(0, parseInt(ratingMatch[1], 10)))
+            : raw.rating !== undefined
+              ? raw.rating
+              : item.rating || 0
+
+          let categories = item.categories
+          if (categoryVal) {
+            categories = categoryVal
+              .split(/\s*[,/]\s*/)
+              .map((g) => g.trim())
+              .filter(Boolean)
+              .map((g) => capitalize(g))
+          }
+
+          collection[id] = {
+            ...item,
+            place,
+            price,
+            rating,
+            notes: raw.notes || item.notes,
+            ...(categories ? { categories } : {}),
+          }
         }
       }
 

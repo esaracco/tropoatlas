@@ -250,11 +250,8 @@ export class DiscogsPlugin extends BasePlugin {
         if (!_formats || _formats.has(format.toLowerCase())) {
           const instanceId = release.instance_id
 
-          // In differential mode, preserve cached item with enriched details
-          if (!forceRefresh && existingItems && existingItems[instanceId]) {
-            releases[instanceId] = existingItems[instanceId]
-            continue
-          }
+          const existing =
+            !forceRefresh && existingItems ? existingItems[instanceId] : null
 
           let { place, price, categories } = this.#getFieldsValue(release.notes)
           const haveFields = !!(place || price || categories)
@@ -263,6 +260,8 @@ export class DiscogsPlugin extends BasePlugin {
 
           if (categories) {
             categories = categories.trim().split(/\s*,\s*/)
+          } else if (existing?.categories?.length) {
+            categories = existing.categories
           } else {
             //FIXME really?
             categories = info.styles?.length
@@ -292,6 +291,7 @@ export class DiscogsPlugin extends BasePlugin {
             : null
 
           releases[release.instance_id] = {
+            ...(existing || {}),
             format,
             searchIndex,
             id: release.instance_id,
@@ -301,13 +301,16 @@ export class DiscogsPlugin extends BasePlugin {
             externalUrl: `https://www.discogs.com/release/${info.id}`,
             added: release.date_added,
             creator: artist,
-            year: info.year,
+            year: info.year || existing?.year,
             title,
-            cover: coverUrl,
+            cover: coverUrl || existing?.cover,
             place,
             price,
             categories,
-            rating: release.rating,
+            rating:
+              release.rating !== undefined
+                ? release.rating
+                : existing?.rating || 0,
           }
         }
       }
