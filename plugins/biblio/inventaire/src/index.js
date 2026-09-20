@@ -3,6 +3,8 @@ import {
   normalize,
   cleanText,
   cleanPrice,
+  extractTag,
+  updateTag,
   BasePlugin,
   FIELD_PLACE,
   FIELD_PRICE,
@@ -377,46 +379,6 @@ export class InventairePlugin extends BasePlugin {
     return "fr"
   }
 
-  // Extract a tagged value from private freeform notes
-  #extractTag(noteText, tag) {
-    if (!noteText || !tag) return undefined
-    const cleanTag = tag.trim().replace(/[.*+?^${}()|[\]\\]/g, "\\$&")
-    // Match "tag: value" bounded by newlines, delimiters or following tags
-    const regex = new RegExp(
-      `(?:^|[\\r\\n;,|])\\s*${cleanTag}:\\s*([^\\r\\n;|]+?)(?=\\s*[,;]?\\s*[\\w-]+:\\s*|[\\r\\n;|]|$)`,
-      "i",
-    )
-    const match = noteText.match(regex)
-    return match ? match[1].trim() : undefined
-  }
-
-  // Update, append, or remove a tagged value from private note text
-  #updateTag(noteText, tag, value) {
-    if (!tag) return noteText
-    const cleanTag = tag.trim().replace(/[.*+?^${}()|[\]\\]/g, "\\$&")
-    const regex = new RegExp(
-      `(?:^|[\\r\\n;,|])\\s*${cleanTag}:\\s*([^\\r\\n;|]+?)(?=\\s*[,;]?\\s*[\\w-]+:\\s*|[\\r\\n;|]|$)`,
-      "i",
-    )
-    if (value === undefined || value === null || value === "") {
-      return (noteText || "")
-        .replace(regex, "")
-        .replace(/^[\r\n;,|\s]+|[\r\n;,|\s]+$/g, "")
-    }
-    const tagFormatted = `${tag}: ${value}`
-    if (regex.test(noteText || "")) {
-      return (noteText || "").replace(regex, (match) => {
-        const firstChar = match.charAt(0)
-        const prefix = /[\r\n;,|]/.test(firstChar) ? firstChar + " " : ""
-        return `${prefix}${tagFormatted}`
-      })
-    }
-    const trimmed = (noteText || "").trim()
-    if (!trimmed) return tagFormatted
-    const separator = /[\r\n;,|]$/.test(trimmed) ? " " : ", "
-    return `${trimmed}${separator}${tagFormatted}`
-  }
-
   // Fetch full inventory collection
   async getCollection(
     onProgress,
@@ -483,10 +445,10 @@ export class InventairePlugin extends BasePlugin {
         if (raw) {
           const noteText =
             raw.notes || raw.details || raw.comment || raw.description || ""
-          const placeVal = this.#extractTag(noteText, FIELD_PLACE)
-          const priceVal = this.#extractTag(noteText, FIELD_PRICE)
-          const categoryVal = this.#extractTag(noteText, FIELD_CATEGORIES)
-          const ratingVal = this.#extractTag(noteText, FIELD_RATING)
+          const placeVal = extractTag(noteText, FIELD_PLACE)
+          const priceVal = extractTag(noteText, FIELD_PRICE)
+          const categoryVal = extractTag(noteText, FIELD_CATEGORIES)
+          const ratingVal = extractTag(noteText, FIELD_RATING)
 
           const placeMatch = placeVal?.match(/(\d+)/)
           const place = placeMatch ? placeMatch[1] : undefined
@@ -496,7 +458,7 @@ export class InventairePlugin extends BasePlugin {
             ? Math.min(5, Math.max(0, parseInt(ratingMatch[1], 10)))
             : raw.rating !== undefined
               ? raw.rating
-              : item.rating || 0
+              : 0
 
           let categories = item.categories
           if (categoryVal) {
@@ -512,7 +474,7 @@ export class InventairePlugin extends BasePlugin {
             place,
             price,
             rating,
-            notes: raw.notes || item.notes,
+            notes: noteText,
             ...(categories ? { categories } : {}),
           }
         }
@@ -742,10 +704,10 @@ export class InventairePlugin extends BasePlugin {
         item.notes || item.details || item.comment || item.description || ""
 
       // Extract custom tags from private notes
-      const placeVal = this.#extractTag(noteText, FIELD_PLACE)
-      const priceVal = this.#extractTag(noteText, FIELD_PRICE)
-      const categoryVal = this.#extractTag(noteText, FIELD_CATEGORIES)
-      const ratingVal = this.#extractTag(noteText, FIELD_RATING)
+      const placeVal = extractTag(noteText, FIELD_PLACE)
+      const priceVal = extractTag(noteText, FIELD_PRICE)
+      const categoryVal = extractTag(noteText, FIELD_CATEGORIES)
+      const ratingVal = extractTag(noteText, FIELD_RATING)
 
       // Only assign numeric place for LED alignment
       const placeMatch = placeVal?.match(/(\d+)/)
@@ -1401,29 +1363,6 @@ export class InventairePlugin extends BasePlugin {
 
   // Update item custom fields by updating private note in Inventaire
   async updateItem(item, changes) {
-    const { rating, place, price, categories } = changes
-    let noteText = item.notes || ""
-
-    if (rating !== undefined) {
-      noteText = this.#updateTag(
-        noteText,
-        FIELD_RATING,
-        rating > 0 ? rating : "",
-      )
-    }
-    if (place !== undefined) {
-      noteText = this.#updateTag(noteText, FIELD_PLACE, place)
-    }
-    if (price !== undefined) {
-      noteText = this.#updateTag(noteText, FIELD_PRICE, cleanPrice(price))
-    }
-    if (categories !== undefined) {
-      const categoriesStr = Array.isArray(categories)
-        ? categories.join(", ")
-        : categories
-      noteText = this.#updateTag(noteText, FIELD_CATEGORIES, categoriesStr)
-    }
-
     const itemId = item.id || item._id
     const entityUri = item.entity || item.entityUri
 
@@ -1447,6 +1386,48 @@ export class InventairePlugin extends BasePlugin {
           ),
         )
       }
+    }
+
+    let noteText = item.notes || ""
+    if (typeof navigator === "undefined" || navigator.onLine) {
+      try {
+        const res = await this.#request(
+          `api/items/by-ids?ids=${encodeURIComponent(itemId)}`,
+        )
+        const remoteItems = res?.items
+        const remoteItem = Array.isArray(remoteItems)
+          ? remoteItems.find((it) => (it._id || it.id) === itemId) ||
+            remoteItems[0]
+          : remoteItems?.[itemId] || res?.item
+        const remoteNotes =
+          remoteItem?.notes ??
+          remoteItem?.details ??
+          remoteItem?.comment ??
+          remoteItem?.description
+        if (remoteNotes !== undefined && remoteNotes !== null) {
+          noteText = remoteNotes || ""
+        }
+      } catch {
+        // Non-critical: fallback to local cached notes
+      }
+    }
+
+    const { rating, place, price, categories } = changes
+
+    if (rating !== undefined) {
+      noteText = updateTag(noteText, FIELD_RATING, rating > 0 ? rating : "")
+    }
+    if (place !== undefined) {
+      noteText = updateTag(noteText, FIELD_PLACE, place)
+    }
+    if (price !== undefined) {
+      noteText = updateTag(noteText, FIELD_PRICE, cleanPrice(price))
+    }
+    if (categories !== undefined) {
+      const categoriesStr = Array.isArray(categories)
+        ? categories.join(", ")
+        : categories
+      noteText = updateTag(noteText, FIELD_CATEGORIES, categoriesStr)
     }
 
     const payload = {

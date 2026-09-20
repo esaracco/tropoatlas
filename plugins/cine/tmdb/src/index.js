@@ -3,6 +3,8 @@ import {
   normalize,
   cleanText,
   cleanPrice,
+  extractTag,
+  updateTag,
   BasePlugin,
   FIELD_PLACE,
   FIELD_PRICE,
@@ -137,46 +139,6 @@ export class TMDBPlugin extends BasePlugin {
     } catch {
       return {}
     }
-  }
-
-  // Extract a tagged value from a freeform comment string
-  #extractTag(commentText, tag) {
-    if (!commentText || !tag) return undefined
-    const cleanTag = tag.trim().replace(/[.*+?^${}()|[\]\\]/g, "\\$&")
-    // Match "tag: value" bounded by newlines, delimiters or following tags
-    const regex = new RegExp(
-      `(?:^|[\\r\\n;,|])\\s*${cleanTag}:\\s*([^\\r\\n;|]+?)(?=\\s*[,;]?\\s*[\\w-]+:\\s*|[\\r\\n;|]|$)`,
-      "i",
-    )
-    const match = commentText.match(regex)
-    return match ? match[1].trim() : undefined
-  }
-
-  // Update, append, or remove a tagged value in a comment string
-  #updateTag(commentText, tag, value) {
-    if (!tag) return commentText
-    const cleanTag = tag.trim().replace(/[.*+?^${}()|[\]\\]/g, "\\$&")
-    const regex = new RegExp(
-      `(?:^|[\\r\\n;,|])\\s*${cleanTag}:\\s*([^\\r\\n;|]+?)(?=\\s*[,;]?\\s*[\\w-]+:\\s*|[\\r\\n;|]|$)`,
-      "i",
-    )
-    if (value === undefined || value === null || value === "") {
-      return (commentText || "")
-        .replace(regex, "")
-        .replace(/^[\r\n;,|\s]+|[\r\n;,|\s]+$/g, "")
-    }
-    const tagFormatted = `${tag}: ${value}`
-    if (regex.test(commentText || "")) {
-      return (commentText || "").replace(regex, (match) => {
-        const firstChar = match.charAt(0)
-        const prefix = /[\r\n;,|]/.test(firstChar) ? firstChar + " " : ""
-        return `${prefix}${tagFormatted}`
-      })
-    }
-    const trimmed = (commentText || "").trim()
-    if (!trimmed) return tagFormatted
-    const separator = /[\r\n;,|]$/.test(trimmed) ? " " : ", "
-    return `${trimmed}${separator}${tagFormatted}`
   }
 
   // Fetch list contents, returning items array and comments map
@@ -328,14 +290,14 @@ export class TMDBPlugin extends BasePlugin {
       const commentKey = `${mediaType}:${movie.id}`
       const commentText = comments[commentKey] || ""
 
-      const placeVal = this.#extractTag(commentText, FIELD_PLACE)
+      const placeVal = extractTag(commentText, FIELD_PLACE)
       const placeMatch = placeVal?.match(/(\d+)/)
       const place = placeMatch ? placeMatch[1] : undefined
 
-      const priceVal = this.#extractTag(commentText, FIELD_PRICE)
+      const priceVal = extractTag(commentText, FIELD_PRICE)
       const price = cleanPrice(priceVal) || undefined
 
-      const ratingVal = this.#extractTag(commentText, FIELD_RATING)
+      const ratingVal = extractTag(commentText, FIELD_RATING)
       const ratingMatch = ratingVal?.match(/(\d+)/)
       // User personal rating (1-5 stars) from comment tag, 0 if unrated
       const rating = ratingMatch
@@ -506,14 +468,27 @@ export class TMDBPlugin extends BasePlugin {
     const { rating, place, price } = changes
     let commentText = item.comment || ""
 
+    if (typeof navigator === "undefined" || navigator.onLine) {
+      try {
+        const mediaType = item.media_type || "movie"
+        const commentKey = `${mediaType}:${item.id}`
+        const { comments } = await this.#fetchListItems(cleanId)
+        if (comments && comments[commentKey] !== undefined) {
+          commentText = comments[commentKey]
+        }
+      } catch {
+        // Non-critical: fallback to local cached comment
+      }
+    }
+
     if (place !== undefined) {
-      commentText = this.#updateTag(commentText, FIELD_PLACE, place)
+      commentText = updateTag(commentText, FIELD_PLACE, place)
     }
     if (price !== undefined) {
-      commentText = this.#updateTag(commentText, FIELD_PRICE, cleanPrice(price))
+      commentText = updateTag(commentText, FIELD_PRICE, cleanPrice(price))
     }
     if (rating !== undefined) {
-      commentText = this.#updateTag(
+      commentText = updateTag(
         commentText,
         FIELD_RATING,
         rating > 0 ? rating : "",

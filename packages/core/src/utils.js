@@ -155,3 +155,49 @@ export const cleanPrice = (value) => {
   const match = str.match(/(\d+(?:[.,]\d+)?)/)
   return match ? match[1].replace(",", ".") : ""
 }
+
+// Extracts a tagged value (e.g., "place: 5") from freeform text
+export const extractTag = (text, tag) => {
+  if (!text || !tag || typeof text !== "string") return undefined
+  const cleanTag = String(tag)
+    .trim()
+    .replace(/[.*+?^${}()|[\]\\]/g, "\\$&")
+  const regex = new RegExp(
+    `(?:^|[\\r\\n;,|])\\s*${cleanTag}:\\s*([^\\r\\n;|]+?)(?=\\s*[,;]?\\s*[\\w-]+:\\s*|[\\r\\n;|]|$)`,
+    "i",
+  )
+  const match = text.match(regex)
+  return match ? match[1].trim() : undefined
+}
+
+// Updates, appends, or removes a tagged value in freeform text
+export const updateTag = (text, tag, value) => {
+  if (!tag) return text || ""
+  const cleanTag = String(tag)
+    .trim()
+    .replace(/[.*+?^${}()|[\]\\]/g, "\\$&")
+  const regex = new RegExp(
+    `(?:^|[\\r\\n;,|])\\s*${cleanTag}:\\s*([^\\r\\n;|]+?)(?=\\s*[,;]?\\s*[\\w-]+:\\s*|[\\r\\n;|]|$)`,
+    "i",
+  )
+
+  if (value === undefined || value === null || value === "") {
+    return (text || "")
+      .replace(regex, "")
+      .replace(/^[\r\n;,|\s]+|[\r\n;,|\s]+$/g, "")
+  }
+
+  const tagFormatted = `${tag}: ${value}`
+  if (regex.test(text || "")) {
+    return (text || "").replace(regex, (match) => {
+      const firstChar = match.charAt(0)
+      const prefix = /[\r\n;,|]/.test(firstChar) ? firstChar + " " : ""
+      return `${prefix}${tagFormatted}`
+    })
+  }
+
+  const trimmed = (text || "").trim()
+  if (!trimmed) return tagFormatted
+  const separator = /[\r\n;,|]$/.test(trimmed) ? " " : ", "
+  return `${trimmed}${separator}${tagFormatted}`
+}

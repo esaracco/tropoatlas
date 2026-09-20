@@ -467,3 +467,112 @@ describe("InventairePlugin - custom tags and price sanitization", () => {
     expect(plugin.getItemExternalUrl(null)).toBeNull()
   })
 })
+
+describe("InventairePlugin - updateItem", () => {
+  it("should merge changes with fresh remote notes on PUT payload", async () => {
+    const plugin = new InventairePlugin({
+      user: "testuser",
+      password: "password123",
+    })
+    let capturedBody = null
+
+    vi.spyOn(globalThis, "fetch").mockImplementation((url, options) => {
+      const urlStr = String(url)
+      if (options?.method === "PUT" && urlStr.includes("api/items")) {
+        capturedBody = JSON.parse(options.body)
+        return Promise.resolve({
+          ok: true,
+          json: () => Promise.resolve({ ok: true }),
+        })
+      }
+      if (urlStr.includes("api/auth/login") || urlStr.includes("api/user")) {
+        return Promise.resolve({
+          ok: true,
+          json: () => Promise.resolve({ user: { username: "testuser" } }),
+        })
+      }
+      if (urlStr.includes("api/items/by-ids")) {
+        return Promise.resolve({
+          ok: true,
+          json: () =>
+            Promise.resolve({
+              items: [
+                {
+                  _id: "item1",
+                  notes: "customTag: value, place: 5",
+                },
+              ],
+            }),
+        })
+      }
+      return Promise.resolve({ ok: true, json: () => Promise.resolve({}) })
+    })
+
+    const item = {
+      id: "item1",
+      entity: "inv:e1",
+      notes: "",
+    }
+    await plugin.updateItem(item, {
+      rating: 5,
+      place: "42",
+      price: "19.99",
+      categories: ["Philosophie", "Histoire"],
+    })
+
+    expect(capturedBody).toEqual({
+      id: "item1",
+      _id: "item1",
+      entity: "inv:e1",
+      notes:
+        "customTag: value, place: 42, rating: 5, price: 19.99, categories: Philosophie, Histoire",
+    })
+  })
+
+  it("should fall back to local cached notes when remote fetch fails", async () => {
+    const plugin = new InventairePlugin({
+      user: "testuser",
+      password: "password123",
+    })
+    let capturedBody = null
+
+    vi.spyOn(globalThis, "fetch").mockImplementation((url, options) => {
+      const urlStr = String(url)
+      if (options?.method === "PUT" && urlStr.includes("api/items")) {
+        capturedBody = JSON.parse(options.body)
+        return Promise.resolve({
+          ok: true,
+          json: () => Promise.resolve({ ok: true }),
+        })
+      }
+      if (urlStr.includes("api/auth/login") || urlStr.includes("api/user")) {
+        return Promise.resolve({
+          ok: true,
+          json: () => Promise.resolve({ user: { username: "testuser" } }),
+        })
+      }
+      if (urlStr.includes("api/items/by-ids")) {
+        return Promise.resolve({
+          ok: false,
+          status: 500,
+          text: () => Promise.resolve("Server error"),
+        })
+      }
+      return Promise.resolve({ ok: true, json: () => Promise.resolve({}) })
+    })
+
+    const item = {
+      id: "item1",
+      entity: "inv:e1",
+      notes: "place: 10, price: 5",
+    }
+    await plugin.updateItem(item, { rating: 4, place: "15" })
+
+    expect(capturedBody).toEqual({
+      id: "item1",
+      _id: "item1",
+      entity: "inv:e1",
+      notes: "place: 15, price: 5, rating: 4",
+    })
+  })
+})

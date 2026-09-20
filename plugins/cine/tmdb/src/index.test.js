@@ -92,16 +92,36 @@ describe("TMDBPlugin - getPreservedKeys", () => {
 })
 
 describe("TMDBPlugin - updateItem", () => {
-  it("should serialize rating, place, and price into comment for PUT payload", async () => {
+  it("should merge changes with fresh remote comment from list on PUT payload", async () => {
     const plugin = new TMDBPlugin({ listId: "12345" })
     let capturedBody = null
 
     globalThis.fetch = async (url, options) => {
-      capturedBody = JSON.parse(options.body)
+      const urlStr = String(url)
+      if (options?.method === "PUT") {
+        capturedBody = JSON.parse(options.body)
+        return {
+          ok: true,
+          status: 200,
+          json: async () => ({ status_code: 1 }),
+        }
+      }
+      if (urlStr.includes("4/list/12345")) {
+        return {
+          ok: true,
+          status: 200,
+          text: async () =>
+            JSON.stringify({
+              results: [{ id: 999, media_type: "movie" }],
+              comments: { "movie:999": "customTag: value" },
+              total_pages: 1,
+            }),
+        }
+      }
       return {
         ok: true,
         status: 200,
-        json: async () => ({ status_code: 1 }),
+        text: async () => JSON.stringify({}),
       }
     }
 
@@ -113,7 +133,45 @@ describe("TMDBPlugin - updateItem", () => {
         {
           media_type: "movie",
           media_id: 999,
-          comment: "place: 42, price: 19.99, rating: 5",
+          comment: "customTag: value, place: 42, price: 19.99, rating: 5",
+        },
+      ],
+    })
+  })
+
+  it("should fall back to local cached comment when remote fetch fails", async () => {
+    const plugin = new TMDBPlugin({ listId: "12345" })
+    let capturedBody = null
+
+    globalThis.fetch = async (url, options) => {
+      if (options?.method === "PUT") {
+        capturedBody = JSON.parse(options.body)
+        return {
+          ok: true,
+          status: 200,
+          json: async () => ({ status_code: 1 }),
+        }
+      }
+      return {
+        ok: false,
+        status: 500,
+        statusText: "Server Error",
+      }
+    }
+
+    const item = {
+      id: 999,
+      media_type: "movie",
+      comment: "place: 10, price: 5 €",
+    }
+    await plugin.updateItem(item, { rating: 4, place: "15" })
+
+    expect(capturedBody).toEqual({
+      items: [
+        {
+          media_type: "movie",
+          media_id: 999,
+          comment: "place: 15, price: 5 €, rating: 4",
         },
       ],
     })
@@ -122,15 +180,24 @@ describe("TMDBPlugin - updateItem", () => {
   it("should throw dedicated write permission error on status_code 36", async () => {
     const plugin = new TMDBPlugin({ listId: "12345" })
 
-    globalThis.fetch = async () => ({
-      ok: false,
-      status: 401,
-      json: async () => ({
-        status_code: 36,
-        status_message:
-          "This token hasn't been granted write permission by the user.",
-      }),
-    })
+    globalThis.fetch = async (url, options) => {
+      if (options?.method === "PUT") {
+        return {
+          ok: false,
+          status: 401,
+          json: async () => ({
+            status_code: 36,
+            status_message:
+              "This token hasn't been granted write permission by the user.",
+          }),
+        }
+      }
+      return {
+        ok: true,
+        status: 200,
+        text: async () => JSON.stringify({ results: [], comments: {} }),
+      }
+    }
 
     const item = { id: 999, media_type: "movie", comment: "" }
     await expect(plugin.updateItem(item, { place: "42" })).rejects.toThrow(
@@ -141,14 +208,23 @@ describe("TMDBPlugin - updateItem", () => {
   it("should include TMDB status_message in error if present", async () => {
     const plugin = new TMDBPlugin({ listId: "12345" })
 
-    globalThis.fetch = async () => ({
-      ok: false,
-      status: 404,
-      json: async () => ({
-        status_code: 34,
-        status_message: "The resource you requested could not be found.",
-      }),
-    })
+    globalThis.fetch = async (url, options) => {
+      if (options?.method === "PUT") {
+        return {
+          ok: false,
+          status: 404,
+          json: async () => ({
+            status_code: 34,
+            status_message: "The resource you requested could not be found.",
+          }),
+        }
+      }
+      return {
+        ok: true,
+        status: 200,
+        text: async () => JSON.stringify({ results: [], comments: {} }),
+      }
+    }
 
     const item = { id: 999, media_type: "movie", comment: "" }
     await expect(plugin.updateItem(item, { place: "42" })).rejects.toThrow(

@@ -1,4 +1,11 @@
-import { cleanText, normalize, formatRating, cleanPrice } from "./utils"
+import {
+  cleanText,
+  normalize,
+  formatRating,
+  cleanPrice,
+  extractTag,
+  updateTag,
+} from "./utils"
 import { it, expect } from "vitest"
 
 it("Strings normalization", () => {
@@ -52,4 +59,51 @@ it("cleanPrice sanitizes prices with dots, commas, currency symbols, or raw numb
   expect(cleanPrice(undefined)).toBe("")
   expect(cleanPrice("")).toBe("")
   expect(cleanPrice("invalid")).toBe("")
+})
+
+it("extractTag extracts tagged values from freeform text", () => {
+  const text = "place: 42, price: 19.99 €, rating: 5, categories: Sci-Fi"
+  expect(extractTag(text, "place")).toBe("42")
+  expect(extractTag(text, "price")).toBe("19.99 €")
+  expect(extractTag(text, "rating")).toBe("5")
+  expect(extractTag(text, "categories")).toBe("Sci-Fi")
+  expect(extractTag(text, "nonexistent")).toBeUndefined()
+  expect(extractTag("", "place")).toBeUndefined()
+  expect(extractTag(null, "place")).toBeUndefined()
+  expect(extractTag(undefined, "place")).toBeUndefined()
+
+  // Newline and semicolon delimited tags
+  const multiline = "place: 10\nrating: 4; categories: Roman"
+  expect(extractTag(multiline, "place")).toBe("10")
+  expect(extractTag(multiline, "rating")).toBe("4")
+  expect(extractTag(multiline, "categories")).toBe("Roman")
+})
+
+it("updateTag updates, appends, and removes tagged values", () => {
+  // Append to empty text
+  expect(updateTag("", "place", "12")).toBe("place: 12")
+
+  // Append to existing text without trailing comma
+  expect(updateTag("Existing note", "place", "12")).toBe(
+    "Existing note, place: 12",
+  )
+
+  // Append to existing text with trailing comma
+  expect(updateTag("Existing note,", "place", "12")).toBe(
+    "Existing note, place: 12",
+  )
+
+  // Update existing tag in place
+  const text = "place: 10, price: 15 €, rating: 3"
+  expect(updateTag(text, "place", "20")).toBe(
+    "place: 20, price: 15 €, rating: 3",
+  )
+  expect(updateTag(text, "rating", "5")).toBe(
+    "place: 10, price: 15 €, rating: 5",
+  )
+
+  // Remove existing tag when value is empty or null
+  expect(updateTag(text, "rating", "")).toBe("place: 10, price: 15 €")
+  expect(updateTag(text, "place", null)).toBe("price: 15 €, rating: 3")
+  expect(updateTag(text, "price", undefined)).toBe("place: 10, rating: 3")
 })
