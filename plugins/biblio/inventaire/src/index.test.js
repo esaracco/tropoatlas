@@ -522,7 +522,6 @@ describe("InventairePlugin - updateItem", () => {
 
     expect(capturedBody).toEqual({
       id: "item1",
-      _id: "item1",
       entity: "inv:e1",
       notes:
         "customTag: value, place: 42, rating: 5, price: 19.99, categories: Philosophie, Histoire",
@@ -570,7 +569,6 @@ describe("InventairePlugin - updateItem", () => {
 
     expect(capturedBody).toEqual({
       id: "item1",
-      _id: "item1",
       entity: "inv:e1",
       notes: "place: 15, price: 5, rating: 4",
     })

@@ -1432,7 +1432,6 @@ export class InventairePlugin extends BasePlugin {
 
     const payload = {
       id: itemId,
-      _id: itemId,
       entity: entityUri,
       notes: noteText,
     }
