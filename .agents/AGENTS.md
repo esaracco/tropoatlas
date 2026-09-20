@@ -7,13 +7,13 @@ This file defines the rules and conventions that the AI agent must follow when w
 - **Comments Language**: All code comments and documentation within the codebase MUST be written in **English**.
 - **Comment Placement**: Do NOT place comments at the end of a line of code (inline comments). Always place comments on the line(s) directly ABOVE the code they describe.
 - **Comment Line Length**: Code comments MUST NOT exceed 80 characters per line (including leading indentation and comment prefixes like `//`). Break long comments into multiple single-line comments directly above the code.
-- **Commit Messages**: All git commit messages MUST be written in **English** (using Conventional Commits format). Use precise component/subsystem scopes (e.g., `header`, `navbar`, `search`, `leds`, `settings`, `agents`) rather than generic app scopes like `tropoaudio`.
+- **Commit Messages**: All git commit messages MUST be written in **English** (using Conventional Commits format). Use precise component and subsystem scopes rather than generic application scopes.
 - **Package Manager**: Use `npm`. Do not use `yarn`, `pnpm`, or `bun`.
 - **Workspaces**: This is an npm workspace monorepo.
   - `apps/*`: Main applications (e.g., `tropoaudio`, `tropocine`).
   - `packages/*`: Shared libraries and components (e.g., `core`, `react`, `leds`).
   - `plugins/*/*`: Plugins organized by domain (e.g., `plugins/audio/discogs`, `plugins/cine/tmdb`).
-- **Rule Abstraction**: Do NOT hardcode specific numeric raw values (e.g. pixel widths, arbitrary z-indices) in rule or documentation files. Document abstract design principles, responsive layout intentions, and architectural invariants instead. Exact numbers belong in code tokens and constants.
+- **Rule Abstraction & Conceptual Invariance**: Do NOT hardcode specific numeric raw values (e.g. pixel widths, arbitrary z-indices) or enumerate technical implementation tokens (e.g., HTTP method lists, specific route paths, or defensive lists of examples) in rule or documentation files. Document abstract design principles, system boundaries, and conceptual contracts instead. Technical specifics belong strictly in code implementation.
 - **Code Sobriety & Single Access Path**: Avoid speculative code bloat for non-existent future requirements (KISS/YAGNI). Every class, utility method, or constant MUST have a single canonical export and access path. Avoid creating duplicate top-level function wrappers or redundant aliases for methods and constants that belong to a class or module.
 - **Human readability**: Prefer straightforward, explicit code over abstractions introduced only to make the architecture more uniform or extensible. A developer unfamiliar with the project should be able to understand and modify a component without having to trace unnecessary layers of indirection.
 
@@ -24,7 +24,7 @@ This file defines the rules and conventions that the AI agent must follow when w
 - **Feature Ignorance**: Plugins MUST remain completely ignorant of app-level features (e.g., IoT LEDs). Any validation logic combining app settings (like `VITE_SET_LEDS`) with provider capabilities MUST be handled by the main application.
 - **Terminology**: Use generic terms in the main application state and logic (e.g., `creator`, `categories`) rather than provider-specific terms (e.g., `artist`, `styles`).
 - **Development Mode Image Isolation**: In development mode (`devMode`), data provider plugins MUST NOT assign or fetch remote cover artwork URLs. This prevents API/CDN rate-limit exhaustion and unnecessary network traffic during local development.
-- **Artwork & Network Agnosticism**: Application Service Workers and image cache layers MUST use generic routes and storage identifiers (e.g., `item-covers`, image proxy routes) without coupling cache names or request matching to specific third-party provider hostnames or endpoints.
+- **Artwork & Network Agnosticism**: Application Service Workers and image cache layers MUST use generic routes and storage identifiers without coupling cache names or request matching to specific third-party provider hostnames or endpoints.
 
 ## Presentation Sites (`apps/*/docs/`)
 - **Location**: Static presentation site files are located in `apps/*/docs/` (`index.html` for English, `index-fr.html` for French).
@@ -62,3 +62,10 @@ This file defines the rules and conventions that the AI agent must follow when w
 - **Unreliable Page Unload Events**: Do NOT rely on browser window unload events (`pagehide`, `beforeunload`, `unload`) to execute critical I/O operations or network requests (e.g., turning off hardware LEDs or clearing storage). Hardware teardown and session cleanup must rely on explicit user actions or server/firmware TTL timeouts.
 - **Header Layout & Separation of Concerns**: The main navigation header separates collection exploration controls (filters, search, sort) centered in the primary bar from system tools & preferences (sync, LEDs, theme, backups) consolidated into a single right-anchored `OptionsMenu` dropdown.
 - **Theme Hydration & FOUC Prevention**: Initial theme hydration (`data-theme`) MUST be executed synchronously via an inline script in the `<head>` of `index.html` before initial DOM paint to prevent Flash of Unstyled Content (FOUC). React components MUST NOT duplicate initial hydration logic on page reload.
+
+## Offline Mode & Background Synchronization
+- **Background Sync Mutations**: All mutating requests to external data providers MUST be handled through Workbox `BackgroundSyncPlugin` in Service Workers to ensure optimistic UI updates and resilient offline replaying.
+- **Hardware Request Exclusion**: Real-time hardware endpoints represent transient visual states and MUST NOT be queued or replayed by BackgroundSync.
+- **Unprompted Network Isolation**: Application startup, navigation, and modal openings MUST remain fully operational offline without issuing blocking or unprompted background network calls.
+- **Offline Authentication Bypass**: Data provider plugins MUST bypass network-based authentication pre-flights (such as login requests or remote schema inspections) when `navigator.onLine` is false.
+- **Multi-Client Tag Merging**: When updating items on providers that embed multiple custom fields in a single freeform text property, plugins MUST fetch the latest remote text when online before applying modifications via `@tropo/core` tag utilities, falling back to local cached text when offline to avoid overwriting concurrent edits from other devices.
