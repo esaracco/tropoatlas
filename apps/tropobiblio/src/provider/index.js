@@ -1,4 +1,3 @@
-import { setItem } from "@tropo/core"
 import { InventairePlugin } from "@tropo/inventaire"
 import i18n from "../i18n"
 import { toast } from "react-toastify"
@@ -24,14 +23,6 @@ export const validateProviderSettings = () => {
     toast.error(i18n.t(msg, params), { autoClose: false })
   })
 }
-
-// Initialize provider custom fields info
-plugin
-  .getCustomFieldsInfo()
-  .then((info) => {
-    setItem("customFieldsInfo", info)
-  })
-  .catch((e) => toast.error(i18n.t(e.message), { autoClose: false }))
 
 export const getItemDetails = plugin.getItemDetails.bind(plugin)
 export const getItemImage = plugin.getItemImage.bind(plugin)

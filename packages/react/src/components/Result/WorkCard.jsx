@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react"
+import React, { useState } from "react"
 import { useCollectionStore } from "@tropo/core"
 import { toast } from "react-toastify"
 import { useTranslation } from "react-i18next"
@@ -7,35 +7,6 @@ import { LazyLoadImage } from "react-lazy-load-image-component"
 import { buildCacheKey, setLargeItem } from "@tropo/core"
 
 import "./styles/Work.css"
-
-// Queue to fetch missing years progressively in the background (max 1 req / 2s)
-const backgroundQueue = {
-  queue: [],
-  processing: false,
-  add(instanceId, fetchFn) {
-    if (!this.queue.some((i) => i.instanceId === instanceId)) {
-      this.queue.push({ instanceId, fetchFn })
-      this.process()
-    }
-  },
-  async process() {
-    if (this.processing || this.queue.length === 0) return
-    this.processing = true
-
-    while (this.queue.length > 0) {
-      const { fetchFn } = this.queue.shift()
-      try {
-        await fetchFn()
-      } catch (e) {
-        console.error("Background fetch error:", e.message)
-      }
-      // Wait 1.5 seconds between requests to avoid provider API limits
-      await new Promise((resolve) => setTimeout(resolve, 2000))
-    }
-
-    this.processing = false
-  },
-}
 
 // Module-level cache of image URLs already loaded during this session
 const loadedImageUrls = new Set()
@@ -92,31 +63,6 @@ export const WorkCard = ({
   const { t } = useTranslation()
   const [loader, setLoader] = useState(false)
   const isCached = isImageCached(img)
-
-  // EFFECT: Queue fetching missing year in background
-  useEffect(() => {
-    if (!year || year === 0) {
-      backgroundQueue.add(instanceid, async () => {
-        // Fetch only if still missing
-        const currentWork = useCollectionStore.getState().items[instanceid]
-        if (
-          currentWork &&
-          currentWork.master === undefined &&
-          (!currentWork.year || currentWork.year === 0)
-        ) {
-          try {
-            const work = await plugin.getItemDetails(currentWork)
-            const items = useCollectionStore.getState().items
-            const newItems = { ...items, [instanceid]: work }
-            setItems(newItems)
-            setLargeItem("items", newItems)
-          } catch (err) {
-            console.warn("Background fetch year error:", err.message)
-          }
-        }
-      })
-    }
-  }, [year, instanceid])
 
   // METHOD onClick()
   const onClick = (e) => {

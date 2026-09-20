@@ -2,7 +2,7 @@ import { DiscogsPlugin } from "@tropo/discogs"
 import * as Settings from "../utils/settings"
 import i18n from "../i18n"
 import { toast } from "react-toastify"
-import { setItem } from "@tropo/core"
+import { getItem } from "@tropo/core"
 
 const providerName = import.meta.env.VITE_DATA_PROVIDER || "discogs"
 
@@ -25,24 +25,17 @@ export const validateProviderSettings = () => {
   plugin.validateSettings((msg, params) => {
     toast.error(i18n.t(msg, params), { autoClose: false })
   })
+
+  const customFields = getItem("customFieldsInfo")
+  if (Settings.setLeds && customFields && !customFields.supportsPlace) {
+    toast.error(
+      i18n.t(
+        "LEDs are enabled but your data provider is not configured to support the physical location field (place).",
+      ),
+      { autoClose: false },
+    )
+  }
 }
-
-// Initialize provider custom fields info
-plugin
-  .getCustomFieldsInfo()
-  .then((info) => {
-    setItem("customFieldsInfo", info)
-
-    if (Settings.setLeds && !info.supportsPlace) {
-      toast.error(
-        i18n.t(
-          "LEDs are enabled but your data provider is not configured to support the physical location field (place).",
-        ),
-        { autoClose: false },
-      )
-    }
-  })
-  .catch((e) => toast.error(i18n.t(e.message), { autoClose: false }))
 
 export const getItemDetails = plugin.getItemDetails.bind(plugin)
 export const getItemImage = plugin.getItemImage.bind(plugin)
