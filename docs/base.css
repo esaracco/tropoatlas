@@ -1,4 +1,4 @@
-/* ── CSS Reset & Design Tokens ──────────────────────────────────────────── */
+/* ── CSS Reset & Base Design Tokens ──────────────────────────────────────── */
 :root {
   --bg: #ffffff;
   --bg-subtle: #f8fafc;
@@ -6,9 +6,9 @@
   --text: #0f172a;
   --text-muted: #475569;
 
-  --accent: #16a34a;
-  --accent-hover: #15803d;
-  --led-active: #22c55e;
+  --accent: #4f46e5;
+  --accent-hover: #4338ca;
+  --led-active: #e11d48;
 
   --font-main:
     system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
@@ -66,10 +66,6 @@ p {
   text-align: justify;
   -webkit-hyphens: auto;
   hyphens: auto;
-}
-
-.brand-text-biblio {
-  color: var(--accent);
 }
 
 .brand-text-atlas {
@@ -192,7 +188,7 @@ p {
   text-align: center;
   background: radial-gradient(
     circle at top center,
-    rgba(22, 163, 74, 0.08) 0%,
+    rgba(217, 119, 6, 0.08) 0%,
     rgba(255, 255, 255, 0) 65%
   );
   border-bottom: 1px solid var(--border);
@@ -213,7 +209,7 @@ p {
   height: 56px;
   border-radius: 14px;
   box-shadow:
-    0 8px 20px -4px rgba(22, 163, 74, 0.28),
+    0 8px 20px -4px rgba(0, 0, 0, 0.15),
     0 4px 10px -2px rgba(0, 0, 0, 0.1),
     0 0 0 1px rgba(0, 0, 0, 0.05);
   transition:
@@ -225,7 +221,7 @@ p {
 .hero-brand-lockup:hover .hero-brand-icon {
   transform: translateY(-2px) scale(1.04);
   box-shadow:
-    0 12px 24px -4px rgba(22, 163, 74, 0.35),
+    0 12px 24px -4px rgba(0, 0, 0, 0.2),
     0 6px 14px -3px rgba(0, 0, 0, 0.15);
 }
 
@@ -289,66 +285,6 @@ p {
   justify-content: center;
   gap: 1rem;
   flex-wrap: wrap;
-}
-
-/* ── Section Structure ───────────────────────────────────────────────────── */
-.section {
-  padding: 4.5rem 0;
-  border-bottom: 1px solid var(--border);
-}
-
-.section:last-of-type {
-  border-bottom: none;
-}
-
-.section-header {
-  margin-bottom: 2.5rem;
-  max-width: 640px;
-}
-
-.section-tag {
-  display: inline-block;
-  font-size: 0.8rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: var(--accent);
-  margin-bottom: 0.35rem;
-}
-
-.section-title {
-  font-size: clamp(1.6rem, 2.8vw, 2.1rem);
-  margin-bottom: 0.6rem;
-}
-
-.section-description {
-  color: var(--text-muted);
-  font-size: 1.05rem;
-}
-
-/* ── Features Grid ───────────────────────────────────────────────────────── */
-.features-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 1.25rem;
-}
-
-.feature-card {
-  background: var(--bg);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 1.5rem;
-}
-
-.feature-title {
-  font-size: 1.05rem;
-  margin-bottom: 0.5rem;
-}
-
-.feature-desc {
-  color: var(--text-muted);
-  font-size: 0.92rem;
-  line-height: 1.55;
 }
 
 /* ── Mockup Window Component ─────────────────────────────────────────────── */
@@ -433,8 +369,8 @@ p {
   inset: 10% 5% -5% 5%;
   background: radial-gradient(
     circle,
-    rgba(22, 163, 74, 0.18) 0%,
-    rgba(22, 163, 74, 0) 70%
+    rgba(217, 119, 6, 0.18) 0%,
+    rgba(217, 119, 6, 0) 70%
   );
   filter: blur(40px);
   will-change: filter;
@@ -445,6 +381,66 @@ p {
 .hero-showcase .mockup-window {
   position: relative;
   z-index: 1;
+}
+
+/* ── Section Structure ───────────────────────────────────────────────────── */
+.section {
+  padding: 4.5rem 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.section:last-of-type {
+  border-bottom: none;
+}
+
+.section-header {
+  margin-bottom: 2.5rem;
+  max-width: 640px;
+}
+
+.section-tag {
+  display: inline-block;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--accent);
+  margin-bottom: 0.35rem;
+}
+
+.section-title {
+  font-size: clamp(1.6rem, 2.8vw, 2.1rem);
+  margin-bottom: 0.6rem;
+}
+
+.section-description {
+  color: var(--text-muted);
+  font-size: 1.05rem;
+}
+
+/* ── Features Grid ───────────────────────────────────────────────────────── */
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.25rem;
+}
+
+.feature-card {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+}
+
+.feature-title {
+  font-size: 1.05rem;
+  margin-bottom: 0.5rem;
+}
+
+.feature-desc {
+  color: var(--text-muted);
+  font-size: 0.92rem;
+  line-height: 1.55;
 }
 
 /* ── Gallery Section ─────────────────────────────────────────────────────── */
@@ -485,7 +481,7 @@ p {
 .gallery-tab.active {
   background: var(--bg-subtle);
   border-color: var(--accent);
-  box-shadow: 0 4px 12px rgba(22, 163, 74, 0.12);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
 .tab-index {
@@ -616,7 +612,7 @@ p {
 }
 
 .shelf-led-active {
-  color: #22c55e;
+  color: #fb7185;
   font-weight: 600;
 }
 
@@ -652,12 +648,14 @@ p {
   box-shadow: 0 0 8px var(--led-active);
 }
 
+.album-spine,
+.movie-spine,
 .book-spine {
   flex: none;
-  width: 22px;
-  min-width: 22px;
-  height: 150px;
-  min-height: 150px;
+  width: 20px;
+  min-width: 20px;
+  height: 140px;
+  min-height: 140px;
   background: #334155;
   border-radius: 3px;
   display: flex;
@@ -671,6 +669,19 @@ p {
   transition: background 0.2s ease;
 }
 
+.movie-spine {
+  width: 22px;
+  min-width: 22px;
+}
+
+.shelf-col:hover .album-spine,
+.shelf-col:hover .movie-spine,
+.shelf-col:hover .book-spine {
+  background: #3e4f66;
+}
+
+.spine-artist,
+.spine-director,
 .spine-author {
   writing-mode: vertical-rl;
   text-orientation: mixed;

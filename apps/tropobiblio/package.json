@@ -2,7 +2,7 @@
   "name": "tropobiblio",
   "description": "TropoBiblio is a universal book collection manager",
   "version": "1.0.0",
-  "homepage": "https://tropobiblio.esaracco.fr",
+  "homepage": "https://biblio.tropoatlas.fr",
   "type": "module",
   "scripts": {
     "dev": "vite",

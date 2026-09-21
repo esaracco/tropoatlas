@@ -1,69 +1,69 @@
 <!doctype html>
-<html lang="fr">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <!-- Primary SEO Meta Tags -->
     <title>
-      TropoCine — Gestionnaire universel de films & Repérage physique LED
+      TropoBiblio — Universal Book Collection Manager & LED Shelf Locator
     </title>
     <meta
       name="title"
-      content="TropoCine — Gestionnaire universel de films & Repérage physique LED"
+      content="TropoBiblio — Universal Book Collection Manager & LED Shelf Locator"
     />
     <meta
       name="description"
-      content="TropoCine est un gestionnaire de collection de films sous licence libre. Synchronisez vos films depuis TMDB, enrichissez-les de métadonnées personnalisées et localisez vos DVDs et Blu-rays sur vos étagères grâce à des rubans LED connectés."
+      content="TropoBiblio is a free software book collection manager. Synchronize your library from Inventaire.io, enrich your books with custom metadata, and locate them on your shelves with connected LED strips."
     />
     <meta
       name="keywords"
-      content="TropoCine, TropoAtlas, gestionnaire de films, TMDB, collection cinéma, vidéothèque, liste de films, réalisateurs, acteurs, repérage LED étagère, ESP32, ruban LED connecté, monorepo React"
+      content="TropoBiblio, TropoAtlas, book collection manager, Inventaire.io, book collection, library, authors, genres, LED shelf locator, ESP32, React monorepo"
     />
     <meta name="author" content="Emmanuel Saracco" />
     <meta name="robots" content="index, follow" />
-    <link rel="canonical" href="https://tropocine.esaracco.fr/index-fr.html" />
+    <link rel="canonical" href="https://www.tropoatlas.fr/biblio/index.html" />
     <link
       rel="alternate"
       hreflang="fr"
-      href="https://tropocine.esaracco.fr/index-fr.html"
+      href="https://www.tropoatlas.fr/biblio/index-fr.html"
     />
     <link
       rel="alternate"
       hreflang="en"
-      href="https://tropocine.esaracco.fr/index.html"
+      href="https://www.tropoatlas.fr/biblio/index.html"
     />
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
     <meta
       property="og:url"
-      content="https://tropocine.esaracco.fr/index-fr.html"
+      content="https://www.tropoatlas.fr/biblio/index.html"
     />
     <meta
       property="og:title"
-      content="TropoCine — Gestionnaire universel de films & Repérage physique LED"
+      content="TropoBiblio — Universal Book Collection Manager & LED Shelf Locator"
     />
     <meta
       property="og:description"
-      content="TropoCine est un gestionnaire de collection de films sous licence libre. Synchronisez vos films depuis TMDB, enrichissez-les de métadonnées personnalisées et localisez vos DVDs et Blu-rays sur vos étagères grâce à des rubans LED connectés."
+      content="TropoBiblio is a free software book collection manager. Synchronize your library from Inventaire.io, enrich your books with custom metadata, and locate them on your shelves with connected LED strips."
     />
     <meta property="og:image" content="./icon-512.png" />
-    <meta property="og:site_name" content="TropoCine" />
+    <meta property="og:site_name" content="TropoBiblio" />
 
     <!-- Twitter Card Meta Tags -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta
       name="twitter:url"
-      content="https://tropocine.esaracco.fr/index-fr.html"
+      content="https://www.tropoatlas.fr/biblio/index.html"
     />
     <meta
       name="twitter:title"
-      content="TropoCine — Gestionnaire universel de films & Repérage physique LED"
+      content="TropoBiblio — Universal Book Collection Manager & LED Shelf Locator"
     />
     <meta
       name="twitter:description"
-      content="TropoCine est un gestionnaire de collection de films sous licence libre. Synchronisez vos films depuis TMDB, enrichissez-les de métadonnées personnalisées et localisez vos DVDs et Blu-rays sur vos étagères grâce à des rubans LED connectés."
+      content="TropoBiblio is a free software book collection manager. Synchronize your library from Inventaire.io, enrich your books with custom metadata, and locate them on your shelves with connected LED strips."
     />
     <meta name="twitter:image" content="./icon-512.png" />
 
@@ -77,7 +77,7 @@
       {
         "@context": "https://schema.org",
         "@type": "SoftwareApplication",
-        "name": "TropoCine",
+        "name": "TropoBiblio",
         "applicationCategory": "MultimediaApplication",
         "operatingSystem": "Web, Docker, Linux, macOS, Windows",
         "offers": {
@@ -85,9 +85,9 @@
           "price": "0",
           "priceCurrency": "EUR"
         },
-        "description": "TropoCine est un gestionnaire de collection de films sous licence libre. Synchronisez vos films depuis TMDB, enrichissez-les de métadonnées personnalisées et localisez vos DVDs et Blu-rays sur vos étagères grâce à des rubans LED connectés.",
+        "description": "TropoBiblio is a free software book collection manager. Synchronize your library from Inventaire.io, enrich your books with custom metadata, and locate them on your shelves with connected LED strips.",
         "license": "https://www.gnu.org/licenses/gpl-3.0.html",
-        "image": "https://tropocine.esaracco.fr/icon-512.png"
+        "image": "https://www.tropoatlas.fr/biblio/icon-512.png"
       }
     </script>
 
@@ -99,34 +99,33 @@
     </script>
 
     <!-- Stylesheet -->
+    <link rel="stylesheet" href="../base.css" />
     <link rel="stylesheet" href="./index.css" />
   </head>
   <body>
     <!-- Navigation Bar -->
-    <nav class="navbar" aria-label="Navigation principale">
+    <nav class="navbar" aria-label="Main Navigation">
       <div class="container navbar-container">
         <a href="#top" class="brand" id="nav-brand">
           <img
             src="./icon-180.png"
-            alt="TropoCine Logo"
+            alt="TropoBiblio Logo"
             class="brand-logo"
             width="32"
             height="32"
           />
-          <span>Tropo<span class="brand-text-cine">Cine</span></span>
+          <span>Tropo<span class="brand-text-biblio">Biblio</span></span>
         </a>
 
         <ul class="nav-links">
           <li>
-            <a href="#features" class="nav-link" id="nav-features"
-              >Fonctionnalités</a
-            >
+            <a href="#features" class="nav-link" id="nav-features">Features</a>
           </li>
           <li>
             <a href="#gallery" class="nav-link" id="nav-gallery">Interface</a>
           </li>
           <li>
-            <a href="#leds" class="nav-link" id="nav-leds">Repérage LED</a>
+            <a href="#leds" class="nav-link" id="nav-leds">LED Locator</a>
           </li>
           <li>
             <a href="#architecture" class="nav-link" id="nav-architecture"
@@ -142,12 +141,12 @@
 
         <div class="nav-actions">
           <a
-            href="./index.html"
+            href="./index-fr.html"
             class="btn btn-secondary"
-            id="lang-switch-en"
-            title="English version"
+            id="lang-switch-fr"
+            title="Version française"
           >
-            EN
+            FR
           </a>
           <a
             href="https://github.com/esaracco/tropoatlas"
@@ -168,47 +167,47 @@
         <div class="hero-brand-lockup">
           <img
             src="./icon-180.png"
-            alt="Logo TropoCine"
+            alt="TropoBiblio Logo"
             class="hero-brand-icon"
             width="56"
             height="56"
           />
           <span class="hero-brand-name"
-            >Tropo<span class="brand-text-cine">Cine</span></span
+            >Tropo<span class="brand-text-biblio">Biblio</span></span
           >
         </div>
 
         <a
-          href="https://tropoatlas.esaracco.fr/index-fr.html"
+          href="https://www.tropoatlas.fr"
           target="_blank"
           rel="noopener noreferrer"
           class="hero-pill"
         >
           <span class="hero-pill-dot"></span>
           <span
-            >Une application Tropo<span class="brand-text-atlas">Atlas</span>
+            >A Tropo<span class="brand-text-atlas">Atlas</span> application
             ↗</span
           >
         </a>
 
         <h1 class="hero-title">
-          Organisez, explorez et redécouvrez votre
-          <span class="brand-text-cine">collection de films</span>
+          The bridge between your
+          <span class="brand-text-biblio">digital and physical</span> library
         </h1>
 
         <p class="hero-subtitle">
-          Tropo<span class="brand-text-cine">Cine</span> est un gestionnaire de
-          collection de films sous licence libre. Synchronisez vos DVDs et
-          Blu-rays depuis TMDB, enrichissez-les de métadonnées personnalisées et
-          localisez-les sur vos étagères grâce à des rubans LED connectés.
+          Tropo<span class="brand-text-biblio">Biblio</span> is a free software
+          book collection manager. Synchronize your library from Inventaire.io,
+          enrich your books with custom metadata, and locate them on your
+          shelves with connected LED strips.
         </p>
 
         <div class="hero-cta">
           <a href="#quickstart" class="btn btn-primary" id="btn-hero-start"
-            >Déployer TropoCine</a
+            >Deploy TropoBiblio</a
           >
           <a href="#leds" class="btn btn-secondary" id="btn-hero-leds"
-            >Découvrir le repérage LED</a
+            >Explore LED Locator</a
           >
         </div>
 
@@ -220,13 +219,13 @@
                 <span class="mockup-dot dot-blue"></span>
                 <span class="mockup-dot dot-green"></span>
               </div>
-              <div class="mockup-title">TropoCine — Collection</div>
+              <div class="mockup-title">TropoBiblio — Collection</div>
               <div class="mockup-spacer" aria-hidden="true"></div>
             </div>
             <div class="mockup-body">
               <img
                 src="./img/1.png"
-                alt="Aperçu de l'interface TropoCine"
+                alt="TropoBiblio Interface Preview"
                 class="mockup-img"
                 width="803"
                 height="1037"
@@ -244,62 +243,53 @@
       <section class="section" id="features">
         <div class="container">
           <div class="section-header">
-            <span class="section-tag">Fonctionnalités</span>
-            <h2 class="section-title">Conçu pour les passionnés de cinéma</h2>
+            <span class="section-tag">Features</span>
+            <h2 class="section-title">Designed for serious book collectors</h2>
             <p class="section-description">
-              Donnez une nouvelle dimension à votre vidéothèque et redécouvrez
-              le plaisir d'explorer votre collection de films.
+              Bring a new dimension to your personal library and rediscover the
+              joy of browsing its shelves.
             </p>
           </div>
 
           <div class="features-grid">
             <article class="feature-card" id="card-search">
-              <h3 class="feature-title">Recherche & Filtres Instantanés</h3>
+              <h3 class="feature-title">Instant Search & Sort</h3>
               <p class="feature-desc">
-                Filtrez et triez votre collection en temps réel par réalisateur,
-                acteur, genre, année de sortie, note ou emplacement physique sur
-                vos étagères.
+                Filter and sort your collection in real-time by author, year,
+                date added, rating, or physical shelf locations.
               </p>
             </article>
 
             <article class="feature-card" id="card-metadata">
-              <h3 class="feature-title">Métadonnées personnalisées</h3>
+              <h3 class="feature-title">Custom Metadata</h3>
               <p class="feature-desc">
-                Enrichissez chaque film grâce aux commentaires personnalisés :
-                emplacement physique exact, prix d'achat et note.
+                Enrich each book with custom fields: exact shelf location,
+                purchase price, and simplified genres.
               </p>
             </article>
 
             <article class="feature-card" id="card-led">
-              <h3 class="feature-title">Localisation physique par LED</h3>
+              <h3 class="feature-title">Physical LED Locator</h3>
               <p class="feature-desc">
-                Sélectionnez un film, des genres ou des réalisateurs à l'écran,
-                et les emplacements s'illuminent sur vos étagères grâce à des
-                rubans LED.
-              </p>
-            </article>
-
-            <article class="feature-card" id="card-security">
-              <h3 class="feature-title">Sécurité & Proxy d'API</h3>
-              <p class="feature-desc">
-                Architecture avec proxy sécurisé (Apache/Nginx). Vos jetons
-                d'API et identifiants ne sont jamais exposés côté navigateur.
+                Select a book, genres, or authors on the screen, and the
+                corresponding slots on your shelves light up thanks to LED
+                strips.
               </p>
             </article>
 
             <article class="feature-card" id="card-monorepo">
-              <h3 class="feature-title">Architecture modulaire</h3>
+              <h3 class="feature-title">Modular Architecture</h3>
               <p class="feature-desc">
-                Monorepo NPM clair séparant composants d'interface, gestion
-                d'état, cache, pilotes matériels et plugins de données.
+                Clean NPM monorepo separating UI components, state management,
+                cache, hardware drivers, and data plugins.
               </p>
             </article>
 
             <article class="feature-card" id="card-backup">
-              <h3 class="feature-title">Sauvegardes portables</h3>
+              <h3 class="feature-title">Portable Backups</h3>
               <p class="feature-desc">
-                Exportez et restaurez des sauvegardes complètes avec métadonnées
-                et pochettes sous forme d'archives ZIP portables.
+                Export and restore full collection archives with metadata and
+                cover artwork in portable ZIP packages.
               </p>
             </article>
           </div>
@@ -311,19 +301,15 @@
         <div class="container">
           <div class="section-header">
             <span class="section-tag">Interface</span>
-            <h2 class="section-title">Explorez l'interface</h2>
+            <h2 class="section-title">Explore the Interface</h2>
             <p class="section-description">
-              Une interface fluide et moderne pour garder votre vidéothèque à
-              portée de main.
+              A fast and modern interface designed to put your book collection
+              at your fingertips.
             </p>
           </div>
 
           <div class="gallery-layout">
-            <div
-              class="gallery-tabs"
-              role="tablist"
-              aria-label="Captures d'écran"
-            >
+            <div class="gallery-tabs" role="tablist" aria-label="Screenshots">
               <button
                 type="button"
                 class="gallery-tab active"
@@ -337,8 +323,8 @@
                 <div class="tab-text">
                   <span class="tab-title">Collection</span>
                   <span class="tab-desc"
-                    >Navigation par pochettes avec accès direct à la
-                    synchronisation, sauvegarde et thèmes.</span
+                    >Cover browsing with direct access to synchronization,
+                    backup, and themes.</span
                   >
                 </div>
               </button>
@@ -354,10 +340,10 @@
               >
                 <div class="tab-index">02</div>
                 <div class="tab-text">
-                  <span class="tab-title">Fiche Film</span>
+                  <span class="tab-title">Book Details</span>
                   <span class="tab-desc"
-                    >Réalisateur, notes, casting & genres cliquables, et
-                    synopsis.</span
+                    >Author, rating, shelf location, price, clickable genres,
+                    and synopsis.</span
                   >
                 </div>
               </button>
@@ -373,10 +359,10 @@
               >
                 <div class="tab-index">03</div>
                 <div class="tab-text">
-                  <span class="tab-title">Filtrage</span>
+                  <span class="tab-title">Filtering</span>
                   <span class="tab-desc"
-                    >Filtrage multicritère instantané par genres, réalisateurs
-                    et acteurs.</span
+                    >Instant multi-criteria filtering by genres and
+                    authors.</span
                   >
                 </div>
               </button>
@@ -392,10 +378,10 @@
               >
                 <div class="tab-index">04</div>
                 <div class="tab-text">
-                  <span class="tab-title">À propos</span>
+                  <span class="tab-title">About</span>
                   <span class="tab-desc"
-                    >Informations de version, liens vers le code source et
-                    licence libre.</span
+                    >Version information, links to source code, and free
+                    software license.</span
                   >
                 </div>
               </button>
@@ -421,17 +407,17 @@
                   <div class="mockup-body">
                     <img
                       src="./img/1.png"
-                      alt="Collection et menu d'options"
+                      alt="Collection and Options Menu"
                       class="mockup-img"
-                      width="803"
-                      height="1037"
+                      width="805"
+                      height="1104"
                       loading="lazy"
                     />
                   </div>
                 </div>
                 <p class="gallery-caption">
-                  Navigation par pochettes avec accès direct à la
-                  synchronisation, sauvegarde et thèmes.
+                  Cover browsing with direct access to synchronization, backup,
+                  and themes.
                 </p>
               </div>
 
@@ -449,23 +435,23 @@
                       <span class="mockup-dot dot-blue"></span>
                       <span class="mockup-dot dot-green"></span>
                     </div>
-                    <div class="mockup-title">Fiche Film</div>
+                    <div class="mockup-title">Book Details</div>
                     <div class="mockup-spacer" aria-hidden="true"></div>
                   </div>
                   <div class="mockup-body">
                     <img
                       src="./img/2.png"
-                      alt="Modale de détail du film"
+                      alt="Book Details Modal"
                       class="mockup-img"
-                      width="803"
-                      height="1037"
+                      width="805"
+                      height="1104"
                       loading="lazy"
                     />
                   </div>
                 </div>
                 <p class="gallery-caption">
-                  Galerie d'affiches, réalisateur, casting cliquable, genres et
-                  synopsis.
+                  Cover gallery, author, rating, shelf location, price, genres,
+                  and synopsis.
                 </p>
               </div>
 
@@ -483,23 +469,23 @@
                       <span class="mockup-dot dot-blue"></span>
                       <span class="mockup-dot dot-green"></span>
                     </div>
-                    <div class="mockup-title">Filtrage</div>
+                    <div class="mockup-title">Filtering</div>
                     <div class="mockup-spacer" aria-hidden="true"></div>
                   </div>
                   <div class="mockup-body">
                     <img
                       src="./img/3.png"
-                      alt="Modale des filtres"
+                      alt="Authors Filter Modal"
                       class="mockup-img"
-                      width="803"
-                      height="1037"
+                      width="805"
+                      height="1104"
                       loading="lazy"
                     />
                   </div>
                 </div>
                 <p class="gallery-caption">
-                  Filtrage multicritère instantané par genres, réalisateurs et
-                  acteurs.
+                  Instant search and live multi-criteria filtering by author or
+                  creator.
                 </p>
               </div>
 
@@ -517,23 +503,23 @@
                       <span class="mockup-dot dot-blue"></span>
                       <span class="mockup-dot dot-green"></span>
                     </div>
-                    <div class="mockup-title">À propos de TropoCine</div>
+                    <div class="mockup-title">About TropoBiblio</div>
                     <div class="mockup-spacer" aria-hidden="true"></div>
                   </div>
                   <div class="mockup-body">
                     <img
                       src="./img/4.png"
-                      alt="À propos de TropoCine"
+                      alt="About TropoBiblio"
                       class="mockup-img"
-                      width="806"
-                      height="1045"
+                      width="805"
+                      height="1104"
                       loading="lazy"
                     />
                   </div>
                 </div>
                 <p class="gallery-caption">
-                  Informations de version, liens vers le code source et la
-                  licence libre.
+                  Version information, links to source code, and free software
+                  license.
                 </p>
               </div>
             </div>
@@ -546,38 +532,40 @@
         <div class="container">
           <div class="led-section">
             <div>
-              <span class="section-tag">Matériel IoT</span>
-              <h2 class="section-title">Trouvez vos films en un clin d'œil</h2>
+              <span class="section-tag">IoT Hardware</span>
+              <h2 class="section-title">
+                Find your books in the blink of an eye
+              </h2>
               <p class="section-description">
-                Laissez Tropo<span class="brand-text-cine">Cine</span>
-                piloter les rubans LED de vos étagères&nbsp;!
+                Let Tropo<span class="brand-text-biblio">Biblio</span>
+                control the LED strips of your bookshelves!
               </p>
               <ul class="led-list">
                 <li class="led-list-item">
-                  Indication visuelle immédiate du film sélectionné, des genres
-                  ou des réalisateurs.
+                  Immediate visual indication of the selected book, genres, or
+                  authors.
                 </li>
                 <li class="led-list-item">
-                  Intégration HTTP directe avec un petit firmware ESP32.
+                  Direct HTTP integration with lightweight ESP32 firmware.
                 </li>
               </ul>
 
               <div class="hardware-note">
                 <p>
-                  💡 <strong>Conçu pour les Makers :</strong> L'ensemble du code
-                  source du firmware et les schémas de câblage sont libres et
-                  inclus dans le dépôt, prêts à être téléversés sur un
-                  microcontrôleur ESP32.
+                  💡 <strong>Maker-Friendly:</strong> All firmware source code
+                  and wiring schematics are free software and included in the
+                  repository, ready to flash onto an affordable ESP32
+                  microcontroller.
                 </p>
                 <div class="hardware-note-link">
                   <a
-                    href="./img/wiring-diagram.svg"
+                    href="../img/wiring-diagram.svg"
                     target="_blank"
                     rel="noopener noreferrer"
                     class="btn btn-secondary btn-sm"
                     id="btn-wiring-diagram"
                   >
-                    🔌 Consulter le schéma de câblage (SVG)
+                    🔌 View Wiring Diagram (SVG)
                   </a>
                 </div>
               </div>
@@ -586,70 +574,62 @@
             <!-- Interactive LED simulation -->
             <div class="shelf-demo">
               <div class="shelf-header">
-                <span>Étagère</span>
+                <span>Bookshelf</span>
                 <span class="shelf-led-active" id="shelf-status"
-                  >LED active&nbsp;: 42</span
+                  >Active LED: 42</span
                 >
               </div>
               <div class="shelf-row">
                 <div class="shelf-col" data-index="41">
-                  <div class="movie-spine">
-                    <span class="spine-director">Anspach</span>
-                    <span class="spine-title">Queen of Montreuil</span>
+                  <div class="book-spine">
+                    <span class="spine-author">Kropotkine</span>
+                    <span class="spine-title">L'Entraide</span>
                   </div>
                   <div class="led-bulb"></div>
                 </div>
 
                 <div class="shelf-col" data-index="42">
-                  <div class="movie-spine">
-                    <span class="spine-director">Arcand</span>
-                    <span class="spine-title">Les Invasions barbares</span>
+                  <div class="book-spine">
+                    <span class="spine-author">George Orwell</span>
+                    <span class="spine-title">1984</span>
                   </div>
                   <div class="led-bulb active"></div>
                 </div>
 
                 <div class="shelf-col" data-index="43">
-                  <div class="movie-spine">
-                    <span class="spine-director">Poiré</span>
-                    <span class="spine-title">Les visiteurs</span>
+                  <div class="book-spine">
+                    <span class="spine-author">Perec</span>
+                    <span class="spine-title">Un homme qui dort</span>
                   </div>
                   <div class="led-bulb"></div>
                 </div>
 
                 <div class="shelf-col" data-index="44">
-                  <div class="movie-spine">
-                    <span class="spine-director">Podalydès</span>
-                    <span class="spine-title">Comme un avion</span>
+                  <div class="book-spine">
+                    <span class="spine-author">Sartre</span>
+                    <span class="spine-title">L'Être et le Néant</span>
                   </div>
                   <div class="led-bulb"></div>
                 </div>
 
                 <div class="shelf-col" data-index="45">
-                  <div class="movie-spine">
-                    <span class="spine-director">Nolan</span>
-                    <span class="spine-title">Interstellar</span>
+                  <div class="book-spine">
+                    <span class="spine-author">Husserl</span>
+                    <span class="spine-title">Ideen I</span>
                   </div>
                   <div class="led-bulb"></div>
                 </div>
 
                 <div class="shelf-col" data-index="46">
-                  <div class="movie-spine">
-                    <span class="spine-director">Coppola</span>
-                    <span class="spine-title">Apocalypse Now</span>
-                  </div>
-                  <div class="led-bulb"></div>
-                </div>
-
-                <div class="shelf-col" data-index="47">
-                  <div class="movie-spine">
-                    <span class="spine-director">Miyazaki</span>
-                    <span class="spine-title">Chihiro</span>
+                  <div class="book-spine">
+                    <span class="spine-author">Deleuze</span>
+                    <span class="spine-title">L'Anti-Œdipe</span>
                   </div>
                   <div class="led-bulb"></div>
                 </div>
               </div>
               <p class="shelf-caption">
-                Simulation interactive (cliquez sur un boîtier)
+                Interactive simulation (click any volume)
               </p>
             </div>
           </div>
@@ -660,48 +640,46 @@
       <section class="section" id="architecture">
         <div class="container">
           <div class="section-header">
-            <span class="section-tag">Monorepo TropoAtlas</span>
-            <h2 class="section-title">Structure propre et découplée</h2>
+            <span class="section-tag">TropoAtlas Monorepo</span>
+            <h2 class="section-title">Clean & decoupled structure</h2>
             <p class="section-description">
-              Développé au sein du monorepo Tropo<span class="brand-text-atlas"
+              Developed within the Tropo<span class="brand-text-atlas"
                 >Atlas</span
               >
-              à l'aide de paquets modulaires et de plugins.
+              monorepo using modular packages and plugins.
             </p>
           </div>
 
           <div class="arch-cards">
             <div class="arch-card">
-              <span class="arch-tag">apps/tropocine</span>
-              <h3>Application React</h3>
+              <span class="arch-tag">apps/tropobiblio</span>
+              <h3>React Application</h3>
               <p>
-                Application cliente principale pour explorer votre vidéothèque.
+                Primary client application for browsing your book collection.
               </p>
             </div>
             <div class="arch-card">
               <span class="arch-tag">packages/core</span>
               <h3>@tropo/core</h3>
-              <p>
-                Gestion d'état avec Zustand, mise en cache et normalisation.
-              </p>
+              <p>State management with Zustand, caching, and normalization.</p>
             </div>
             <div class="arch-card">
               <span class="arch-tag">packages/react</span>
               <h3>@tropo/react</h3>
               <p>
-                Système de composants UI réutilisables, moteurs de thèmes,
-                modales et navigation.
+                Reusable UI design system, theme engines, modals, and navigation
+                components.
               </p>
             </div>
             <div class="arch-card">
               <span class="arch-tag">packages/leds</span>
               <h3>@tropo/leds</h3>
-              <p>Client HTTP pour la communication avec les rubans LED.</p>
+              <p>HTTP client for LED controller communication.</p>
             </div>
             <div class="arch-card">
-              <span class="arch-tag">plugins/cine/tmdb</span>
-              <h3>@tropo/tmdb</h3>
-              <p>Plugin d'intégration avec l'API The Movie Database.</p>
+              <span class="arch-tag">plugins/biblio/inventaire</span>
+              <h3>@tropo/inventaire</h3>
+              <p>Inventaire.io API integration plugin.</p>
             </div>
           </div>
         </div>
@@ -711,35 +689,33 @@
       <section class="section" id="quickstart">
         <div class="container">
           <div class="section-header">
-            <span class="section-tag">Déploiement</span>
-            <h2 class="section-title">Démarrage rapide</h2>
+            <span class="section-tag">Deployment</span>
+            <h2 class="section-title">Quick Start</h2>
             <p class="section-description">
-              Lancez Tropo<span class="brand-text-cine">Cine</span> en local ou
-              avec Docker, et déployez-le derrière un reverse proxy
-              Apache/Nginx.
+              Run Tropo<span class="brand-text-biblio">Biblio</span> locally or
+              with Docker, and deploy it behind an Apache/Nginx reverse proxy.
             </p>
           </div>
 
           <div class="code-box">
             <div class="code-header">
-              <span>Configuration en développement local</span>
+              <span>Local development setup</span>
               <span>Bash</span>
             </div>
             <div class="code-content">
               <span class="code-comment"
-                ># 1. Cloner le dépôt et installer les dépendances</span
+                ># 1. Clone repository and install dependencies</span
               ><br />
               git clone https://github.com/esaracco/tropoatlas.git<br />
               cd tropoatlas<br />
               npm install<br /><br />
               <span class="code-comment"
-                ># 2. Configurer les variables d'environnement</span
+                ># 2. Configure environment variables</span
               ><br />
-              cp apps/tropocine/.env.sample apps/tropocine/.env<br /><br />
-              <span class="code-comment"
-                ># 3. Lancer le serveur de développement</span
+              cp apps/tropobiblio/.env.sample apps/tropobiblio/.env<br /><br />
+              <span class="code-comment"># 3. Launch development server</span
               ><br />
-              npm run dev:cine
+              npm run dev:biblio
             </div>
           </div>
         </div>
@@ -753,18 +729,18 @@
           <div class="footer-brand">
             <img
               src="./icon-180.png"
-              alt="Logo TropoCine"
+              alt="TropoBiblio Logo"
               class="brand-logo"
               width="28"
               height="28"
             />
-            <span>Tropo<span class="brand-text-cine">Cine</span></span>
+            <span>Tropo<span class="brand-text-biblio">Biblio</span></span>
           </div>
 
           <ul class="footer-nav">
             <li>
               <a
-                href="https://tropoatlas.esaracco.fr/index-fr.html"
+                href="https://www.tropoatlas.fr"
                 target="_blank"
                 rel="noopener noreferrer"
                 class="footer-nav-link"
@@ -774,7 +750,7 @@
             </li>
             <li>
               <a
-                href="https://tropoaudio.esaracco.fr/index-fr.html"
+                href="https://www.tropoatlas.fr/audio"
                 target="_blank"
                 rel="noopener noreferrer"
                 class="footer-nav-link"
@@ -784,12 +760,12 @@
             </li>
             <li>
               <a
-                href="https://tropobiblio.esaracco.fr/index-fr.html"
+                href="https://www.tropoatlas.fr/cine"
                 target="_blank"
                 rel="noopener noreferrer"
                 class="footer-nav-link"
               >
-                TropoBiblio
+                TropoCine
               </a>
             </li>
             <li>
@@ -799,7 +775,7 @@
                 rel="noopener noreferrer"
                 class="footer-nav-link"
               >
-                Dépôt GitHub
+                GitHub Repository
               </a>
             </li>
             <li>
@@ -809,7 +785,7 @@
                 rel="noopener noreferrer"
                 class="footer-nav-link"
               >
-                Tickets & Support
+                Issues & Support
               </a>
             </li>
           </ul>
@@ -818,7 +794,7 @@
         <div class="footer-bottom">
           <p>
             <span class="copyleft" aria-hidden="true">&copy;</span> 2026
-            <strong>Emmanuel Saracco</strong> · Publié sous licence
+            <strong>Emmanuel Saracco</strong> · Released under the
             <a
               href="https://www.gnu.org/licenses/gpl-3.0.html"
               target="_blank"
@@ -827,51 +803,14 @@
             >
               GNU GPL v3
             </a>
-            · Logiciel Libre
+            License · Free Software
           </p>
         </div>
       </div>
     </footer>
 
-    <!-- Interactive Gallery Script -->
+    <!-- Interactive Scripts -->
     <script>
-      ;(function () {
-        var tabButtons = document.querySelectorAll(".gallery-tab")
-        var panels = document.querySelectorAll(".gallery-panel")
-
-        tabButtons.forEach(function (button) {
-          button.addEventListener("click", function () {
-            var targetId = button.getAttribute("data-target")
-
-            tabButtons.forEach(function (btn) {
-              btn.classList.remove("active")
-              btn.setAttribute("aria-selected", "false")
-            })
-
-            panels.forEach(function (panel) {
-              panel.classList.remove("active")
-              panel.setAttribute("hidden", "")
-            })
-
-            button.classList.add("active")
-            button.setAttribute("aria-selected", "true")
-            button.scrollIntoView({
-              behavior: "smooth",
-              inline: "center",
-              block: "nearest",
-            })
-
-            var activePanel = document.getElementById(targetId)
-            if (activePanel) {
-              activePanel.classList.remove("active")
-              void activePanel.offsetWidth
-              activePanel.classList.add("active")
-              activePanel.removeAttribute("hidden")
-            }
-          })
-        })
-      })()
-
       /* Navbar brand scroll-reveal */
       ;(function () {
         var brand = document.querySelector(".brand")
@@ -904,16 +843,56 @@
         cols.forEach(function (col) {
           col.addEventListener("click", function () {
             cols.forEach(function (c) {
+              var spine = c.querySelector(".book-spine")
               var bulb = c.querySelector(".led-bulb")
               if (bulb) bulb.classList.remove("active")
             })
 
+            var spine = col.querySelector(".book-spine")
             var bulb = col.querySelector(".led-bulb")
             if (bulb) bulb.classList.add("active")
 
             var idx = col.getAttribute("data-index")
             if (status && idx) {
-              status.innerHTML = "LED active&nbsp;: " + idx
+              status.textContent = "Active LED: " + idx
+            }
+          })
+        })
+      })()
+
+      /* Gallery tabs switching */
+      ;(function () {
+        var tabButtons = document.querySelectorAll(".gallery-tab")
+        var panels = document.querySelectorAll(".gallery-panel")
+
+        tabButtons.forEach(function (button) {
+          button.addEventListener("click", function () {
+            var targetId = button.getAttribute("data-target")
+
+            tabButtons.forEach(function (btn) {
+              btn.classList.remove("active")
+              btn.setAttribute("aria-selected", "false")
+            })
+
+            panels.forEach(function (panel) {
+              panel.classList.remove("active")
+              panel.setAttribute("hidden", "")
+            })
+
+            button.classList.add("active")
+            button.setAttribute("aria-selected", "true")
+            button.scrollIntoView({
+              behavior: "smooth",
+              inline: "center",
+              block: "nearest",
+            })
+
+            var activePanel = document.getElementById(targetId)
+            if (activePanel) {
+              activePanel.classList.remove("active")
+              void activePanel.offsetWidth
+              activePanel.classList.add("active")
+              activePanel.removeAttribute("hidden")
             }
           })
         })

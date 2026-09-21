@@ -5,63 +5,65 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <!-- Primary SEO Meta Tags -->
-    <title>TropoAudio — Album Collection Manager & LED Shelf Locator</title>
+    <title>
+      TropoCine — Universal Film Collection Manager & LED Shelf Locator
+    </title>
     <meta
       name="title"
-      content="TropoAudio — Album Collection Manager & LED Shelf Locator"
+      content="TropoCine — Universal Film Collection Manager & LED Shelf Locator"
     />
     <meta
       name="description"
-      content="TropoAudio is a free software album collection manager. Synchronize your albums (Discogs), customize your metadata, and instantly locate your vinyl records and CDs on your shelves using connected LED strips."
+      content="TropoCine is a free software film collection manager. Synchronize your DVDs and Blu-rays from TMDB, enrich them with custom metadata, and locate them on your shelves with connected LED strips."
     />
     <meta
       name="keywords"
-      content="TropoAudio, TropoAtlas, vinyl manager, Discogs, album collection, music collection, LED shelf locator, ESP32, connected LED strip, vinyl records, CDs, music library, React monorepo"
+      content="TropoCine, TropoAtlas, film collection manager, TMDB, film collection, film library, movie list, directors, actors, LED shelf locator, ESP32, connected LED strip, React monorepo"
     />
     <meta name="author" content="Emmanuel Saracco" />
     <meta name="robots" content="index, follow" />
-    <link rel="canonical" href="https://tropoaudio.esaracco.fr/index.html" />
+    <link rel="canonical" href="https://www.tropoatlas.fr/cine/index.html" />
     <link
       rel="alternate"
       hreflang="fr"
-      href="https://tropoaudio.esaracco.fr/index-fr.html"
+      href="https://www.tropoatlas.fr/cine/index-fr.html"
     />
     <link
       rel="alternate"
       hreflang="en"
-      href="https://tropoaudio.esaracco.fr/index.html"
+      href="https://www.tropoatlas.fr/cine/index.html"
     />
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
     <meta
       property="og:url"
-      content="https://tropoaudio.esaracco.fr/index.html"
+      content="https://www.tropoatlas.fr/cine/index.html"
     />
     <meta
       property="og:title"
-      content="TropoAudio — Album Collection Manager & LED Shelf Locator"
+      content="TropoCine — Universal Film Collection Manager & LED Shelf Locator"
     />
     <meta
       property="og:description"
-      content="TropoAudio is a free software album collection manager. Synchronize your albums (Discogs), customize your metadata, and instantly locate your vinyl records and CDs on your shelves using connected LED strips."
+      content="TropoCine is a free software film collection manager. Synchronize your DVDs and Blu-rays from TMDB, enrich them with custom metadata, and locate them on your shelves with connected LED strips."
     />
     <meta property="og:image" content="./icon-512.png" />
-    <meta property="og:site_name" content="TropoAudio" />
+    <meta property="og:site_name" content="TropoCine" />
 
     <!-- Twitter Card Meta Tags -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta
       name="twitter:url"
-      content="https://tropoaudio.esaracco.fr/index.html"
+      content="https://www.tropoatlas.fr/cine/index.html"
     />
     <meta
       name="twitter:title"
-      content="TropoAudio — Album Collection Manager & LED Shelf Locator"
+      content="TropoCine — Universal Film Collection Manager & LED Shelf Locator"
     />
     <meta
       name="twitter:description"
-      content="TropoAudio is a free software album collection manager. Synchronize your albums (Discogs), customize your metadata, and instantly locate your vinyl records and CDs on your shelves using connected LED strips."
+      content="TropoCine is a free software film collection manager. Synchronize your DVDs and Blu-rays from TMDB, enrich them with custom metadata, and locate them on your shelves with connected LED strips."
     />
     <meta name="twitter:image" content="./icon-512.png" />
 
@@ -75,7 +77,7 @@
       {
         "@context": "https://schema.org",
         "@type": "SoftwareApplication",
-        "name": "TropoAudio",
+        "name": "TropoCine",
         "applicationCategory": "MultimediaApplication",
         "operatingSystem": "Web, Docker, Linux, macOS, Windows",
         "offers": {
@@ -83,9 +85,9 @@
           "price": "0",
           "priceCurrency": "EUR"
         },
-        "description": "TropoAudio is a free software album collection manager. Synchronize your albums (Discogs), customize your metadata, and instantly locate your vinyl records and CDs on your shelves using connected LED strips.",
+        "description": "TropoCine is a free software film collection manager. Synchronize your DVDs and Blu-rays from TMDB, enrich them with custom metadata, and locate them on your shelves with connected LED strips.",
         "license": "https://www.gnu.org/licenses/gpl-3.0.html",
-        "image": "https://tropoaudio.esaracco.fr/icon-512.png"
+        "image": "https://www.tropoatlas.fr/cine/icon-512.png"
       }
     </script>
 
@@ -97,6 +99,7 @@
     </script>
 
     <!-- Stylesheet -->
+    <link rel="stylesheet" href="../base.css" />
     <link rel="stylesheet" href="./index.css" />
   </head>
   <body>
@@ -106,12 +109,12 @@
         <a href="#top" class="brand" id="nav-brand">
           <img
             src="./icon-180.png"
-            alt="TropoAudio Logo"
+            alt="TropoCine Logo"
             class="brand-logo"
             width="32"
             height="32"
           />
-          <span>Tropo<span class="brand-text-audio">Audio</span></span>
+          <span>Tropo<span class="brand-text-cine">Cine</span></span>
         </a>
 
         <ul class="nav-links">
@@ -164,18 +167,18 @@
         <div class="hero-brand-lockup">
           <img
             src="./icon-180.png"
-            alt="TropoAudio Logo"
+            alt="TropoCine Logo"
             class="hero-brand-icon"
             width="56"
             height="56"
           />
           <span class="hero-brand-name"
-            >Tropo<span class="brand-text-audio">Audio</span></span
+            >Tropo<span class="brand-text-cine">Cine</span></span
           >
         </div>
 
         <a
-          href="https://tropoatlas.esaracco.fr"
+          href="https://www.tropoatlas.fr"
           target="_blank"
           rel="noopener noreferrer"
           class="hero-pill"
@@ -188,20 +191,20 @@
         </a>
 
         <h1 class="hero-title">
-          The bridge between your
-          <span class="brand-text-audio">digital and physical</span> collection
+          Organize, explore, and rediscover your
+          <span class="brand-text-cine">film collection</span>
         </h1>
 
         <p class="hero-subtitle">
-          Tropo<span class="brand-text-audio">Audio</span> is a free software
-          album collection manager. Synchronize your albums from Discogs, enrich
-          them with custom metadata, and locate your records on your shelves
-          with connected LED strips.
+          Tropo<span class="brand-text-cine">Cine</span> is a free software film
+          collection manager. Synchronize your DVDs and Blu-rays from TMDB,
+          enrich them with custom metadata, and locate them on your shelves with
+          connected LED strips.
         </p>
 
         <div class="hero-cta">
           <a href="#quickstart" class="btn btn-primary" id="btn-hero-start"
-            >Deploy TropoAudio</a
+            >Deploy TropoCine</a
           >
           <a href="#leds" class="btn btn-secondary" id="btn-hero-leds"
             >Explore LED Locator</a
@@ -216,13 +219,13 @@
                 <span class="mockup-dot dot-blue"></span>
                 <span class="mockup-dot dot-green"></span>
               </div>
-              <div class="mockup-title">TropoAudio — Collection</div>
+              <div class="mockup-title">TropoCine — Collection</div>
               <div class="mockup-spacer" aria-hidden="true"></div>
             </div>
             <div class="mockup-body">
               <img
                 src="./img/1.png"
-                alt="TropoAudio Interface Preview"
+                alt="TropoCine Interface Preview"
                 class="mockup-img"
                 width="803"
                 height="1037"
@@ -241,34 +244,34 @@
         <div class="container">
           <div class="section-header">
             <span class="section-tag">Features</span>
-            <h2 class="section-title">Designed for serious music collectors</h2>
+            <h2 class="section-title">Designed for passionate cinephiles</h2>
             <p class="section-description">
-              Bring a new dimension to your music collection and rediscover the
-              joy of exploring your vinyl records and CDs.
+              Bring a new dimension to your movie library and rediscover the joy
+              of exploring your film collection.
             </p>
           </div>
 
           <div class="features-grid">
             <article class="feature-card" id="card-search">
-              <h3 class="feature-title">Instant Search & Sort</h3>
+              <h3 class="feature-title">Instant Search & Filter</h3>
               <p class="feature-desc">
-                Filter and sort your collection in real-time by artist, year,
-                date added, rating, or physical shelf locations.
+                Filter and sort your collection in real-time by director, actor,
+                genre, release year, rating, or physical shelf locations.
               </p>
             </article>
 
             <article class="feature-card" id="card-metadata">
               <h3 class="feature-title">Custom Metadata</h3>
               <p class="feature-desc">
-                Enrich album entries with custom fields: exact shelf position,
-                purchase price and simplified styles.
+                Enrich movie entries with custom comments: exact shelf location,
+                custom genres, and personal ratings.
               </p>
             </article>
 
             <article class="feature-card" id="card-led">
               <h3 class="feature-title">Physical LED Locator</h3>
               <p class="feature-desc">
-                Select an album, styles, or artists on the screen, and the
+                Select a film, genres, or directors on the screen, and the
                 corresponding slots on your shelves light up thanks to LED
                 strips.
               </p>
@@ -308,8 +311,8 @@
             <span class="section-tag">Interface</span>
             <h2 class="section-title">Explore the Interface</h2>
             <p class="section-description">
-              A fast and modern interface designed to put your physical music
-              collection at your fingertips.
+              A fast and modern interface designed to put your movie collection
+              at your fingertips.
             </p>
           </div>
 
@@ -345,10 +348,10 @@
               >
                 <div class="tab-index">02</div>
                 <div class="tab-text">
-                  <span class="tab-title">Album Details</span>
+                  <span class="tab-title">Film Details</span>
                   <span class="tab-desc"
-                    >Artist, rating, shelf location, price, clickable styles,
-                    format, and tracklist.</span
+                    >Director, ratings, clickable cast & genres, and
+                    synopsis.</span
                   >
                 </div>
               </button>
@@ -366,8 +369,8 @@
                 <div class="tab-text">
                   <span class="tab-title">Filtering</span>
                   <span class="tab-desc"
-                    >Instant multi-criteria filtering by styles, artists, and
-                    formats.</span
+                    >Instant multi-criteria filtering by genres, directors, and
+                    cast members.</span
                   >
                 </div>
               </button>
@@ -440,13 +443,13 @@
                       <span class="mockup-dot dot-blue"></span>
                       <span class="mockup-dot dot-green"></span>
                     </div>
-                    <div class="mockup-title">Album Details</div>
+                    <div class="mockup-title">Film Details</div>
                     <div class="mockup-spacer" aria-hidden="true"></div>
                   </div>
                   <div class="mockup-body">
                     <img
                       src="./img/2.png"
-                      alt="Album Details and Shelf Location"
+                      alt="Film Details Modal"
                       class="mockup-img"
                       width="803"
                       height="1037"
@@ -455,7 +458,8 @@
                   </div>
                 </div>
                 <p class="gallery-caption">
-                  Shelf number, purchase price, custom styles, and tracklist.
+                  Poster gallery, director, clickable cast, genres, and
+                  synopsis.
                 </p>
               </div>
 
@@ -488,8 +492,8 @@
                   </div>
                 </div>
                 <p class="gallery-caption">
-                  Instant multi-criteria filtering by styles, artists, and
-                  formats.
+                  Instant multi-criteria filtering by genres, directors, and
+                  cast members.
                 </p>
               </div>
 
@@ -507,13 +511,13 @@
                       <span class="mockup-dot dot-blue"></span>
                       <span class="mockup-dot dot-green"></span>
                     </div>
-                    <div class="mockup-title">About TropoAudio</div>
+                    <div class="mockup-title">About TropoCine</div>
                     <div class="mockup-spacer" aria-hidden="true"></div>
                   </div>
                   <div class="mockup-body">
                     <img
                       src="./img/4.png"
-                      alt="About TropoAudio"
+                      alt="About TropoCine"
                       class="mockup-img"
                       width="806"
                       height="1045"
@@ -538,16 +542,16 @@
             <div>
               <span class="section-tag">IoT Hardware</span>
               <h2 class="section-title">
-                Find your records in the blink of an eye
+                Find your films in the blink of an eye
               </h2>
               <p class="section-description">
-                Let Tropo<span class="brand-text-audio">Audio</span>
+                Let Tropo<span class="brand-text-cine">Cine</span>
                 control the LED strips of your shelves!
               </p>
               <ul class="led-list">
                 <li class="led-list-item">
-                  Immediate visual indication of the selected album, styles, or
-                  artists.
+                  Immediate visual indication of the selected film, genres, or
+                  directors.
                 </li>
                 <li class="led-list-item">
                   Direct HTTP integration with lightweight ESP32 firmware.
@@ -558,12 +562,11 @@
                 <p>
                   💡 <strong>Maker-Friendly:</strong> All firmware source code
                   and wiring schematics are free software and included in the
-                  repository, ready to flash onto an affordable ESP32
-                  microcontroller.
+                  repository, ready to flash onto an ESP32 microcontroller.
                 </p>
                 <div class="hardware-note-link">
                   <a
-                    href="./img/wiring-diagram.svg"
+                    href="../img/wiring-diagram.svg"
                     target="_blank"
                     rel="noopener noreferrer"
                     class="btn btn-secondary btn-sm"
@@ -580,68 +583,68 @@
               <div class="shelf-header">
                 <span>Shelf</span>
                 <span class="shelf-led-active" id="shelf-status"
-                  >Active LED: 310</span
+                  >Active LED: 42</span
                 >
               </div>
               <div class="shelf-row">
-                <div class="shelf-col" data-index="309">
-                  <div class="album-spine">
-                    <span class="spine-artist">Iron Maiden</span>
-                    <span class="spine-title">Powerslave</span>
+                <div class="shelf-col" data-index="41">
+                  <div class="movie-spine">
+                    <span class="spine-director">Stanley Kubrick</span>
+                    <span class="spine-title">2001: A Space Odyssey</span>
                   </div>
                   <div class="led-bulb"></div>
                 </div>
 
-                <div class="shelf-col" data-index="310">
-                  <div class="album-spine">
-                    <span class="spine-artist">Metallica</span>
-                    <span class="spine-title">Master Of Puppets</span>
+                <div class="shelf-col" data-index="42">
+                  <div class="movie-spine">
+                    <span class="spine-director">David Lynch</span>
+                    <span class="spine-title">Mulholland Drive</span>
                   </div>
                   <div class="led-bulb active"></div>
                 </div>
 
-                <div class="shelf-col" data-index="311">
-                  <div class="album-spine">
-                    <span class="spine-artist">Emilie Simon</span>
-                    <span class="spine-title">Mue</span>
+                <div class="shelf-col" data-index="43">
+                  <div class="movie-spine">
+                    <span class="spine-director">Alfred Hitchcock</span>
+                    <span class="spine-title">Vertigo</span>
                   </div>
                   <div class="led-bulb"></div>
                 </div>
 
-                <div class="shelf-col" data-index="312">
-                  <div class="album-spine">
-                    <span class="spine-artist">Léo Ferré</span>
-                    <span class="spine-title">Et... Basta!</span>
+                <div class="shelf-col" data-index="44">
+                  <div class="movie-spine">
+                    <span class="spine-director">Akira Kurosawa</span>
+                    <span class="spine-title">Seven Samurai</span>
                   </div>
                   <div class="led-bulb"></div>
                 </div>
 
-                <div class="shelf-col" data-index="313">
-                  <div class="album-spine">
-                    <span class="spine-artist">Ratt</span>
-                    <span class="spine-title">Out Of The Cellar</span>
+                <div class="shelf-col" data-index="45">
+                  <div class="movie-spine">
+                    <span class="spine-director">Andrei Tarkovsky</span>
+                    <span class="spine-title">Stalker</span>
                   </div>
                   <div class="led-bulb"></div>
                 </div>
 
-                <div class="shelf-col" data-index="314">
-                  <div class="album-spine">
-                    <span class="spine-artist">Agar Agar</span>
-                    <span class="spine-title">Cardan</span>
+                <div class="shelf-col" data-index="46">
+                  <div class="movie-spine">
+                    <span class="spine-director">F. F. Coppola</span>
+                    <span class="spine-title">Apocalypse Now</span>
                   </div>
                   <div class="led-bulb"></div>
                 </div>
 
-                <div class="shelf-col" data-index="315">
-                  <div class="album-spine">
-                    <span class="spine-artist">Magma</span>
-                    <span class="spine-title">Köhntarkösz</span>
+                <div class="shelf-col" data-index="47">
+                  <div class="movie-spine">
+                    <span class="spine-director">Agnès Varda</span>
+                    <span class="spine-title">Cléo de 5 à 7</span>
                   </div>
                   <div class="led-bulb"></div>
                 </div>
               </div>
               <p class="shelf-caption">
-                Interactive simulation (click any album)
+                Interactive simulation (click any movie case)
               </p>
             </div>
           </div>
@@ -662,11 +665,9 @@
 
           <div class="arch-cards">
             <div class="arch-card">
-              <span class="arch-tag">apps/tropoaudio</span>
+              <span class="arch-tag">apps/tropocine</span>
               <h3>React Application</h3>
-              <p>
-                Primary client application for browsing a collection of albums.
-              </p>
+              <p>Primary client application for movie collection browsing.</p>
             </div>
             <div class="arch-card">
               <span class="arch-tag">packages/core</span>
@@ -684,9 +685,9 @@
               <p>HTTP client for LED strip hardware communication.</p>
             </div>
             <div class="arch-card">
-              <span class="arch-tag">plugins/audio/discogs</span>
-              <h3>@tropo/discogs</h3>
-              <p>Discogs API integration plugin.</p>
+              <span class="arch-tag">plugins/cine/tmdb</span>
+              <h3>@tropo/tmdb</h3>
+              <p>The Movie Database API integration plugin.</p>
             </div>
           </div>
         </div>
@@ -699,8 +700,8 @@
             <span class="section-tag">Deployment</span>
             <h2 class="section-title">Quick Start</h2>
             <p class="section-description">
-              Run Tropo<span class="brand-text-audio">Audio</span> locally or
-              with Docker, and deploy it behind an Apache/Nginx reverse proxy.
+              Run Tropo<span class="brand-text-cine">Cine</span> locally or with
+              Docker, and deploy it behind an Apache/Nginx reverse proxy.
             </p>
           </div>
 
@@ -719,10 +720,10 @@
               <span class="code-comment"
                 ># 2. Configure environment variables</span
               ><br />
-              cp apps/tropoaudio/.env.sample apps/tropoaudio/.env<br /><br />
+              cp apps/tropocine/.env.sample apps/tropocine/.env<br /><br />
               <span class="code-comment"># 3. Launch development server</span
               ><br />
-              npm run dev:audio
+              npm run dev:cine
             </div>
           </div>
         </div>
@@ -736,18 +737,18 @@
           <div class="footer-brand">
             <img
               src="./icon-180.png"
-              alt="TropoAudio Logo"
+              alt="TropoCine Logo"
               class="brand-logo"
               width="28"
               height="28"
             />
-            <span>Tropo<span class="brand-text-audio">Audio</span></span>
+            <span>Tropo<span class="brand-text-cine">Cine</span></span>
           </div>
 
           <ul class="footer-nav">
             <li>
               <a
-                href="https://tropoatlas.esaracco.fr"
+                href="https://www.tropoatlas.fr"
                 target="_blank"
                 rel="noopener noreferrer"
                 class="footer-nav-link"
@@ -757,17 +758,17 @@
             </li>
             <li>
               <a
-                href="https://tropocine.esaracco.fr"
+                href="https://www.tropoatlas.fr/audio"
                 target="_blank"
                 rel="noopener noreferrer"
                 class="footer-nav-link"
               >
-                TropoCine
+                TropoAudio
               </a>
             </li>
             <li>
               <a
-                href="https://tropobiblio.esaracco.fr"
+                href="https://www.tropoatlas.fr/biblio"
                 target="_blank"
                 rel="noopener noreferrer"
                 class="footer-nav-link"

@@ -1,0 +1,43 @@
+/* ── TropoCine Theme Tokens ──────────────────────────────────────────────── */
+:root {
+  --accent: #0284c7;
+  --accent-hover: #0369a1;
+  --led-active: #38bdf8;
+}
+
+.brand-text-cine {
+  color: var(--accent);
+}
+
+.hero {
+  background: radial-gradient(
+    circle at top center,
+    rgba(2, 132, 199, 0.08) 0%,
+    rgba(255, 255, 255, 0) 65%
+  );
+}
+
+.hero-brand-icon {
+  box-shadow:
+    0 8px 20px -4px rgba(2, 132, 199, 0.28),
+    0 4px 10px -2px rgba(0, 0, 0, 0.1),
+    0 0 0 1px rgba(0, 0, 0, 0.05);
+}
+
+.hero-brand-lockup:hover .hero-brand-icon {
+  box-shadow:
+    0 12px 24px -4px rgba(2, 132, 199, 0.35),
+    0 6px 14px -3px rgba(0, 0, 0, 0.15);
+}
+
+.hero-showcase::before {
+  background: radial-gradient(
+    circle,
+    rgba(2, 132, 199, 0.18) 0%,
+    rgba(2, 132, 199, 0) 70%
+  );
+}
+
+.gallery-tab.active {
+  box-shadow: 0 4px 12px rgba(2, 132, 199, 0.12);
+}

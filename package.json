@@ -2,7 +2,7 @@
   "name": "tropoatlas",
   "version": "2.0.0",
   "description": "TropoAtlas Workspace",
-  "homepage": "https://tropoatlas.esaracco.fr",
+  "homepage": "https://www.tropoatlas.fr",
   "workspaces": [
     "apps/*",
     "packages/*",

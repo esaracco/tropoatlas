@@ -26,10 +26,10 @@ _TropoAudio is the direct successor to the original [TropoDisc repository](https
 
 ## Screenshots
 
-<img width="500" alt="Collection Grid" src="docs/img/1.png" />
-<img width="500" alt="Album Details" src="docs/img/2.png" />
-<img width="500" alt="Multi-criteria Filter" src="docs/img/3.png" />
-<img width="500" alt="About and System Information" src="docs/img/4.png" />
+<img width="500" alt="Collection Grid" src="../../docs/audio/img/1.png" />
+<img width="500" alt="Album Details" src="../../docs/audio/img/2.png" />
+<img width="500" alt="Multi-criteria Filter" src="../../docs/audio/img/3.png" />
+<img width="500" alt="About and System Information" src="../../docs/audio/img/4.png" />
 
 ---
 
@@ -192,7 +192,7 @@ sudo systemctl reload apache2
 
 ## Static Presentation Site
 
-The static presentation site for TropoAudio is located in `apps/tropoaudio/docs/` and available online at [https://tropoaudio.esaracco.fr](https://tropoaudio.esaracco.fr).
+The static presentation site for TropoAudio is located in `docs/audio/` and available online at [https://audio.tropoatlas.fr](https://audio.tropoatlas.fr).
 
 ---
 

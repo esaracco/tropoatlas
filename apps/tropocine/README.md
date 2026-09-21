@@ -32,10 +32,10 @@
 
 ## Screenshots
 
-<img width="500" alt="Collection Grid" src="docs/img/1.png" />
-<img width="500" alt="Film Details" src="docs/img/2.png" />
-<img width="500" alt="Multi-criteria Filter" src="docs/img/3.png" />
-<img width="500" alt="About and System Information" src="docs/img/4.png" />
+<img width="500" alt="Collection Grid" src="../../docs/cine/img/1.png" />
+<img width="500" alt="Film Details" src="../../docs/cine/img/2.png" />
+<img width="500" alt="Multi-criteria Filter" src="../../docs/cine/img/3.png" />
+<img width="500" alt="About and System Information" src="../../docs/cine/img/4.png" />
 
 ---
 
@@ -214,7 +214,7 @@ sudo systemctl reload apache2
 
 ## Static Presentation Site
 
-The static presentation site for TropoCine is located in `apps/tropocine/docs/` and available online at [https://tropocine.esaracco.fr](https://tropocine.esaracco.fr).
+The static presentation site for TropoCine is located in `docs/cine/` and available online at [https://cine.tropoatlas.fr](https://cine.tropoatlas.fr).
 
 ---
 

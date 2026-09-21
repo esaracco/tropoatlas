@@ -25,10 +25,10 @@
 
 ## Screenshots
 
-<img width="500" alt="Collection Grid" src="docs/img/1.png" />
-<img width="500" alt="Book Details" src="docs/img/2.png" />
-<img width="500" alt="Multi-criteria Filter" src="docs/img/3.png" />
-<img width="500" alt="Physical LED Locator" src="docs/img/4.png" />
+<img width="500" alt="Collection Grid" src="../../docs/biblio/img/1.png" />
+<img width="500" alt="Book Details" src="../../docs/biblio/img/2.png" />
+<img width="500" alt="Multi-criteria Filter" src="../../docs/biblio/img/3.png" />
+<img width="500" alt="Physical LED Locator" src="../../docs/biblio/img/4.png" />
 
 ---
 
@@ -191,7 +191,7 @@ sudo systemctl reload apache2
 
 ## Static Presentation Site
 
-The static presentation site for TropoBiblio is located in `apps/tropobiblio/docs/` and available online at [https://tropobiblio.esaracco.fr](https://tropobiblio.esaracco.fr).
+The static presentation site for TropoBiblio is located in `docs/biblio/` and available online at [https://biblio.tropoatlas.fr](https://biblio.tropoatlas.fr).
 
 ---
 

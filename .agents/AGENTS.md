@@ -26,10 +26,10 @@ This file defines the rules and conventions that the AI agent must follow when w
 - **Development Mode Image Isolation**: In development mode (`devMode`), data provider plugins MUST NOT assign or fetch remote cover artwork URLs. This prevents API/CDN rate-limit exhaustion and unnecessary network traffic during local development.
 - **Artwork & Network Agnosticism**: Application Service Workers and image cache layers MUST use generic routes and storage identifiers without coupling cache names or request matching to specific third-party provider hostnames or endpoints.
 
-## Presentation Sites (`apps/*/docs/`)
-- **Location**: Static presentation site files are located in `apps/*/docs/` (`index.html` for English, `index-fr.html` for French).
+## Presentation Sites (`docs/*`)
+- **Location**: Static presentation site files are located in `docs/` (`docs/` for the portal, `docs/audio/`, `docs/cine/`, `docs/biblio/` for apps, with `index.html` for English and `index-fr.html` for French).
 - **Bilingual Parity**: Any content or structure updates to the presentation site MUST be applied to both language versions (`index.html` and `index-fr.html`) to maintain 1-to-1 parity.
-- **Styles**: All CSS styles MUST be placed in `apps/*/docs/index.css`. Do NOT use inline `style="..."` attributes.
+- **Styles**: All CSS styles MUST be placed in their respective `index.css` file. Do NOT use inline `style="..."` attributes.
 - **Zero External Dependencies**: Pages MUST be 100% self-contained and MUST NOT make external network requests (use native system font stacks instead of third-party font services).
 
 ## LEDs Behavior

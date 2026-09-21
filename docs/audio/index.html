@@ -1,52 +1,50 @@
 <!doctype html>
-<html lang="fr">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <!-- Primary SEO Meta Tags -->
-    <title>
-      TropoAudio — Gestionnaire de Collection d'Albums & Repérage LED
-    </title>
+    <title>TropoAudio — Album Collection Manager & LED Shelf Locator</title>
     <meta
       name="title"
-      content="TropoAudio — Gestionnaire de Collection d'Albums & Repérage LED"
+      content="TropoAudio — Album Collection Manager & LED Shelf Locator"
     />
     <meta
       name="description"
-      content="TropoAudio est un gestionnaire de collection d'albums sous licence libre. Synchronisez vos albums (Discogs), personnalisez vos métadonnées et localisez instantanément vos vinyles et CDs sur vos étagères grâce à des rubans LED connectés."
+      content="TropoAudio is a free software album collection manager. Synchronize your albums (Discogs), customize your metadata, and instantly locate your vinyl records and CDs on your shelves using connected LED strips."
     />
     <meta
       name="keywords"
-      content="TropoAudio, TropoAtlas, gestionnaire vinyle, Discogs, collection d'albums, collection musicale, localisation LED, ESP32, ruban LED étagère, vinyles, CDs, classement musique, monorepo React"
+      content="TropoAudio, TropoAtlas, vinyl manager, Discogs, album collection, music collection, LED shelf locator, ESP32, connected LED strip, vinyl records, CDs, music library, React monorepo"
     />
     <meta name="author" content="Emmanuel Saracco" />
     <meta name="robots" content="index, follow" />
-    <link rel="canonical" href="https://tropoaudio.esaracco.fr/index-fr.html" />
+    <link rel="canonical" href="https://www.tropoatlas.fr/audio/index.html" />
     <link
       rel="alternate"
       hreflang="fr"
-      href="https://tropoaudio.esaracco.fr/index-fr.html"
+      href="https://www.tropoatlas.fr/audio/index-fr.html"
     />
     <link
       rel="alternate"
       hreflang="en"
-      href="https://tropoaudio.esaracco.fr/index.html"
+      href="https://www.tropoatlas.fr/audio/index.html"
     />
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
     <meta
       property="og:url"
-      content="https://tropoaudio.esaracco.fr/index-fr.html"
+      content="https://www.tropoatlas.fr/audio/index.html"
     />
     <meta
       property="og:title"
-      content="TropoAudio — Gestionnaire de Collection d'Albums & Repérage LED"
+      content="TropoAudio — Album Collection Manager & LED Shelf Locator"
     />
     <meta
       property="og:description"
-      content="TropoAudio est un gestionnaire de collection d'albums sous licence libre. Synchronisez vos albums (Discogs), personnalisez vos métadonnées et localisez instantanément vos vinyles et CDs sur vos étagères grâce à des rubans LED connectés."
+      content="TropoAudio is a free software album collection manager. Synchronize your albums (Discogs), customize your metadata, and instantly locate your vinyl records and CDs on your shelves using connected LED strips."
     />
     <meta property="og:image" content="./icon-512.png" />
     <meta property="og:site_name" content="TropoAudio" />
@@ -55,15 +53,15 @@
     <meta name="twitter:card" content="summary_large_image" />
     <meta
       name="twitter:url"
-      content="https://tropoaudio.esaracco.fr/index-fr.html"
+      content="https://www.tropoatlas.fr/audio/index.html"
     />
     <meta
       name="twitter:title"
-      content="TropoAudio — Gestionnaire de Collection d'Albums & Repérage LED"
+      content="TropoAudio — Album Collection Manager & LED Shelf Locator"
     />
     <meta
       name="twitter:description"
-      content="TropoAudio est un gestionnaire de collection d'albums sous licence libre. Synchronisez vos albums (Discogs), personnalisez vos métadonnées et localisez instantanément vos vinyles et CDs sur vos étagères grâce à des rubans LED connectés."
+      content="TropoAudio is a free software album collection manager. Synchronize your albums (Discogs), customize your metadata, and instantly locate your vinyl records and CDs on your shelves using connected LED strips."
     />
     <meta name="twitter:image" content="./icon-512.png" />
 
@@ -85,9 +83,9 @@
           "price": "0",
           "priceCurrency": "EUR"
         },
-        "description": "TropoAudio est un gestionnaire de collection d'albums sous licence libre. Synchronisez vos albums (Discogs), personnalisez vos métadonnées et localisez instantanément vos vinyles et CDs sur vos étagères grâce à des rubans LED connectés.",
+        "description": "TropoAudio is a free software album collection manager. Synchronize your albums (Discogs), customize your metadata, and instantly locate your vinyl records and CDs on your shelves using connected LED strips.",
         "license": "https://www.gnu.org/licenses/gpl-3.0.html",
-        "image": "https://tropoaudio.esaracco.fr/icon-512.png"
+        "image": "https://www.tropoatlas.fr/audio/icon-512.png"
       }
     </script>
 
@@ -99,11 +97,12 @@
     </script>
 
     <!-- Stylesheet -->
+    <link rel="stylesheet" href="../base.css" />
     <link rel="stylesheet" href="./index.css" />
   </head>
   <body>
     <!-- Navigation Bar -->
-    <nav class="navbar" aria-label="Navigation principale">
+    <nav class="navbar" aria-label="Main Navigation">
       <div class="container navbar-container">
         <a href="#top" class="brand" id="nav-brand">
           <img
@@ -118,15 +117,13 @@
 
         <ul class="nav-links">
           <li>
-            <a href="#features" class="nav-link" id="nav-features"
-              >Fonctionnalités</a
-            >
+            <a href="#features" class="nav-link" id="nav-features">Features</a>
           </li>
           <li>
-            <a href="#gallery" class="nav-link" id="nav-gallery">Interface</a>
+            <a href="#screenshots" class="nav-link" id="nav-screenshots">Gallery</a>
           </li>
           <li>
-            <a href="#leds" class="nav-link" id="nav-leds">Repérage LED</a>
+            <a href="#hardware" class="nav-link" id="nav-hardware">LEDs Setup</a>
           </li>
           <li>
             <a href="#architecture" class="nav-link" id="nav-architecture"
@@ -135,19 +132,19 @@
           </li>
           <li>
             <a href="#quickstart" class="nav-link" id="nav-quickstart"
-              >Installation</a
+              >Start</a
             >
           </li>
         </ul>
 
         <div class="nav-actions">
           <a
-            href="./index.html"
+            href="./index-fr.html"
             class="btn btn-secondary"
-            id="lang-switch-en"
-            title="English version"
+            id="lang-switch-fr"
+            title="Version française"
           >
-            EN
+            FR
           </a>
           <a
             href="https://github.com/esaracco/tropoatlas"
@@ -168,7 +165,7 @@
         <div class="hero-brand-lockup">
           <img
             src="./icon-180.png"
-            alt="Logo TropoAudio"
+            alt="TropoAudio Logo"
             class="hero-brand-icon"
             width="56"
             height="56"
@@ -179,37 +176,36 @@
         </div>
 
         <a
-          href="https://tropoatlas.esaracco.fr/index-fr.html"
+          href="https://www.tropoatlas.fr"
           target="_blank"
           rel="noopener noreferrer"
           class="hero-pill"
         >
           <span class="hero-pill-dot"></span>
           <span
-            >Une application Tropo<span class="brand-text-atlas">Atlas</span>
+            >A Tropo<span class="brand-text-atlas">Atlas</span> application
             ↗</span
           >
         </a>
 
         <h1 class="hero-title">
-          Le pont entre votre collection
-          <span class="brand-text-audio">numérique et physique</span>
+          The bridge between your
+          <span class="brand-text-audio">digital and physical</span> collection
         </h1>
 
         <p class="hero-subtitle">
-          Tropo<span class="brand-text-audio">Audio</span> est un gestionnaire
-          de collection d'albums sous licence libre. Synchronisez vos albums
-          depuis Discogs, enrichissez-les de métadonnées personnalisées et
-          localisez vos disques sur vos étagères grâce à des rubans LED
-          connectés.
+          Tropo<span class="brand-text-audio">Audio</span> is a free software
+          album collection manager. Synchronize your albums from Discogs, enrich
+          them with custom metadata, and locate your records on your shelves
+          with connected LED strips.
         </p>
 
         <div class="hero-cta">
           <a href="#quickstart" class="btn btn-primary" id="btn-hero-start"
-            >Déployer TropoAudio</a
+            >Deploy TropoAudio</a
           >
           <a href="#leds" class="btn btn-secondary" id="btn-hero-leds"
-            >Découvrir le repérage LED</a
+            >Explore LED Locator</a
           >
         </div>
 
@@ -227,7 +223,7 @@
             <div class="mockup-body">
               <img
                 src="./img/1.png"
-                alt="Aperçu de l'interface TropoAudio"
+                alt="TropoAudio Interface Preview"
                 class="mockup-img"
                 width="803"
                 height="1037"
@@ -245,62 +241,61 @@
       <section class="section" id="features">
         <div class="container">
           <div class="section-header">
-            <span class="section-tag">Fonctionnalités</span>
-            <h2 class="section-title">Conçu pour les passionnés de musique</h2>
+            <span class="section-tag">Features</span>
+            <h2 class="section-title">Designed for serious music collectors</h2>
             <p class="section-description">
-              Donnez une nouvelle dimension à votre discothèque personnelle et
-              redécouvrez le plaisir d'explorer vos vinyles et CDs.
+              Bring a new dimension to your music collection and rediscover the
+              joy of exploring your vinyl records and CDs.
             </p>
           </div>
 
           <div class="features-grid">
             <article class="feature-card" id="card-search">
-              <h3 class="feature-title">Recherche & Filtres instantanés</h3>
+              <h3 class="feature-title">Instant Search & Sort</h3>
               <p class="feature-desc">
-                Filtrez et triez votre collection en temps réel par artiste,
-                année, date d'ajout, note ou emplacement physique sur vos
-                étagères.
+                Filter and sort your collection in real-time by artist, year,
+                date added, rating, or physical shelf locations.
               </p>
             </article>
 
             <article class="feature-card" id="card-metadata">
-              <h3 class="feature-title">Métadonnées personnalisées</h3>
+              <h3 class="feature-title">Custom Metadata</h3>
               <p class="feature-desc">
-                Enrichissez chaque album de champs personnalisés&nbsp;:
-                emplacement exact, prix d'achat et styles simplifiés.
+                Enrich album entries with custom fields: exact shelf position,
+                purchase price and simplified styles.
               </p>
             </article>
 
             <article class="feature-card" id="card-led">
-              <h3 class="feature-title">Localisation physique par LED</h3>
+              <h3 class="feature-title">Physical LED Locator</h3>
               <p class="feature-desc">
-                Sélectionnez un album, des styles ou des artistes à l'écran, et
-                les emplacements s'illuminent sur vos étagères grâce à des
-                rubans LED.
+                Select an album, styles, or artists on the screen, and the
+                corresponding slots on your shelves light up thanks to LED
+                strips.
               </p>
             </article>
 
             <article class="feature-card" id="card-security">
-              <h3 class="feature-title">Sécurité & Proxy API</h3>
+              <h3 class="feature-title">Security & API Proxy</h3>
               <p class="feature-desc">
-                Architecture avec proxy sécurisé (Apache/Nginx). Vos jetons
-                d'API et identifiants ne sont jamais exposés côté navigateur.
+                Proxy architecture with Apache/Nginx. Personal API tokens and
+                credentials are never exposed to client browsers.
               </p>
             </article>
 
             <article class="feature-card" id="card-monorepo">
-              <h3 class="feature-title">Architecture modulaire</h3>
+              <h3 class="feature-title">Decoupled Architecture</h3>
               <p class="feature-desc">
-                Monorepo NPM clair séparant composants d'interface, gestion
-                d'état, cache, pilotes matériels, et plugins de données.
+                A clean NPM workspace monorepo separating UI components, state
+                management, cache, hardware drivers, and data plugins.
               </p>
             </article>
 
             <article class="feature-card" id="card-backup">
-              <h3 class="feature-title">Sauvegardes portables</h3>
+              <h3 class="feature-title">Portable Backups</h3>
               <p class="feature-desc">
-                Exportez et restaurez des sauvegardes complètes avec métadonnées
-                et pochettes sous forme d'archives ZIP portables.
+                Export and restore full collection archives with metadata and
+                cover artwork in portable ZIP packages.
               </p>
             </article>
           </div>
@@ -312,19 +307,15 @@
         <div class="container">
           <div class="section-header">
             <span class="section-tag">Interface</span>
-            <h2 class="section-title">Explorez l'interface</h2>
+            <h2 class="section-title">Explore the Interface</h2>
             <p class="section-description">
-              Une interface fluide et moderne pour garder votre collection
-              physique à portée de main.
+              A fast and modern interface designed to put your physical music
+              collection at your fingertips.
             </p>
           </div>
 
           <div class="gallery-layout">
-            <div
-              class="gallery-tabs"
-              role="tablist"
-              aria-label="Captures d'écran"
-            >
+            <div class="gallery-tabs" role="tablist" aria-label="Screenshots">
               <button
                 type="button"
                 class="gallery-tab active"
@@ -338,8 +329,8 @@
                 <div class="tab-text">
                   <span class="tab-title">Collection</span>
                   <span class="tab-desc"
-                    >Navigation par pochettes avec accès direct à la
-                    synchronisation, sauvegarde et thèmes.</span
+                    >Cover browsing with direct access to synchronization,
+                    backup, and themes.</span
                   >
                 </div>
               </button>
@@ -355,10 +346,10 @@
               >
                 <div class="tab-index">02</div>
                 <div class="tab-text">
-                  <span class="tab-title">Fiche Album</span>
+                  <span class="tab-title">Album Details</span>
                   <span class="tab-desc"
-                    >Groupe, note, emplacement, prix, styles cliquables, format,
-                    et liste des pistes.</span
+                    >Artist, rating, shelf location, price, clickable styles,
+                    format, and tracklist.</span
                   >
                 </div>
               </button>
@@ -374,9 +365,9 @@
               >
                 <div class="tab-index">03</div>
                 <div class="tab-text">
-                  <span class="tab-title">Filtrage</span>
+                  <span class="tab-title">Filtering</span>
                   <span class="tab-desc"
-                    >Filtrage multicritère instantané par styles, artistes et
+                    >Instant multi-criteria filtering by styles, artists, and
                     formats.</span
                   >
                 </div>
@@ -393,10 +384,10 @@
               >
                 <div class="tab-index">04</div>
                 <div class="tab-text">
-                  <span class="tab-title">À Propos</span>
+                  <span class="tab-title">About</span>
                   <span class="tab-desc"
-                    >Informations de version, liens vers le code source et la
-                    licence libre.</span
+                    >Version information, links to source code, and free
+                    software license.</span
                   >
                 </div>
               </button>
@@ -422,7 +413,7 @@
                   <div class="mockup-body">
                     <img
                       src="./img/1.png"
-                      alt="Collection et menu d'options"
+                      alt="Collection and Options Menu"
                       class="mockup-img"
                       width="803"
                       height="1037"
@@ -431,8 +422,8 @@
                   </div>
                 </div>
                 <p class="gallery-caption">
-                  Navigation par pochettes avec accès direct à la
-                  synchronisation, sauvegarde et thèmes.
+                  Cover browsing with direct access to synchronization, backup,
+                  and themes.
                 </p>
               </div>
 
@@ -450,13 +441,13 @@
                       <span class="mockup-dot dot-blue"></span>
                       <span class="mockup-dot dot-green"></span>
                     </div>
-                    <div class="mockup-title">Fiche Album</div>
+                    <div class="mockup-title">Album Details</div>
                     <div class="mockup-spacer" aria-hidden="true"></div>
                   </div>
                   <div class="mockup-body">
                     <img
                       src="./img/2.png"
-                      alt="Fiche album et numéro d'étagère"
+                      alt="Album Details and Shelf Location"
                       class="mockup-img"
                       width="803"
                       height="1037"
@@ -465,8 +456,7 @@
                   </div>
                 </div>
                 <p class="gallery-caption">
-                  Numéro d'étagère, prix d'achat, styles personnalisés et liste
-                  des pistes.
+                  Shelf number, purchase price, custom styles, and tracklist.
                 </p>
               </div>
 
@@ -484,13 +474,13 @@
                       <span class="mockup-dot dot-blue"></span>
                       <span class="mockup-dot dot-green"></span>
                     </div>
-                    <div class="mockup-title">Filtrage</div>
+                    <div class="mockup-title">Filtering</div>
                     <div class="mockup-spacer" aria-hidden="true"></div>
                   </div>
                   <div class="mockup-body">
                     <img
                       src="./img/3.png"
-                      alt="Modale de filtrage"
+                      alt="Filter Modal"
                       class="mockup-img"
                       width="803"
                       height="1037"
@@ -499,7 +489,7 @@
                   </div>
                 </div>
                 <p class="gallery-caption">
-                  Filtrage multicritère instantané par styles, artistes et
+                  Instant multi-criteria filtering by styles, artists, and
                   formats.
                 </p>
               </div>
@@ -518,13 +508,13 @@
                       <span class="mockup-dot dot-blue"></span>
                       <span class="mockup-dot dot-green"></span>
                     </div>
-                    <div class="mockup-title">À Propos de TropoAudio</div>
+                    <div class="mockup-title">About TropoAudio</div>
                     <div class="mockup-spacer" aria-hidden="true"></div>
                   </div>
                   <div class="mockup-body">
                     <img
                       src="./img/4.png"
-                      alt="À propos de TropoAudio"
+                      alt="About TropoAudio"
                       class="mockup-img"
                       width="806"
                       height="1045"
@@ -533,8 +523,8 @@
                   </div>
                 </div>
                 <p class="gallery-caption">
-                  Informations de version, liens vers le code source et la
-                  licence libre.
+                  Version information, links to source code, and free software
+                  license.
                 </p>
               </div>
             </div>
@@ -547,40 +537,40 @@
         <div class="container">
           <div class="led-section">
             <div>
-              <span class="section-tag">Matériel IoT</span>
+              <span class="section-tag">IoT Hardware</span>
               <h2 class="section-title">
-                Trouvez vos disques en un clin d'œil
+                Find your records in the blink of an eye
               </h2>
               <p class="section-description">
-                Laissez Tropo<span class="brand-text-audio">Audio</span>
-                piloter les rubans LED de vos étagères&nbsp;!
+                Let Tropo<span class="brand-text-audio">Audio</span>
+                control the LED strips of your shelves!
               </p>
               <ul class="led-list">
                 <li class="led-list-item">
-                  Indication visuelle immédiate de l'album sélectionné, des
-                  styles ou des artistes.
+                  Immediate visual indication of the selected album, styles, or
+                  artists.
                 </li>
                 <li class="led-list-item">
-                  Intégration HTTP directe avec un petit firmware ESP32.
+                  Direct HTTP integration with lightweight ESP32 firmware.
                 </li>
               </ul>
 
               <div class="hardware-note">
                 <p>
-                  💡 <strong>Conçu pour les Makers :</strong> L'ensemble du code
-                  source du firmware et les schémas de câblage sont libres et
-                  inclus dans le dépôt, prêts à être téléversés sur un
-                  microcontrôleur ESP32.
+                  💡 <strong>Maker-Friendly:</strong> All firmware source code
+                  and wiring schematics are free software and included in the
+                  repository, ready to flash onto an affordable ESP32
+                  microcontroller.
                 </p>
                 <div class="hardware-note-link">
                   <a
-                    href="./img/wiring-diagram.svg"
+                    href="../img/wiring-diagram.svg"
                     target="_blank"
                     rel="noopener noreferrer"
                     class="btn btn-secondary btn-sm"
                     id="btn-wiring-diagram"
                   >
-                    🔌 Consulter le schéma de câblage (SVG)
+                    🔌 View Wiring Diagram (SVG)
                   </a>
                 </div>
               </div>
@@ -589,9 +579,9 @@
             <!-- Interactive LED simulation -->
             <div class="shelf-demo">
               <div class="shelf-header">
-                <span>Étagère</span>
+                <span>Shelf</span>
                 <span class="shelf-led-active" id="shelf-status"
-                  >LED active&nbsp;: 310</span
+                  >Active LED: 310</span
                 >
               </div>
               <div class="shelf-row">
@@ -652,7 +642,7 @@
                 </div>
               </div>
               <p class="shelf-caption">
-                Simulation interactive (cliquez sur un album)
+                Interactive simulation (click any album)
               </p>
             </div>
           </div>
@@ -663,49 +653,41 @@
       <section class="section" id="architecture">
         <div class="container">
           <div class="section-header">
-            <span class="section-tag">Monorepo TropoAtlas</span>
-            <h2 class="section-title">Structure propre et découplée</h2>
+            <span class="section-tag">TropoAtlas Monorepo</span>
+            <h2 class="section-title">Clean & decoupled structure</h2>
             <p class="section-description">
-              Développé au sein du monorepo Tropo<span class="brand-text-atlas"
-                >Atlas</span
-              >
-              à l'aide de paquets modulaires et de plugins.
+              Built within the Tropo<span class="brand-text-atlas">Atlas</span>
+              monorepo using modular packages and plugins.
             </p>
           </div>
 
           <div class="arch-cards">
             <div class="arch-card">
               <span class="arch-tag">apps/tropoaudio</span>
-              <h3>Application React</h3>
+              <h3>React Application</h3>
               <p>
-                Application cliente principale pour explorer votre collection
-                d'albums.
+                Primary client application for browsing a collection of albums.
               </p>
             </div>
             <div class="arch-card">
               <span class="arch-tag">packages/core</span>
               <h3>@tropo/core</h3>
-              <p>
-                Gestion d'état avec Zustand, mise en cache et normalisation.
-              </p>
+              <p>State management with Zustand, caching, and normalizers.</p>
             </div>
             <div class="arch-card">
               <span class="arch-tag">packages/react</span>
               <h3>@tropo/react</h3>
-              <p>
-                Système de composants UI réutilisables, moteurs de thèmes,
-                modales et navigation.
-              </p>
+              <p>Reusable UI components.</p>
             </div>
             <div class="arch-card">
               <span class="arch-tag">packages/leds</span>
               <h3>@tropo/leds</h3>
-              <p>Client HTTP pour la communication avec le contrôleur LED.</p>
+              <p>HTTP client for LED strip hardware communication.</p>
             </div>
             <div class="arch-card">
               <span class="arch-tag">plugins/audio/discogs</span>
               <h3>@tropo/discogs</h3>
-              <p>Plugin d'intégration avec l'API Discogs.</p>
+              <p>Discogs API integration plugin.</p>
             </div>
           </div>
         </div>
@@ -715,33 +697,31 @@
       <section class="section" id="quickstart">
         <div class="container">
           <div class="section-header">
-            <span class="section-tag">Déploiement</span>
-            <h2 class="section-title">Démarrage rapide</h2>
+            <span class="section-tag">Deployment</span>
+            <h2 class="section-title">Quick Start</h2>
             <p class="section-description">
-              Lancez Tropo<span class="brand-text-audio">Audio</span> en local
-              ou avec Docker, et déployez-le derrière un reverse proxy
-              Apache/Nginx.
+              Run Tropo<span class="brand-text-audio">Audio</span> locally or
+              with Docker, and deploy it behind an Apache/Nginx reverse proxy.
             </p>
           </div>
 
           <div class="code-box">
             <div class="code-header">
-              <span>Configuration en développement local</span>
+              <span>Local development setup</span>
               <span>Bash</span>
             </div>
             <div class="code-content">
               <span class="code-comment"
-                ># 1. Cloner le dépôt et installer les dépendances</span
+                ># 1. Clone repository and install dependencies</span
               ><br />
               git clone https://github.com/esaracco/tropoatlas.git<br />
               cd tropoatlas<br />
               npm install<br /><br />
               <span class="code-comment"
-                ># 2. Configurer les variables d'environnement</span
+                ># 2. Configure environment variables</span
               ><br />
               cp apps/tropoaudio/.env.sample apps/tropoaudio/.env<br /><br />
-              <span class="code-comment"
-                ># 3. Lancer le serveur de développement</span
+              <span class="code-comment"># 3. Launch development server</span
               ><br />
               npm run dev:audio
             </div>
@@ -757,7 +737,7 @@
           <div class="footer-brand">
             <img
               src="./icon-180.png"
-              alt="Logo TropoAudio"
+              alt="TropoAudio Logo"
               class="brand-logo"
               width="28"
               height="28"
@@ -768,7 +748,7 @@
           <ul class="footer-nav">
             <li>
               <a
-                href="https://tropoatlas.esaracco.fr/index-fr.html"
+                href="https://www.tropoatlas.fr"
                 target="_blank"
                 rel="noopener noreferrer"
                 class="footer-nav-link"
@@ -778,17 +758,7 @@
             </li>
             <li>
               <a
-                href="https://tropobiblio.esaracco.fr/index-fr.html"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="footer-nav-link"
-              >
-                TropoBiblio
-              </a>
-            </li>
-            <li>
-              <a
-                href="https://tropocine.esaracco.fr/index-fr.html"
+                href="https://www.tropoatlas.fr/cine"
                 target="_blank"
                 rel="noopener noreferrer"
                 class="footer-nav-link"
@@ -798,12 +768,22 @@
             </li>
             <li>
               <a
+                href="https://www.tropoatlas.fr/biblio"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="footer-nav-link"
+              >
+                TropoBiblio
+              </a>
+            </li>
+            <li>
+              <a
                 href="https://github.com/esaracco/tropoatlas"
                 target="_blank"
                 rel="noopener noreferrer"
                 class="footer-nav-link"
               >
-                Dépôt GitHub
+                GitHub Repository
               </a>
             </li>
             <li>
@@ -813,7 +793,7 @@
                 rel="noopener noreferrer"
                 class="footer-nav-link"
               >
-                Tickets & Support
+                Issues & Support
               </a>
             </li>
           </ul>
@@ -822,7 +802,7 @@
         <div class="footer-bottom">
           <p>
             <span class="copyleft" aria-hidden="true">&copy;</span> 2026
-            <strong>Emmanuel Saracco</strong> · Publié sous licence
+            <strong>Emmanuel Saracco</strong> · Released under the
             <a
               href="https://www.gnu.org/licenses/gpl-3.0.html"
               target="_blank"
@@ -831,7 +811,7 @@
             >
               GNU GPL v3
             </a>
-            · Logiciel Libre
+            License · Free Software
           </p>
         </div>
       </div>
@@ -917,7 +897,7 @@
 
             var idx = col.getAttribute("data-index")
             if (status && idx) {
-              status.textContent = "LED active\u00a0: " + idx
+              status.textContent = "Active LED: " + idx
             }
           })
         })
