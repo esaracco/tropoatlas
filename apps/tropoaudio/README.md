@@ -140,6 +140,7 @@ _(Generates static assets in `apps/tropoaudio/build`, along with `.htaccess` and
     DocumentRoot /var/www/tropoatlas/apps/tropoaudio/build
 
     SSLProxyEngine On
+    ProxyPreserveHost Off
 
     # Static files and .htaccess support
     <Directory /var/www/tropoatlas/apps/tropoaudio/build>
@@ -149,36 +150,27 @@ _(Generates static assets in `apps/tropoaudio/build`, along with `.htaccess` and
     </Directory>
 
     # Secure Discogs API Proxy (Token Injection)
+    ProxyPass /api/discogs/ https://api.discogs.com/ keepalive=On retry=0
+    ProxyPassReverse /api/discogs/ https://api.discogs.com/
     <Location /api/discogs/>
         RequestHeader set Authorization "Discogs token=YOUR_SECRET_TOKEN"
         IncludeOptional /var/www/tropoatlas/apps/tropoaudio/build/headers.conf
-        ProxyPreserveHost Off
-        ProxyPass https://api.discogs.com/
-        ProxyPassReverse https://api.discogs.com/
     </Location>
 
     # Discogs Artwork Image Proxy (CORS bypass for client-side ZIP export)
+    ProxyPass /api/discogs-image/ https://i.discogs.com/ keepalive=On retry=0
+    ProxyPassReverse /api/discogs-image/ https://i.discogs.com/
     <Location /api/discogs-image/>
         IncludeOptional /var/www/tropoatlas/apps/tropoaudio/build/headers.conf
         Header set Access-Control-Allow-Origin "*"
-        ProxyPreserveHost Off
-        ProxyPass https://i.discogs.com/
-        ProxyPassReverse https://i.discogs.com/
+        Header set Cache-Control "public, max-age=2592000, immutable"
     </Location>
 
     # (Optional) LED Server Proxy
-    <Location /api/leds>
-        ProxyPass http://192.168.1.1/leds
-        ProxyPassReverse http://192.168.1.1/leds
-    </Location>
-    <Location /api/ruler>
-        ProxyPass http://192.168.1.1/ruler
-        ProxyPassReverse http://192.168.1.1/ruler
-    </Location>
-    <Location /api/ping>
-        ProxyPass http://192.168.1.1/ping
-        ProxyPassReverse http://192.168.1.1/ping
-    </Location>
+    <LocationMatch "^/api/(leds|ping|ruler)">
+        ProxyPassMatch http://192.168.1.1/$1
+        ProxyPassReverse http://192.168.1.1/
+    </LocationMatch>
 </VirtualHost>
 ```
 

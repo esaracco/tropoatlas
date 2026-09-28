@@ -140,6 +140,7 @@ _(Generates static assets in `apps/tropobiblio/build`, along with `.htaccess` an
     DocumentRoot /var/www/tropoatlas/apps/tropobiblio/build
 
     SSLProxyEngine On
+    ProxyPreserveHost Off
 
     # Static files and .htaccess support
     <Directory /var/www/tropoatlas/apps/tropobiblio/build>
@@ -149,35 +150,28 @@ _(Generates static assets in `apps/tropobiblio/build`, along with `.htaccess` an
     </Directory>
 
     # Inventaire.io API Proxy
+    ProxyPass /api/inventaire/ https://inventaire.io/ keepalive=On retry=0
+    ProxyPassReverse /api/inventaire/ https://inventaire.io/
     <Location /api/inventaire/>
         IncludeOptional /var/www/tropoatlas/apps/tropobiblio/build/headers.conf
-        ProxyPreserveHost Off
-        ProxyPass https://inventaire.io/api/
-        ProxyPassReverse https://inventaire.io/api/
     </Location>
 
     # Inventaire.io Artwork Image Proxy (CORS bypass for client-side ZIP export)
+    ProxyPass /api/inventaire-image/ https://inventaire.io/ keepalive=On retry=0
+    ProxyPassReverse /api/inventaire-image/ https://inventaire.io/
     <Location /api/inventaire-image/>
         IncludeOptional /var/www/tropoatlas/apps/tropobiblio/build/headers.conf
         Header set Access-Control-Allow-Origin "*"
-        ProxyPreserveHost Off
-        ProxyPass https://inventaire.io/
-        ProxyPassReverse https://inventaire.io/
+        Header set Cache-Control "public, max-age=2592000, immutable"
+        Header unset Set-Cookie
+        Header always unset Set-Cookie
     </Location>
 
     # (Optional) LED Server Proxy
-    <Location /api/leds>
-        ProxyPass http://192.168.1.1/leds
-        ProxyPassReverse http://192.168.1.1/leds
-    </Location>
-    <Location /api/ruler>
-        ProxyPass http://192.168.1.1/ruler
-        ProxyPassReverse http://192.168.1.1/ruler
-    </Location>
-    <Location /api/ping>
-        ProxyPass http://192.168.1.1/ping
-        ProxyPassReverse http://192.168.1.1/ping
-    </Location>
+    <LocationMatch "^/api/(leds|ping|ruler)">
+        ProxyPassMatch http://192.168.1.1/$1
+        ProxyPassReverse http://192.168.1.1/
+    </LocationMatch>
 </VirtualHost>
 ```
 

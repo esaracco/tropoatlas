@@ -162,6 +162,7 @@ _(This generates optimized static files in `apps/tropocine/build/`, along with `
     DocumentRoot /var/www/tropoatlas/apps/tropocine/build
 
     SSLProxyEngine On
+    ProxyPreserveHost Off
 
     # Static files and .htaccess support
     <Directory /var/www/tropoatlas/apps/tropocine/build>
@@ -171,36 +172,27 @@ _(This generates optimized static files in `apps/tropocine/build/`, along with `
     </Directory>
 
     # Secure TMDB API Proxy (Injects TMDB_TOKEN with write permission from .env)
+    ProxyPass /api/tmdb/ https://api.themoviedb.org/ keepalive=On retry=0
+    ProxyPassReverse /api/tmdb/ https://api.themoviedb.org/
     <Location /api/tmdb/>
         RequestHeader set Authorization "Bearer YOUR_AUTHORIZED_TMDB_TOKEN"
         IncludeOptional /var/www/tropoatlas/apps/tropocine/build/headers.conf
-        ProxyPreserveHost Off
-        ProxyPass https://api.themoviedb.org/
-        ProxyPassReverse https://api.themoviedb.org/
     </Location>
 
     # TMDB Artwork Image Proxy (CORS bypass for client-side ZIP export)
+    ProxyPass /api/tmdb-image/ https://image.tmdb.org/ keepalive=On retry=0
+    ProxyPassReverse /api/tmdb-image/ https://image.tmdb.org/
     <Location /api/tmdb-image/>
         IncludeOptional /var/www/tropoatlas/apps/tropocine/build/headers.conf
         Header set Access-Control-Allow-Origin "*"
-        ProxyPreserveHost Off
-        ProxyPass https://image.tmdb.org/
-        ProxyPassReverse https://image.tmdb.org/
+        Header set Cache-Control "public, max-age=2592000, immutable"
     </Location>
 
     # (Optional) LED Server Proxy
-    <Location /api/leds>
-        ProxyPass http://192.168.1.1/leds
-        ProxyPassReverse http://192.168.1.1/leds
-    </Location>
-    <Location /api/ruler>
-        ProxyPass http://192.168.1.1/ruler
-        ProxyPassReverse http://192.168.1.1/ruler
-    </Location>
-    <Location /api/ping>
-        ProxyPass http://192.168.1.1/ping
-        ProxyPassReverse http://192.168.1.1/ping
-    </Location>
+    <LocationMatch "^/api/(leds|ping|ruler)">
+        ProxyPassMatch http://192.168.1.1/$1
+        ProxyPassReverse http://192.168.1.1/
+    </LocationMatch>
 </VirtualHost>
 ```
 

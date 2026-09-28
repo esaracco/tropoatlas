@@ -5,9 +5,23 @@ server {
     root /usr/share/nginx/html;
     index index.html;
 
+    # Enable Gzip compression for text, scripts, styles, and data
+    gzip on;
+    gzip_vary on;
+    gzip_proxied any;
+    gzip_comp_level 6;
+    gzip_types text/plain text/css text/xml application/json application/javascript application/xml+rss application/atom+xml image/svg+xml;
+
     # React Single Page Application Fallback
     location / {
         try_files $uri $uri/ /index.html;
+    }
+
+    # Cache immutable static Vite assets
+    location /assets/ {
+        expires 1y;
+        add_header Cache-Control "public, max-age=31536000, immutable";
+        access_log off;
     }
 
     # Do not cache service-worker.js to ensure updates are detected
@@ -34,6 +48,10 @@ server {
         proxy_ssl_server_name on;
         proxy_ssl_protocols TLSv1.2 TLSv1.3;
 
+        # Keep-Alive for upstream connection reuse
+        proxy_http_version 1.1;
+        proxy_set_header Connection "";
+
         # Strip upstream Set-Cookie to prevent cookie leakage/errors
         proxy_hide_header Set-Cookie;
 
@@ -47,10 +65,15 @@ server {
         proxy_ssl_server_name on;
         proxy_ssl_protocols TLSv1.2 TLSv1.3;
 
+        # Keep-Alive for upstream connection reuse
+        proxy_http_version 1.1;
+        proxy_set_header Connection "";
+
         proxy_hide_header Set-Cookie;
 
         add_header Access-Control-Allow-Origin *;
         add_header Access-Control-Allow-Methods "GET, OPTIONS";
+        add_header Cache-Control "public, max-age=2592000, immutable";
 
         proxy_pass https://image.tmdb.org/;
     }
@@ -68,8 +91,13 @@ server {
         proxy_ssl_server_name on;
         proxy_ssl_protocols TLSv1.2 TLSv1.3;
 
+        # Keep-Alive for upstream connection reuse
+        proxy_http_version 1.1;
+        proxy_set_header Connection "";
+
         add_header Access-Control-Allow-Origin *;
         add_header Access-Control-Allow-Methods "GET, OPTIONS";
+        add_header Cache-Control "public, max-age=2592000, immutable";
 
         proxy_pass https://$image_host$image_path;
     }
