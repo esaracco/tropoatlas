@@ -285,7 +285,8 @@ export class TMDBPlugin extends BasePlugin {
       const castString = cast.join(" ")
       const searchIndex = `${cleanDirector.replace(/\s/g, "-")}_${cleanTitle.replace(/\s/g, "-")}_${normalize(cleanDirector)}_${normalize(cleanTitle)}_${normalize(castString)}`
 
-      // Extract custom fields from the TMDB comment (format: "place: 5, rating: 4")
+      // Extract custom fields from the TMDB comment
+      // (format: "place: 5, rating: 4")
       const mediaType = movie.media_type || "movie"
       const commentKey = `${mediaType}:${movie.id}`
       const commentText = comments[commentKey] || ""

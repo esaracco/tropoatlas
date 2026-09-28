@@ -165,6 +165,10 @@ export class DiscogsPlugin extends BasePlugin {
       return this.fieldsId
     }
 
+    if (typeof navigator !== "undefined" && !navigator.onLine) {
+      return this.fieldsId
+    }
+
     const conf = Object.entries({
       placeId: FIELD_PLACE,
       priceId: FIELD_PRICE,
@@ -271,7 +275,8 @@ export class DiscogsPlugin extends BasePlugin {
                 : []
           }
 
-          categories.sort() // SORT CATEGORIES to match legacy behavior
+          // Sort categories to match legacy behavior
+          categories.sort()
 
           const rawArtist = getArtistName(info.artists[0]).replace(/\(.*/, "")
           const artist = cleanText(rawArtist)

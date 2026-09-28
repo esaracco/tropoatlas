@@ -285,7 +285,7 @@ export const Result = ({
           ledCommands.push({
             place: activeWork.place,
             color: ledsColors.work,
-            intensity: 0.1,
+            intensity: 1.0,
             blink: true,
             noreset: hasLit,
           })

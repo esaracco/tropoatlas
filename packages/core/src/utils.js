@@ -162,7 +162,8 @@ export const FIELD_PRICE = "price"
 export const FIELD_CATEGORIES = "categories"
 export const FIELD_RATING = "rating"
 
-// Supported multilingual and semantic aliases for canonical fields in freeform text
+// Supported multilingual and semantic aliases for canonical fields in
+// freeform text
 export const FIELD_ALIASES = {
   [FIELD_PLACE]: ["place", "places", "emplacement", "emplacements"],
   [FIELD_PRICE]: ["price", "prices", "prix"],

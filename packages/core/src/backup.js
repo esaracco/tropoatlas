@@ -497,7 +497,8 @@ export const exportCollectionBackupZIP = async (optionsOrProgress) => {
         }
       }
 
-      // Run detail and image tasks in parallel with their independent throttlers
+      // Run detail and image tasks in parallel with their independent
+      // throttlers
       await Promise.all([detailTask(), imageTask()])
 
       // If cover was discovered during detailTask and not yet processed

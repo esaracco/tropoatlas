@@ -9,14 +9,17 @@ export const useScrollbarWidth = () => {
   }
 
   if (typeof document === "undefined") {
-    return 0 // SSR fallback
+    // SSR fallback
+    return 0
   }
 
   // Creating invisible container
   const outer = document.createElement("div")
   outer.style.visibility = "hidden"
-  outer.style.overflow = "scroll" // forcing scrollbar to appear
-  outer.style.msOverflowStyle = "scrollbar" // needed for WinJS apps
+  // Forcing scrollbar to appear
+  outer.style.overflow = "scroll"
+  // Needed for WinJS apps
+  outer.style.msOverflowStyle = "scrollbar"
   document.body.appendChild(outer)
 
   // Creating inner element and placing it in the container

@@ -62,7 +62,8 @@ export class LedsClient {
 
   async #request(url, options = {}) {
     try {
-      // AbortSignal.timeout automatically handles cancellation if the server does not respond
+      // AbortSignal.timeout automatically handles cancellation if the
+      // server does not respond
       const fetchOptions = {
         signal: AbortSignal.timeout(this.timeoutMs),
         ...options,
@@ -83,7 +84,8 @@ export class LedsClient {
         return await response.json()
       }
 
-      return {} // Fallback for endpoints that do not return JSON
+      // Fallback for endpoints that do not return JSON
+      return {}
     } catch (err) {
       this.onError(err)
       throw err

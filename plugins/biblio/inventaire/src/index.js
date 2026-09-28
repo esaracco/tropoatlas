@@ -439,7 +439,8 @@ export class InventairePlugin extends BasePlugin {
     ) {
       const rawMap = new Map(rawItems.map((it) => [it._id || it.id, it]))
 
-      // Keep existing items that are still present remotely, refreshing custom tags
+      // Keep existing items that are still present remotely, refreshing
+      // custom tags
       for (const [id, item] of Object.entries(existingItems)) {
         const raw = rawMap.get(id)
         if (raw) {

@@ -16,8 +16,9 @@
  */
 
 /**
- * BasePlugin defines the expected contract for all data providers in TropoAtlas.
- * Every plugin must extend this class and implement its abstract methods.
+ * BasePlugin defines the expected contract for all data providers in
+ * TropoAtlas. Every plugin must extend this class and implement its abstract
+ * methods.
  */
 export class BasePlugin {
   /**
@@ -56,7 +57,8 @@ export class BasePlugin {
   /**
    * Fetches the entire collection of the user.
    * @param {function} onProgress - Callback to notify progress (0 to 100).
-   * @param {Object} [options={}] - Additional sync options (e.g. { forceRefresh: false }).
+   * @param {Object} [options={}] - Additional sync options (e.g.
+   *   { forceRefresh: false }).
    * @returns {Promise<Object>} Map of collection items.
    */
   async getCollection(onProgress, options = {}) {
@@ -64,7 +66,8 @@ export class BasePlugin {
   }
 
   /**
-   * Fetches detailed information for a specific item (e.g. additional metadata).
+   * Fetches detailed information for a specific item (e.g. additional
+   * metadata).
    * @param {Object} item - The base item object.
    * @returns {Promise<Object>} The item with detailed information attached.
    */
@@ -92,9 +95,11 @@ export class BasePlugin {
   }
 
   /**
-   * Updates user-specific data (custom fields, rating) for an item on the provider.
+   * Updates user-specific data (custom fields, rating) for an item on the
+   * provider.
    * @param {Object} item
-   * @param {Object} changes - The fields to update (rating, place, price, categories).
+   * @param {Object} changes - The fields to update (rating, place, price,
+   *   categories).
    * @returns {Promise<void>}
    */
   async updateItem(item, changes) {
@@ -149,8 +154,9 @@ export class BasePlugin {
   }
 
   /**
-   * Return a unique identifier representing the active user/list/collection target.
-   * If this changes between syncs, the storage cache is automatically refreshed.
+   * Return a unique identifier representing the active user/list/collection
+   * target. If this changes between syncs, the storage cache is automatically
+   * refreshed.
    * Must be implemented by the specific plugin.
    * @returns {string|null}
    */
