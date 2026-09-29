@@ -11,6 +11,8 @@ body,
   color: var(--tropo-text);
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   transition:
     background 0.3s,
     color 0.3s;
