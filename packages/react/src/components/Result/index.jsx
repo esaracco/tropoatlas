@@ -331,8 +331,6 @@ export const Result = ({
       {activeInstanceId && (
         <GenericWorkModal
           plugin={plugin}
-          setLeds={setLeds}
-          ledsClient={ledsClient}
           placeholder={placeholder}
           currency={currency}
           renderHeaderDetails={renderHeaderDetails}
