@@ -87,7 +87,24 @@ const server = http.createServer((req, res) => {
       headers["Cache-Control"] = "private, no-cache, no-store, must-revalidate"
       headers["Vary"] = "Accept-Language"
     } else {
-      headers["Cache-Control"] = "public, max-age=86400"
+      const mtime = stats.mtime.toUTCString()
+      const etag = `W/"${stats.size.toString(16)}-${Math.floor(stats.mtimeMs).toString(16)}"`
+      headers["Last-Modified"] = mtime
+      headers["ETag"] = etag
+      headers["Cache-Control"] = "public, max-age=3600, must-revalidate"
+
+      // Check conditional request headers to return 304 Not Modified.
+      const ifNoneMatch = req.headers["if-none-match"]
+      const ifModifiedSince = req.headers["if-modified-since"]
+      if (
+        ifNoneMatch === etag ||
+        ifNoneMatch === "*" ||
+        ifModifiedSince === mtime
+      ) {
+        res.writeHead(304, headers)
+        res.end()
+        return
+      }
     }
 
     res.writeHead(200, headers)
