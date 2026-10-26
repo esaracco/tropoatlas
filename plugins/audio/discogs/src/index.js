@@ -165,7 +165,7 @@ export class DiscogsPlugin extends BasePlugin {
       return this.fieldsId
     }
 
-    if (typeof navigator !== "undefined" && !navigator.onLine) {
+    if (typeof navigator !== "undefined" && navigator.onLine === false) {
       return this.fieldsId
     }
 

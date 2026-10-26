@@ -4,7 +4,7 @@ import { buildCacheKey } from "./storage"
 
 // Generic App UI Store
 export const useAppStore = create((set) => ({
-  isOnline: typeof navigator !== "undefined" ? navigator.onLine : true,
+  isOnline: typeof navigator === "undefined" || navigator.onLine !== false,
   loading: false,
   isSyncing: false,
   searchStr: "",

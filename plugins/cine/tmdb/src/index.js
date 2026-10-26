@@ -469,7 +469,7 @@ export class TMDBPlugin extends BasePlugin {
     const { rating, place, price } = changes
     let commentText = item.comment || ""
 
-    if (typeof navigator === "undefined" || navigator.onLine) {
+    if (typeof navigator === "undefined" || navigator.onLine !== false) {
       try {
         const mediaType = item.media_type || "movie"
         const commentKey = `${mediaType}:${item.id}`

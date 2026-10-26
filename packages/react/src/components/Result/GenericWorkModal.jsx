@@ -209,7 +209,7 @@ export const GenericWorkModal = ({
     try {
       await plugin.updateItem(releaseToUpdate, changes)
     } catch (e) {
-      if (!navigator.onLine) {
+      if (navigator.onLine === false) {
         toast.info(
           t(
             "You are offline. Your changes have been saved locally and will be synchronized when the connection is restored.",

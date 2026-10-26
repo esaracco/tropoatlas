@@ -104,7 +104,11 @@ export const WorkCard = ({
   }
 
   const onError = () => {
-    if (!img || (typeof navigator !== "undefined" && !navigator.onLine)) return
+    if (
+      !img ||
+      (typeof navigator !== "undefined" && navigator.onLine === false)
+    )
+      return
     toast.error(
       <div>
         <b>{t("Image loading error")}</b>

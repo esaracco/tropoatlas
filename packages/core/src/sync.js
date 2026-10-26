@@ -106,7 +106,8 @@ export const syncCollection = async ({
     }
   } catch (e) {
     console.error("Sync error:", e)
-    const isOnline = typeof navigator === "undefined" || navigator.onLine
+    const isOnline =
+      typeof navigator === "undefined" || navigator.onLine !== false
     if (isOnline && onError) {
       const providerName = plugin.getProviderInfo().name
       const msg = e.message

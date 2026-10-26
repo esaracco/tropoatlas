@@ -4,7 +4,7 @@ import { LedsClient } from "@tropo/leds"
 
 export const ledsClient = new LedsClient({
   onError: (e) => {
-    if (!navigator.onLine) return
+    if (navigator.onLine === false) return
     console.error(e.message)
     toast.warning(i18n.t("Unable to reach the film library web server!"), {
       toastId: "cineServerConnectionError",

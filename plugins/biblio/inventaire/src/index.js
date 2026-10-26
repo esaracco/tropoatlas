@@ -1374,7 +1374,7 @@ export class InventairePlugin extends BasePlugin {
     }
 
     // Check or establish session before saving when online
-    if (typeof navigator === "undefined" || navigator.onLine) {
+    if (typeof navigator === "undefined" || navigator.onLine !== false) {
       const loggedIn = await this.#login()
 
       if (!loggedIn) {
@@ -1390,7 +1390,7 @@ export class InventairePlugin extends BasePlugin {
     }
 
     let noteText = item.notes || ""
-    if (typeof navigator === "undefined" || navigator.onLine) {
+    if (typeof navigator === "undefined" || navigator.onLine !== false) {
       try {
         const res = await this.#request(
           `api/items/by-ids?ids=${encodeURIComponent(itemId)}`,
