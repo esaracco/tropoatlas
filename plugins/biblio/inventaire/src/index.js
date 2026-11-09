@@ -359,9 +359,9 @@ export class InventairePlugin extends BasePlugin {
   // Resolve normalized 2-letter active application language (e.g., 'fr', 'en')
   #getActiveLanguage() {
     let rawLang = null
-    if (typeof localStorage !== "undefined") {
+    if (typeof window !== "undefined" && window.localStorage) {
       try {
-        rawLang = localStorage.getItem("i18nextLng")
+        rawLang = window.localStorage.getItem("i18nextLng")
       } catch {
         // Fallback if storage access is restricted
       }

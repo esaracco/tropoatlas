@@ -28,19 +28,29 @@ export const removeLargeItem = async (name) => {
   }
 }
 
+// Safely resolve localStorage across browser and jsdom environments
+export const getLocalStorage = () => {
+  if (typeof window !== "undefined" && window.localStorage) {
+    return window.localStorage
+  }
+  return null
+}
+
 export const setItem = (name, value) => {
-  if (typeof localStorage === "undefined") return
+  const storage = getLocalStorage()
+  if (!storage) return
   try {
-    localStorage.setItem(buildCacheKey(name), JSON.stringify(value))
+    storage.setItem(buildCacheKey(name), JSON.stringify(value))
   } catch (err) {
     console.warn(`Error writing ${name} to localStorage:`, err)
   }
 }
 
 export const getItem = (name) => {
-  if (typeof localStorage === "undefined") return null
+  const storage = getLocalStorage()
+  if (!storage) return null
   try {
-    const item = localStorage.getItem(buildCacheKey(name))
+    const item = storage.getItem(buildCacheKey(name))
     return item ? JSON.parse(item) : null
   } catch (err) {
     console.warn(`Error reading ${name} from localStorage:`, err)
@@ -49,9 +59,10 @@ export const getItem = (name) => {
 }
 
 export const removeItem = (name) => {
-  if (typeof localStorage === "undefined") return
+  const storage = getLocalStorage()
+  if (!storage) return
   try {
-    localStorage.removeItem(buildCacheKey(name))
+    storage.removeItem(buildCacheKey(name))
   } catch (err) {
     console.warn(`Error removing ${name} from localStorage:`, err)
   }
@@ -87,15 +98,16 @@ export const clearAllCaches = async (keysToPreserve = []) => {
   }
 
   // 2. LocalStorage
-  if (typeof localStorage !== "undefined") {
+  const storage = getLocalStorage()
+  if (storage) {
     const lsKeysToRemove = []
-    for (let i = 0; i < localStorage.length; i++) {
-      const key = localStorage.key(i)
+    for (let i = 0; i < storage.length; i++) {
+      const key = storage.key(i)
       if (key && !preservedKeys.has(key)) {
         lsKeysToRemove.push(key)
       }
     }
-    lsKeysToRemove.forEach((key) => localStorage.removeItem(key))
+    lsKeysToRemove.forEach((key) => storage.removeItem(key))
   }
 
   // 3. LocalForage (IndexedDB)

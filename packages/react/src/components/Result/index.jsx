@@ -139,7 +139,19 @@ export const Result = ({
         )
         break
       case "year":
-        keys.sort((a, b) => (releases[a].year - releases[b].year) * mul)
+        keys.sort((a, b) => {
+          const yA = releases[a].year ? parseInt(releases[a].year, 10) : 0
+          const yB = releases[b].year ? parseInt(releases[b].year, 10) : 0
+          if (!yA && !yB) return 0
+          if (!yA) return 1
+          if (!yB) return -1
+          const diff = (yA - yB) * mul
+          if (diff !== 0) return diff
+          return (
+            (releases[a].title || "").localeCompare(releases[b].title || "") *
+            mul
+          )
+        })
         break
       case "place":
         keys.sort((a, b) => {

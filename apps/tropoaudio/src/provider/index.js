@@ -20,7 +20,7 @@ export const plugin = new PluginClass({
 })
 
 // i18n static analyzer hints for dynamically translated plugin messages
-// Added to DYNAMIC_KEYS in scripts/check_i18n.js
+// Added to DYNAMIC_KEYS in scripts/check_i18n.mjs
 export const validateProviderSettings = () => {
   plugin.validateSettings((msg, params) => {
     toast.error(i18n.t(msg, params), { autoClose: false })

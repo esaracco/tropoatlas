@@ -9,7 +9,10 @@ const ThemeSelector = ({
   ariaLabel = "Change theme",
 }) => {
   const [theme, setTheme] = useState(() => {
-    const saved = localStorage.getItem("theme")
+    const saved =
+      typeof window !== "undefined" && window.localStorage
+        ? window.localStorage.getItem("theme")
+        : null
     if (saved) return saved
     if (typeof document !== "undefined") {
       const docTheme = document.documentElement.getAttribute("data-theme")
@@ -20,7 +23,9 @@ const ThemeSelector = ({
 
   useEffect(() => {
     document.documentElement.setAttribute("data-theme", theme)
-    localStorage.setItem("theme", theme)
+    if (typeof window !== "undefined" && window.localStorage) {
+      window.localStorage.setItem("theme", theme)
+    }
     const metaThemeColor = document.querySelector('meta[name="theme-color"]')
     if (metaThemeColor) {
       const surfaceColor = getComputedStyle(document.documentElement)
