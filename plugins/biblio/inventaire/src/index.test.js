@@ -238,7 +238,7 @@ describe("InventairePlugin - item details sanitization", () => {
     const item = {
       id: "1",
       hasDetails: true,
-      hasWikipedia: true,
+      wikipediaUrl: "https://fr.wikipedia.org/wiki/Test",
       isbn: "inv:6e59f968a1cd00dbedeb1964de9511d4",
     }
     const result = await plugin.getItemDetails(item)
@@ -249,11 +249,36 @@ describe("InventairePlugin - item details sanitization", () => {
     const item = {
       id: "1",
       hasDetails: true,
-      hasWikipedia: true,
+      wikipediaUrl: "https://fr.wikipedia.org/wiki/Test",
       isbn: "978-2-08-070090-2",
     }
     const result = await plugin.getItemDetails(item)
     expect(result.isbn).toBe("978-2-08-070090-2")
+  })
+
+  it("should recognize enrichment from source URLs without legacy boolean flags", () => {
+    expect(
+      plugin.isItemDetailed({
+        hasDetails: true,
+        wikipediaUrl: "https://fr.wikipedia.org/wiki/Test",
+      }),
+    ).toBe(true)
+
+    expect(
+      plugin.isItemDetailed({
+        hasDetails: true,
+        bnfUrl: "https://catalogue.bnf.fr/ark:/12148/cb12345678",
+      }),
+    ).toBe(true)
+
+    expect(
+      plugin.isItemDetailed({
+        hasDetails: true,
+        wikipediaChecked: true,
+        bnfChecked: true,
+        openLibraryUrl: "https://openlibrary.org/works/OL123W",
+      }),
+    ).toBe(true)
   })
 })
 
@@ -321,7 +346,7 @@ describe("InventairePlugin - differential synchronization", () => {
         title: "Book 1 (Enriched)",
         description: "Enriched Wikipedia description",
         hasDetails: true,
-        hasWikipedia: true,
+        wikipediaUrl: "https://fr.wikipedia.org/wiki/Book_1",
       },
       item2: {
         id: "item2",

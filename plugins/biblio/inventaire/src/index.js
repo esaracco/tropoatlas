@@ -1341,25 +1341,14 @@ export class InventairePlugin extends BasePlugin {
   // Extended details for single book (including Wikipedia, BnF, and Open Library)
   async getItemDetails(item) {
     // Reset corrupted state where later sources overwrote a previous summary
-    if (
-      (item.hasWikipedia || item.wikipediaUrl) &&
-      (item.hasBnf || item.hasOpenLibrary)
-    ) {
-      item.hasWikipedia = false
-      item.hasBnf = false
+    if (item.wikipediaUrl && (item.bnfUrl || item.openLibraryUrl)) {
       item.bnfUrl = null
-      item.hasOpenLibrary = false
       item.openLibraryUrl = null
-      item.wikipediaChecked = false
       item.bnfChecked = false
     }
 
-    if ((item.hasBnf || item.bnfUrl) && item.hasOpenLibrary) {
-      item.hasBnf = false
-      item.bnfUrl = null
-      item.hasOpenLibrary = false
+    if (item.bnfUrl && item.openLibraryUrl) {
       item.openLibraryUrl = null
-      item.bnfChecked = false
     }
 
     // Clean up corrupted entity URI stored as ISBN
@@ -1376,11 +1365,11 @@ export class InventairePlugin extends BasePlugin {
     // Complete if Wikipedia summary exists, BnF summary exists, or all checked
     if (
       item.hasDetails &&
-      (item.hasWikipedia ||
-        item.hasBnf ||
+      (item.wikipediaUrl ||
+        item.bnfUrl ||
         (item.wikipediaChecked &&
           item.bnfChecked &&
-          (!isShort || item.hasOpenLibrary)))
+          (!isShort || item.openLibraryUrl)))
     ) {
       return item
     }
@@ -1396,7 +1385,7 @@ export class InventairePlugin extends BasePlugin {
     }
 
     // 1. Enrich description with Wikipedia summary
-    if (!detailed.hasWikipedia && !detailed.wikipediaChecked) {
+    if (!detailed.wikipediaUrl && !detailed.wikipediaChecked) {
       try {
         const wikiInfo = await this.#fetchWikipediaSummary(detailed)
         if (wikiInfo) {
@@ -1408,10 +1397,7 @@ export class InventairePlugin extends BasePlugin {
           }
           detailed.wikipediaTitle = wikiInfo.title || null
           detailed.wikipediaExact = wikiInfo.exact ?? true
-          detailed.hasWikipedia = true
-          detailed.hasBnf = false
           detailed.bnfUrl = null
-          detailed.hasOpenLibrary = false
           detailed.openLibraryUrl = null
         }
       } catch (err) {
@@ -1426,9 +1412,9 @@ export class InventairePlugin extends BasePlugin {
       !detailed.description ||
       detailed.description.length < this.minDescriptionLength
     if (
-      !detailed.hasWikipedia &&
+      !detailed.wikipediaUrl &&
       isStillShort &&
-      !detailed.hasBnf &&
+      !detailed.bnfUrl &&
       !detailed.bnfChecked
     ) {
       try {
@@ -1441,8 +1427,6 @@ export class InventairePlugin extends BasePlugin {
             detailed.bnfUrl = bnfInfo.url
           }
           detailed.bnfTitle = bnfInfo.title || null
-          detailed.hasBnf = true
-          detailed.hasOpenLibrary = false
           detailed.openLibraryUrl = null
         }
       } catch (err) {
@@ -1458,10 +1442,10 @@ export class InventairePlugin extends BasePlugin {
       !detailed.description ||
       detailed.description.length < this.minDescriptionLength
     if (
-      !detailed.hasWikipedia &&
-      !detailed.hasBnf &&
+      !detailed.wikipediaUrl &&
+      !detailed.bnfUrl &&
       isStillShort &&
-      !detailed.hasOpenLibrary
+      !detailed.openLibraryUrl
     ) {
       try {
         const olInfo = await this.#fetchOpenLibrarySummary(detailed)
@@ -1472,7 +1456,6 @@ export class InventairePlugin extends BasePlugin {
           if (olInfo.url) {
             detailed.openLibraryUrl = olInfo.url
           }
-          detailed.hasOpenLibrary = true
         }
       } catch (err) {
         console.warn("Failed to fetch Open Library summary:", err.message)
@@ -1766,11 +1749,11 @@ export class InventairePlugin extends BasePlugin {
       !item.description || item.description.length < this.minDescriptionLength
     return Boolean(
       item.hasDetails &&
-      (item.hasWikipedia ||
-        item.hasBnf ||
+      (item.wikipediaUrl ||
+        item.bnfUrl ||
         (item.wikipediaChecked &&
           item.bnfChecked &&
-          (!isShort || item.hasOpenLibrary))),
+          (!isShort || item.openLibraryUrl))),
     )
   }
 }
