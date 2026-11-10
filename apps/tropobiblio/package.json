@@ -1,7 +1,7 @@
 {
   "name": "tropobiblio",
   "description": "TropoBiblio is a universal book collection manager",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "homepage": "https://biblio.tropoatlas.fr",
   "type": "module",
   "scripts": {

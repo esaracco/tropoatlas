@@ -13,6 +13,20 @@ export const ExtraTabs = ({ instanceId }) => {
   // Show loader while initial item description is being fetched
   const loadingDetails = !work.hasDetails
 
+  // Determine external enrichment source if available
+  const sourceInfo = (() => {
+    if (work.wikipediaUrl) {
+      return { label: t("Wikipedia"), url: work.wikipediaUrl }
+    }
+    if (work.bnfUrl) {
+      return { label: t("BnF"), url: work.bnfUrl }
+    }
+    if (work.openLibraryUrl) {
+      return { label: t("Open Library"), url: work.openLibraryUrl }
+    }
+    return null
+  })()
+
   return (
     <Tabs defaultActiveKey="work-description">
       <Tab
@@ -42,6 +56,21 @@ export const ExtraTabs = ({ instanceId }) => {
         {work.description && (
           <div style={{ whiteSpace: "pre-wrap", fontSize: "0.9rem" }}>
             {work.description}
+          </div>
+        )}
+        {work.description && sourceInfo && (
+          <div className="description-source">
+            <a
+              href={sourceInfo.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="description-source-link"
+            >
+              <span>
+                {t("Source: {{source}}", { source: sourceInfo.label })}
+              </span>
+              <span aria-hidden="true">↗</span>
+            </a>
           </div>
         )}
         {!loadingDetails && !work.description && (
