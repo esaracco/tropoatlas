@@ -2,7 +2,7 @@
 
 [![GPL License](https://img.shields.io/badge/license-GPLv3-blue.svg)](../../LICENSE) [![Inventaire API](https://img.shields.io/badge/Powered%20by-Inventaire-2e7d32.svg)](https://inventaire.io/) [![Made with React](https://img.shields.io/badge/React-19-61DAFB.svg)](https://reactjs.org/) [![Vite](https://img.shields.io/badge/Vite-B73BFE.svg)](https://vitejs.dev/)
 
-**TropoBiblio is a free software book collection manager, part of the [TropoAtlas](../../README.md) suite. Synchronize your books from [Inventaire.io](https://inventaire.io/), customize your metadata, enrich entries with open knowledge (Wikipedia, Open Library, Wikidata), and instantly locate your books on your shelves using connected LED strips.**
+**TropoBiblio is a free software book collection manager, part of the [TropoAtlas](../../README.md) suite. Synchronize your books from [Inventaire.io](https://inventaire.io/), customize your metadata, enrich entries with open knowledge (Wikipedia, BnF, Open Library, Wikidata), and instantly locate your books on your shelves using connected LED strips.**
 
 <div align="center"><img src="public/icon-180.png" alt="TropoBiblio logo" /></div>
 
@@ -12,7 +12,7 @@
 
 - 🔎 **Instant Search & Multi-criteria Filter**: Browse and filter your book collection in real-time by author, genre, format/publisher, publication year, rating, or physical shelf location.
 - 🏷️ **Custom Metadata & Private Notes**: Extract custom fields from your Inventaire.io private notes: exact shelf location (`place`), purchase price (`price`), personal rating (`rating`), and custom genres (`genre`).
-- 📚 **Automatic Enrichment & Open Knowledge**: Enriches book descriptions and synopses with summaries from Wikipedia, Open Library, and Wikidata with smart disambiguation.
+- 📚 **Automatic Enrichment & Open Knowledge**: Enriches book descriptions and synopses with summaries from Wikipedia, BnF (Bibliothèque nationale de France), Open Library, and Wikidata with smart disambiguation.
 - 💡 **Physical LED Shelf Locator & Ruler**: Select a book, genres, or authors, and the corresponding slots on your shelf light up instantly via connected LED strips. Includes a dedicated physical ruler mode to illuminate whole shelves.
 - 📦 **Backup & Complete Collection Export**:
   - **Quick Export**: Exports all cached metadata and book covers into a portable ZIP archive.
@@ -97,7 +97,7 @@ Open `http://localhost:3002` in your browser.
 
 ## Production Deployment
 
-TropoBiblio builds as a static Single Page Application in production. API calls and image requests to Inventaire.io are proxied through your web server (Apache or Nginx).
+TropoBiblio builds as a static Single Page Application in production. API calls to Inventaire.io, cover artwork, and BnF catalog lookups are proxied through your web server (Apache or Nginx).
 
 ### Option 1: Docker (Recommended)
 
@@ -154,6 +154,15 @@ _(Generates static assets in `apps/tropobiblio/build`, along with `.htaccess` an
     ProxyPassReverse /api/inventaire/ https://inventaire.io/
     <Location /api/inventaire/>
         IncludeOptional /var/www/tropoatlas/apps/tropobiblio/build/headers.conf
+    </Location>
+
+    # BnF (Bibliothèque nationale de France) SRU API Proxy
+    ProxyPass /api/bnf/ https://catalogue.bnf.fr/ keepalive=On retry=0
+    ProxyPassReverse /api/bnf/ https://catalogue.bnf.fr/
+    <Location /api/bnf/>
+        IncludeOptional /var/www/tropoatlas/apps/tropobiblio/build/headers.conf
+        Header set Access-Control-Allow-Origin "*"
+        Header set Access-Control-Allow-Methods "GET, OPTIONS"
     </Location>
 
     # Inventaire.io Artwork Image Proxy (CORS bypass for client-side ZIP export)

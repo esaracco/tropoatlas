@@ -110,6 +110,7 @@ export class InventairePlugin extends BasePlugin {
   #lastRequestTime = 0
   #lastOpenLibraryRequestTime = 0
   #lastWikipediaRequestTime = 0
+  #lastBnfRequestTime = 0
   #isLoggedIn = false
   #loginPromise = null
   #lastAuthUser = null
@@ -128,6 +129,7 @@ export class InventairePlugin extends BasePlugin {
 
     // Default to /api/inventaire for Vite dev proxy
     this.apiBase = config.apiBase || "/api/inventaire"
+    this.bnfApiBase = config.bnfApiBase || "/api/bnf"
   }
 
   getProviderInfo() {
@@ -1195,14 +1197,169 @@ export class InventairePlugin extends BasePlugin {
     }
   }
 
-  // Extended details for single book (including Wikipedia and Open Library)
+  // Helper enforcing at least 1000ms delay between BnF SRU API calls
+  async #throttledBnfFetch(url) {
+    const minDelayMs = 1000
+    const now = Date.now()
+    const elapsed = now - this.#lastBnfRequestTime
+    if (elapsed < minDelayMs) {
+      await sleep(minDelayMs - elapsed)
+    }
+    this.#lastBnfRequestTime = Date.now()
+    const headers = {
+      Accept: "application/xml, text/xml",
+    }
+    if (this.userAgent) {
+      headers["User-Agent"] = this.userAgent
+    }
+    return fetch(url, { headers })
+  }
+
+  // Fetch book description and catalog URL from BnF SRU service
+  async #fetchBnfSummary(item) {
+    if (typeof navigator !== "undefined" && navigator.onLine === false) {
+      return null
+    }
+
+    const cleanIsbn = item.isbn
+      ? String(item.isbn).replace(/[^0-9X]/gi, "")
+      : null
+
+    const primaryAuthor =
+      Array.isArray(item.creators) && item.creators.length > 0
+        ? item.creators[0]
+        : item.creator
+          ? item.creator.split(/[,;]+/)[0].trim()
+          : null
+
+    const queries = []
+    if (cleanIsbn) {
+      queries.push(`bib.isbn all "${cleanIsbn}"`)
+    }
+    if (item.title && primaryAuthor) {
+      const cleanTitle = item.title.replace(/"/g, "").trim()
+      const cleanAuthor = primaryAuthor.replace(/"/g, "").trim()
+      if (cleanTitle && cleanAuthor) {
+        queries.push(
+          `(bib.author all "${cleanAuthor}") and (bib.title all "${cleanTitle}") and (bib.doctype all "a")`,
+        )
+      }
+    }
+
+    if (queries.length === 0) return null
+
+    const parser = typeof DOMParser !== "undefined" ? new DOMParser() : null
+    if (!parser) return null
+
+    for (const query of queries) {
+      try {
+        const url = `${this.bnfApiBase}/api/SRU?version=1.2&operation=searchRetrieve&recordSchema=unimarcxchange&maximumRecords=1&query=${encodeURIComponent(query)}`
+        const res = await this.#throttledBnfFetch(url)
+        if (!res.ok) continue
+
+        const xmlText = await res.text()
+        const xmlDoc = parser.parseFromString(xmlText, "text/xml")
+
+        const numRecordsEl = xmlDoc.getElementsByTagNameNS(
+          "*",
+          "numberOfRecords",
+        )[0]
+        const count = parseInt(numRecordsEl?.textContent || "0", 10)
+        if (count === 0) continue
+
+        // Extract Ark identifier or permalink URL
+        let bnfUrl = null
+        const controlFields = xmlDoc.getElementsByTagNameNS("*", "controlfield")
+        for (const cf of controlFields) {
+          if (cf.getAttribute("tag") === "003") {
+            const rawId = cf.textContent?.trim()
+            if (rawId) {
+              bnfUrl = rawId.startsWith("http:")
+                ? rawId.replace(/^http:/, "https:")
+                : rawId
+            }
+            break
+          }
+        }
+        if (!bnfUrl) {
+          const recordEl = xmlDoc.getElementsByTagNameNS("*", "record")[0]
+          const recordId = recordEl?.getAttribute("id")
+          if (recordId) {
+            bnfUrl = `https://catalogue.bnf.fr/${recordId}`
+          }
+        }
+
+        // Extract title for reference
+        let recordTitle = null
+        const dataFields = xmlDoc.getElementsByTagNameNS("*", "datafield")
+        for (const df of dataFields) {
+          if (df.getAttribute("tag") === "200") {
+            const subfields = df.getElementsByTagNameNS("*", "subfield")
+            for (const sf of subfields) {
+              if (sf.getAttribute("code") === "a") {
+                recordTitle = cleanText(sf.textContent) || null
+                break
+              }
+            }
+            break
+          }
+        }
+
+        // Extract description from UNIMARC field 330 (résumé ou extrait)
+        let summary = null
+        for (const df of dataFields) {
+          if (df.getAttribute("tag") === "330") {
+            const subfields = df.getElementsByTagNameNS("*", "subfield")
+            for (const sf of subfields) {
+              if (sf.getAttribute("code") === "a") {
+                const text = cleanText(sf.textContent)
+                if (text && text.length >= 50) {
+                  summary = text
+                  break
+                }
+              }
+            }
+            if (summary) break
+          }
+        }
+
+        if (summary) {
+          return {
+            extract: summary,
+            url: bnfUrl,
+            title: recordTitle,
+          }
+        }
+      } catch (err) {
+        console.warn("BnF summary query failed:", err.message)
+      }
+    }
+
+    return null
+  }
+
+  // Extended details for single book (including Wikipedia, BnF, and Open Library)
   async getItemDetails(item) {
-    // Reset corrupted state where Open Library overwrote a Wikipedia summary
-    if ((item.hasWikipedia || item.wikipediaUrl) && item.hasOpenLibrary) {
+    // Reset corrupted state where later sources overwrote a previous summary
+    if (
+      (item.hasWikipedia || item.wikipediaUrl) &&
+      (item.hasBnf || item.hasOpenLibrary)
+    ) {
       item.hasWikipedia = false
+      item.hasBnf = false
+      item.bnfUrl = null
       item.hasOpenLibrary = false
       item.openLibraryUrl = null
       item.wikipediaChecked = false
+      item.bnfChecked = false
+    }
+
+    if ((item.hasBnf || item.bnfUrl) && item.hasOpenLibrary) {
+      item.hasBnf = false
+      item.bnfUrl = null
+      item.hasOpenLibrary = false
+      item.openLibraryUrl = null
+      item.bnfChecked = false
     }
 
     // Clean up corrupted entity URI stored as ISBN
@@ -1216,11 +1373,14 @@ export class InventairePlugin extends BasePlugin {
     const isShort =
       !item.description || item.description.length < this.minDescriptionLength
 
-    // Complete if Wikipedia summary exists or both sources were checked
+    // Complete if Wikipedia summary exists, BnF summary exists, or all checked
     if (
       item.hasDetails &&
       (item.hasWikipedia ||
-        (item.wikipediaChecked && (!isShort || item.hasOpenLibrary)))
+        item.hasBnf ||
+        (item.wikipediaChecked &&
+          item.bnfChecked &&
+          (!isShort || item.hasOpenLibrary)))
     ) {
       return item
     }
@@ -1249,6 +1409,8 @@ export class InventairePlugin extends BasePlugin {
           detailed.wikipediaTitle = wikiInfo.title || null
           detailed.wikipediaExact = wikiInfo.exact ?? true
           detailed.hasWikipedia = true
+          detailed.hasBnf = false
+          detailed.bnfUrl = null
           detailed.hasOpenLibrary = false
           detailed.openLibraryUrl = null
         }
@@ -1259,11 +1421,48 @@ export class InventairePlugin extends BasePlugin {
       }
     }
 
-    // 2. Fall back to Open Library only if Wikipedia summary was not found
-    const isStillShort =
+    // 2. Fall back to BnF if Wikipedia summary was not found
+    let isStillShort =
       !detailed.description ||
       detailed.description.length < this.minDescriptionLength
-    if (!detailed.hasWikipedia && isStillShort && !detailed.hasOpenLibrary) {
+    if (
+      !detailed.hasWikipedia &&
+      isStillShort &&
+      !detailed.hasBnf &&
+      !detailed.bnfChecked
+    ) {
+      try {
+        const bnfInfo = await this.#fetchBnfSummary(detailed)
+        if (bnfInfo) {
+          if (bnfInfo.extract) {
+            detailed.description = bnfInfo.extract
+          }
+          if (bnfInfo.url) {
+            detailed.bnfUrl = bnfInfo.url
+          }
+          detailed.bnfTitle = bnfInfo.title || null
+          detailed.hasBnf = true
+          detailed.hasOpenLibrary = false
+          detailed.openLibraryUrl = null
+        }
+      } catch (err) {
+        console.warn("Failed to fetch BnF summary:", err.message)
+      } finally {
+        detailed.bnfChecked = true
+      }
+    }
+
+    // 3. Fall back to Open Library if Wikipedia and BnF summaries
+    // were not found
+    isStillShort =
+      !detailed.description ||
+      detailed.description.length < this.minDescriptionLength
+    if (
+      !detailed.hasWikipedia &&
+      !detailed.hasBnf &&
+      isStillShort &&
+      !detailed.hasOpenLibrary
+    ) {
       try {
         const olInfo = await this.#fetchOpenLibrarySummary(detailed)
         if (olInfo) {
@@ -1568,7 +1767,10 @@ export class InventairePlugin extends BasePlugin {
     return Boolean(
       item.hasDetails &&
       (item.hasWikipedia ||
-        (item.wikipediaChecked && (!isShort || item.hasOpenLibrary))),
+        item.hasBnf ||
+        (item.wikipediaChecked &&
+          item.bnfChecked &&
+          (!isShort || item.hasOpenLibrary))),
     )
   }
 }

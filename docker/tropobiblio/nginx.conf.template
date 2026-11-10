@@ -57,6 +57,23 @@ server {
         proxy_pass https://inventaire.io/;
     }
 
+    # BnF (Bibliothèque nationale de France) SRU API Proxy
+    location /api/bnf/ {
+        proxy_set_header Host catalogue.bnf.fr;
+        proxy_set_header User-Agent "__USER_AGENT__";
+        proxy_ssl_server_name on;
+        proxy_ssl_protocols TLSv1.2 TLSv1.3;
+
+        # Keep-Alive for upstream connection reuse
+        proxy_http_version 1.1;
+        proxy_set_header Connection "";
+
+        add_header Access-Control-Allow-Origin *;
+        add_header Access-Control-Allow-Methods "GET, OPTIONS";
+
+        proxy_pass https://catalogue.bnf.fr/;
+    }
+
     # Inventaire.io Artwork CDN Proxy (CORS bypass for client-side ZIP export)
     location /api/inventaire-image/ {
         proxy_set_header Host inventaire.io;

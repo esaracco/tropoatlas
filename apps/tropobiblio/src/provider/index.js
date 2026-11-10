@@ -14,6 +14,7 @@ if (providerName === "inventaire") {
 export const plugin = new PluginClass({
   env: import.meta.env,
   apiBase: `/api/${providerName}`,
+  bnfApiBase: "/api/bnf",
   devMode: import.meta.env.VITE_DEV_MODE === "yes",
   userAgent: __APP_USER_AGENT__,
 })

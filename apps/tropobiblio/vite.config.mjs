@@ -57,6 +57,21 @@ export default defineConfig(({ mode }) => {
     },
   }
 
+  // Proxy for catalogue.bnf.fr SRU API
+  proxy["^/api/bnf(/|$)"] = {
+    target: "https://catalogue.bnf.fr",
+    changeOrigin: true,
+    rewrite: (path) => path.replace(/^\/api\/bnf/, ""),
+    headers: {
+      "User-Agent": userAgent,
+    },
+    configure: (proxyServer) => {
+      proxyServer.on("proxyRes", (proxyRes) => {
+        proxyRes.headers["access-control-allow-origin"] = "*"
+      })
+    },
+  }
+
   // Proxy for hardware LEDs if configured
   if (env.VITE_LED_TARGET) {
     const ledTarget = env.VITE_LED_TARGET
