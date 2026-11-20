@@ -106,6 +106,42 @@ export const isTitleMatch = (articleTitle, bookTitle, subtitle) => {
   return false
 }
 
+// Section headers representing plot, summary, or synopsis across languages
+export const PLOT_SECTION_REGEX =
+  /(?:^|\n)==\s*(?:résumé(?:\s+(?:de\s+l['’](?:œuvre|oeuvre|histoire)|du\s+livre))?|synopsis|intrigue|trame(?:\s+narrative)?|l['’]histoire|histoire|l['’]intrigue|argument|l['’]argument|plot(?:\s+summary)?|summary|premise|argumento|trama|handlung|zusammenfassung)\s*==[ \t]*\n([\s\S]*?)(?=\n== [^=]|$)/i
+
+// Extract lead introduction and plot/synopsis summary from Wikipedia article
+// text
+export const extractWikiSummary = (fullExtract) => {
+  if (!fullExtract || typeof fullExtract !== "string") return null
+  const trimmed = fullExtract.trim()
+  if (!trimmed) return null
+
+  // Extract lead section preceding the first level-2 section heading
+  const leadMatch = trimmed.match(/^([\s\S]*?)(?=(?:^|\n)== [^=]|$)/)
+  const lead = (leadMatch ? leadMatch[1] : trimmed).trim()
+
+  // Match dedicated plot, synopsis, or summary section
+  const sectionMatch = PLOT_SECTION_REGEX.exec(trimmed)
+  let plotText = null
+  if (sectionMatch && sectionMatch[1]) {
+    const rawPlot = sectionMatch[1].trim()
+    if (rawPlot.length >= 30) {
+      // Format nested subsections cleanly (e.g. "=== Part 1 ===" to "Part 1 :")
+      plotText = rawPlot
+        .replace(/\n*===+\s*(.*?)\s*===+\n*/g, "\n\n$1 :\n")
+        .replace(/\n{3,}/g, "\n\n")
+        .trim()
+    }
+  }
+
+  if (plotText && lead) {
+    return `${lead}\n\n${plotText}`
+  }
+
+  return plotText || lead || null
+}
+
 export class InventairePlugin extends BasePlugin {
   #lastRequestTime = 0
   #lastOpenLibraryRequestTime = 0
@@ -924,15 +960,15 @@ export class InventairePlugin extends BasePlugin {
     }
   }
 
-  // Fetch full lead section introduction from MediaWiki API
-  async #fetchWikiLeadSection(targetLang, articleTitle) {
+  // Fetch full article extract (intro and plot summary) from MediaWiki API
+  async #fetchWikiArticleExtract(targetLang, articleTitle) {
     const cleanTitle = encodeURIComponent(articleTitle.replace(/\s/g, "_"))
-    const url = `https://${targetLang}.wikipedia.org/w/api.php?action=query&prop=extracts&exintro=true&explaintext=true&redirects=true&titles=${cleanTitle}&format=json&origin=*`
+    const url = `https://${targetLang}.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext=true&redirects=true&titles=${cleanTitle}&format=json&origin=*`
     const data = await this.#fetchWiki(url)
     const pages = data?.query?.pages
     if (!pages) return null
     const page = Object.values(pages)[0]
-    return page?.extract?.trim() || null
+    return extractWikiSummary(page?.extract)
   }
 
   // Fetch and validate summary for a specific Wikipedia page title
@@ -976,12 +1012,12 @@ export class InventairePlugin extends BasePlugin {
 
     let extract = data.extract
     if (exact) {
-      const fullIntro = await this.#fetchWikiLeadSection(
+      const fullArticle = await this.#fetchWikiArticleExtract(
         targetLang,
         data.title || articleTitle,
       )
-      if (fullIntro) {
-        extract = fullIntro
+      if (fullArticle) {
+        extract = fullArticle
       }
     }
 
@@ -1131,7 +1167,11 @@ export class InventairePlugin extends BasePlugin {
       }
     }
 
-    if (!openLibraryId) return null
+    const cleanIsbn = item.isbn
+      ? String(item.isbn).replace(/[^0-9X]/gi, "")
+      : null
+
+    if (!openLibraryId && !cleanIsbn) return null
 
     // Helper enforcing at least 1000ms delay between Open Library calls
     const throttledOlFetch = async (url) => {
@@ -1153,20 +1193,34 @@ export class InventairePlugin extends BasePlugin {
       let description = null
       let workKey = null
 
-      if (openLibraryId.endsWith("M")) {
-        // Query Open Library Edition API
-        const bookUrl = `https://openlibrary.org/books/${encodeURIComponent(openLibraryId)}.json`
-        const bookRes = await throttledOlFetch(bookUrl)
-        if (bookRes.ok) {
-          const bookData = await bookRes.json()
+      if (openLibraryId) {
+        if (openLibraryId.endsWith("M")) {
+          // Query Open Library Edition API
+          const bookUrl = `https://openlibrary.org/books/${encodeURIComponent(openLibraryId)}.json`
+          const bookRes = await throttledOlFetch(bookUrl)
+          if (bookRes.ok) {
+            const bookData = await bookRes.json()
+            description =
+              typeof bookData.description === "string"
+                ? bookData.description
+                : bookData.description?.value || null
+            workKey = bookData.works?.[0]?.key || null
+          }
+        } else if (openLibraryId.endsWith("W")) {
+          workKey = `/works/${openLibraryId}`
+        }
+      } else if (cleanIsbn) {
+        // Query Open Library Edition API via ISBN
+        const isbnUrl = `https://openlibrary.org/isbn/${encodeURIComponent(cleanIsbn)}.json`
+        const isbnRes = await throttledOlFetch(isbnUrl)
+        if (isbnRes.ok) {
+          const bookData = await isbnRes.json()
           description =
             typeof bookData.description === "string"
               ? bookData.description
               : bookData.description?.value || null
           workKey = bookData.works?.[0]?.key || null
         }
-      } else if (openLibraryId.endsWith("W")) {
-        workKey = `/works/${openLibraryId}`
       }
 
       // If edition has no description, query parent work
@@ -1187,7 +1241,9 @@ export class InventairePlugin extends BasePlugin {
           extract: description,
           url: workKey
             ? `https://openlibrary.org${workKey}`
-            : `https://openlibrary.org/books/${openLibraryId}`,
+            : openLibraryId
+              ? `https://openlibrary.org/books/${openLibraryId}`
+              : `https://openlibrary.org/isbn/${cleanIsbn}`,
         }
       }
       return null
@@ -1306,24 +1362,23 @@ export class InventairePlugin extends BasePlugin {
         }
 
         // Extract description from UNIMARC field 330 (résumé ou extrait)
-        let summary = null
+        const summaryParts = []
         for (const df of dataFields) {
           if (df.getAttribute("tag") === "330") {
             const subfields = df.getElementsByTagNameNS("*", "subfield")
             for (const sf of subfields) {
               if (sf.getAttribute("code") === "a") {
                 const text = cleanText(sf.textContent)
-                if (text && text.length >= 50) {
-                  summary = text
-                  break
+                if (text) {
+                  summaryParts.push(text)
                 }
               }
             }
-            if (summary) break
           }
         }
 
-        if (summary) {
+        const summary = summaryParts.join("\n\n").trim()
+        if (summary && summary.length >= 50) {
           return {
             extract: summary,
             url: bnfUrl,
@@ -1407,13 +1462,12 @@ export class InventairePlugin extends BasePlugin {
       }
     }
 
-    // 2. Fall back to BnF if Wikipedia summary was not found
+    // 2. Fall back to BnF if Wikipedia summary is absent, inexact, or short
     let isStillShort =
       !detailed.description ||
       detailed.description.length < this.minDescriptionLength
     if (
-      !detailed.wikipediaUrl &&
-      isStillShort &&
+      (!detailed.wikipediaUrl || !detailed.wikipediaExact || isStillShort) &&
       !detailed.bnfUrl &&
       !detailed.bnfChecked
     ) {
@@ -1427,6 +1481,7 @@ export class InventairePlugin extends BasePlugin {
             detailed.bnfUrl = bnfInfo.url
           }
           detailed.bnfTitle = bnfInfo.title || null
+          detailed.wikipediaUrl = null
           detailed.openLibraryUrl = null
         }
       } catch (err) {

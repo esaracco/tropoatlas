@@ -1,5 +1,10 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest"
-import { InventairePlugin, isBiography, isTitleMatch } from "./index.js"
+import {
+  InventairePlugin,
+  isBiography,
+  isTitleMatch,
+  extractWikiSummary,
+} from "./index.js"
 
 describe("InventairePlugin - metadata and default sorting", () => {
   const plugin = new InventairePlugin()
@@ -228,6 +233,71 @@ describe("InventairePlugin - Wikipedia validation helpers", () => {
     // Missing inputs
     expect(isTitleMatch(null, "Pourparlers")).toBe(false)
     expect(isTitleMatch("Pourparlers", null)).toBe(false)
+  })
+})
+
+describe("InventairePlugin - Wikipedia article plot extraction", () => {
+  it("should extract both lead and plot summary when both exist", () => {
+    const raw = `Dune est un roman de science-fiction de Frank Herbert.
+
+== Résumé ==
+L'histoire débute sur la planète Caladan avec Paul Atréides.
+
+=== Première partie ===
+Paul part pour Arrakis.
+
+== Personnages ==
+Paul Atréides est l'héritier du duc.`
+
+    const result = extractWikiSummary(raw)
+    expect(result).toBe(
+      "Dune est un roman de science-fiction de Frank Herbert.\n\n" +
+        "L'histoire débute sur la planète Caladan avec Paul Atréides.\n\n" +
+        "Première partie :\n" +
+        "Paul part pour Arrakis.",
+    )
+  })
+
+  it("should handle English plot summary headers", () => {
+    const raw = `1984 is a dystopian novel by George Orwell.
+
+== Plot summary ==
+Winston Smith is a member of the Outer Party in Oceania.
+
+== Themes ==
+Totalitarianism and surveillance.`
+
+    const result = extractWikiSummary(raw)
+    expect(result).toBe(
+      "1984 is a dystopian novel by George Orwell.\n\n" +
+        "Winston Smith is a member of the Outer Party in Oceania.",
+    )
+  })
+
+  it("should fall back to lead section when no plot section is found", () => {
+    const raw = `Différence et répétition est la thèse principale de Gilles Deleuze.
+
+== Structure de l'ouvrage ==
+L'ouvrage se compose d'une introduction et de cinq chapitres.
+
+== Bibliographie ==
+Sources diverses.`
+
+    const result = extractWikiSummary(raw)
+    expect(result).toBe(
+      "Différence et répétition est la thèse principale de Gilles Deleuze.",
+    )
+  })
+
+  it("should return full text when no section headings are present", () => {
+    const raw = "Court extrait décrivant le livre sans aucune section."
+    expect(extractWikiSummary(raw)).toBe(raw)
+  })
+
+  it("should return null for empty or null inputs", () => {
+    expect(extractWikiSummary(null)).toBeNull()
+    expect(extractWikiSummary("")).toBeNull()
+    expect(extractWikiSummary("   ")).toBeNull()
   })
 })
 
