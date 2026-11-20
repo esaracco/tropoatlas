@@ -1,6 +1,6 @@
 {
   "name": "@tropo/react",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "TropoAtlas generic React UI components",
   "main": "src/index.js",
   "type": "module",

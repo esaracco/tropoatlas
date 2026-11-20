@@ -506,6 +506,7 @@ export class InventairePlugin extends BasePlugin {
               .map((g) => g.trim())
               .filter(Boolean)
               .map((g) => capitalize(g))
+              .sort((a, b) => a.localeCompare(b))
           }
 
           collection[id] = {
@@ -900,7 +901,9 @@ export class InventairePlugin extends BasePlugin {
         subtitle,
         creator,
         creators: authors,
-        categories: Array.from(itemCategories),
+        categories: Array.from(itemCategories).sort((a, b) =>
+          a.localeCompare(b),
+        ),
         place,
         price,
         rating,
@@ -1723,7 +1726,11 @@ export class InventairePlugin extends BasePlugin {
     if (rating !== undefined) item.rating = rating
     if (place !== undefined) item.place = place
     if (price !== undefined) item.price = price
-    if (categories !== undefined) item.categories = categories
+    if (categories !== undefined) {
+      item.categories = Array.isArray(categories)
+        ? categories.slice().sort((a, b) => a.localeCompare(b))
+        : categories
+    }
   }
 
   // Normalize entity cover URL to use 300x300 thumbnail and local proxy

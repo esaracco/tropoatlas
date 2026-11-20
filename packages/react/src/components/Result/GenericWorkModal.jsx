@@ -133,8 +133,10 @@ export const GenericWorkModal = ({
   const getSaveActionInfo = () => {
     const categories = Array.from(
       document.querySelectorAll(".WorkCategoryButtons tag .tagify__tag-text"),
-      (t) => t.textContent,
-    ).sort()
+      (t) => t.textContent.trim(),
+    )
+      .filter(Boolean)
+      .sort((a, b) => a.localeCompare(b))
     const releasesClone = { ...releases }
     const releaseClone = { ...releasesClone[instanceId] }
     const changes = {}
@@ -161,7 +163,7 @@ export const GenericWorkModal = ({
       const currentCategories = categories.join(",")
       const originalCategories = (releaseClone.categories || [])
         .slice()
-        .sort()
+        .sort((a, b) => a.localeCompare(b))
         .join(",")
       if (currentCategories !== originalCategories) {
         changes.categories = categories

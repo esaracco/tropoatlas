@@ -53,7 +53,10 @@ const WorkCategoryButtons = ({ plugin, categories, closeModal }) => {
     }
   }, [])
 
-  const initialValues = (categories || []).map((item) => ({ value: item }))
+  const sortedCategories = (categories || [])
+    .slice()
+    .sort((a, b) => a.localeCompare(b))
+  const initialValues = sortedCategories.map((item) => ({ value: item }))
 
   // RENDER
   return (
