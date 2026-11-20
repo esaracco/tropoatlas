@@ -41,5 +41,8 @@
     "jsdom": "^24.1.3",
     "prettier": "^3.9.6",
     "vitest": "^3.2.6"
+  },
+  "allowScripts": {
+    "esbuild": true
   }
 }
